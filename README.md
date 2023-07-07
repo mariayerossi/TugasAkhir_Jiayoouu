@@ -1,4 +1,4 @@
-<p align="center"><img src="public/assets/img/logo.png" alt="Logo" width="300" height="150"></p>
+<p align="center"><img src="public/assets/img/logo.png" alt="Logo" width="400" height="150"></p>
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
