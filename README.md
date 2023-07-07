@@ -1,4 +1,4 @@
-<p align="center"><img src="public/assets/img/logo.png" alt="Logo" width="200" height="200">
+<p align="center"><img src="public/assets/img/logo.png" alt="Logo" width="90" height="90">
             <h1 style="font-family: 'Bruno Ace SC', cursive;">sportiva</h1></p>
 
 <p align="center">

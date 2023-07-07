@@ -5,7 +5,7 @@
       <div class="row gy-4">
         <div class="col-lg-5 col-md-12 footer-info">
             <a href="/" class="logo d-flex align-items-center">
-                <img class="w-20 h-20" src="{{ asset('logo.ico')}} " alt="Logo">
+                <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo">
                 <span style="font-family: 'Bruno Ace SC', cursive;">sportiva</span>
             </a>
           <p>Sportiva adalah platform inovatif yang memudahkan Anda dalam peminjaman alat olahraga dan lapangan olahraga secara praktis dan efisien.</p>

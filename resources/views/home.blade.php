@@ -10,7 +10,7 @@ Sportiva
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
       {{-- logo --}}
         <a href="/" class="logo d-flex align-items-center">
-            <img class="w-20 h-20" src="{{ asset('logo.ico')}} " alt="Logo">
+            <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo">
             <h1 style="font-family: 'Bruno Ace SC', cursive;">sportiva</h1>
         </a>
 
