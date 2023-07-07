@@ -1,12 +1,5 @@
 <p align="center"><img src="public/assets/img/logo.png" alt="Logo" width="400" height="150"></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
 ## Tentang Sportiva
 
 Sportiva adalah platform inovatif yang memudahkan pengguna dalam persewaan alat olahraga dan lapangan olahraga secara praktis dan efisien. Sportiva berkomitmen untuk menyediakan layanan terbaik bagi individu, keluarga, komunitas, maupun klub olahraga yang ingin menjalani gaya hidup sehat dan aktif.
