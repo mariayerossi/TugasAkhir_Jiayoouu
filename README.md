@@ -1,5 +1,4 @@
-<p align="center"><img src="public/assets/img/logo.png" alt="Logo" width="90" height="90">
-            <h1 style="font-family: 'Bruno Ace SC', cursive;">sportiva</h1></p>
+<p align="center"><img src="public/assets/img/logo.png" alt="Logo" width="90" height="90"></p>
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
