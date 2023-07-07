@@ -10,7 +10,7 @@ Sportiva
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
       {{-- logo --}}
         <a href="/" class="logo d-flex align-items-center">
-            <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo">
+            <img src="{{ asset('logo2.ico')}} " alt="Logo">
             <h1 style="font-family: 'Bruno Ace SC', cursive;">sportiva</h1>
         </a>
 
@@ -53,10 +53,7 @@ Sportiva
     <!-- ======= About Us Section ======= -->
     <section id="about" class="about">
       <div class="container" data-aos="fade-up">
-        <a href="/" class="logo d-flex align-items-center">
-          <img src="{{ asset('logo2.ico')}} " alt="Logo" width="50" height="50">
-          <h1 style="font-family: 'Bruno Ace SC', cursive;color:black">sportiva</h1>
-      </a>
+
         <div class="section-header">
           <h2>Tentang Kami</h2>
           <p>Sportiva adalah platform inovatif yang memudahkan Anda dalam peminjaman alat olahraga dan lapangan olahraga secara praktis dan efisien. Kami berkomitmen untuk menyediakan layanan terbaik bagi individu, keluarga, komunitas, maupun klub olahraga yang ingin menjalani gaya hidup sehat dan aktif.</p>
