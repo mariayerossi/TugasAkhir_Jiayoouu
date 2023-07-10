@@ -56,36 +56,27 @@ Sportiva
 
         <div class="section-header">
           <h2>Tentang Kami</h2>
-          <p>Sportiva adalah platform inovatif yang memudahkan Anda dalam peminjaman alat olahraga dan lapangan olahraga secara praktis dan efisien. Kami berkomitmen untuk menyediakan layanan terbaik bagi individu, keluarga, komunitas, maupun klub olahraga yang ingin menjalani gaya hidup sehat dan aktif.</p>
+          <p>Sportiva adalah platform inovatif yang memudahkan Anda dalam peminjaman alat olahraga dan lapangan olahraga secara praktis dan efisien. Kami berkomitmen untuk menyediakan layanan terbaik bagi individu, keluarga, komunitas, maupun klub olahraga yang ingin menjalani gaya hidup sehat dan aktif. Sportiva merupakan tempat yang tepat bagi Anda yang ingin menjalani gaya hidup sehat dan aktif, tanpa harus memiliki dan menyimpan semua peralatan olahraga sendiri. Kami menyediakan beragam jenis alat olahraga berkualitas tinggi, mulai dari raket tenis, bola basket, hingga sepeda dan banyak lagi. Dengan Sportiva, Anda dapat menikmati olahraga favorit Anda tanpa perlu mengeluarkan biaya besar untuk membeli peralatan baru. Tidak hanya itu, Sportiva juga menyediakan fasilitas peminjaman lapangan olahraga. Dari lapangan sepak bola, lapangan tenis, hingga lapangan voli, kami memiliki berbagai jenis lapangan yang dapat Anda sewa untuk bermain bersama teman dan keluarga.</p>
         </div>
 
         <div class="row gy-4">
           <div class="col-lg-6">
-            <h3>Voluptatem dignissimos provident quasi corporis</h3>
+            <h3>Keuntungan menggunakan Sportiva</h3>
             <img src="assets/img/about.jpg" class="img-fluid rounded-4 mb-4" alt="">
-            <p>Ut fugiat ut sunt quia veniam. Voluptate perferendis perspiciatis quod nisi et. Placeat debitis quia recusandae odit et consequatur voluptatem. Dignissimos pariatur consectetur fugiat voluptas ea.</p>
-            <p>Temporibus nihil enim deserunt sed ea. Provident sit expedita aut cupiditate nihil vitae quo officia vel. Blanditiis eligendi possimus et in cum. Quidem eos ut sint rem veniam qui. Ut ut repellendus nobis tempore doloribus debitis explicabo similique sit. Accusantium sed ut omnis beatae neque deleniti repellendus.</p>
+            <p>Kami berkomitmen untuk memberikan pengalaman terbaik kepada pelanggan kami. Dengan menggunakan platform Sportiva, Anda dapat dengan mudah menemukan, memesan, dan membayar alat olahraga dan lapangan sesuai dengan preferensi Anda.</p>
+            <p>Nikmati kemudahan peminjaman alat olahraga dan lapangan olahraga dengan Sportiva. Mari bergabung bersama kami dalam menjalani gaya hidup sehat dan aktif. Bersiaplah untuk mengalami kepuasan dan kegembiraan dalam setiap momen olahraga Anda.</p>
           </div>
           <div class="col-lg-6">
             <div class="content ps-0 ps-lg-5">
               <p class="fst-italic">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                magna aliqua.
+                Berikut adalah beberapa keuntungan yang didapat oleh pengguna jika menggunakan Sportiva:
               </p>
               <ul>
-                <li><i class="bi bi-check-circle-fill"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-                <li><i class="bi bi-check-circle-fill"></i> Duis aute irure dolor in reprehenderit in voluptate velit.</li>
-                <li><i class="bi bi-check-circle-fill"></i> Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Dengan menggunakan Sportiva, pengguna dapat dengan mudah mengakses informasi dan detail tentang lapangan olahraga yang tersedia dan peralatan olahraga yang dapat disewa.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Sportiva menyediakan berbagai pilihan lapangan olahraga yang dapat disewa. Pengguna dapat menemukan lapangan sepak bola, basket, tenis, bulu tangkis, futsal, dan banyak lagi.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Melalui Sportiva, pengguna dapat melakukan pemesanan lapangan olahraga dan peralatan olahraga secara online. Proses pemesanan yang mudah dan sederhana memungkinkan pengguna untuk memesan dengan cepat dan efisien tanpa harus datang langsung ke tempat persewaan.</li>
+                <li><i class="bi bi-check-circle-fill"></i> Sportiva memungkinkan pengguna untuk memilih waktu dan tanggal sewa yang sesuai dengan jadwal mereka. Pengguna dapat melihat ketersediaan lapangan dalam waktu nyata dan memilih waktu yang paling cocok untuk mereka.</li>
               </ul>
-              <p>
-                Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident
-              </p>
-
-              <div class="position-relative mt-4">
-                <img src="assets/img/about-2.jpg" class="img-fluid rounded-4" alt="">
-                <a href="https://www.youtube.com/watch?v=LXb3EKWsInQ" class="glightbox play-btn"></a>
-              </div>
             </div>
           </div>
         </div>
