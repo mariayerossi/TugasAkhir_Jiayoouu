@@ -18,7 +18,7 @@ Sportiva
         <ul>
           <li><a href="#hero">Beranda</a></li>
           <li><a href="#about">Tentang Kami</a></li>
-          <li><a href="#portfolio">Produk</a></li>
+          <li><a href="#produk">Produk</a></li>
           <li><a href="#contact">Hubungi Kami</a></li>
           <li><a href="">Masuk</a></li>
         </ul>
@@ -40,7 +40,7 @@ Sportiva
           <h2>Selamat Datang di <span>Sportiva</span></h2>
           <p>Kami hadir untuk memenuhi kebutuhan Anda dalam menciptakan pengalaman olahraga yang menyenangkan dan memuaskan.</p>
           <div class="d-flex justify-content-center justify-content-lg-start">
-            <a href="#portfolio" class="btn-get-started">Lihat Produk</a>
+            <a href="#produk" class="btn-get-started">Lihat Produk</a>
           </div>
         </div>
       </div>
@@ -236,13 +236,13 @@ Sportiva
       </div>
     </section><!-- End Testimonials Section -->
 
-    <!-- ======= Portfolio Section ======= -->
-    <section id="portfolio" class="portfolio sections-bg">
+    <!-- ======= Produk Section ======= -->
+    <section id="produk" class="portfolio sections-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-header">
-          <h2>Portfolio</h2>
-          <p>Quam sed id excepturi ccusantium dolorem ut quis dolores nisi llum nostrum enim velit qui ut et autem uia reprehenderit sunt deleniti</p>
+          <h2>Produk</h2>
+          <p>Berikut adalah produk-produk yang disewakan di Sportiva</p>
         </div>
 
         <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order" data-aos="fade-up" data-aos-delay="100">
@@ -250,149 +250,147 @@ Sportiva
           <div>
             <ul class="portfolio-flters">
               <li data-filter="*" class="filter-active">All</li>
-              <li data-filter=".filter-app">App</li>
-              <li data-filter=".filter-product">Product</li>
-              <li data-filter=".filter-branding">Branding</li>
-              <li data-filter=".filter-books">Books</li>
+              <li data-filter=".filter-lapangan">Lapangan Olahraga</li>
+              <li data-filter=".filter-alat">Peralatan Olahraga</li>
             </ul><!-- End Portfolio Filters -->
           </div>
 
           <div class="row gy-4 portfolio-container">
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-app">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/app-1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/app-1.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/futsal1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/futsal1.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">App 1</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Lapangan Sepak Bola</a></h4>
+                  <p>Lokasi Persewaan : Jakarta Selatan<br>Luas Lapangan : 30m x 15m</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-product">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-alat">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/product-1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/product-1.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/badminton1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/badminton1.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">Product 1</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Raket Badminton</a></h4>
+                  <p>Lokasi Persewaan : Semarang<br>Berat Alat : 85g</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-branding">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/branding-1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/branding-1.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/basketball1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/basketball1.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">Branding 1</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Lapangan Basket</a></h4>
+                  <p>Lokasi Persewaan : Suarabaya<br>Luas Lapangan : 29m x 15m</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-books">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/books-1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/books-1.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/tenis1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/tenis1.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">Books 1</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Lapangan Tenis</a></h4>
+                  <p>Lokasi Persewaan : Jakarta Utara<br>Luas Lapangan : 23m x 10m</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-app">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-alat">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/app-2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/app-2.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/basketball2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/basketball2.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">App 2</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Bola Basket Molten</a></h4>
+                  <p>Lokasi Persewaan : Bandung<br>Berat Alat : 600g</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-product">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/product-2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/product-2.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/badminton2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/badminton2.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">Product 2</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Lapangan Badminton</a></h4>
+                  <p>Lokasi Persewaan : Bali<br>Luas Lapangan : 13m x 6m</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-branding">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/branding-2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/branding-2.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/voli1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/voli1.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">Branding 2</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Lapangan Voli</a></h4>
+                  <p>Lokasi Persewaan : Surabaya<br>Luas Lapangan : 18m x 9m</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-books">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-alat">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/books-2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/books-2.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/voli2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/voli2.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">Books 2</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Bola Voli</a></h4>
+                  <p>Lokasi Persewaan : Solo<br>Berat Alat : 260g</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-app">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/app-3.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/app-3.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/basketball3.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/basketball3.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">App 3</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Lapangan Basket</a></h4>
+                  <p>Lokasi Persewaan : Jakarta Barat<br>Luas Lapangan : 28m x 15m</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-product">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/product-3.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/product-3.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/lari1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/lari1.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">Product 3</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Lapangan Olahraga Lari</a></h4>
+                  <p>Lokasi Persewaan : Jakarta Pusat<br>Luas Lapangan : 200m x 10m</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-branding">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/branding-3.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/branding-3.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/futsal2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/futsal2.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">Branding 3</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Lapangan Sepak Bola</a></h4>
+                  <p>Lokasi Persewaan : Sidoarjo<br>Luas Lapangan : 30m x 15m</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-            <div class="col-xl-4 col-md-6 portfolio-item filter-books">
+            <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/portfolio/books-3.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/portfolio/books-3.jpg" class="img-fluid" alt=""></a>
+                <a href="assets/img/produk/golf1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/golf1.jpg" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
-                  <h4><a href="portfolio-details.html" title="More Details">Books 3</a></h4>
-                  <p>Lorem ipsum, dolor sit amet consectetur</p>
+                  <h4><a href="portfolio-details.html" title="More Details">Lapangan Golf</a></h4>
+                  <p>Lokasi Persewaan : Semarang<br>Luas Lapangan : 2.500m x 100m</p>
                 </div>
               </div>
             </div><!-- End Portfolio Item -->
 
-          </div><!-- End Portfolio Container -->
+          </div><!-- End Produk Container -->
 
         </div>
 
       </div>
-    </section><!-- End Portfolio Section -->
+    </section><!-- End Produk Section -->
 
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
       <div class="container" data-aos="fade-up">
 
         <div class="section-header">
-          <h2>Contact</h2>
-          <p>Nulla dolorum nulla nesciunt rerum facere sed ut inventore quam porro nihil id ratione ea sunt quis dolorem dolore earum</p>
+          <h2>Kontak</h2>
+          <p>Silahkan hubungi kami jika ada pertanyaan yang ingin ditanyakan.</p>
         </div>
 
         <div class="row gx-lg-0 gy-4">
