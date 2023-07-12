@@ -390,7 +390,6 @@ Sportiva
 
         <div class="section-header">
           <h2>Kontak</h2>
-          <p>Silahkan hubungi kami jika ada pertanyaan yang ingin ditanyakan.</p>
         </div>
 
         <div class="row gx-lg-0 gy-4">
