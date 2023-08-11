@@ -20,7 +20,13 @@ Sportiva
           <li><a href="#about">Tentang Kami</a></li>
           <li><a href="#produk">Produk</a></li>
           <li><a href="#contact">Hubungi Kami</a></li>
-          <li><a href="/register">Daftar</a></li>
+          <li class="dropdown">
+            <a href="#produk">Daftar<i class="fa fa-angle-down"></i></a>
+            <ul>
+                <li><a href="/register">Register User</a></li>
+                <li><a href="/registerTempat">Register Tempat Olahraga</a></li>
+            </ul>
+          </li>
           <li><a href="/login">Masuk</a></li>
         </ul>
       </nav><!-- .navbar -->
