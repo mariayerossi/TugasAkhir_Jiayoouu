@@ -8,7 +8,7 @@ Sportiva
   <header id="header" class="header d-flex align-items-center">
 
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-      {{-- logo --}}
+        {{-- logo --}}
         <a href="/" class="logo d-flex align-items-center">
             <img src="{{ asset('logo2.ico')}} " alt="Logo">
             <h1 style="font-family: 'Bruno Ace SC', cursive;">sportiva</h1>
@@ -20,7 +20,8 @@ Sportiva
           <li><a href="#about">Tentang Kami</a></li>
           <li><a href="#produk">Produk</a></li>
           <li><a href="#contact">Hubungi Kami</a></li>
-          <li><a href="">Masuk</a></li>
+          <li><a href="/register">Daftar</a></li>
+          <li><a href="/login">Masuk</a></li>
         </ul>
       </nav><!-- .navbar -->
 

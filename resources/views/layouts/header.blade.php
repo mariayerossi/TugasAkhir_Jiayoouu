@@ -13,6 +13,7 @@
           <li><a href="#about">Tentang Kami</a></li>
           <li><a href="#portfolio">Produk</a></li>
           <li><a href="#contact">Hubungi Kami</a></li>
+          <li><a href="">Daftar</a></li>
           <li><a href="">Masuk</a></li>
         </ul>
       </nav><!-- .navbar -->
