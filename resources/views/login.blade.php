@@ -30,17 +30,17 @@ Sportiva
             <div class="card-body p-5 shadow-5 text-center">
               <h2 class="fw-bold mb-5">Login Sportiva</h2>
               <form>
-  
+                @csrf
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Alamat Email</label>
-                  <input type="email" id="form3Example3" class="form-control" placeholder="Masukkan alamat email..." required/>
+                  <input type="email" id="form3Example3" class="form-control" required/>
                 </div>
   
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example4">Password</label>
-                  <input type="password" id="form3Example4" class="form-control" placeholder="Masukkan password..." required/>
+                  <input type="password" id="form3Example4" class="form-control" required/>
                 </div>
   
                 <!-- Checkbox -->

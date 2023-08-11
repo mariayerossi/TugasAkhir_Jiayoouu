@@ -23,8 +23,9 @@ Sportiva
           <li class="dropdown">
             <a href="#produk">Daftar<i class="fa fa-angle-down"></i></a>
             <ul>
-                <li><a href="/register">Register User</a></li>
-                <li><a href="/registerTempat">Register Tempat Olahraga</a></li>
+                <li><a href="/register">User</a></li>
+                <li><a href="/registerPemilik">Pemilik Alat Olahraga</a></li>
+                <li><a href="/registerTempat">Pihak Tempat Olahraga</a></li>
             </ul>
           </li>
           <li><a href="/login">Masuk</a></li>

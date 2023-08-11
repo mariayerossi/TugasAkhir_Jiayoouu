@@ -30,29 +30,35 @@ Sportiva
             <div class="card-body p-5 shadow-5 text-center">
               <h2 class="fw-bold mb-5">Register Sportiva</h2>
               <form>
-
+                @csrf
                 <!-- Name input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Nama Lengkap</label>
-                  <input type="name" name="nama" id="form3Example3" class="form-control" placeholder="Masukkan nama lengkap..." required minlength="5"/>
+                  <input type="text" name="nama" id="form3Example3" class="form-control" required minlength="5"/>
                 </div>
   
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Alamat Email</label>
-                  <input type="email" name="email" id="form3Example3" class="form-control" placeholder="Masukkan alamat email..." required/>
+                  <input type="email" name="email" id="form3Example3" class="form-control" required/>
                 </div>
 
                 <!-- Nomor input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Nomer Telepon</label>
-                  <input type="number" name="telepon" id="form3Example3" class="form-control" placeholder="Masukkan nomer telepon..." required/>
+                  <input type="number" name="telepon" id="form3Example3" class="form-control" required/>
                 </div>
   
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example4">Password</label>
-                  <input type="password" name="password" id="form3Example4" class="form-control" placeholder="Masukkan password..." required minlength="8"/>
+                  <input type="password" name="password" id="form3Example4" class="form-control" required minlength="8"/>
+                </div>
+
+                <!-- Confirmation Password input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form2Example2">Konfirmasi Password</label>
+                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control" required minlength="8"/>
                 </div>
   
                 <!-- Submit button -->
@@ -79,6 +85,7 @@ Sportiva
     var emailField = document.querySelector("input[name=email]");
     var teleponField = document.querySelector("input[name=telepon]");
     var passField = document.querySelector("input[name=password]");
+    var konfirField = document.querySelector("input[name=konfirmasi]");
 
     nameField.addEventListener("invalid", function(){
     this.setCustomValidity('');
@@ -102,6 +109,13 @@ Sportiva
     });
 
     passField.addEventListener("invalid", function(){
+    this.setCustomValidity('');
+    if (!this.validity.valid) {
+        this.setCustomValidity('Password minimal 8 karakter!');  
+        }
+    });
+
+    konfirField.addEventListener("invalid", function(){
     this.setCustomValidity('');
     if (!this.validity.valid) {
         this.setCustomValidity('Password minimal 8 karakter!');  

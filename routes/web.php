@@ -25,3 +25,11 @@ Route::get('/register', function () {
 Route::get('/login', function () {
     return view('login');
 });
+
+Route::get('/registerTempat', function () {
+    return view('tempat/registerTempat');
+});
+
+Route::get('/registerPemilik', function () {
+    return view('pemilik/registerPemilik');
+});
