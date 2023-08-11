@@ -32,9 +32,8 @@ Sportiva
       <div class="col-lg-8">
         <div class="card-body py-5 px-md-5">
           <h2 class="fw-bold mb-5">Register Tempat Olahraga Sportiva</h2>
-          <form>
+          <form method="POST" enctype="multipart/form-data">
             @csrf
-
             <div class="row">
               <div class="col-md-6 mb-4">
                 <!-- Name input -->
@@ -74,13 +73,13 @@ Sportiva
               <div class="col-md-6 mb-4">
                 <div class="form-outline">
                   <label class="form-label" for="form3Example1">Foto KTP</label>
-                  <input type="file" name="ktp" id="form3Example1" class="form-control" required/>
+                  <input type="file" name="ktp" id="form3Example1" class="form-control" accept=".jpg,.png,.jpeg" required/>
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <div class="form-outline">
                   <label class="form-label" for="form3Example2">Foto NPWP</label>
-                  <input type="file" name="npwp" id="form3Example2" class="form-control" required />
+                  <input type="file" name="npwp" id="form3Example2" class="form-control" accept=".jpg,.png,.jpeg" required />
                 </div>
               </div>
             </div>

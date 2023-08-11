@@ -29,7 +29,7 @@ Sportiva
               ">
             <div class="card-body p-5 shadow-5 text-center">
               <h2 class="fw-bold mb-5">Register Sportiva</h2>
-              <form>
+              <form method="POST">
                 @csrf
                 <!-- Name input -->
                 <div class="form-outline mb-4">
