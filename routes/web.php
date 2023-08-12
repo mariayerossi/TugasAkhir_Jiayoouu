@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginRegister;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,3 +34,5 @@ Route::get('/registerTempat', function () {
 Route::get('/registerPemilik', function () {
     return view('pemilik/registerPemilik');
 });
+
+Route::post("/registerUser", [LoginRegister::class, "registerUser"]);
