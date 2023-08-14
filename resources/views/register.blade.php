@@ -41,25 +41,25 @@ Sportiva
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Alamat Email</label>
-                  <input type="email" name="email" id="form3Example3" class="form-control" required/>
+                  <input type="email" name="email" id="form3Example3" class="form-control"/>
                 </div>
 
                 <!-- Nomor input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Nomer Telepon</label>
-                  <input type="number" name="telepon" id="form3Example3" class="form-control" required/>
+                  <input type="number" name="telepon" id="form3Example3" class="form-control"/>
                 </div>
   
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example4">Password</label>
-                  <input type="password" name="password" id="form3Example4" class="form-control" required minlength="8"/>
+                  <input type="password" name="password" id="form3Example4" class="form-control"/>
                 </div>
 
                 <!-- Confirmation Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example2">Konfirmasi Password</label>
-                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control" required minlength="8"/>
+                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control"/>
                 </div>
   
                 <!-- Submit button -->
