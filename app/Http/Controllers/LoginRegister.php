@@ -11,8 +11,8 @@ class LoginRegister extends Controller
         $request->validate([
             "nama" => 'required|min:5|string',
         ], [
-            "required" => ":attribute tidak boleh kosong!",
-            "min" => ":attribute woi!"
+            "required" => ":attribute lengkap tidak boleh kosong!",
+            "min" => ":attribute lengkap tidak valid!"
         ]);
         // return redirect()->back()->with("success", "Berhasil Register!");
     }
