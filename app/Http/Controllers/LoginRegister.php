@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LoginRegister extends Controller
 {
@@ -27,7 +28,26 @@ class LoginRegister extends Controller
             "konfirmasi.required" => ":attribute password tidak boleh kosong!",
             "konfirmasi.min" => ":attribute password harus memiliki setidaknya 8 karakter!"
         ]);
-        // return redirect()->back()->with("success", "Berhasil Register!");
+
+        if ($request->password == $request->konfirmasi) {
+            $result = DB::insert("INSERT INTO user VALUES(?, ?, ?, ?, ?)", [
+                0,
+                $request->nama,
+                $request->email,
+                $request->telepon,
+                $request->password
+            ]);
+    
+            if ($result) {
+                return redirect()->back()->with("success", "Berhasil Register!");
+            }
+            else {
+                return redirect()->back()->with("error", "Gagal Register!");
+            }
+        }
+        else {
+            return redirect()->back()->with("error", "Konfirmasi password salah!");
+        }
     }
 
     // Register Pemilik
