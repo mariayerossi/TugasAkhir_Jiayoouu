@@ -39,14 +39,14 @@ Sportiva
                 <!-- Name input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nama Tempat Olahraga</label>
-                  <input type="text" name="nama" id="form2Example1" class="form-control" required minlength="5"/>
+                  <input type="text" name="nama" id="form2Example1" class="form-control" />
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <!-- Owner input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nama Lengkap Pemilik Tempat Olahraga</label>
-                  <input type="text" name="pemilik" id="form2Example1" class="form-control" required minlength="5"/>
+                  <input type="text" name="pemilik" id="form2Example1" class="form-control" />
                 </div>
               </div>
             </div>
@@ -56,14 +56,14 @@ Sportiva
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Alamat Email</label>
-                  <input type="email" name="email" id="form2Example1" class="form-control" required/>
+                  <input type="email" name="email" id="form2Example1" class="form-control" />
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <!-- Nomor input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nomer Telepon</label>
-                  <input type="number" name="telepon" id="form2Example1" class="form-control" required/>
+                  <input type="number" name="telepon" id="form2Example1" class="form-control" />
                 </div>
               </div>
             </div>
@@ -73,13 +73,13 @@ Sportiva
               <div class="col-md-6 mb-4">
                 <div class="form-outline">
                   <label class="form-label" for="form3Example1">Foto KTP</label>
-                  <input type="file" name="ktp" id="form3Example1" class="form-control" accept=".jpg,.png,.jpeg" required/>
+                  <input type="file" name="ktp" id="form3Example1" class="form-control" accept=".jpg,.png,.jpeg" />
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <div class="form-outline">
                   <label class="form-label" for="form3Example2">Foto NPWP</label>
-                  <input type="file" name="npwp" id="form3Example2" class="form-control" accept=".jpg,.png,.jpeg" required />
+                  <input type="file" name="npwp" id="form3Example2" class="form-control" accept=".jpg,.png,.jpeg"  />
                 </div>
               </div>
             </div>
@@ -89,14 +89,14 @@ Sportiva
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example2">Password</label>
-                  <input type="password" name="password" id="form2Example2" class="form-control" required minlength="8"/>
+                  <input type="password" name="password" id="form2Example2" class="form-control" />
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <!-- Confirmation Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example2">Konfirmasi Password</label>
-                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control" required minlength="8"/>
+                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control" />
                 </div>
               </div>
             </div>

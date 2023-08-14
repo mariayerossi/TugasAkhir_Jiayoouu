@@ -23,6 +23,7 @@ Sportiva
       }
     }
   </style>
+  @include("layouts.message")
   <div class="card mb-3">
     <div class="row g-0 d-flex align-items-center">
       <div class="col-lg-4 d-none d-lg-flex">
@@ -32,12 +33,12 @@ Sportiva
       <div class="col-lg-8">
         <div class="card-body py-5 px-md-5">
           <h2 class="fw-bold mb-5">Register Pemilik Alat Olahraga Sportiva</h2>
-          <form method="POST" enctype="multipart/form-data">
+          <form method="POST" action="/registerPemilik" enctype="multipart/form-data">
             @csrf
             <!-- Owner input -->
             <div class="form-outline mb-4">
                 <label class="form-label" for="form2Example1">Nama Lengkap Pemilik Alat Olahraga</label>
-                <input type="text" name="pemilik" id="form2Example1" class="form-control" required minlength="5"/>
+                <input type="text" name="nama" id="form2Example1" class="form-control" value="{{ old('nama') }}"/>
             </div>
 
             <div class="row">
@@ -45,21 +46,21 @@ Sportiva
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Alamat Email</label>
-                  <input type="email" name="email" id="form2Example1" class="form-control" required/>
+                  <input type="text" name="email" id="form2Example1" class="form-control" value="{{ old('email') }}"/>
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <!-- Nomor input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nomer Telepon</label>
-                  <input type="number" name="telepon" id="form2Example1" class="form-control" required/>
+                  <input type="number" name="telepon" id="form2Example1" class="form-control" value="{{ old('telepon') }}"/>
                 </div>
               </div>
             </div>
 
             <div class="form-outline mb-4">
                 <label class="form-label" for="form3Example1">Foto KTP</label>
-                <input type="file" name="ktp" id="form3Example1" class="form-control" accept=".jpg,.png,.jpeg" required/>
+                <input type="file" name="ktp" id="form3Example1" class="form-control" accept=".jpg,.png,.jpeg" />
             </div>
 
             <div class="row">
@@ -67,14 +68,14 @@ Sportiva
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example2">Password</label>
-                  <input type="password" name="password" id="form2Example2" class="form-control" required minlength="8"/>
+                  <input type="password" name="password" id="form2Example2" class="form-control" />
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <!-- Confirmation Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example2">Konfirmasi Password</label>
-                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control" required minlength="8"/>
+                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control" />
                 </div>
               </div>
             </div>

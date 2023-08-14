@@ -36,3 +36,4 @@ Route::get('/registerPemilik', function () {
 });
 
 Route::post("/registerUser", [LoginRegister::class, "registerUser"]);
+Route::post("/registerPemilik", [LoginRegister::class, "registerPemilik"]);

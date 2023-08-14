@@ -35,19 +35,19 @@ Sportiva
                 <!-- Name input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example3">Nama Lengkap</label>
-                  <input type="text" name="nama" id="form3Example3" class="form-control" />
+                  <input type="text" name="nama" id="form3Example3" class="form-control" value="{{ old('nama') }}"/>
                 </div>
   
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Alamat Email</label>
-                  <input type="text" name="email" id="form3Example3" class="form-control"/>
+                  <input type="text" name="email" id="form3Example3" class="form-control" value="{{ old('email') }}"/>
                 </div>
 
                 <!-- Nomor input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Nomer Telepon</label>
-                  <input type="number" name="telepon" id="form3Example3" class="form-control"/>
+                  <input type="number" name="telepon" id="form3Example3" class="form-control" value="{{ old('telepon') }}"/>
                 </div>
   
                 <!-- Password input -->
