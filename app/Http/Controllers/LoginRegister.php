@@ -74,6 +74,32 @@ class LoginRegister extends Controller
             "konfirmasi.required" => ":attribute password tidak boleh kosong!",
             "konfirmasi.min" => ":attribute password harus memiliki setidaknya 8 karakter!"
         ]);
+
+        if ($request->password == $request->konfirmasi) {
+            $destinasi = "/upload";
+            $file = $request->file("ktp");
+            $ktp = $file->getClientOriginalName();
+
+            $result = DB::insert("INSERT INTO pemilik_alat VALUES(?, ?, ?, ?, ?, ?)", [
+                0,
+                $request->nama,
+                $request->email,
+                $request->telepon,
+                $ktp,
+                $request->password
+            ]);
+            $file->move(public_path($destinasi),$ktp);
+    
+            if ($result) {
+                return redirect()->back()->with("success", "Berhasil Register!");
+            }
+            else {
+                return redirect()->back()->with("error", "Gagal Register!");
+            }
+        }
+        else {
+            return redirect()->back()->with("error", "Konfirmasi password salah!");
+        }
     }
 
     //Register Tempat
