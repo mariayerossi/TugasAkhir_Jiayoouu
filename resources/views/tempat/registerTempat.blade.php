@@ -32,7 +32,7 @@ Sportiva
       <div class="col-lg-8">
         <div class="card-body py-5 px-md-5">
           <h2 class="fw-bold mb-5">Register Tempat Olahraga Sportiva</h2>
-          <form method="POST" enctype="multipart/form-data">
+          <form method="POST" action="/registerTempat" enctype="multipart/form-data">
             @csrf
             <div class="row">
               <div class="col-md-6 mb-4">
@@ -105,7 +105,7 @@ Sportiva
             <button type="submit" class="btn btn-primary btn-block mb-4">Daftar</button>
 
           </form>
-
+          <p>Sudah memiliki akun? <a href="/login" class="link-primary">Login disini</a></p>
         </div>
       </div>
     </div>

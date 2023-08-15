@@ -84,7 +84,7 @@ Sportiva
             <button type="submit" class="btn btn-primary btn-block mb-4">Daftar</button>
 
           </form>
-
+          <p>Sudah memiliki akun? <a href="/login" class="link-primary">Login disini</a></p>
         </div>
       </div>
     </div>

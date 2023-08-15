@@ -137,4 +137,34 @@ class LoginRegister extends Controller
     }
 
     //Register Tempat
+    public function registerTempat(Request $request){
+        $request->validate([
+            "nama" => 'required|min:5',
+            "pemilik" => 'required|min:5|alpha',
+            "email" => 'required|email',
+            "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
+            "ktp" => 'required|max:5120',
+            "npwp" => 'required|max:5120',
+            "password" => 'required|min:8',
+            "konfirmasi" => 'required|min:8'
+        ], [
+            "required" => ":attribute tidak boleh kosong!",
+            "nama.required" => ":attribute tempat olahraga tidak boleh kosong!",
+            "nama.min" => ":attribute tempat olahraga tidak valid!",
+            "pemilik.required" => "nama lengkap :attribute tempat olahraga tidak boleh kosong!",
+            "pemilik.min" => "nama lengkap :attribute tempat olahraga tidak valid",
+            "alpha" => "nama lengkap :attribute tempat olahraga tidak valid!",
+            "email.required" => "alamat :attribute tidak boleh kosong!",
+            "email" => "alamat :attribute tidak valid!",
+            "telepon.required" => "nomer :attribute tidak boleh kosong!",
+            "regex" => "nomer :attribute tidak valid!",
+            "ktp.required" => "foto KTP tidak boleh kosong!",
+            "ktp.max" => "ukuran gambar KTP tidak boleh lebih dari 5 MB!",
+            "npwp.required" => "foto NPWP tidak boleh kosong!",
+            "npwp.max" => "ukuran gambar NPWP tidak boleh lebih dari 5 MB!",
+            "password.min" => ":attribute harus memiliki setidaknya 8 karakter!",
+            "konfirmasi.required" => ":attribute password tidak boleh kosong!",
+            "konfirmasi.min" => ":attribute password harus memiliki setidaknya 8 karakter!"
+        ]);
+    }
 }
