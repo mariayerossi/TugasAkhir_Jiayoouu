@@ -42,17 +42,22 @@ class LoginRegister extends Controller
             "konfirmasi.min" => ":attribute password harus memiliki setidaknya 8 karakter!"
         ]);
 
-        $saldo = "0"; 
-        $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
-        $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
-
         if ($request->password == $request->konfirmasi) {
+            //enkripsi saldo user
+            $saldo = "0"; 
+            $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
+            $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
+
+            //Enkripsi password user
+            $password = $request->password;  // Ganti dengan password pengguna
+            $hash_password = password_hash($password, PASSWORD_BCRYPT);
+
             $result = DB::insert("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?)", [
                 0,
                 $request->nama,
                 $request->email,
                 $request->telepon,
-                $request->password,
+                $hash_password,
                 $enkripsiSaldo
             ]);
     
@@ -93,14 +98,20 @@ class LoginRegister extends Controller
             "konfirmasi.min" => ":attribute password harus memiliki setidaknya 8 karakter!"
         ]);
 
-        $saldo = "0"; 
-        $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
-        $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
-
         if ($request->password == $request->konfirmasi) {
+            //enkripsi saldo user
+            $saldo = "0"; 
+            $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
+            $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
+
+            //Enkripsi password user
+            $password = $request->password;  // Ganti dengan password pengguna
+            $hash_password = password_hash($password, PASSWORD_BCRYPT);
+
+            //Upload file
             $destinasi = "/upload";
             $file = $request->file("ktp");
-            $ktp = $file->getClientOriginalName();
+            $ktp = uniqid().".".$file->getClientOriginalExtension();
 
             $result = DB::insert("INSERT INTO pemilik_alat VALUES(?, ?, ?, ?, ?, ?, ?)", [
                 0,
@@ -108,7 +119,7 @@ class LoginRegister extends Controller
                 $request->email,
                 $request->telepon,
                 $ktp,
-                $request->password,
+                $hash_password,
                 $enkripsiSaldo
             ]);
             $file->move(public_path($destinasi),$ktp);
