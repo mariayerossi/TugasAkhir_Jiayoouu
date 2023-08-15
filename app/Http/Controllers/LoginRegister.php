@@ -7,6 +7,19 @@ use Illuminate\Support\Facades\DB;
 
 class LoginRegister extends Controller
 {
+    // Enkripsi saldo
+    private function encodePrice($price, $key) {
+        $encodedPrice = '';
+        $priceLength = strlen($price);
+        $keyLength = strlen($key);
+    
+        for ($i = 0; $i < $priceLength; $i++) {
+            $encodedPrice .= $price[$i] ^ $key[$i % $keyLength];
+        }
+    
+        return base64_encode($encodedPrice);
+    }
+
     //Register User
     public function registerUser(Request $request){
         $request->validate([
@@ -29,13 +42,18 @@ class LoginRegister extends Controller
             "konfirmasi.min" => ":attribute password harus memiliki setidaknya 8 karakter!"
         ]);
 
+        $saldo = "0"; 
+        $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
+        $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
+
         if ($request->password == $request->konfirmasi) {
-            $result = DB::insert("INSERT INTO user VALUES(?, ?, ?, ?, ?)", [
+            $result = DB::insert("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?)", [
                 0,
                 $request->nama,
                 $request->email,
                 $request->telepon,
-                $request->password
+                $request->password,
+                $enkripsiSaldo
             ]);
     
             if ($result) {
@@ -75,18 +93,23 @@ class LoginRegister extends Controller
             "konfirmasi.min" => ":attribute password harus memiliki setidaknya 8 karakter!"
         ]);
 
+        $saldo = "0"; 
+        $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
+        $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
+
         if ($request->password == $request->konfirmasi) {
             $destinasi = "/upload";
             $file = $request->file("ktp");
             $ktp = $file->getClientOriginalName();
 
-            $result = DB::insert("INSERT INTO pemilik_alat VALUES(?, ?, ?, ?, ?, ?)", [
+            $result = DB::insert("INSERT INTO pemilik_alat VALUES(?, ?, ?, ?, ?, ?, ?)", [
                 0,
                 $request->nama,
                 $request->email,
                 $request->telepon,
                 $ktp,
-                $request->password
+                $request->password,
+                $enkripsiSaldo
             ]);
             $file->move(public_path($destinasi),$ktp);
     
