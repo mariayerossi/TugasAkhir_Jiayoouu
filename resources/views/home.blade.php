@@ -21,7 +21,7 @@ Sportiva
           <li><a href="#produk">Produk</a></li>
           <li><a href="#contact">Hubungi Kami</a></li>
           <li class="dropdown">
-            <a href="#produk">Daftar<i class="fa fa-angle-down"></i></a>
+            <a href="">Daftar<i class="fa fa-angle-down"></i></a>
             <ul>
                 <li><a href="/register">User</a></li>
                 <li><a href="/registerPemilik">Pemilik Alat Olahraga</a></li>
@@ -473,6 +473,27 @@ Sportiva
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 
+  <script>
+    //untuk dropdown navbar di mobile :)
+    document.addEventListener("DOMContentLoaded", function() {
+        var dropdowns = document.querySelectorAll('.navbar .dropdown');
+
+        dropdowns.forEach(function(dropdown) {
+            dropdown.querySelector('a').addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+
+                var dropdownMenu = dropdown.querySelector('ul');
+                if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+                    dropdownMenu.style.display = 'block';
+                } else {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+        });
+    });
+
+  </script>
 </body>
 
 </html>
