@@ -206,4 +206,23 @@ class LoginRegister extends Controller
             return redirect()->back()->with("error", "Konfirmasi password salah!");
         }
     }
+
+    public function login(Request $request){
+        $request->validate([
+            "email" => 'required|email',
+            "password" => 'required|min:8'
+        ], [
+            "email.required" => "alamat :attribute tidak boleh kosong!",
+            "email" => "alamat :attribute tidak valid!",
+            "password.required" => ":attribute tidak boleh kosong!",
+            "min" => ":attribute tidak valid!"
+        ]);
+
+        if ($request->email == "admin@gmail.com" && $request->password == "") {
+            //masuk ke halaman admin
+        }
+        else {
+            
+        }
+    }
 }

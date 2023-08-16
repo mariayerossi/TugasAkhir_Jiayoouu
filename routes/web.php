@@ -38,3 +38,5 @@ Route::get('/registerPemilik', function () {
 Route::post("/registerUser", [LoginRegister::class, "registerUser"]);
 Route::post("/registerPemilik", [LoginRegister::class, "registerPemilik"]);
 Route::post("/registerTempat", [LoginRegister::class, "registerTempat"]);
+
+Route::post("/login", [LoginRegister::class, "login"]);

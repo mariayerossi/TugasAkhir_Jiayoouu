@@ -21,6 +21,7 @@ Sportiva
   
     <!-- Jumbotron -->
     <div class="container py-4">
+      @include("layouts.message")
       <div class="row g-0 align-items-center">
         <div class="col-lg-6 mb-5 mb-lg-0">
           <div class="card cascading-right" style="
@@ -29,18 +30,18 @@ Sportiva
               ">
             <div class="card-body p-5 shadow-5 text-center">
               <h2 class="fw-bold mb-5">Login Sportiva</h2>
-              <form method="POST">
+              <form method="POST" action="/login">
                 @csrf
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Alamat Email</label>
-                  <input type="email" id="form3Example3" class="form-control" required/>
+                  <input type="text" name="email" id="form3Example3" class="form-control"/>
                 </div>
   
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example4">Password</label>
-                  <input type="password" id="form3Example4" class="form-control" required/>
+                  <input type="password" name="password" id="form3Example4" class="form-control" />
                 </div>
   
                 <!-- Checkbox -->
