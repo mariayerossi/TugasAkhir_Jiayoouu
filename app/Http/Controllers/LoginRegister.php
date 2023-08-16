@@ -99,12 +99,12 @@ class LoginRegister extends Controller
         ]);
 
         if ($request->password == $request->konfirmasi) {
-            //enkripsi saldo user
+            //enkripsi saldo pemilik
             $saldo = "0"; 
             $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
             $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
 
-            //Enkripsi password user
+            //Enkripsi password pemilik
             $password = $request->password;  // Ganti dengan password pengguna
             $hash_password = password_hash($password, PASSWORD_BCRYPT);
 
@@ -166,5 +166,26 @@ class LoginRegister extends Controller
             "konfirmasi.required" => ":attribute password tidak boleh kosong!",
             "konfirmasi.min" => ":attribute password harus memiliki setidaknya 8 karakter!"
         ]);
+
+        if ($request->password == $request->konfirmasi) {
+            //enkripsi saldo tempat
+            $saldo = "0"; 
+            $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
+            $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
+
+            //Enkripsi password tempat
+            $password = $request->password;  // Ganti dengan password pengguna
+            $hash_password = password_hash($password, PASSWORD_BCRYPT);
+
+            //Upload file
+            $destinasi = "/upload";
+            $file1 = $request->file("ktp");
+            $file2 = $request->file("npwp");
+            $ktp = uniqid().".".$file1->getClientOriginalExtension();
+            $npwp = uniqid().".".$file2->getClientOriginalExtension();
+        }
+        else {
+            return redirect()->back()->with("error", "Konfirmasi password salah!");
+        }
     }
 }
