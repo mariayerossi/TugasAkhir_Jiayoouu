@@ -218,8 +218,8 @@ class LoginRegister extends Controller
             "min" => ":attribute tidak valid!"
         ]);
 
-        if ($request->email == "admin@gmail.com" && $request->password == "") {
-            //masuk ke halaman admin
+        if ($request->email == "admin@gmail.com" && $request->password == "asdfghjkl") {
+            return view('admin/registrasi_tempat');
         }
         else {
             
