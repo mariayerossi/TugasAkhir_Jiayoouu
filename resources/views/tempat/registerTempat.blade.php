@@ -23,6 +23,7 @@ Sportiva
       }
     }
   </style>
+  @include("layouts.message")
   <div class="card mb-3">
     <div class="row g-0 d-flex align-items-center">
       <div class="col-lg-4 d-none d-lg-flex">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class LoginRegister extends Controller
 {
@@ -183,6 +184,23 @@ class LoginRegister extends Controller
             $file2 = $request->file("npwp");
             $ktp = uniqid().".".$file1->getClientOriginalExtension();
             $npwp = uniqid().".".$file2->getClientOriginalExtension();
+
+            $db = [];
+            if(Session::has("regTempat")) $db = Session::get("regTempat");//ambil data lama
+
+            array_push($db, [//masukin data baru
+                "nama" => $request->nama,
+                "pemilik" => $request->pemilik,
+                "email" => $request->email,
+                "telepon" => $request->telepon,
+                "ktp" => $ktp,
+                "npwp" => $npwp,
+                "password" => $hash_password,
+                "saldo" => $enkripsiSaldo
+            ]);
+            Session::put("regTempat",$db);
+
+            return redirect()->back()->with("success", "Registrasi menunggu konfirmasi admin!");
         }
         else {
             return redirect()->back()->with("error", "Konfirmasi password salah!");
