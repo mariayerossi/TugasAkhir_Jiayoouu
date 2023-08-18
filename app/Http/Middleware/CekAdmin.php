@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Session;
 
-class Guest
+class CekAdmin
 {
     /**
      * Handle an incoming request.
@@ -16,13 +16,10 @@ class Guest
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Cek apakah user pernah login
-        if(Session::has("role")){
+        if(!Session::has("role") && Session::get("role") != "admin"){
             // Jika iya kembalikan sesuai posisi semula
-            if (Session::get("role") == "admin") return redirect('/beranda');
+            return redirect('/login');
         }
-
-        // Jika tidak lanjutkan request
         return $next($request);
     }
 }
