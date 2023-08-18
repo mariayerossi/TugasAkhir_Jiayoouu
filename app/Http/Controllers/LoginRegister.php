@@ -219,7 +219,7 @@ class LoginRegister extends Controller
         ]);
 
         if ($request->email == "admin@gmail.com" && $request->password == "asdfghjkl") {
-            return view('admin/registrasi_tempat');
+            return redirect('/registrasi_tempat');//jangan lupa diarahin ke beranda aja.
         }
         else {
             

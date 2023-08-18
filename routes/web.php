@@ -40,3 +40,7 @@ Route::post("/registerPemilik", [LoginRegister::class, "registerPemilik"]);
 Route::post("/registerTempat", [LoginRegister::class, "registerTempat"]);
 
 Route::post("/login", [LoginRegister::class, "login"]);
+
+Route::get('/registrasi_tempat', function () {
+    return view('admin/registrasi_tempat');
+});

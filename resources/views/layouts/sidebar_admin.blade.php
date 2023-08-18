@@ -64,7 +64,7 @@ Sportiva
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="#"><i class="bi bi-grid-1x2"></i> Beranda</a>
         <a href="#"><i class="bi bi-chat-left-dots"></i> Komplain</a>
-        <a href="#"><i class="bi bi-house-add"></i> Registrasi Tempat Olahraga</a>
+        <a href="/registrasi_tempat"><i class="bi bi-house-add"></i> Registrasi Tempat Olahraga</a>
         <a href="#"><i class="bi bi-box-arrow-right"></i> Logout</a>
     </div>
 
@@ -75,7 +75,7 @@ Sportiva
 
         <!-- Konten utama Anda -->
         @yield('content')
-        
+
     </div>
     <script>
         function openNav() {
