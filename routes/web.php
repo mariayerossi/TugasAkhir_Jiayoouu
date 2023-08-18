@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginRegister;
+use App\Http\Middleware\Guest;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +27,7 @@ Route::get('/register', function () {
 });
 Route::get('/login', function () {
     return view('login');
-});
+})->middleware([Guest::class]);
 Route::get('/registerTempat', function () {
     return view('tempat/registerTempat');
 });
@@ -41,10 +42,14 @@ Route::post("/registerUser", [LoginRegister::class, "registerUser"]);
 Route::post("/registerPemilik", [LoginRegister::class, "registerPemilik"]);
 Route::post("/registerTempat", [LoginRegister::class, "registerTempat"]);
 Route::post("/login", [LoginRegister::class, "login"]);
+Route::get("/logout", [LoginRegister::class, "logout"]);
 
 // -------------------------------
 // HALAMAN ADMIN
 // -------------------------------
+Route::get('/beranda', function () {
+    return view('admin/beranda');
+});
 Route::get('/registrasi_tempat', function () {
     return view('admin/registrasi_tempat');
 });

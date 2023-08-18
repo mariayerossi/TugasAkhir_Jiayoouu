@@ -219,10 +219,16 @@ class LoginRegister extends Controller
         ]);
 
         if ($request->email == "admin@gmail.com" && $request->password == "asdfghjkl") {
+            Session::put("role","admin");
             return redirect('/registrasi_tempat');//jangan lupa diarahin ke beranda aja.
         }
         else {
             
         }
+    }
+
+    public function logout(){
+        Session::forget('role');
+        return redirect("/login");
     }
 }
