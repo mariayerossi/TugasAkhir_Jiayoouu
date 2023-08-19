@@ -78,6 +78,7 @@ Sportiva
 
     </div>
     <script>
+        openNav();
         function openNav() {
             document.getElementById("sidebar").style.left = "0";
             document.getElementById("main").style.marginLeft = "250px";
