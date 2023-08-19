@@ -31,7 +31,7 @@ Sportiva
             padding: 10px 15px;
             font-weight: 600;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 16px;
             color: rgba(255, 255, 255, 0.669);
             display: block;
             transition: 0.3s;
@@ -62,10 +62,10 @@ Sportiva
     
     <div id="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="/beranda"><i class="bi bi-grid-1x2"></i> Beranda</a>
-        <a href="#"><i class="bi bi-chat-left-dots"></i> Komplain</a>
-        <a href="/registrasi_tempat"><i class="bi bi-house-add"></i> Registrasi Tempat Olahraga</a>
-        <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        <a href="/beranda">Beranda</a>
+        <a href="#">Komplain</a>
+        <a href="/registrasi_tempat">Registrasi Tempat Olahraga</a>
+        <a href="/logout">Logout</a>
     </div>
 
     <div id="main">

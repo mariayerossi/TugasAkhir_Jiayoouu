@@ -23,18 +23,10 @@ Route::get('/', function () {
 // -------------------------------
 // TAMPILAN LOGIN REGISTER
 // -------------------------------
-Route::get('/register', function () {
-    return view('register');
-});
-Route::get('/login', function () {
-    return view('login');
-})->middleware([Guest::class]);
-Route::get('/registerTempat', function () {
-    return view('tempat/registerTempat');
-});
-Route::get('/registerPemilik', function () {
-    return view('pemilik/registerPemilik');
-});
+Route::view("/register", "register");
+Route::view("/login", "login")->middleware([Guest::class]);
+Route::view("/registerTempat", "tempat.registerTempat");
+Route::view("/registerPemilik", "pemilik.registerPemilik");
 
 // -------------------------------
 // PROSES LOGIN REGISTER
@@ -48,9 +40,5 @@ Route::get("/logout", [LoginRegister::class, "logout"]);
 // -------------------------------
 // HALAMAN ADMIN
 // -------------------------------
-Route::get('/beranda', function () {
-    return view('admin/beranda');
-})->middleware([CekAdmin::class]);
-Route::get('/registrasi_tempat', function () {
-    return view('admin/registrasi_tempat');
-})->middleware([CekAdmin::class]);
+Route::view("/beranda", "admin.beranda")->middleware([CekAdmin::class]);
+Route::view("/registrasi_tempat", "admin.registrasi_tempat")->middleware([CekAdmin::class]);
