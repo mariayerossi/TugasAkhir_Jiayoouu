@@ -219,8 +219,9 @@ class LoginRegister extends Controller
         ]);
 
         if ($request->email == "admin@gmail.com" && $request->password == "asdfghjkl") {
+            //masuk role admin
             Session::put("role","admin");
-            return redirect('/beranda');//jangan lupa diarahin ke beranda aja.
+            return redirect('/beranda');
         }
         else {
             
