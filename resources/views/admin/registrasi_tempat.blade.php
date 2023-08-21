@@ -1,5 +1,25 @@
 @extends('layouts.sidebar_admin')
 
 @section('content')
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, quae repellat maxime aut maiores commodi quas reiciendis possimus quibusdam omnis doloribus officia odio, quam quo vel est laudantium delectus similique?</p>
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Registrasi Tempat Olahraga</h1>
+    <div class="mt-5">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nama Tempat Olahraga</th>
+                    <th>Alamat</th>
+                    <th>Email</th>
+                    <th>No. Telepon</th>
+                    <th>Foto KTP</th>
+                    <th>Foto NPWP</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Sisipkan data pesanan di sini -->
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection
