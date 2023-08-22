@@ -52,6 +52,12 @@ Sportiva
               </div>
             </div>
 
+            <!-- Lokasi input -->
+            <div class="form-outline mb-4">
+              <label class="form-label" for="form2Example1">Alamat Lengkap Tempat Olahraga</label>
+              <input type="text" name="alamat" id="form2Example1" class="form-control" />
+            </div>
+
             <div class="row">
               <div class="col-md-6 mb-4">
                 <!-- Email input -->

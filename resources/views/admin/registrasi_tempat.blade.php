@@ -3,12 +3,13 @@
 @section('content')
 <div class="container mt-5">
     <h1 class="text-center mb-5">Registrasi Tempat Olahraga</h1>
+    @include("layouts.message")
     <div class="mt-5">
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Nama Tempat Olahraga</th>
-                    <th>Alamat</th>
+                    <th>Lokasi</th>
                     <th>Email</th>
                     <th>No. Telepon</th>
                     <th>Foto KTP</th>
@@ -17,7 +18,19 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Sisipkan data pesanan di sini -->
+                @if (Session::has("regTempat"))
+                    @foreach (Session::get("regTempat") as $item)
+                        <tr>
+                            <td>{{$item["nama"]}}</td>
+                            <td>{{$item["alamat"]}}</td>
+                            <td>{{$item["email"]}}</td>
+                            <td>{{$item["telepon"]}}</td>
+                            <td><a href="{{ asset('upload/' . $item['ktp']) }}"><img src="{{ asset('upload/' . $item['ktp']) }}" alt="" style="width:150px"></a></td>
+                            <td><a href="{{ asset('upload/' . $item['npwp']) }}"><img src="{{ asset('upload/' . $item['npwp']) }}" alt="" style="width:150px"></a></td>
+                            <td><a href="/konfirmasiTempat/{{$item['ktp']}}" class="btn btn-primary">Konfirmasi</a></td>
+                        </tr>
+                    @endforeach
+                @endif
             </tbody>
         </table>
     </div>

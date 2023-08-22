@@ -144,6 +144,7 @@ class LoginRegister extends Controller
             "pemilik" => 'required|min:5|alpha',
             "email" => 'required|email',
             "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
+            "alamat" => 'required|min:10',
             "ktp" => 'required|max:5120',
             "npwp" => 'required|max:5120',
             "password" => 'required|min:8',
@@ -159,6 +160,8 @@ class LoginRegister extends Controller
             "email" => "alamat :attribute tidak valid!",
             "telepon.required" => "nomer :attribute tidak boleh kosong!",
             "regex" => "nomer :attribute tidak valid!",
+            "alamat.required" => ":attribute lengkap tidak boleh kosong!",
+            "alamat.min" => ":attribute tidak valid!",
             "ktp.required" => "foto KTP tidak boleh kosong!",
             "ktp.max" => "ukuran gambar KTP tidak boleh lebih dari 5 MB!",
             "npwp.required" => "foto NPWP tidak boleh kosong!",
@@ -184,6 +187,8 @@ class LoginRegister extends Controller
             $file2 = $request->file("npwp");
             $ktp = uniqid().".".$file1->getClientOriginalExtension();
             $npwp = uniqid().".".$file2->getClientOriginalExtension();
+            $file1->move(public_path($destinasi),$ktp);
+            $file2->move(public_path($destinasi),$npwp);
 
             $db = [];
             if(Session::has("regTempat")) $db = Session::get("regTempat");//ambil data lama
@@ -193,6 +198,7 @@ class LoginRegister extends Controller
                 "pemilik" => $request->pemilik,
                 "email" => $request->email,
                 "telepon" => $request->telepon,
+                "alamat" => $request->alamat,
                 "ktp" => $ktp,
                 "npwp" => $npwp,
                 "password" => $hash_password,
@@ -231,5 +237,35 @@ class LoginRegister extends Controller
     public function logout(){
         Session::forget('role');
         return redirect("/login");
+    }
+
+    public function konfirmasiTempat(Request $request){
+        if (Session::has("regTempat")) {
+            foreach (Session::get("regTempat") as $key => $value) {
+                if ($value["ktp"] == $request->id) {
+                    $result = DB::insert("INSERT INTO pihak_tempat VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+                        0,
+                        $value["nama"],
+                        $value["pemilik"],
+                        $value["email"],
+                        $value["telepon"],
+                        $value["alamat"],
+                        $value["ktp"],
+                        $value["npwp"],
+                        $value["password"],
+                        $value["saldo"]
+                    ]);
+
+                    
+            
+                    if ($result) {
+                        return redirect()->back()->with("success", "Berhasil Konfirmasi Registrasi Tempat Olahraga!");
+                    }
+                    else {
+                        return redirect()->back()->with("error", "Gagal Konfirmasi Registrasi Tempat Olahraga!");
+                    }
+                }
+            }
+        }
     }
 }
