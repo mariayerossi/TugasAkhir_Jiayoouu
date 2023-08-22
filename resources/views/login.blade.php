@@ -60,6 +60,7 @@ Sportiva
               </form>
 
               <p>Tidak memiliki akun? <a href="/register" class="link-primary">Register disini</a></p>
+              <p><a href="/" class="link-primary">Kembali ke Home</a></p>
             </div>
           </div>
         </div>

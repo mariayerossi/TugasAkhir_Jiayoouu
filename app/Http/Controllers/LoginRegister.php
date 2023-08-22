@@ -241,31 +241,35 @@ class LoginRegister extends Controller
 
     public function konfirmasiTempat(Request $request){
         if (Session::has("regTempat")) {
-            foreach (Session::get("regTempat") as $key => $value) {
-                if ($value["ktp"] == $request->id) {
-                    $result = DB::insert("INSERT INTO pihak_tempat VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
-                        0,
-                        $value["nama"],
-                        $value["pemilik"],
-                        $value["email"],
-                        $value["telepon"],
-                        $value["alamat"],
-                        $value["ktp"],
-                        $value["npwp"],
-                        $value["password"],
-                        $value["saldo"]
-                    ]);
+            $db = [];
+            $db = Session::get("regTempat");
+            dd($db);
 
-                    
+            // foreach (Session::get("regTempat") as $key => $value) {
+            //     if ($value["ktp"] == $request->id) {
+            //         $result = DB::insert("INSERT INTO pihak_tempat VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+            //             0,
+            //             $value["nama"],
+            //             $value["pemilik"],
+            //             $value["email"],
+            //             $value["telepon"],
+            //             $value["alamat"],
+            //             $value["ktp"],
+            //             $value["npwp"],
+            //             $value["password"],
+            //             $value["saldo"]
+            //         ]);
+
+
             
-                    if ($result) {
-                        return redirect()->back()->with("success", "Berhasil Konfirmasi Registrasi Tempat Olahraga!");
-                    }
-                    else {
-                        return redirect()->back()->with("error", "Gagal Konfirmasi Registrasi Tempat Olahraga!");
-                    }
-                }
-            }
+            //         if ($result) {
+            //             return redirect()->back()->with("success", "Berhasil Konfirmasi Registrasi Tempat Olahraga!");
+            //         }
+            //         else {
+            //             return redirect()->back()->with("error", "Gagal Konfirmasi Registrasi Tempat Olahraga!");
+            //         }
+            //     }
+            // }
         }
     }
 }
