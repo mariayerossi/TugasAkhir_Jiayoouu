@@ -243,33 +243,39 @@ class LoginRegister extends Controller
         if (Session::has("regTempat")) {
             $db = [];
             $db = Session::get("regTempat");
-            dd($db);
 
-            // foreach (Session::get("regTempat") as $key => $value) {
-            //     if ($value["ktp"] == $request->id) {
-            //         $result = DB::insert("INSERT INTO pihak_tempat VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
-            //             0,
-            //             $value["nama"],
-            //             $value["pemilik"],
-            //             $value["email"],
-            //             $value["telepon"],
-            //             $value["alamat"],
-            //             $value["ktp"],
-            //             $value["npwp"],
-            //             $value["password"],
-            //             $value["saldo"]
-            //         ]);
+            foreach (Session::get("regTempat") as $key => $value) {
+                if ($value["ktp"] == $request->id) {
+                    $result = DB::insert("INSERT INTO pihak_tempat VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
+                        0,
+                        $value["nama"],
+                        $value["pemilik"],
+                        $value["email"],
+                        $value["telepon"],
+                        $value["alamat"],
+                        $value["ktp"],
+                        $value["npwp"],
+                        $value["password"],
+                        $value["saldo"]
+                    ]);
+                }
+            }
 
+            //jika admin mengkonfirmasi maka data akan masuk db dan data di session akan dihapus
+            foreach ($db as $key => $item) {
+                if ($item['ktp'] == $request->id) {
+                    unset($db[$key]);
+                }
+            }
+            Session::forget("regTempat");
+            Session::put("regTempat",$db);
 
-            
-            //         if ($result) {
-            //             return redirect()->back()->with("success", "Berhasil Konfirmasi Registrasi Tempat Olahraga!");
-            //         }
-            //         else {
-            //             return redirect()->back()->with("error", "Gagal Konfirmasi Registrasi Tempat Olahraga!");
-            //         }
-            //     }
-            // }
+            if ($result) {
+                return redirect()->back()->with("success", "Berhasil Konfirmasi Registrasi Tempat Olahraga!");
+            }
+            else {
+                return redirect()->back()->with("error", "Gagal Konfirmasi Registrasi Tempat Olahraga!");
+            }
         }
     }
 }
