@@ -5,7 +5,26 @@ Sportiva
 @include('layouts.main')
 
 <body style="background-color: #008374;">
-    <!-- Section: Design Block -->
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    {{-- logo --}}
+      <a href="/" class="logo d-flex align-items-center">
+          <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
+          <h1 style="font-family: 'Bruno Ace SC', cursive; color:white">sportiva</h1>
+      </a>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a href="/register">Daftar sebagai user</a></li>
+        <li><a href="/registerPemilik">Daftar sebagai pemilik alat</a></li>
+        <li><a href="/registerTempat">Daftar sebagai tempat olahraga</a></li>
+      </ul>
+    </nav><!-- .navbar -->
+
+    <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+    <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+
+    </div>
+<!-- Section: Design Block -->
 <section class="text-center text-lg-start">
     <style>
       .cascading-right {
@@ -29,7 +48,7 @@ Sportiva
               backdrop-filter: blur(20px);
               ">
             <div class="card-body p-5 shadow-5 text-center">
-              <h2 class="fw-bold mb-5">Login Sportiva</h2>
+              <h2 class="fw-bold mb-5">Login</h2>
               <form method="POST" action="/login">
                 @csrf
                 <!-- Email input -->
@@ -58,9 +77,6 @@ Sportiva
                 </button>
                 
               </form>
-
-              <p><a href="/register" class="link-primary">Register sebagai user</a><br>
-              <a href="/registerPemilik" class="link-primary">Register sebagai pemilik</a></p>
             </div>
           </div>
         </div>

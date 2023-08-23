@@ -5,7 +5,25 @@ Sportiva
 @include('layouts.main')
 
 <body style="background-color: #008374;">
-  <!-- Section: Design Block -->
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+    {{-- logo --}}
+      <a href="/" class="logo d-flex align-items-center">
+          <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
+          <h1 style="font-family: 'Bruno Ace SC', cursive; color:white">sportiva</h1>
+      </a>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a href="/register">Daftar sebagai user</a></li>
+        <li><a href="/registerPemilik">Daftar sebagai pemilik alat</a></li>
+        <li><a href="/login">Login</a></li>
+      </ul>
+    </nav><!-- .navbar -->
+
+    <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+    <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+  </div>
+<!-- Section: Design Block -->
 <section class=" text-center text-lg-start">
   <style>
     .rounded-t-5 {
@@ -32,7 +50,7 @@ Sportiva
       </div>
       <div class="col-lg-8">
         <div class="card-body py-5 px-md-5">
-          <h2 class="fw-bold mb-5">Register Tempat Olahraga Sportiva</h2>
+          <h2 class="fw-bold mb-5">Register Tempat Olahraga</h2>
           <form method="POST" action="/registerTempat" enctype="multipart/form-data">
             @csrf
             <div class="row">
@@ -112,7 +130,6 @@ Sportiva
             <button type="submit" class="btn btn-primary btn-block mb-4">Daftar</button>
 
           </form>
-          <p>Sudah memiliki akun? <a href="/login" class="link-primary">Login disini</a></p>
         </div>
       </div>
     </div>
