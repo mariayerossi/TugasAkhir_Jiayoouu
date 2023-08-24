@@ -281,7 +281,7 @@ class LoginRegister extends Controller
             ]);
             if ($dataUser != []) {
                 if (password_verify($request->password, $dataUser[0]->password_user)) {
-                    dd("password user benar");
+                    //diarahkan ke halaman user
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }
@@ -293,7 +293,7 @@ class LoginRegister extends Controller
             ]);
             if ($dataPemilik != []) {
                 if (password_verify($request->password, $dataPemilik[0]->password_pemilik)) {
-                    dd("password pemilik benar");
+                    //diarahkan ke halaman pemilik
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }
@@ -305,7 +305,7 @@ class LoginRegister extends Controller
             ]);
             if ($dataTempat != []) {
                 if (password_verify($request->password, $dataTempat[0]->password_tempat)) {
-                    dd("password tempat benar");
+                    //diarahkan ke halaman tempat
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }
