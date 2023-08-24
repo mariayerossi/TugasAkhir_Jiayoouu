@@ -45,44 +45,43 @@ class LoginRegister extends Controller
 
         if ($request->password == $request->konfirmasi) {
             //cek apakah ada email serupa
-            $data = [];
             $dataUser = DB::select("select * from user where email_user=?",[
                 $request->email
             ]);
-            if ($dataUser != []) {
-                array_push($data, $dataUser);
-            }
-            dd($data);
             $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
                 $request->email
             ]);
             $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
                 $request->email
             ]);
-
-            //enkripsi saldo user
-            $saldo = "0"; 
-            $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
-            $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
-
-            //Enkripsi password user
-            $password = $request->password;  // Ganti dengan password pengguna
-            $hash_password = password_hash($password, PASSWORD_BCRYPT);
-
-            $result = DB::insert("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?)", [
-                0,
-                $request->nama,
-                $request->email,
-                $request->telepon,
-                $hash_password,
-                $enkripsiSaldo
-            ]);
-    
-            if ($result) {
-                return redirect()->back()->with("success", "Berhasil Register!");
+            if ($dataUser != [] || $dataPemilik != [] || $dataTempat != []) {
+                return redirect()->back()->with("error", "Email sudah pernah digunakan!");
             }
             else {
-                return redirect()->back()->with("error", "Gagal Register!");
+                //enkripsi saldo user
+                $saldo = "0"; 
+                $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
+                $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
+
+                //Enkripsi password user
+                $password = $request->password;  // Ganti dengan password pengguna
+                $hash_password = password_hash($password, PASSWORD_BCRYPT);
+
+                $result = DB::insert("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?)", [
+                    0,
+                    $request->nama,
+                    $request->email,
+                    $request->telepon,
+                    $hash_password,
+                    $enkripsiSaldo
+                ]);
+        
+                if ($result) {
+                    return redirect()->back()->with("success", "Berhasil Register!");
+                }
+                else {
+                    return redirect()->back()->with("error", "Gagal Register!");
+                }
             }
         }
         else {
@@ -116,36 +115,51 @@ class LoginRegister extends Controller
         ]);
 
         if ($request->password == $request->konfirmasi) {
-            //enkripsi saldo pemilik
-            $saldo = "0"; 
-            $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
-            $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
-
-            //Enkripsi password pemilik
-            $password = $request->password;  // Ganti dengan password pengguna
-            $hash_password = password_hash($password, PASSWORD_BCRYPT);
-
-            //Upload file
-            $destinasi = "/upload";
-            $file = $request->file("ktp");
-            $ktp = uniqid().".".$file->getClientOriginalExtension();
-
-            $result = DB::insert("INSERT INTO pemilik_alat VALUES(?, ?, ?, ?, ?, ?, ?)", [
-                0,
-                $request->nama,
-                $request->email,
-                $request->telepon,
-                $ktp,
-                $hash_password,
-                $enkripsiSaldo
+            //cek apakah ada email serupa
+            $dataUser = DB::select("select * from user where email_user=?",[
+                $request->email
             ]);
-            $file->move(public_path($destinasi),$ktp);
-    
-            if ($result) {
-                return redirect()->back()->with("success", "Berhasil Register!");
+            $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
+                $request->email
+            ]);
+            $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
+                $request->email
+            ]);
+            if ($dataUser != [] || $dataPemilik != [] || $dataTempat != []) {
+                return redirect()->back()->with("error", "Email sudah pernah digunakan!");
             }
             else {
-                return redirect()->back()->with("error", "Gagal Register!");
+                //enkripsi saldo pemilik
+                $saldo = "0"; 
+                $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
+                $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
+
+                //Enkripsi password pemilik
+                $password = $request->password;  // Ganti dengan password pengguna
+                $hash_password = password_hash($password, PASSWORD_BCRYPT);
+
+                //Upload file
+                $destinasi = "/upload";
+                $file = $request->file("ktp");
+                $ktp = uniqid().".".$file->getClientOriginalExtension();
+
+                $result = DB::insert("INSERT INTO pemilik_alat VALUES(?, ?, ?, ?, ?, ?, ?)", [
+                    0,
+                    $request->nama,
+                    $request->email,
+                    $request->telepon,
+                    $ktp,
+                    $hash_password,
+                    $enkripsiSaldo
+                ]);
+                $file->move(public_path($destinasi),$ktp);
+        
+                if ($result) {
+                    return redirect()->back()->with("success", "Berhasil Register!");
+                }
+                else {
+                    return redirect()->back()->with("error", "Gagal Register!");
+                }
             }
         }
         else {
@@ -188,41 +202,56 @@ class LoginRegister extends Controller
         ]);
 
         if ($request->password == $request->konfirmasi) {
-            //enkripsi saldo tempat
-            $saldo = "0"; 
-            $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
-            $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
-
-            //Enkripsi password tempat
-            $password = $request->password;  // Ganti dengan password pengguna
-            $hash_password = password_hash($password, PASSWORD_BCRYPT);
-
-            //Upload file
-            $destinasi = "/upload";
-            $file1 = $request->file("ktp");
-            $file2 = $request->file("npwp");
-            $ktp = uniqid().".".$file1->getClientOriginalExtension();
-            $npwp = uniqid().".".$file2->getClientOriginalExtension();
-            $file1->move(public_path($destinasi),$ktp);
-            $file2->move(public_path($destinasi),$npwp);
-
-            $db = [];
-            if(Session::has("regTempat")) $db = Session::get("regTempat");//ambil data lama
-
-            array_push($db, [//masukin data baru
-                "nama" => $request->nama,
-                "pemilik" => $request->pemilik,
-                "email" => $request->email,
-                "telepon" => $request->telepon,
-                "alamat" => $request->alamat,
-                "ktp" => $ktp,
-                "npwp" => $npwp,
-                "password" => $hash_password,
-                "saldo" => $enkripsiSaldo
+            //cek apakah ada email serupa
+            $dataUser = DB::select("select * from user where email_user=?",[
+                $request->email
             ]);
-            Session::put("regTempat",$db);
+            $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
+                $request->email
+            ]);
+            $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
+                $request->email
+            ]);
+            if ($dataUser != [] || $dataPemilik != [] || $dataTempat != []) {
+                return redirect()->back()->with("error", "Email sudah pernah digunakan!");
+            }
+            else {
+                //enkripsi saldo tempat
+                $saldo = "0"; 
+                $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
+                $enkripsiSaldo = $this->encodePrice($saldo, $secretKey);
 
-            return redirect()->back()->with("success", "Registrasi menunggu konfirmasi admin!");
+                //Enkripsi password tempat
+                $password = $request->password;  // Ganti dengan password pengguna
+                $hash_password = password_hash($password, PASSWORD_BCRYPT);
+
+                //Upload file
+                $destinasi = "/upload";
+                $file1 = $request->file("ktp");
+                $file2 = $request->file("npwp");
+                $ktp = uniqid().".".$file1->getClientOriginalExtension();
+                $npwp = uniqid().".".$file2->getClientOriginalExtension();
+                $file1->move(public_path($destinasi),$ktp);
+                $file2->move(public_path($destinasi),$npwp);
+
+                $db = [];
+                if(Session::has("regTempat")) $db = Session::get("regTempat");//ambil data lama
+
+                array_push($db, [//masukin data baru
+                    "nama" => $request->nama,
+                    "pemilik" => $request->pemilik,
+                    "email" => $request->email,
+                    "telepon" => $request->telepon,
+                    "alamat" => $request->alamat,
+                    "ktp" => $ktp,
+                    "npwp" => $npwp,
+                    "password" => $hash_password,
+                    "saldo" => $enkripsiSaldo
+                ]);
+                Session::put("regTempat",$db);
+
+                return redirect()->back()->with("success", "Registrasi menunggu konfirmasi admin!");
+            }
         }
         else {
             return redirect()->back()->with("error", "Konfirmasi password salah!");
@@ -251,7 +280,7 @@ class LoginRegister extends Controller
                 $request->email
             ]);
             if ($dataUser != []) {
-                dd($dataUser);
+                
             }
             //cek apakah role pemilik
             //cek apakah role tempat
