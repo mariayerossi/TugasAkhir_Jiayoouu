@@ -16,7 +16,7 @@ Sportiva
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a href="#hero">Beranda</a></li>
+          <li><a href="/">Beranda</a></li>
           <li><a href="#about">Tentang Kami</a></li>
           <li><a href="#produk">Produk</a></li>
           <li><a href="#contact">Hubungi Kami</a></li>
