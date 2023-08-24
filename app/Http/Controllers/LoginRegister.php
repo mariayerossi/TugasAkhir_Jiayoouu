@@ -283,37 +283,35 @@ class LoginRegister extends Controller
                 if (password_verify($request->password, $dataUser[0]->password_user)) {
                     dd("password user benar");
                 } else {
-                    dd("password user salah");
+                    return redirect()->back()->with("error", "Password salah!");
+                }
+            }
+
+            //cek apakah role pemilik
+            $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
+                $request->email
+            ]);
+            if ($dataPemilik != []) {
+                if (password_verify($request->password, $dataPemilik[0]->password_pemilik)) {
+                    dd("password pemilik benar");
+                } else {
+                    return redirect()->back()->with("error", "Password salah!");
+                }
+            }
+
+            //cek apakah role tempat
+            $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
+                $request->email
+            ]);
+            if ($dataTempat != []) {
+                if (password_verify($request->password, $dataTempat[0]->password_tempat)) {
+                    dd("password tempat benar");
+                } else {
+                    return redirect()->back()->with("error", "Password salah!");
                 }
             }
             else {
-                //cek apakah role pemilik
-                $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
-                    $request->email
-                ]);
-                if ($dataPemilik != []) {
-                    if (password_verify($request->password, $dataPemilik[0]->password_pemilik)) {
-                        dd("password pemilik benar");
-                    } else {
-                        dd("password pemilik salah");
-                    }
-                }
-                else {
-                    //cek apakah role tempat
-                    $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
-                        $request->email
-                    ]);
-                    if ($dataTempat != []) {
-                        if (password_verify($request->password, $dataTempat[0]->password_tempat)) {
-                            dd("password tempat benar");
-                        } else {
-                            dd("password tempat salah");
-                        }
-                    }
-                    else {
-                        dd("tidak ada akun yang terdaftar! register terlebih dahulu!");
-                    }
-                }
+                return redirect()->back()->with("error", "Akun tidak ditemukan! Silahkan register terlebih dahulu!");
             }
         }
     }
