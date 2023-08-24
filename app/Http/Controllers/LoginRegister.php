@@ -44,6 +44,22 @@ class LoginRegister extends Controller
         ]);
 
         if ($request->password == $request->konfirmasi) {
+            //cek apakah ada email serupa
+            $data = [];
+            $dataUser = DB::select("select * from user where email_user=?",[
+                $request->email
+            ]);
+            if ($dataUser != []) {
+                array_push($data, $dataUser);
+            }
+            dd($data);
+            $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
+                $request->email
+            ]);
+            $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
+                $request->email
+            ]);
+
             //enkripsi saldo user
             $saldo = "0"; 
             $secretKey = "mysecretkey"; // Kunci rahasia untuk melakukan enkripsi dan dekripsi
@@ -230,7 +246,15 @@ class LoginRegister extends Controller
             return redirect('/beranda');
         }
         else {
-            
+            //cek apakah role user
+            $dataUser = DB::select("select * from user where email_user=?",[
+                $request->email
+            ]);
+            if ($dataUser != []) {
+                dd($dataUser);
+            }
+            //cek apakah role pemilik
+            //cek apakah role tempat
         }
     }
 
