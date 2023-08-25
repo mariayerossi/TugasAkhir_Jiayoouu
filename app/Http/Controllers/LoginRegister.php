@@ -274,11 +274,10 @@ class LoginRegister extends Controller
         }
         else {
             //cek apakah role user
-            $dataUser = DB::select("select * from user where email_user=?",[
-                $request->email
-            ]);
-            if ($dataUser != []) {
-                if (password_verify($request->password, $dataUser[0]->password_user)) {
+            $user = new customer();
+            $dataUser = $user->cek_email_user($request->email);
+            if (!$dataUser->isEmpty()) {
+                if (password_verify($request->password, $dataUser->first()->password_pemilik)) {
                     //diarahkan ke halaman user
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
@@ -286,12 +285,12 @@ class LoginRegister extends Controller
             }
 
             //cek apakah role pemilik
-            $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
-                $request->email
-            ]);
-            if ($dataPemilik != []) {
-                if (password_verify($request->password, $dataPemilik[0]->password_pemilik)) {
+            $pemilik = new pemilikAlat();
+            $dataPemilik = $pemilik->cek_email_pemilik($request->email);
+            if (!$dataPemilik->isEmpty()) {
+                if (password_verify($request->password, $dataPemilik->first()->password_pemilik)) {
                     //diarahkan ke halaman pemilik
+                    Session::put("role","pemilik");
                     return redirect('/masterAlat');
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
@@ -299,11 +298,10 @@ class LoginRegister extends Controller
             }
 
             //cek apakah role tempat
-            $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
-                $request->email
-            ]);
-            if ($dataTempat != []) {
-                if (password_verify($request->password, $dataTempat[0]->password_tempat)) {
+            $tempat = new pihakTempat();
+            $dataTempat = $tempat->cek_email_tempat($request->email);
+            if (!$dataTempat->isEmpty()) {
+                if (password_verify($request->password, $dataTempat->first()->password_tempat)) {
                     //diarahkan ke halaman tempat
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
