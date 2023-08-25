@@ -114,16 +114,16 @@ class LoginRegister extends Controller
 
         if ($request->password == $request->konfirmasi) {
             //cek apakah ada email serupa
-            $dataUser = DB::select("select * from user where email_user=?",[
-                $request->email
-            ]);
-            $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
-                $request->email
-            ]);
-            $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
-                $request->email
-            ]);
-            if ($dataUser != [] || $dataPemilik != [] || $dataTempat != []) {
+            $user = new customer();
+            $data1 = $user->cek_email_user($request->email);
+
+            $pemilik = new pemilikAlat();
+            $data2 = $pemilik->cek_email_pemilik($request->email);
+
+            $tempat = new pihakTempat();
+            $data3 = $tempat->cek_email_tempat($request->email);
+
+            if ($data1->isEmpty() || $data2->isEmpty() || $data3->isEmpty()) {
                 return redirect()->back()->with("error", "Email sudah pernah digunakan!");
             }
             else {
@@ -201,16 +201,16 @@ class LoginRegister extends Controller
 
         if ($request->password == $request->konfirmasi) {
             //cek apakah ada email serupa
-            $dataUser = DB::select("select * from user where email_user=?",[
-                $request->email
-            ]);
-            $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
-                $request->email
-            ]);
-            $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
-                $request->email
-            ]);
-            if ($dataUser != [] || $dataPemilik != [] || $dataTempat != []) {
+            $user = new customer();
+            $data1 = $user->cek_email_user($request->email);
+
+            $pemilik = new pemilikAlat();
+            $data2 = $pemilik->cek_email_pemilik($request->email);
+
+            $tempat = new pihakTempat();
+            $data3 = $tempat->cek_email_tempat($request->email);
+
+            if ($data1->isEmpty() || $data2->isEmpty() || $data3->isEmpty()) {
                 return redirect()->back()->with("error", "Email sudah pernah digunakan!");
             }
             else {
