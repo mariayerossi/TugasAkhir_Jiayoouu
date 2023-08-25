@@ -294,6 +294,7 @@ class LoginRegister extends Controller
             if ($dataPemilik != []) {
                 if (password_verify($request->password, $dataPemilik[0]->password_pemilik)) {
                     //diarahkan ke halaman pemilik
+                    return redirect('/masterAlat');
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }

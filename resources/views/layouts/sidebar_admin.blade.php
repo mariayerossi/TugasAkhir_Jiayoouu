@@ -62,10 +62,10 @@ Sportiva
     
     <div id="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="/beranda">Beranda</a>
-        <a href="#">Komplain</a>
-        <a href="/registrasi_tempat">Registrasi Tempat Olahraga</a>
-        <a href="/logout">Logout</a>
+        <a href="/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
+        <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain</a>
+        <a href="/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
+        <a href="/logout"><i class="bi bi-box-arrow-right me-3"></i>Logout</a>
     </div>
 
     <div id="main">

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginRegister;
 use App\Http\Middleware\CekAdmin;
+use App\Http\Middleware\CekPemilik;
 use App\Http\Middleware\Guest;
 use Illuminate\Support\Facades\Route;
 
@@ -43,3 +44,8 @@ Route::get("/logout", [LoginRegister::class, "logout"]);
 Route::view("/beranda", "admin.beranda")->middleware([CekAdmin::class]);
 Route::view("/registrasi_tempat", "admin.registrasi_tempat")->middleware([CekAdmin::class]);
 Route::get("/konfirmasiTempat/{id}", [LoginRegister::class, "konfirmasiTempat"]);
+
+// -------------------------------
+// HALAMAN PEMILIK ALAT
+// -------------------------------
+Route::view("/masterAlat", "pemilik.masterAlat");
