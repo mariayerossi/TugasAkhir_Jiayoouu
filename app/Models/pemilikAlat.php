@@ -19,4 +19,16 @@ class pemilikAlat extends Model
     {
         return pemilikAlat::where('email_pemilik',"=", $isi)->get();
     }
+
+    public function insertPemilik($data)
+    {
+        $pemilik = new pemilikAlat();
+        $pemilik->nama_pemilik = $data["nama"];
+        $pemilik->email_pemilik = $data["email"];
+        $pemilik->telepon_pemilik = $data["telepon"];
+        $pemilik->ktp_pemilik = $data["ktp"];
+        $pemilik->password_pemilik = $data["password"];
+        $pemilik->saldo_pemilik = $data["saldo"];
+        $pemilik->save();
+    }
 }

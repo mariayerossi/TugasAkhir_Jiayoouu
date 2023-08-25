@@ -77,7 +77,7 @@ class LoginRegister extends Controller
                     "saldo" => $enkripsiSaldo
                 ];
                 $user = new customer();
-                $result = $user->insertUser($data);
+                $user->insertUser($data);
         
                 return redirect()->back()->with("success", "Berhasil Register!");
             }
@@ -141,23 +141,18 @@ class LoginRegister extends Controller
                 $file = $request->file("ktp");
                 $ktp = uniqid().".".$file->getClientOriginalExtension();
 
-                $result = DB::insert("INSERT INTO pemilik_alat VALUES(?, ?, ?, ?, ?, ?, ?)", [
-                    0,
-                    $request->nama,
-                    $request->email,
-                    $request->telepon,
-                    $ktp,
-                    $hash_password,
-                    $enkripsiSaldo
-                ]);
-                $file->move(public_path($destinasi),$ktp);
+                $data = [
+                    "nama"=>$request->nama,
+                    "email"=>$request->email,
+                    "telepon"=>$request->telepon,
+                    "ktp" =>$ktp,
+                    "password" => $hash_password,
+                    "saldo" => $enkripsiSaldo
+                ];
+                $pemilik = new pemilikAlat();
+                $pemilik->insertPemilik($data);
         
-                if ($result) {
-                    return redirect()->back()->with("success", "Berhasil Register!");
-                }
-                else {
-                    return redirect()->back()->with("error", "Gagal Register!");
-                }
+                return redirect()->back()->with("success", "Berhasil Register!");
             }
         }
         else {
