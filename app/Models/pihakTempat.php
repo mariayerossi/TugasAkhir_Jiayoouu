@@ -19,4 +19,19 @@ class pihakTempat extends Model
     {
         return pihakTempat::where('email_tempat',"=", $isi)->get();
     }
+
+    public function insertTempat($data)
+    {
+        $tempat = new pihakTempat();
+        $tempat->nama_tempat = $data["nama"];
+        $tempat->nama_pemilik_tempat = $data["pemilik"];
+        $tempat->email_tempat = $data["email"];
+        $tempat->telepon_tempat = $data["telepon"];
+        $tempat->alamat_tempat = $data["alamat"];
+        $tempat->ktp_tempat = $data["ktp"];
+        $tempat->npwp_tempat = $data["npwp"];
+        $tempat->password_tempat = $data["password"];
+        $tempat->saldo_tempat = $data["saldo"];
+        $tempat->save();
+    }
 }
