@@ -320,19 +320,6 @@ class LoginRegister extends Controller
 
             foreach (Session::get("regTempat") as $key => $value) {
                 if ($value["ktp"] == $request->id) {
-                    $result = DB::insert("INSERT INTO pihak_tempat VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", [
-                        0,
-                        $value["nama"],
-                        $value["pemilik"],
-                        $value["email"],
-                        $value["telepon"],
-                        $value["alamat"],
-                        $value["ktp"],
-                        $value["npwp"],
-                        $value["password"],
-                        $value["saldo"]
-                    ]);
-
                     $data = [
                         "nama"=>$value["nama"],
                         "pemilik"=>$value["pemilik"],
