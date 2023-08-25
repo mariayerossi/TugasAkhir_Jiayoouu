@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'nama_user' => "Maria Yerossi",
             'email_user' => 'maria@gmail.com',
             'telepon_user' => "082374822343",
-            'password_user' => Hash::make('1234567890'),
+            'password_user' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_user' => "XQ==",
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             'email_pemilik' => 'andika@gmail.com',
             'telepon_pemilik' => "086768686774",
             'ktp_pemilik' => "64db1c79dc9d5.jpg",
-            'password_pemilik' => Hash::make('1234567890'),
+            'password_pemilik' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_pemilik' => "XQ==",
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
@@ -49,10 +49,15 @@ class DatabaseSeeder extends Seeder
             'alamat_tempat' => "ngagel jaya, Surabaya",
             'ktp_tempat' => "64e5a2e7a68d8.jpg",
             'npwp_tempat' => "64e5a2e7a68d8.jpg",
-            'password_tempat' => Hash::make('1234567890'),
+            'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_tempat' => "XQ==",
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
+        ]);
+        
+        DB::table('kategori')->insert([
+            'id_kategori' => "1",
+            "nama_kategori" => "Basket",
         ]);
     }
 }

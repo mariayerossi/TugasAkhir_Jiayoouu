@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\customer;
+use App\Models\pemilikAlat;
+use App\Models\pihakTempat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -24,7 +27,7 @@ class LoginRegister extends Controller
     //Register User
     public function registerUser(Request $request){
         $request->validate([
-            "nama" => 'required|min:5|alpha',
+            "nama" => 'required|min:5',
             "email" => 'required|email',
             "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
             "password" => 'required|min:8',
@@ -33,7 +36,6 @@ class LoginRegister extends Controller
             "nama.required" => ":attribute lengkap tidak boleh kosong!",
             "required" => ":attribute tidak boleh kosong!",
             "nama.min" => ":attribute lengkap tidak valid!",
-            "alpha" => ":attribute lengkap tidak valid!",
             "email.required" => "alamat :attribute tidak boleh kosong!",
             "email" => "alamat :attribute tidak valid!",
             "telepon.required" => "nomer :attribute tidak boleh kosong!",
@@ -44,17 +46,17 @@ class LoginRegister extends Controller
         ]);
 
         if ($request->password == $request->konfirmasi) {
-            //cek apakah ada email serupa
-            $dataUser = DB::select("select * from user where email_user=?",[
-                $request->email
-            ]);
-            $dataPemilik = DB::select("select * from pemilik_alat where email_pemilik=?",[
-                $request->email
-            ]);
-            $dataTempat = DB::select("select * from pihak_tempat where email_tempat=?",[
-                $request->email
-            ]);
-            if ($dataUser != [] || $dataPemilik != [] || $dataTempat != []) {
+            // //cek apakah ada email serupa
+            $user = new customer();
+            $data1 = $user->cek_email_user($request->email);
+
+            $pemilik = new pemilikAlat();
+            $data2 = $pemilik->cek_email_pemilik($request->email);
+
+            $tempat = new pihakTempat();
+            $data3 = $tempat->cek_email_tempat($request->email);
+
+            if ($data1->isEmpty() || $data2->isEmpty() || $data3->isEmpty()) {
                 return redirect()->back()->with("error", "Email sudah pernah digunakan!");
             }
             else {
@@ -67,21 +69,17 @@ class LoginRegister extends Controller
                 $password = $request->password;  // Ganti dengan password pengguna
                 $hash_password = password_hash($password, PASSWORD_BCRYPT);
 
-                $result = DB::insert("INSERT INTO user VALUES(?, ?, ?, ?, ?, ?)", [
-                    0,
-                    $request->nama,
-                    $request->email,
-                    $request->telepon,
-                    $hash_password,
-                    $enkripsiSaldo
-                ]);
+                $data = [
+                    "nama"=>$request->nama,
+                    "email"=>$request->email,
+                    "telepon"=>$request->telepon,
+                    "password" => $hash_password,
+                    "saldo" => $enkripsiSaldo
+                ];
+                $user = new customer();
+                $result = $user->insertUser($data);
         
-                if ($result) {
-                    return redirect()->back()->with("success", "Berhasil Register!");
-                }
-                else {
-                    return redirect()->back()->with("error", "Gagal Register!");
-                }
+                return redirect()->back()->with("success", "Berhasil Register!");
             }
         }
         else {
