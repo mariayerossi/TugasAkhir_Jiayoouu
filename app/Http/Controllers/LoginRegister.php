@@ -332,6 +332,20 @@ class LoginRegister extends Controller
                         $value["password"],
                         $value["saldo"]
                     ]);
+
+                    $data = [
+                        "nama"=>$value["nama"],
+                        "pemilik"=>$value["pemilik"],
+                        "email"=>$value["email"],
+                        "telepon"=>$value["telepon"],
+                        "alamat"=>$value["alamat"],
+                        "ktp" =>$value["ktp"],
+                        "npwp"=>$value["npwp"],
+                        "password" => $value["password"],
+                        "saldo" => $value["saldo"]
+                    ];
+                    $tempat = new pihakTempat();
+                    $tempat->insertTempat($data);
                 }
             }
 
@@ -344,12 +358,7 @@ class LoginRegister extends Controller
             Session::forget("regTempat");
             Session::put("regTempat",$db);
 
-            if ($result) {
-                return redirect()->back()->with("success", "Berhasil Konfirmasi Registrasi Tempat Olahraga!");
-            }
-            else {
-                return redirect()->back()->with("error", "Gagal Konfirmasi Registrasi Tempat Olahraga!");
-            }
+            return redirect()->back()->with("success", "Berhasil Register!");
         }
     }
 }
