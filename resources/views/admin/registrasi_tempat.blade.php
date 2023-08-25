@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1 class="text-center mb-5">Registrasi Tempat Olahraga</h1>
+    <h2 class="text-center mb-5">Registrasi Tempat Olahraga</h2>
     @include("layouts.message")
     <div class="mt-5">
         <table class="table table-striped">
@@ -30,6 +30,10 @@
                             <td><a href="/konfirmasiTempat/{{$item['ktp']}}" class="btn btn-primary">Konfirmasi</a></td>
                         </tr>
                     @endforeach
+                @else
+                    <tr>
+                        <td colspan="3" class="text-center">Tidak Ada Data</td>
+                    </tr>
                 @endif
             </tbody>
         </table>

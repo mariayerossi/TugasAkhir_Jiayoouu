@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KategoriOlahraga;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
@@ -44,8 +45,11 @@ Route::get("/logout", [LoginRegister::class, "logout"]);
 Route::view("/beranda", "admin.beranda")->middleware([CekAdmin::class]);
 Route::view("/registrasi_tempat", "admin.registrasi_tempat")->middleware([CekAdmin::class]);
 Route::get("/konfirmasiTempat/{id}", [LoginRegister::class, "konfirmasiTempat"]);
+Route::view("/masterKategori", "admin.masterKategori")->middleware([CekAdmin::class]);
+Route::post("/tambahKategori", [KategoriOlahraga::class, "tambahKategori"]);
+Route::get("/hapusKategori/{id}", [KategoriOlahraga::class, "hapusKategori"]);
 
 // -------------------------------
 // HALAMAN PEMILIK ALAT
 // -------------------------------
-Route::view("/masterAlat", "pemilik.masterAlat");
+Route::view("/masterAlat", "pemilik.masterAlat")->middleware([CekPemilik::class]);
