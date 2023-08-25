@@ -4,15 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 class kategori extends Model
 {
     use HasFactory;
+    // use SoftDeletes;
     //-------- !HARUS ADA! ------------
     protected $table ="kategori";//diganti dengan nama table di database
     protected $primaryKey ="id_kategori";//diganti dengan nama primary key dari table
     public $timestamp = true; //klo true otomatis akan nambah field create_at dan update_at
     public $incrementing = true;//utk increment
+    // protected $dates = ['deleted_at'];
     //---------------------------------
 
     public function insertKategori($data)
@@ -23,6 +26,12 @@ class kategori extends Model
     }
 
     public function get_all_data(){
-        // return kategori::where('status',"=","1")->get();
+        return kategori::where('deleted_at',"=",null)->get();
+    }
+
+    public function deleteKategori($data)
+    {
+        $kat = kategori::find($data["id"]);
+        $kat->delete();
     }
 }

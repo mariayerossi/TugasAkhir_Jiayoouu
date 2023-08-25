@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password_user',255);
             $table->string('saldo_user',255);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

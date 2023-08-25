@@ -30,14 +30,11 @@
                 </tr>
             </thead>
             <tbody>
-                @php
-                    $data = DB::select("select * from kategori");
-                @endphp
-                @if ($data != [])
-                    @foreach ($data as $item)
+                @if (!$kategori->isEmpty())
+                    @foreach ($kategori as $item)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{ucfirst($item->nama_kategori)}}</td>
+                            <td>{{$item->nama_kategori}}</td>
                             <td><a href="/hapusKategori/{{$item->id_kategori}}" class="btn btn-danger">Hapus</a></td>
                         </tr>
                     @endforeach

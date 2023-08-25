@@ -16,7 +16,7 @@ class KategoriOlahraga extends Controller
         ]);
 
         $data = [
-            "nama"=>$request->kategori
+            "nama"=>ucwords($request->kategori)
         ];
         $kat = new kategori();
         $kat->insertKategori($data);
@@ -25,6 +25,12 @@ class KategoriOlahraga extends Controller
     }
 
     public function hapusKategori(Request $request) {
-        
+        $data = [
+            "id" => $request->id
+        ];
+        $kat = new kategori();
+        $kat->deleteKategori($data);
+
+        return redirect()->back()->with("success", "Berhasil Menghapus Kategori!");
     }
 }

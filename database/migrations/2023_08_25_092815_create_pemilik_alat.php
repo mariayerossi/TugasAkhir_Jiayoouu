@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password_pemilik',255);
             $table->string('saldo_pemilik',255);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

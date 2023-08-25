@@ -90,7 +90,7 @@ class LoginRegister extends Controller
     // Register Pemilik
     public function registerPemilik(Request $request){
         $request->validate([
-            "nama" => 'required|min:5|alpha',
+            "nama" => 'required|min:5',
             "email" => 'required|email',
             "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
             "ktp" => 'required|max:5120',
@@ -100,7 +100,6 @@ class LoginRegister extends Controller
             "nama.required" => ":attribute lengkap tidak boleh kosong!",
             "required" => ":attribute tidak boleh kosong!",
             "nama.min" => ":attribute lengkap tidak valid!",
-            "alpha" => ":attribute lengkap tidak valid!",
             "email.required" => "alamat :attribute tidak boleh kosong!",
             "email" => "alamat :attribute tidak valid!",
             "telepon.required" => "nomer :attribute tidak boleh kosong!",
@@ -164,7 +163,7 @@ class LoginRegister extends Controller
     public function registerTempat(Request $request){
         $request->validate([
             "nama" => 'required|min:5',
-            "pemilik" => 'required|min:5|alpha',
+            "pemilik" => 'required|min:5',
             "email" => 'required|email',
             "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
             "alamat" => 'required|min:10',
@@ -178,7 +177,6 @@ class LoginRegister extends Controller
             "nama.min" => ":attribute tempat olahraga tidak valid!",
             "pemilik.required" => "nama lengkap :attribute tempat olahraga tidak boleh kosong!",
             "pemilik.min" => "nama lengkap :attribute tempat olahraga tidak valid",
-            "alpha" => "nama lengkap :attribute tempat olahraga tidak valid!",
             "email.required" => "alamat :attribute tidak boleh kosong!",
             "email" => "alamat :attribute tidak valid!",
             "telepon.required" => "nomer :attribute tidak boleh kosong!",

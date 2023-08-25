@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('password_tempat',255);
             $table->string('saldo_tempat',255);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

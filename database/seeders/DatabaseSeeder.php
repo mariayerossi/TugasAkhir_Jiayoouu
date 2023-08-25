@@ -25,7 +25,6 @@ class DatabaseSeeder extends Seeder
             'password_user' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_user' => "XQ==",
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('pemilik_alat')->insert([
@@ -37,7 +36,6 @@ class DatabaseSeeder extends Seeder
             'password_pemilik' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_pemilik' => "XQ==",
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('pihak_tempat')->insert([
@@ -52,12 +50,12 @@ class DatabaseSeeder extends Seeder
             'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_tempat' => "XQ==",
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         
         DB::table('kategori')->insert([
             'id_kategori' => "1",
             "nama_kategori" => "Basket",
+            'created_at' => date("Y-m-d H:i:s"),
         ]);
     }
 }
