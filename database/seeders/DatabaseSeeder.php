@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             'id_tempat'=> "1",
             'nama_tempat' => "Mario Sport",
             'nama_pemilik_tempat' => "Mario Wijaya",
-            'email_tempat' => 'mario@gmail.com',
+            'email_tempat' => 'mario12@gmail.com',
             'telepon_tempat' => "086547823741",
             'alamat_tempat' => "ngagel jaya, Surabaya",
             'ktp_tempat' => "64e5a2e7a68d8.jpg",

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,17 +15,13 @@ class KategoriOlahraga extends Controller
             "required" => "nama :attribute tidak boleh kosong!"
         ]);
 
-        $result = DB::insert("INSERT INTO kategori VALUES(?, ?)", [
-            0,
-            $request->kategori
-        ]);
+        $data = [
+            "nama"=>$request->kategori
+        ];
+        $kat = new kategori();
+        $kat->insertKategori($data);
 
-        if ($result) {
-            return redirect()->back()->with("success", "Berhasil Menambah Kategori!");
-        }
-        else {
-            return redirect()->back()->with("error", "Gagal Menambah Kategori!");
-        }
+        return redirect()->back()->with("success", "Berhasil Menambah Kategori!");
     }
 
     public function hapusKategori(Request $request) {
