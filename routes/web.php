@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlatOlahraga;
 use App\Http\Controllers\KategoriOlahraga;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Middleware\CekAdmin;
@@ -57,4 +58,9 @@ Route::get("/hapusKategori/{id}", [KategoriOlahraga::class, "hapusKategori"]);
 // -------------------------------
 // HALAMAN PEMILIK ALAT
 // -------------------------------
-Route::view("/masterAlat", "pemilik.masterAlat")->middleware([CekPemilik::class]);
+Route::get("/masterAlat", function () {
+    $kat = new kategori();
+    $param["kategori"] = $kat->get_all_data();
+    return view("pemilik.masterAlat")->with($param);
+})->middleware([CekPemilik::class]);
+Route::post("/tambahAlat", [AlatOlahraga::class, "tambahAlat"]);

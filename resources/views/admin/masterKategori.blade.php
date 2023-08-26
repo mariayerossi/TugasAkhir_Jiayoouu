@@ -9,7 +9,7 @@
         @csrf
         <div class="row">
             <div class="col-md-2 col-12">
-                <h6 class="mt-2">Nama Kategori :</h6>
+                <h6 class="mt-2">Nama Kategori</h6>
             </div>
             <div class="col-md-7 col-12 mt-2 mt-md-0">
                 <input type="text" class="form-control" name="kategori" placeholder="Contoh : Basket">

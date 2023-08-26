@@ -11,6 +11,7 @@ Sportiva
             margin: 0;
             padding: 0;
             transition: margin-left 0.5s;
+            background-color: #f3feff;
         }
     
         #sidebar {
@@ -152,7 +153,7 @@ Sportiva
                 <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
                 <div class="sidebar-dropdown-content">
                     <a href="/masterAlat">Tambah Alat</a>
-                    <a href="">Lihat Alat</a>
+                    <a href="">Daftar Alat</a>
                     <!-- Add other sports or categories here -->
                 </div>
             </div>

@@ -284,6 +284,7 @@ class LoginRegister extends Controller
                 if (password_verify($request->password, $dataPemilik->first()->password_pemilik)) {
                     //diarahkan ke halaman pemilik
                     Session::put("role","pemilik");
+                    Session::put("dataRole", $dataPemilik->first());
                     return redirect('/masterAlat');
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
@@ -308,6 +309,9 @@ class LoginRegister extends Controller
 
     public function logout(){
         Session::forget('role');
+        if (Session::has("dataRole")) {
+            Session::forget('dataRole');
+        }
         return redirect("/login");
     }
 
