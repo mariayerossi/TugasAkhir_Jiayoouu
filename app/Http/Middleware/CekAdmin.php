@@ -16,7 +16,7 @@ class CekAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Session::has("role") && Session::get("role") != "admin"){
+        if(!Session::has("role") || Session::get("role") != "admin"){
             // Jika iya kembalikan sesuai posisi semula
             return redirect('/login');
         }

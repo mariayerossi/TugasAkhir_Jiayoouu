@@ -19,7 +19,8 @@ Sportiva
             top: 0;
             left: -250px;
             height: 100%;
-            background-color: #007466;
+            background-color: white;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             overflow-x: hidden;
             transition: 0.5s;
             padding-top: 60px;
@@ -32,13 +33,14 @@ Sportiva
             font-weight: 600;
             text-decoration: none;
             font-size: 16px;
-            color: rgba(255, 255, 255, 0.669);
+            color: #007466;
             display: block;
             transition: 0.3s;
         }
     
-        #sidebar a:hover {
-            color: #ffffff;
+        #sidebar .coba a:hover {
+            background-color: #007466;
+            color: white;
         }
     
         #sidebar .closebtn {
@@ -58,6 +60,31 @@ Sportiva
             #sidebar a {font-size: 18px;}
         }
 
+        /* Style for sidebar dropdown */
+        .sidebar-dropdown-content {
+            display: none;
+            position: relative;
+            background-color: #f9f9f9;
+            min-width: 240px; /* match the sidebar width */
+            box-shadow: none; /* you may want to remove this or adjust according to the sidebar's look */
+            z-index: 1;
+        }
+
+        .sidebar-dropdown:hover .sidebar-dropdown-content {
+            display: block;
+        }
+
+        /* Adjust position of dropdown items */
+        .sidebar-dropdown-content a {
+            padding-left: 30px;
+        }
+
+        .sidebar-dropdown-content a:hover {
+            background-color: #007466;
+            color: white;
+        }
+
+
         /* Tambahkan CSS untuk navbar sederhana */
         nav {
             background-color: white;
@@ -73,7 +100,8 @@ Sportiva
             text-decoration: none;
         }
         nav a:hover {
-            color: black;
+            color: #ffffff;
+            background-color: #007466
         }
 
         /* Style untuk foto profil dan dropdown */
@@ -109,47 +137,24 @@ Sportiva
         .profile-dropdown:hover .dropdown-content {
             display: block;
         }
-
-        .dropdown-content a:hover {
-            background-color: #ddd;
-        }
-
-        .dropdown {
-            display: inline-block;
-            position: relative;
-        }
-
-        .dropdown-content-sidebar {
-            display: none;
-            position: absolute;
-            left: 0;
-            width: 250px;
-            background-color: #007466;
-            z-index: 1;
-        }
-
-        .dropdown-content-sidebar a {
-            color: rgba(255, 255, 255, 0.669);
-            text-decoration: none;
-            display: block;
-            padding: 10px 15px;
-        }
-
-        .dropdown:hover .dropdown-content-sidebar {
-            display: block;
-        }
     </style>
     
     <div id="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
-        <!-- Ini adalah struktur dropdown untuk Produk -->
-        <div class="dropdown">
-            <a href=""><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
-            <div class="dropdown-content-sidebar">
-                <a href="/masterAlat">Tambah Alat Olahraga</a>
-                <a href="">Lihat Alat Olahraga</a>
-                <!-- Anda bisa menambahkan lebih banyak link kategori di sini -->
+        {{-- logo --}}
+        <a href="" class="logo d-flex align-items-center">
+            <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
+            <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
+        </a>
+        <div class="coba">
+            <a href="/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
+            <div class="sidebar-dropdown">
+                <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
+                <div class="sidebar-dropdown-content">
+                    <a href="/masterAlat">Tambah Alat</a>
+                    <a href="">Lihat Alat</a>
+                    <!-- Add other sports or categories here -->
+                </div>
             </div>
         </div>
     </div>

@@ -26,10 +26,10 @@ Route::get('/', function () {
 // -------------------------------
 // TAMPILAN LOGIN REGISTER
 // -------------------------------
-Route::view("/register", "register");
+Route::view("/register", "register")->middleware([Guest::class]);
 Route::view("/login", "login")->middleware([Guest::class]);
-Route::view("/registerTempat", "tempat.registerTempat");
-Route::view("/registerPemilik", "pemilik.registerPemilik");
+Route::view("/registerTempat", "tempat.registerTempat")->middleware([Guest::class]);
+Route::view("/registerPemilik", "pemilik.registerPemilik")->middleware([Guest::class]);
 
 // -------------------------------
 // PROSES LOGIN REGISTER

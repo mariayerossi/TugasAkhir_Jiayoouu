@@ -19,7 +19,8 @@ Sportiva
             top: 0;
             left: -250px;
             height: 100%;
-            background-color: #007466;
+            background-color: white;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             overflow-x: hidden;
             transition: 0.5s;
             padding-top: 60px;
@@ -32,13 +33,14 @@ Sportiva
             font-weight: 600;
             text-decoration: none;
             font-size: 16px;
-            color: rgba(255, 255, 255, 0.669);
+            color: #007466;
             display: block;
             transition: 0.3s;
         }
     
-        #sidebar a:hover {
-            color: #ffffff;
+        #sidebar .coba a:hover {
+            background-color: #007466;
+            color: white;
         }
     
         #sidebar .closebtn {
@@ -62,11 +64,18 @@ Sportiva
     
     <div id="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
-        <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain</a>
-        <a href="/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
-        <a href="/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
-        <a href="/logout"><i class="bi bi-box-arrow-right me-3"></i>Logout</a>
+        {{-- logo --}}
+        <a href="" class="logo d-flex align-items-center">
+            <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
+            <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
+        </a>
+        <div class="coba">
+            <a href="/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
+            <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain</a>
+            <a href="/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
+            <a href="/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
+            <a href="/logout"><i class="bi bi-box-arrow-right me-3"></i>Logout</a>
+        </div>
     </div>
 
     <div id="main">

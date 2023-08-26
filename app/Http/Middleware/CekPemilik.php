@@ -16,7 +16,7 @@ class CekPemilik
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Session::has("role") && Session::get("role") != "pemilik"){
+        if(!Session::has("role") || Session::get("role") != "pemilik"){
             // Jika iya kembalikan sesuai posisi semula
             return redirect('/login');
         }
