@@ -12,8 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('alat_olahraga', function (Blueprint $table) {
-            $table->id();
+            $table->id('id_alat');
+            $table->string('nama_alat');
+            $table->string('kategori_alat');
+            $table->string('deskripsi_alat');
+            $table->float('berat_alat');
+            $table->string('ukuran_alat');
+            $table->integer('stok_alat');
+            $table->integer('komisi_alat');
+            $table->integer('ganti_rugi_alat');
+            $table->string('status_alat');
+            $table->integer('pemilik_alat');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
