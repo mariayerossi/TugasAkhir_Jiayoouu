@@ -56,7 +56,7 @@ class LoginRegister extends Controller
             $tempat = new pihakTempat();
             $data3 = $tempat->cek_email_tempat($request->email);
 
-            if ($data1->isEmpty() || $data2->isEmpty() || $data3->isEmpty()) {
+            if (!$data1->isEmpty() || !$data2->isEmpty() || !$data3->isEmpty()) {
                 return redirect()->back()->with("error", "Email sudah pernah digunakan!");
             }
             else {
@@ -121,8 +121,8 @@ class LoginRegister extends Controller
 
             $tempat = new pihakTempat();
             $data3 = $tempat->cek_email_tempat($request->email);
-
-            if ($data1->isEmpty() || $data2->isEmpty() || $data3->isEmpty()) {
+            
+            if (!$data1->isEmpty() || !$data2->isEmpty() || !$data3->isEmpty()) {
                 return redirect()->back()->with("error", "Email sudah pernah digunakan!");
             }
             else {
@@ -139,6 +139,7 @@ class LoginRegister extends Controller
                 $destinasi = "/upload";
                 $file = $request->file("ktp");
                 $ktp = uniqid().".".$file->getClientOriginalExtension();
+                $file->move(public_path($destinasi),$ktp);
 
                 $data = [
                     "nama"=>$request->nama,
@@ -203,7 +204,7 @@ class LoginRegister extends Controller
             $tempat = new pihakTempat();
             $data3 = $tempat->cek_email_tempat($request->email);
 
-            if ($data1->isEmpty() || $data2->isEmpty() || $data3->isEmpty()) {
+            if (!$data1->isEmpty() || !$data2->isEmpty() || !$data3->isEmpty()) {
                 return redirect()->back()->with("error", "Email sudah pernah digunakan!");
             }
             else {

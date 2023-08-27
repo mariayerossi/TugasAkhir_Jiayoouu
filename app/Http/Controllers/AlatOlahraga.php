@@ -35,10 +35,10 @@ class AlatOlahraga extends Controller
             "integer" => ":attribute alat olahraga tidak valid!"
         ]);
 
-        $ukuran = $request->panjang + "x" + $request->lebar + "x" + $request->tinggi;
+        $ukuran = $request->panjang . "x" . $request->lebar . "x" . $request->tinggi;
 
         $data = [
-            "nama"=>$request->nama,
+            "nama"=>$request->alat,
             "kategori"=>$request->kategori,
             "deskripsi"=>$request->deskripsi,
             "berat"=>$request->berat,
@@ -50,18 +50,22 @@ class AlatOlahraga extends Controller
             "pemilik"=>$request->pemilik
         ];
         $alat = new ModelsAlatOlahraga();
-        $alat->insertAlat($data);
+        $id = $alat->insertAlat($data);
         
-        // //insert foto alatnya
-        // $destinasi = "/upload";
-        // $file = $request->file("ktp");
-        // $ktp = uniqid().".".$file->getClientOriginalExtension();
-        // foreach ($request->foto as $key => $value) {
-        //     $data2 = [
-        //         "nama"=>$value,
-        //     ];
-        //     $file = new filesAlatOlahraga();
-        //     $file->insertFilesAlat($data2);
-        // }
+        //dapetin fk_id_alat
+        //insert foto alatnya
+        $destinasi = "/upload";
+        foreach ($request->foto as $key => $value) {
+            $foto = uniqid().".".$value->getClientOriginalExtension();
+            $value->move(public_path($destinasi),$foto);
+            $data2 = [
+                "nama"=>$foto,
+                "fk"=>$id
+            ];
+            $file = new filesAlatOlahraga();
+            $file->insertFilesAlat($data2);
+        }
+
+        return redirect()->back()->with("success", "Berhasil Menambah Alat Olahraga!");
     }
 }

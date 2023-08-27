@@ -19,6 +19,7 @@ class filesAlatOlahraga extends Model
     {
         $file = new filesAlatOlahraga();
         $file->nama_file_alat = $data["nama"];
+        $file->fk_id_alat = $data["fk"];
         $file->save();
     }
 }

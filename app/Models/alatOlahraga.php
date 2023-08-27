@@ -29,5 +29,7 @@ class alatOlahraga extends Model
         $alat->status_alat = $data["status"];
         $alat->pemilik_alat = $data["pemilik"];
         $alat->save();
+
+        return $alat->id_alat;
     }
 }
