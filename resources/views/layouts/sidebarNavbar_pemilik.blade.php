@@ -148,12 +148,12 @@ Sportiva
             <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
         </a>
         <div class="coba">
-            <a href="/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
+            <a href=""><i class="bi bi-house me-3"></i>Beranda</a>
             <div class="sidebar-dropdown">
                 <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
                 <div class="sidebar-dropdown-content">
-                    <a href="/masterAlat">Tambah Alat</a>
-                    <a href="">Daftar Alat</a>
+                    <a href="/masterAlatdiPemilik">Tambah Alat</a>
+                    <a href="/daftarAlatdiPemilik">Daftar Alat</a>
                     <!-- Add other sports or categories here -->
                 </div>
             </div>

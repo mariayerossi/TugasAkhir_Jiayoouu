@@ -6,8 +6,10 @@ use App\Http\Controllers\LoginRegister;
 use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
 use App\Http\Middleware\Guest;
+use App\Models\alatOlahraga as ModelsAlatOlahraga;
 use App\Models\kategori;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,9 +60,16 @@ Route::get("/hapusKategori/{id}", [KategoriOlahraga::class, "hapusKategori"]);
 // -------------------------------
 // HALAMAN PEMILIK ALAT
 // -------------------------------
-Route::get("/masterAlat", function () {
+Route::get("/masterAlatdiPemilik", function () {
     $kat = new kategori();
     $param["kategori"] = $kat->get_all_data();
     return view("pemilik.masterAlat")->with($param);
 })->middleware([CekPemilik::class]);
-Route::post("/tambahAlat", [AlatOlahraga::class, "tambahAlat"]);
+Route::post("/tambahAlatdiPemilik", [AlatOlahraga::class, "tambahAlat"]);
+Route::get("/daftarAlatdiPemilik", function () {
+    //ngambil data alat olahraga (blm termasuk file)
+    $role = Session::get("dataRole")->id_pemilik;
+    $alat = new ModelsAlatOlahraga();
+    $param["alat"] = $alat->get_all_data($role);
+    return view("admin.masterKategori")->with($param);
+})->middleware([CekPemilik::class]);
