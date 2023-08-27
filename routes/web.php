@@ -71,5 +71,5 @@ Route::get("/daftarAlatdiPemilik", function () {
     $role = Session::get("dataRole")->id_pemilik;
     $alat = new ModelsAlatOlahraga();
     $param["alat"] = $alat->get_all_data($role);
-    return view("admin.masterKategori")->with($param);
+    return view("pemilik.daftarAlat")->with($param);
 })->middleware([CekPemilik::class]);
