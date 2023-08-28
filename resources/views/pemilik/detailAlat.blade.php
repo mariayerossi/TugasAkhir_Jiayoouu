@@ -90,7 +90,7 @@
     <div class="row mt-5">
         <div class="col-12">
             <h4>Detail Produk</h4>
-            <p>{{$alat->first()->deskripsi_alat}}</p>
+            <p>{!! nl2br(e($alat->first()->deskripsi_alat)) !!}</p>
         </div>
     </div>
 

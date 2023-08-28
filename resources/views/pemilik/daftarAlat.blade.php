@@ -42,7 +42,7 @@
                                 <a href="/lihatDetaildiPemilik/{{$item->id_alat}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt=""></a>
                             </div>
                         </td>
-                        <td>{{$item->nama_alat}}</td>
+                        <td><a href="/lihatDetaildiPemilik/{{$item->id_alat}}">{{$item->nama_alat}}</a></td>
                         <td>{{$item->komisi_alat}}</td>
                         <td>{{$item->stok_alat}}</td>
                         <td><a class="btn btn-outline-success" href="/editAlatdiPemilik/{{$item->id_alat}}">Edit Alat</a></td>
