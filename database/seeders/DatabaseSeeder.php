@@ -57,5 +57,36 @@ class DatabaseSeeder extends Seeder
             "nama_kategori" => "Basket",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        DB::table('alat_olahraga')->insert([
+            'id_alat' => "1",
+            "nama_alat" => "Bola Basket Molten",
+            'kategori_alat' => "Basket",
+            'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
+            Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
+            *Bola Original Selalu ada Logo PERBASI & IBL
+            
+            INFO PRODUK :
+            COVER MATERIAL : RUBBER (Karet)
+            CONSTRUCTION : Molded
+            SIZE : 6 ( B6G2010 )
+            BLADDER : Butyl
+            REMARK : FIBA APPROVED ( REKOMENDASI BUAT IOUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat_olahraga')->insert([
+            'id_file_alat' => "1",
+            'nama_file_alat' => "64eb19b1e779c.jpg",
+            'fk_id_alat' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat_olahraga')->insert([
+            'id_file_alat' => "2",
+            'nama_file_alat' => "64eb19b1ea0df.jpg",
+            'fk_id_alat' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
     }
 }

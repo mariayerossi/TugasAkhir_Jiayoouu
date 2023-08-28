@@ -62,9 +62,9 @@
 
         <!-- Product details section -->
         <div class="col-lg-6">
-            <h2>Nama Produk</h2>
+            <h2>{{ ucwords($alat->first()->nama_alat)}}</h2>
             <p class="text-muted">Kode Produk: KODE1234</p>
-            <h4>Rp 200.000,00</h4>
+            <h4>Rp. {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }}</h4>
             <p>Deskripsi singkat produk...</p>
 
             <button class="btn btn-primary mt-3">Beli Sekarang</button>
