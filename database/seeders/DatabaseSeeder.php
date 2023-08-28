@@ -71,18 +71,25 @@ class DatabaseSeeder extends Seeder
             CONSTRUCTION : Molded
             SIZE : 6 ( B6G2010 )
             BLADDER : Butyl
-            REMARK : FIBA APPROVED ( REKOMENDASI BUAT IOUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            REMARK : FIBA APPROVED ( REKOMENDASI BUAT OUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            'berat_alat' => "20.5",
+            'ukuran_alat' => "10x10x10",
+            'stok_alat' => 15,
+            'komisi_alat' => 20000,
+            'ganti_rugi_alat' => 100000,
+            'status_alat' => "Aktif",
+            'pemilik_alat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('files_alat_olahraga')->insert([
+        DB::table('files_alat')->insert([
             'id_file_alat' => "1",
             'nama_file_alat' => "64eb19b1e779c.jpg",
             'fk_id_alat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('files_alat_olahraga')->insert([
+        DB::table('files_alat')->insert([
             'id_file_alat' => "2",
             'nama_file_alat' => "64eb19b1ea0df.jpg",
             'fk_id_alat' => 1,

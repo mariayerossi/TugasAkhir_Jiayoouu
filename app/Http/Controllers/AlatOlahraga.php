@@ -14,7 +14,7 @@ class AlatOlahraga extends Controller
             "alat" => 'required|max:255',
             "kategori" => 'required',
             "foto" => 'required|max:5120',
-            "deskripsi" => 'required|max:2000',
+            "deskripsi" => 'required|max:300',
             "berat" => 'required|numeric|min:0',
             "panjang" => 'required|numeric|min:0',
             "lebar" => 'required|numeric|min:0',
@@ -33,7 +33,7 @@ class AlatOlahraga extends Controller
             "ganti.numeric" => "uang :attribute rugi tidak valid!",
             "ganti.required" => "uang :attribute tidak boleh kosong!",
             "integer" => ":attribute alat olahraga tidak valid!",
-            "max" => "deskripsi alat olahraga maksimal 200 kata!"
+            "max" => "deskripsi alat olahraga maksimal 300 kata!"
         ]);
 
         $ukuran = $request->panjang . "x" . $request->lebar . "x" . $request->tinggi;

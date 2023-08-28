@@ -54,6 +54,7 @@
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
                 <h6>Deskripsi Alat Olahraga</h6>
+                <span class="ml-2 ms-2" style="font-size: 15px">maksimal 300 kata</span>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
                 <textarea class="form-control" name="deskripsi" rows="3" placeholder="Masukkan Deskripsi Alat Olahraga"></textarea>
@@ -112,6 +113,7 @@
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
                 <h6>Komisi Alat Olahraga</h6>
+                <span class="ml-2 ms-2" style="font-size: 15px">harga komisi per jam</span>
             </div>
             <div class="col-md-6 col-12 mt-2 mt-md-0 d-flex align-items-center">
                 <div class="input-group mb-2">

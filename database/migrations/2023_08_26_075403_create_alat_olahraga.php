@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_alat');
             $table->string('nama_alat');
             $table->string('kategori_alat');
-            $table->string('deskripsi_alat', 2000);
+            $table->string('deskripsi_alat', 300);
             $table->float('berat_alat');
             $table->string('ukuran_alat');
             $table->integer('stok_alat');
