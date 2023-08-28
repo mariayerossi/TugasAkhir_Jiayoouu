@@ -77,10 +77,11 @@ Route::get("/daftarAlatdiPemilik", function () {
     $param["files"] = $files;
     return view("pemilik.daftarAlat")->with($param);
 })->middleware([CekPemilik::class]);
-Route::get("/lihatDetaildiPemilik/{id}", function (Request $request) {
+Route::get("/lihatDetaildiPemilik/{id}", function ($id) {
     $alat = new ModelsAlatOlahraga();
-    $param["alat"] = $alat->get_all_data_by_id($request->id);
+    $param["alat"] = $alat->get_all_data_by_id($id);
     $files = new filesAlatOlahraga();
-    $param["files"] = $files->get_all_data($request->id);
+    $param["files"] = $files->get_all_data($id);
     return view("pemilik.detailAlat")->with($param);
-});
+    // echo $id;
+})->middleware([CekPemilik::class]);

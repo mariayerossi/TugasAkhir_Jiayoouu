@@ -20,21 +20,11 @@
                         $dataFiles = $files->get_all_data($item->id_alat)->first();
                     @endphp
                     <tr>
-                        <td><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="" style="width:150px"></td>
+                        <td><a href="/lihatDetaildiPemilik/{{$item->id_alat}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="" style="width:150px"></a></td>
                         <td>{{$item->nama_alat}}</td>
                         <td>{{$item->komisi_alat}}</td>
                         <td>{{$item->stok_alat}}</td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Atur
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="/lihatDetaildiPemilik/{{$item->id_alat}}">Lihat Detail</a>
-                                    <a class="dropdown-item" href="/editAlatdiPemilik/{{$item->id_alat}}">Edit</a>
-                                </div>
-                            </div>
-                        </td>
+                        <td><a class="btn btn-outline-success" href="/editAlatdiPemilik/{{$item->id_alat}}">Edit Alat</a></td>
                     </tr>
                 @endforeach
             @else
