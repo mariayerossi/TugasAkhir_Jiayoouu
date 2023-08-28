@@ -9,6 +9,7 @@ use App\Http\Middleware\Guest;
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
 use App\Models\filesAlatOlahraga;
 use App\Models\kategori;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -76,3 +77,10 @@ Route::get("/daftarAlatdiPemilik", function () {
     $param["files"] = $files;
     return view("pemilik.daftarAlat")->with($param);
 })->middleware([CekPemilik::class]);
+Route::get("/lihatDetaildiPemilik/{id}", function (Request $request) {
+    $alat = new ModelsAlatOlahraga();
+    $param["alat"] = $alat->get_all_data_by_id($request->id);
+    $files = new filesAlatOlahraga();
+    $param["files"] = $files->get_all_data($request->id);
+    return view("pemilik.detailAlat")->with($param);
+});

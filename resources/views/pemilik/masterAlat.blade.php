@@ -164,7 +164,8 @@
         value = value.replace(/\D/g, '');
 
         // Memformat ulang sebagai angka dengan pemisah ribuan titik
-        value = parseFloat(value).toLocaleString('id-ID');
+        // Konversi ke number terlebih dahulu sebelum memanggil toLocaleString
+        value = Number(value).toLocaleString('id-ID');
 
         // Mengembalikan format yang sudah diubah ke input
         input.value = value;

@@ -30,8 +30,8 @@
                                     Atur
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="/lihatDetail/{{$item->id_alat}}">Lihat Detail</a>
-                                    <a class="dropdown-item" href="/lihatDetail/{{$item->id_alat}}">Edit</a>
+                                    <a class="dropdown-item" href="/lihatDetaildiPemilik/{{$item->id_alat}}">Lihat Detail</a>
+                                    <a class="dropdown-item" href="/editAlatdiPemilik/{{$item->id_alat}}">Edit</a>
                                 </div>
                             </div>
                         </td>
