@@ -9,6 +9,7 @@
             <thead>
                 <tr>
                     <th>Nama Tempat Olahraga</th>
+                    <th>Nama Pemilik</th>
                     <th>Lokasi</th>
                     <th>Email</th>
                     <th>No. Telepon</th>
@@ -22,6 +23,7 @@
                     @foreach (Session::get("regTempat") as $item)
                         <tr>
                             <td>{{$item["nama"]}}</td>
+                            <td>{{$item["pemilik"]}}</td>
                             <td>{{$item["alamat"]}}</td>
                             <td>{{$item["email"]}}</td>
                             <td>{{$item["telepon"]}}</td>

@@ -7,6 +7,7 @@ use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
 use App\Http\Middleware\Guest;
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
+use App\Models\filesAlatOlahraga;
 use App\Models\kategori;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -69,7 +70,9 @@ Route::post("/tambahAlatdiPemilik", [AlatOlahraga::class, "tambahAlat"]);
 Route::get("/daftarAlatdiPemilik", function () {
     //ngambil data alat olahraga (blm termasuk file)
     $role = Session::get("dataRole")->id_pemilik;
+    $files = new filesAlatOlahraga();
     $alat = new ModelsAlatOlahraga();
     $param["alat"] = $alat->get_all_data($role);
+    $param["files"] = $files;
     return view("pemilik.daftarAlat")->with($param);
 })->middleware([CekPemilik::class]);

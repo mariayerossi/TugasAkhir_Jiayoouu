@@ -286,7 +286,7 @@ class LoginRegister extends Controller
                     //diarahkan ke halaman pemilik
                     Session::put("role","pemilik");
                     Session::put("dataRole", $dataPemilik->first());
-                    return redirect('/masterAlat');
+                    return redirect('/masterAlatdiPemilik');
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }

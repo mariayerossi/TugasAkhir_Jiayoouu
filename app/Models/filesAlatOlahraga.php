@@ -22,4 +22,8 @@ class filesAlatOlahraga extends Model
         $file->fk_id_alat = $data["fk"];
         $file->save();
     }
+
+    public function get_all_data($fk_id){
+        return filesAlatOlahraga::where('deleted_at',"=",null)->where("fk_id_alat","=",$fk_id)->get();
+    }
 }
