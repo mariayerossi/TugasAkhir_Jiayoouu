@@ -63,7 +63,6 @@ Sportiva
     </style>
     
     <div id="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         {{-- logo --}}
         <a href="" class="logo d-flex align-items-center">
             <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
@@ -79,7 +78,7 @@ Sportiva
     </div>
 
     <div id="main">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16" onclick="openNav()" style="cursor: pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16" onclick="toggleNav()" style="cursor: pointer">
             <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
         </svg>
 
@@ -97,6 +96,17 @@ Sportiva
         function closeNav() {
             document.getElementById("sidebar").style.left = "-250px";
             document.getElementById("main").style.marginLeft= "0";
+        }
+
+        function toggleNav() {
+            if (document.getElementById("sidebar").style.left == "-250px") {
+                document.getElementById("sidebar").style.left = "0";
+                document.getElementById("main").style.marginLeft = "250px";
+            }
+            else {
+                document.getElementById("sidebar").style.left = "-250px";
+                document.getElementById("main").style.marginLeft= "0";
+            }
         }
     </script>
     

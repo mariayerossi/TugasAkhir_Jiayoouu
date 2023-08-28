@@ -20,7 +20,7 @@
                         $dataFiles = $files->get_all_data($item->id_alat)->first();
                     @endphp
                     <tr>
-                        <td><a href="/lihatDetaildiPemilik/{{$item->id_alat}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="" style="width:150px"></a></td>
+                        <td><a href="/lihatDetaildiPemilik/{{$item->id_alat}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="" width="150px"></a></td>
                         <td>{{$item->nama_alat}}</td>
                         <td>{{$item->komisi_alat}}</td>
                         <td>{{$item->stok_alat}}</td>

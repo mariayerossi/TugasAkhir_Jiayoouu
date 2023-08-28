@@ -1,123 +1,81 @@
-@section('title')
-Sportiva
-@endsection
+@extends('layouts.sidebarNavbar_pemilik')
 
-@include('layouts.main')
+@section('content')
+<style>
+    .container {
+        background-color: white;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    }
+</style>
+<div class="container mt-5 p-5" >
+    <div class="row">
+        <!-- Image section with carousel -->
+        <div class="col-lg-6">
+            <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                <!-- Indicators -->
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
 
-<body>
-    <style>
-        body {
-            font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-            margin: 0;
-            padding: 0;
-            transition: margin-left 0.5s;
-            background-color: #f3feff;
-        }
-
-        /* Tambahkan CSS untuk navbar sederhana */
-        nav {
-            background-color: white;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: fixed;       /* Menjadikan navbar tetap di posisi saat digulir */
-            top: 0;                /* Menempatkan navbar di bagian atas */
-            left: 0;               /* Menjadikan navbar meregang ke sisi kiri */
-            right: 0;              /* Menjadikan navbar meregang ke sisi kanan */
-            z-index: 1000;
-        }
-        nav a {
-            color: white;
-            margin: 0 10px;
-            text-decoration: none;
-        }
-        nav .coba a:hover {
-            color: #ffffff;
-            background-color: #007466
-        }
-
-        /* Style untuk foto profil dan dropdown */
-        .profile-image {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%; /* membuat gambar menjadi bulat */
-            cursor: pointer;
-        }
-
-        .profile-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        .profile-dropdown:hover .dropdown-content {
-            display: block;
-        }
-    </style>
-    
-    <div id="main">
-        <!-- Tambahkan navbar sederhana di sini -->
-        <nav>
-            {{-- logo --}}
-            <a href="" class="logo d-flex align-items-center">
-                <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
-                <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
-            </a>
-            <div class="coba">
-                <div class="profile-dropdown">
-                    <img src="../assets/img/user_icon.png" alt="Profile" class="profile-image">
-                    <div class="dropdown-content">
-                        <a href="/editprofile">Profile</a>
-                        <a href="/logout">Logout</a>
+                <!-- Slides -->
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://static.sehatq.com/content/review/product/image/767120211206100834.jpeg" class="d-block w-100" alt="Gambar Produk 1">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Contoh_Produk_Wardah.jpg" class="d-block w-100" alt="Gambar Produk 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSByAlYO1kpX9W4XtMbhqtbbnIHyQUx3eb_pw&usqp=CAU" class="d-block w-100" alt="Gambar Produk 3">
                     </div>
                 </div>
+
+                <!-- Controls -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-        </nav>
+        </div>
 
-        <!-- Konten utama Anda -->
-        
+        <!-- Product details section -->
+        <div class="col-lg-6">
+            <h2>Nama Produk</h2>
+            <p class="text-muted">Kode Produk: KODE1234</p>
+            <h4>Rp 200.000,00</h4>
+            <p>Deskripsi singkat produk...</p>
 
+            <button class="btn btn-primary mt-3">Beli Sekarang</button>
+        </div>
     </div>
-    <script>
-        openNav();
-        function openNav() {
-            document.getElementById("sidebar").style.left = "0";
-            document.getElementById("main").style.marginLeft = "250px";
-        }
-    
-        function closeNav() {
-            document.getElementById("sidebar").style.left = "-250px";
-            document.getElementById("main").style.marginLeft= "0";
-        }
 
-        function toggleNav() {
-            if (document.getElementById("sidebar").style.left == "-250px") {
-                document.getElementById("sidebar").style.left = "0";
-                document.getElementById("main").style.marginLeft = "250px";
-            }
-            else {
-                document.getElementById("sidebar").style.left = "-250px";
-                document.getElementById("main").style.marginLeft= "0";
-            }
-        }
-    </script>
-    
-</body>
+    <!-- Additional details section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4>Detail Produk</h4>
+            <p>Deskripsi lengkap produk, termasuk spesifikasi, fitur, dan informasi lainnya...</p>
+        </div>
+    </div>
+
+    <!-- Reviews section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h4>Ulasan Produk</h4>
+            <!-- Example of a review -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Nama Pengguna</h5>
+                    <p>Ulasan pengguna tentang produk ini...</p>
+                </div>
+            </div>
+            <!-- Repeat the above card for more reviews -->
+        </div>
+    </div>
+</div>
+@endsection
