@@ -108,3 +108,8 @@ Route::post("/editAlatdiPemilik", [AlatOlahraga::class, "editAlat"]);
 // HALAMAN PIHAK TEMPAT
 // -------------------------------
 Route::view("/berandaTempat", "tempat.beranda")->middleware([CekTempat::class]);
+Route::get("/masterLapangan", function () {
+    $kat = new kategori();
+    $param["kategori"] = $kat->get_all_data();
+    return view("tempat.lapangan.masterLapangan")->with($param);
+})->middleware([CekTempat::class]);
