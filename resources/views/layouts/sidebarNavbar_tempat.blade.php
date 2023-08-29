@@ -148,12 +148,20 @@ Sportiva
     </style>
     
     <div id="sidebar">
-        <a href="/berandaPemilik"><i class="bi bi-house me-3"></i>Beranda</a>
+        <a href=""><i class="bi bi-house me-3"></i>Beranda</a>
+        <div class="sidebar-dropdown">
+            <a href="#"><i class="bi bi-dribbble me-3"></i>Lapangan Olahraga <i class="bi bi-caret-down-fill"></i></a>
+            <div class="sidebar-dropdown-content">
+                <a href="">Tambah Lapangan</a>
+                <a href="">Daftar Lapangan</a>
+                <!-- Add other sports or categories here -->
+            </div>
+        </div>
         <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
-                <a href="/masterAlatdiPemilik">Tambah Alat</a>
-                <a href="/daftarAlatdiPemilik">Daftar Alat</a>
+                <a href="">Tambah Alat</a>
+                <a href="">Daftar Alat</a>
                 <!-- Add other sports or categories here -->
             </div>
         </div>
