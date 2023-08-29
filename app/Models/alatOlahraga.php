@@ -44,4 +44,19 @@ class alatOlahraga extends Model
     public function count_all_data($role){
         return alatOlahraga::where('deleted_at',"=",null)->where("pemilik_alat","=",$role)->count();
     }
+
+    public function updateAlat($data){
+        $alat = alatOlahraga::find($data["id"]);
+        $alat->nama_alat = $data["nama"];
+        $alat->kategori_alat = $data["kategori"];
+        $alat->deskripsi_alat = $data["deskripsi"];
+        $alat->berat_alat = $data["berat"];
+        $alat->ukuran_alat = $data["ukuran"];
+        $alat->stok_alat = $data["stok"];
+        $alat->komisi_alat = $data["komisi"];
+        $alat->ganti_rugi_alat = $data["ganti"];
+        $alat->status_alat = $data["status"];
+        $alat->pemilik_alat = $data["pemilik"];
+        $alat->save();
+    }
 }

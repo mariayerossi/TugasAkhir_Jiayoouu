@@ -5,7 +5,20 @@
     #toggleSwitch {
         cursor: pointer;
     }
-
+    .image-container {
+        width: 100%;
+        padding-top: 100%; /* aspect ratio 1:1 */
+        position: relative;
+    }
+    
+    .image-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* ini memastikan gambar menutupi seluruh area tanpa mengubah rasio aspeknya */
+    }
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Ubah Alat Olahraga</h3>
@@ -48,11 +61,23 @@
                 <h6>Foto Alat Olahraga Sebelumnya</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                @foreach($files as $photo) <!-- Diasumsikan memiliki relasi ke model foto -->
-                    <img src="{{ asset('upload/' . $photo->nama_file_alat) }}" width="100">
-                    <!-- Checkbox untuk menghapus foto -->
-                    <input type="checkbox" name="delete_photos[]" value="{{ $photo->id_file_alat }}"> Hapus
-                @endforeach
+                <div class="row">
+                    @foreach($files as $photo)
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="card">
+                                <div class="image-container">
+                                    <img src="{{ asset('upload/' . $photo->nama_file_alat) }}" alt="{{ $photo->nama_file_alat }}">
+                                </div>
+                                <div class="card-body p-2">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="delete_photos[]" value="{{ $photo->id_file_alat }}" id="deletePhoto{{ $photo->id_file_alat }}">
+                                        <label class="custom-control-label" for="deletePhoto{{ $photo->id_file_alat }}">Hapus</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
         <div class="row mt-5">
@@ -166,10 +191,11 @@
                     <input type="hidden" id="statusInput" name="status" value="Non Aktif">
                 </div>
             @endif
-            <input type="hidden" id="statusInput" name="id" value="{{$alat->first()->id_alat}}">
+            <input type="hidden" id="" name="id" value="{{$alat->first()->id_alat}}">
         </div>
         <input type="hidden" name="pemilik" value="{{Session::get("dataRole")->id_pemilik}}">
         <div class="d-flex justify-content-end">
+            <a href="" class="btn btn-outline-primary me-3">Batal</a>
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
     </form>
@@ -199,12 +225,12 @@
             label.textContent = "Non Aktif";
             svgElement.setAttribute("class", "bi bi-toggle-off");
             svgElement.innerHTML = "<path d='M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z'/>";
-            inputStatus.value = "Non Aktif";
+            statusInput.value = "Non Aktif";
         } else {
             label.textContent = "Aktif";
             svgElement.setAttribute("class", "bi bi-toggle-on");
             svgElement.innerHTML = "<path d='M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z'/>";
-            inputStatus.value = "Aktif";
+            statusInput.value = "Aktif";
         }
     });
 </script>
