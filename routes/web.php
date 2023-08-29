@@ -5,6 +5,7 @@ use App\Http\Controllers\KategoriOlahraga;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
+use App\Http\Middleware\CekTempat;
 use App\Http\Middleware\Guest;
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
 use App\Models\filesAlatOlahraga;
@@ -102,3 +103,8 @@ Route::get("/berandaPemilik", function () {
     return view("pemilik.beranda")->with($param);
 })->middleware([CekPemilik::class]);
 Route::post("/editAlatdiPemilik", [AlatOlahraga::class, "editAlat"]);
+
+// -------------------------------
+// HALAMAN PIHAK TEMPAT
+// -------------------------------
+Route::view("/berandaTempat", "tempat.beranda")->middleware([CekTempat::class]);

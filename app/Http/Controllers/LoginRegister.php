@@ -286,7 +286,7 @@ class LoginRegister extends Controller
                     //diarahkan ke halaman pemilik
                     Session::put("role","pemilik");
                     Session::put("dataRole", $dataPemilik->first());
-                    return redirect('/masterAlatdiPemilik');
+                    return redirect('/berandaPemilik');
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }
@@ -297,7 +297,9 @@ class LoginRegister extends Controller
             $dataTempat = $tempat->cek_email_tempat($request->email);
             if (!$dataTempat->isEmpty()) {
                 if (password_verify($request->password, $dataTempat->first()->password_tempat)) {
-                    //diarahkan ke halaman tempat
+                    Session::put("role","tempat");
+                    Session::put("dataRole", $dataTempat->first());
+                    return redirect('/berandaTempat');
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }

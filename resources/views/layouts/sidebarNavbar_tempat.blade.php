@@ -67,7 +67,7 @@ Sportiva
         .sidebar-dropdown-content {
             display: none;
             position: relative;
-            background-color: #f9f9f9;
+            background-color: #e3e3e3;
             min-width: 240px; /* match the sidebar width */
             box-shadow: none; /* you may want to remove this or adjust according to the sidebar's look */
             z-index: 1;
@@ -150,7 +150,7 @@ Sportiva
     <div id="sidebar">
         <a href=""><i class="bi bi-house me-3"></i>Beranda</a>
         <div class="sidebar-dropdown">
-            <a href="#"><i class="bi bi-dribbble me-3"></i>Lapangan Olahraga <i class="bi bi-caret-down-fill"></i></a>
+            <a href="#"><i class="bi bi-house-add me-3"></i>Lapangan Olahraga <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
                 <a href="">Tambah Lapangan</a>
                 <a href="">Daftar Lapangan</a>

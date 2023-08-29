@@ -67,7 +67,7 @@ Sportiva
         .sidebar-dropdown-content {
             display: none;
             position: relative;
-            background-color: #f9f9f9;
+            background-color: #e3e3e3;
             min-width: 240px; /* match the sidebar width */
             box-shadow: none; /* you may want to remove this or adjust according to the sidebar's look */
             z-index: 1;
