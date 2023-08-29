@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\DB;
 class AlatOlahraga extends Controller
 {
     public function tambahAlat(Request $request){
+        dd($request->foto[]);
         $request->validate([
             "alat" => 'required|max:255',
             "kategori" => 'required',
             "foto" => 'required|max:5120',
-            "deskripsi" => 'required|max:300',
+            "deskripsi" => 'required|max:500',
             "berat" => 'required|numeric|min:0',
             "panjang" => 'required|numeric|min:0',
             "lebar" => 'required|numeric|min:0',
@@ -33,7 +34,7 @@ class AlatOlahraga extends Controller
             "ganti.numeric" => "uang :attribute rugi tidak valid!",
             "ganti.required" => "uang :attribute tidak boleh kosong!",
             "integer" => ":attribute alat olahraga tidak valid!",
-            "max" => "deskripsi alat olahraga maksimal 300 kata!"
+            "max" => "deskripsi alat olahraga maksimal 500 kata!"
         ]);
 
         $komisi = intval(str_replace(".", "", $request->komisi));
@@ -71,5 +72,41 @@ class AlatOlahraga extends Controller
         }
 
         return redirect()->back()->with("success", "Berhasil Menambah Alat Olahraga!");
+    }
+
+    public function editAlat (Request $request) {
+        // ... kode validasi dan lain-lain ...
+    
+        // Proses unggah foto baru
+        if($request->has('foto')) {
+            $destinasi = "/upload";
+            foreach ($request->foto as $key => $value) {
+                $foto = uniqid().".".$value->getClientOriginalExtension();
+                $value->move(public_path($destinasi),$foto);
+                $data2 = [
+                    "nama"=>$foto,
+                    "fk"=>$request->id // Diasumsikan ini adalah ID dari alat olahraga
+                ];
+                $file = new filesAlatOlahraga();
+                $file->insertFilesAlat($data2);
+            }
+        }
+    
+        // Proses hapus foto
+        if($request->has('delete_photos')) {
+            foreach ($request->delete_photos as $photo_id) {
+                $photo = filesAlatOlahraga::find($photo_id);
+                if($photo) {
+                    // Hapus file dari storage
+                    @unlink(public_path("/upload/" . $photo->nama));
+                    // Hapus record dari database
+                    $photo->delete();
+                }
+            }
+        }
+    
+        // ... kode update informasi lainnya ...
+    
+        return redirect()->back()->with("success", "Berhasil Mengedit Alat Olahraga!");
     }
 }

@@ -85,9 +85,20 @@ Route::get("/lihatDetaildiPemilik/{id}", function ($id) {
     return view("pemilik.detailAlat")->with($param);
     // echo $id;
 })->middleware([CekPemilik::class]);
+Route::get("/editAlatdiPemilik/{id}", function ($id) {
+    $kat = new kategori();
+    $param["kategori"] = $kat->get_all_data();
+    $alat = new ModelsAlatOlahraga();
+    $param["alat"] = $alat->get_all_data_by_id($id);
+    $files = new filesAlatOlahraga();
+    $param["files"] = $files->get_all_data($id);
+    return view("pemilik.editAlat")->with($param);
+    // echo $id;
+})->middleware([CekPemilik::class]);
 Route::get("/berandaPemilik", function () {
     $role = Session::get("dataRole")->id_pemilik;
     $alat = new ModelsAlatOlahraga();
     $param["jumlahAlat"] = $alat->count_all_data($role);
     return view("pemilik.beranda")->with($param);
 })->middleware([CekPemilik::class]);
+Route::post("/editAlatdiPemilik", [AlatOlahraga::class, "editAlat"]);
