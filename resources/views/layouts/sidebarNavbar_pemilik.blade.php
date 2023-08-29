@@ -157,6 +157,7 @@ Sportiva
                 <!-- Add other sports or categories here -->
             </div>
         </div>
+        <a href=""><i class="bi bi-clipboard-data me-3"></i>Laporan</a>
     </div>
 
     <div id="main">

@@ -73,6 +73,7 @@ Sportiva
             <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain</a>
             <a href="/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
             <a href="/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
+            <a href=""><i class="bi bi-clipboard-data me-3"></i>Laporan</a>
             <a href="/logout"><i class="bi bi-box-arrow-right me-3"></i>Logout</a>
         </div>
     </div>
