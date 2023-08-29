@@ -85,3 +85,9 @@ Route::get("/lihatDetaildiPemilik/{id}", function ($id) {
     return view("pemilik.detailAlat")->with($param);
     // echo $id;
 })->middleware([CekPemilik::class]);
+Route::get("/berandaPemilik", function () {
+    $role = Session::get("dataRole")->id_pemilik;
+    $alat = new ModelsAlatOlahraga();
+    $param["jumlahAlat"] = $alat->count_all_data($role);
+    return view("pemilik.beranda")->with($param);
+})->middleware([CekPemilik::class]);

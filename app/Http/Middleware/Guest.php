@@ -20,7 +20,7 @@ class Guest
         if(Session::has("role")){
             // Jika iya kembalikan sesuai posisi semula
             if (Session::get("role") == "admin") return redirect('/beranda');
-            if (Session::get("role") == "pemilik") return redirect('/masterAlatdiPemilik');
+            if (Session::get("role") == "pemilik") return redirect('/berandaPemilik');
         }
 
         // Jika tidak lanjutkan request
