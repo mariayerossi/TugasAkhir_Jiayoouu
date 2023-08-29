@@ -58,14 +58,14 @@ Sportiva
                 <!-- Name input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nama Tempat Olahraga</label>
-                  <input type="text" name="nama" id="form2Example1" class="form-control" />
+                  <input type="text" name="nama" id="form2Example1" class="form-control" value="{{old('nama')}}"/>
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <!-- Owner input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nama Lengkap Pemilik Tempat Olahraga</label>
-                  <input type="text" name="pemilik" id="form2Example1" class="form-control" />
+                  <input type="text" name="pemilik" id="form2Example1" class="form-control" value="{{old('pemilik')}}"/>
                 </div>
               </div>
             </div>
@@ -73,7 +73,7 @@ Sportiva
             <!-- Lokasi input -->
             <div class="form-outline mb-4">
               <label class="form-label" for="form2Example1">Alamat Lengkap Tempat Olahraga</label>
-              <input type="text" name="alamat" id="form2Example1" class="form-control" />
+              <input type="text" name="alamat" id="form2Example1" class="form-control" value="{{old('alamat')}}"/>
             </div>
 
             <div class="row">
@@ -81,14 +81,14 @@ Sportiva
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Alamat Email</label>
-                  <input type="email" name="email" id="form2Example1" class="form-control" />
+                  <input type="email" name="email" id="form2Example1" class="form-control" value="{{old('email')}}"/>
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <!-- Nomor input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nomer Telepon</label>
-                  <input type="number" name="telepon" id="form2Example1" class="form-control" />
+                  <input type="number" name="telepon" id="form2Example1" class="form-control" value="{{old('telepon')}}"/>
                 </div>
               </div>
             </div>

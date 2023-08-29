@@ -12,7 +12,7 @@
                 <h6 class="mt-2">Nama Kategori</h6>
             </div>
             <div class="col-md-7 col-12 mt-2 mt-md-0">
-                <input type="text" class="form-control" name="kategori" placeholder="Contoh : Basket">
+                <input type="text" class="form-control" name="kategori" placeholder="Contoh : Basket" value="{{old('kategori')}}">
             </div>
             <div class="col-md-3 col-12 mt-2 mt-md-0">
                 <button type="submit" class="btn btn-primary">Tambah</button>

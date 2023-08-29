@@ -24,7 +24,7 @@
                 <h6>Nama Alat Olahraga</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <input type="text" class="form-control" name="alat" placeholder="Masukkan Nama Alat Olahraga">
+                <input type="text" class="form-control" name="alat" placeholder="Masukkan Nama Alat Olahraga" value="{{old('alat')}}">
             </div>
         </div>
         <div class="row mt-5">
@@ -36,10 +36,9 @@
                     <option value="" disabled selected>Masukkan Kategori Alat Olahraga</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
-                            <option value="{{$item->nama_kategori}}">{{$item->nama_kategori}}</option>
+                        <option value="{{$item->nama_kategori}}" {{ old('kategori') == $item->nama_kategori ? 'selected' : '' }}>{{$item->nama_kategori}}</option>
                         @endforeach
                     @endif
-                    <!-- Anda bisa menambahkan opsi lain di sini sesuai kebutuhan -->
                 </select>
             </div>
         </div>
@@ -48,7 +47,7 @@
                 <h6>Foto Alat Olahraga</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <input type="file" class="form-control" name="foto[]" multiple accept=".jpg,.png,.jpeg" placeholder="Masukkan Nama Alat Olahraga">
+                <input type="file" class="form-control" name="foto[]" multiple accept=".jpg,.png,.jpeg">
             </div>
         </div>
         <div class="row mt-5">
@@ -57,7 +56,7 @@
                 <span class="ml-2 ms-2" style="font-size: 15px">maksimal 300 kata</span>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <textarea class="form-control" name="deskripsi" rows="3" placeholder="Masukkan Deskripsi Alat Olahraga"></textarea>
+                <textarea class="form-control" name="deskripsi" rows="3" placeholder="Masukkan Deskripsi Alat Olahraga">{{ old('deskripsi') }}</textarea>
             </div>
         </div>
         <div class="row mt-5">
@@ -66,7 +65,7 @@
             </div>
             <div class="col-md-6 col-12 mt-2 mt-md-0 d-flex align-items-center">
                 <div class="input-group mb-2">
-                    <input type="number" class="form-control" name="berat" step="0.01" min="0" placeholder="Masukkan Berat Alat Olahraga">
+                    <input type="number" class="form-control" name="berat" step="0.01" min="0" placeholder="Masukkan Berat Alat Olahraga" value="{{old('berat')}}">
                     <div class="input-group-prepend">
                         <div class="input-group-text">gram</div>
                     </div>
@@ -79,7 +78,7 @@
             </div>
             <div class="col-md-3 col-12 mt-2 col-auto">
                 <div class="input-group mb-2">
-                    <input type="number" class="form-control" min="0" id="panjang" name="panjang" placeholder="Panjang">
+                    <input type="number" class="form-control" min="0" id="panjang" name="panjang" placeholder="Panjang" value="{{old('panjang')}}">
                     <div class="input-group-prepend">
                         <div class="input-group-text">cm</div>
                     </div>
@@ -87,7 +86,7 @@
             </div>
             <div class="col-md-3 col-12 mt-2">
                 <div class="input-group mb-2">
-                    <input type="number" class="form-control" min="0" id="lebar" name="lebar" placeholder="Lebar">
+                    <input type="number" class="form-control" min="0" id="lebar" name="lebar" placeholder="Lebar" value="{{old('lebar')}}">
                     <div class="input-group-prepend">
                         <div class="input-group-text">cm</div>
                     </div>
@@ -95,7 +94,7 @@
             </div>
             <div class="col-md-3 col-12 mt-2">
                 <div class="input-group mb-2">
-                    <input type="number" class="form-control" min="0" id="tinggi" name="tinggi" placeholder="Tinggi">
+                    <input type="number" class="form-control" min="0" id="tinggi" name="tinggi" placeholder="Tinggi" value="{{old('tinggi')}}">
                     <div class="input-group-prepend">
                         <div class="input-group-text">cm</div>
                     </div>
@@ -107,7 +106,7 @@
                 <h6>Stok Alat Olahraga</h6>
             </div>
             <div class="col-md-4 col-12 mt-2 mt-md-0">
-                <input type="number" class="form-control" name="stok" min="0" placeholder="Masukkan Jumlah Stok Alat">
+                <input type="number" class="form-control" name="stok" min="0" placeholder="Masukkan Jumlah Stok Alat" value="{{old('stok')}}">
             </div>
         </div>
         <div class="row mt-5">
@@ -120,7 +119,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">Rp</div>
                     </div>
-                    <input type="number" class="form-control" min="0" name="komisi" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber(this)">
+                    <input type="number" class="form-control" min="0" name="komisi" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber(this)" value="{{old('komisi')}}">
                 </div>
             </div>
         </div>
@@ -133,7 +132,7 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">Rp</div>
                     </div>
-                    <input type="number" class="form-control" min="0" name="ganti" placeholder="Masukkan Jumlah Ganti Rugi" oninput="formatNumber(this)">
+                    <input type="number" class="form-control" min="0" name="ganti" placeholder="Masukkan Jumlah Ganti Rugi" oninput="formatNumber(this)" value="{{old('ganti')}}">
                 </div>
                 <span class="ml-2 ms-2" style="font-size: 13px">uang ganti rugi yang peminjam bayar jika peminjam merusak alat olahraga</span>
             </div>
