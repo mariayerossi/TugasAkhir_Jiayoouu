@@ -36,6 +36,9 @@ class AlatOlahraga extends Controller
             "max" => "deskripsi alat olahraga maksimal 300 kata!"
         ]);
 
+        $komisi = intval(str_replace(".", "", $request->komisi));
+        $ganti = intval(str_replace(".", "", $request->komisi));
+
         $ukuran = $request->panjang . "x" . $request->lebar . "x" . $request->tinggi;
 
         $data = [
@@ -45,8 +48,8 @@ class AlatOlahraga extends Controller
             "berat"=>$request->berat,
             "ukuran"=>$ukuran,
             "stok"=>$request->stok,
-            "komisi"=>$request->komisi,
-            "ganti"=>$request->ganti,
+            "komisi"=>$komisi,
+            "ganti"=>$ganti,
             "status"=>$request->status,
             "pemilik"=>$request->pemilik
         ];

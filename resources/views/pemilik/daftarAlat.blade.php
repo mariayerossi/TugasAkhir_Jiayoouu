@@ -43,7 +43,7 @@
                             </div>
                         </td>
                         <td><a href="/lihatDetaildiPemilik/{{$item->id_alat}}">{{$item->nama_alat}}</a></td>
-                        <td>{{$item->komisi_alat}}</td>
+                        <td>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }}</td>
                         <td>{{$item->stok_alat}}</td>
                         <td><a class="btn btn-outline-success" href="/editAlatdiPemilik/{{$item->id_alat}}">Edit Alat</a></td>
                     </tr>

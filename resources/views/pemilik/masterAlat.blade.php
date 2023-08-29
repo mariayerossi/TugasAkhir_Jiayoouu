@@ -66,7 +66,7 @@
             </div>
             <div class="col-md-6 col-12 mt-2 mt-md-0 d-flex align-items-center">
                 <div class="input-group mb-2">
-                    <input type="number" class="form-control" name="berat" min="0" placeholder="Masukkan Berat Alat Olahraga">
+                    <input type="number" class="form-control" name="berat" step="0.01" min="0" placeholder="Masukkan Berat Alat Olahraga">
                     <div class="input-group-prepend">
                         <div class="input-group-text">gram</div>
                     </div>
@@ -166,8 +166,7 @@
         value = value.replace(/\D/g, '');
 
         // Memformat ulang sebagai angka dengan pemisah ribuan titik
-        // Konversi ke number terlebih dahulu sebelum memanggil toLocaleString
-        value = Number(value).toLocaleString('id-ID');
+        value = parseFloat(value).toLocaleString('id-ID');
 
         // Mengembalikan format yang sudah diubah ke input
         input.value = value;
