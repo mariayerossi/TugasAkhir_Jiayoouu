@@ -9,7 +9,7 @@
 <div class="container mt-5">
     <h3 class="text-center mb-5">Tambah Lapangan Olahraga</h3>
     @include("layouts.message")
-    <form action="/tambahAlatdiPemilik" method="post" enctype="multipart/form-data" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-5 mb-5">
+    <form action="/tambahLapangan" method="post" enctype="multipart/form-data" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-5 mb-5">
         @csrf
         <div class="row">
             <div class="col-md-3 col-12 mt-2">
@@ -32,6 +32,26 @@
                         @endforeach
                     @endif
                 </select>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-3 col-12 mt-2">
+                <h6>Tipe Lapangan</h6>
+            </div>
+            <div class="col-md-8 col-12 mt-2 mt-md-0">
+                <select class="form-control" name="kategori">
+                    <option value="" disabled selected>Masukkan Tipe Lapangan Olahraga</option>
+                    <option value="Outdoor">Outdoor</option>
+                    <option value="Indoor">Indoor</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-3 col-12 mt-2">
+                <h6>Lokasi Lapangan</h6>
+            </div>
+            <div class="col-md-8 col-12 mt-2 mt-md-0">
+                <input type="text" class="form-control" name="lokasi" placeholder="Masukkan Lokasi Lapangan Olahraga" value="{{old('lapangan')}}">
             </div>
         </div>
         <div class="row mt-5">
@@ -59,7 +79,7 @@
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" min="0" id="panjang" name="panjang" placeholder="Panjang" value="{{old('panjang')}}">
                     <div class="input-group-prepend">
-                        <div class="input-group-text">cm</div>
+                        <div class="input-group-text">m</div>
                     </div>
                 </div>
             </div>
@@ -67,7 +87,7 @@
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" min="0" id="lebar" name="lebar" placeholder="Lebar" value="{{old('lebar')}}">
                     <div class="input-group-prepend">
-                        <div class="input-group-text">cm</div>
+                        <div class="input-group-text">m</div>
                     </div>
                 </div>
             </div>

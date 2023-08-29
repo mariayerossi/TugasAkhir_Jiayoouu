@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlatOlahraga;
 use App\Http\Controllers\KategoriOlahraga;
+use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
@@ -113,3 +114,4 @@ Route::get("/masterLapangan", function () {
     $param["kategori"] = $kat->get_all_data();
     return view("tempat.lapangan.masterLapangan")->with($param);
 })->middleware([CekTempat::class]);
+Route::post("/tambahLapangan", [LapanganOlahraga::class, "tambahLapangan"]);
