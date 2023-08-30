@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('files_alat', function (Blueprint $table) {
-            $table->id('id_file_alat');
+            $table->integerIncrements('id_file_alat');
             $table->string('nama_file_alat');
             $table->integer('fk_id_alat');
             $table->timestamps();

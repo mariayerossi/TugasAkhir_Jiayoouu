@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
 
         date_default_timezone_set("Asia/Jakarta");
         DB::table('user')->insert([
-            'id_user'=> "1",
             'nama_user' => "Maria Yerossi",
             'email_user' => 'maria@gmail.com',
             'telepon_user' => "082374822343",
@@ -28,7 +27,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('pemilik_alat')->insert([
-            'id_pemilik'=> "1",
             'nama_pemilik' => "Andika Pratama",
             'email_pemilik' => 'andika@gmail.com',
             'telepon_pemilik' => "086768686774",
@@ -39,27 +37,29 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('pihak_tempat')->insert([
-            'id_tempat'=> "1",
             'nama_tempat' => "Mario Sport",
             'nama_pemilik_tempat' => "Mario Wijaya",
             'email_tempat' => 'mario12@gmail.com',
             'telepon_tempat' => "086547823741",
             'alamat_tempat' => "ngagel jaya, Surabaya",
             'ktp_tempat' => "64e5a2e7a68d8.jpg",
-            'npwp_tempat' => "64e5a2e7a68d8.jpg",
+            'npwp_tempat' => "64e5a3037e346.jpg",
             'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_tempat' => "XQ==",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
         
         DB::table('kategori')->insert([
-            'id_kategori' => "1",
             "nama_kategori" => "Basket",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('kategori')->insert([
+            "nama_kategori" => "Futsal",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
         DB::table('alat_olahraga')->insert([
-            'id_alat' => "1",
             "nama_alat" => "Bola Basket Molten",
             'kategori_alat' => "Basket",
             'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
@@ -83,16 +83,46 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_alat')->insert([
-            'id_file_alat' => "1",
             'nama_file_alat' => "64eb19b1e779c.jpg",
             'fk_id_alat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_alat')->insert([
-            'id_file_alat' => "2",
             'nama_file_alat' => "64eb19b1ea0df.jpg",
             'fk_id_alat' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan Basket Mario 1",
+            'kategori_lapangan' => "Basket",
+            'tipe_lapangan' => "Outdoor",
+            'lokasi_lapangan' => "Kota Surabaya, Jawa Timur",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 70000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "64eef2f27c458.jpg",
+            'fk_id_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "64eef2f2924d3.jpg",
+            'fk_id_lapangan' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
     }

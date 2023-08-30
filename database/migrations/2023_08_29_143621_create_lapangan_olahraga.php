@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('lapangan_olahraga', function (Blueprint $table) {
-            $table->id('id_lapangan');
+            $table->integerIncrements('id_lapangan');
             $table->string('nama_lapangan');
             $table->string('kategori_lapangan');
             $table->string('tipe_lapangan');
             $table->string('lokasi_lapangan');
             $table->string('deskripsi_lapangan',500);
             $table->string('luas_lapangan');
-            $table->string('harga_sewa_lapangan');
+            $table->integer('harga_sewa_lapangan');
             $table->string('status_lapangan');
             $table->integer('pemilik_lapangan');
             $table->timestamps();
