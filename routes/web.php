@@ -109,7 +109,12 @@ Route::post("/editAlatdiPemilik", [AlatOlahraga::class, "editAlat"]);
 // -------------------------------
 // HALAMAN PIHAK TEMPAT
 // -------------------------------
-Route::view("/berandaTempat", "tempat.beranda")->middleware([CekTempat::class]);
+Route::get("/berandaTempat", function () {
+    $role = Session::get("dataRole")->id_tempat;
+    $lapa = new ModelsLapanganOlahraga();
+    $param["jumlahLapangan"] = $lapa->count_all_data($role);
+    return view("tempat.beranda")->with($param);
+})->middleware([CekTempat::class]);
 Route::get("/masterLapangan", function () {
     $kat = new kategori();
     $param["kategori"] = $kat->get_all_data();
