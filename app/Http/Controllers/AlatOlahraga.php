@@ -11,7 +11,7 @@ class AlatOlahraga extends Controller
 {
     public function tambahAlat(Request $request){
         $request->validate([
-            "alat" => 'required|max:255',
+            "alat" => 'required|min:5|max:255',
             "kategori" => 'required',
             "foto" => 'required|max:5120',
             "deskripsi" => 'required|max:500',
@@ -26,6 +26,7 @@ class AlatOlahraga extends Controller
             "required" => ":attribute alat olahraga tidak boleh kosong!",
             "alat.required" => "nama :attribute olahraga tidak boleh kosong!",
             "alat.max" => "nama alat olahraga tidak valid!",
+            "alat.min" => "nama alat olahraga tidak valid!",
             "min" => ":attribute alat olahraga tidak valid!",
             "ganti.min" =>"uang :attribute rugi alat olahraga tidak valid!",
             "foto.max" => "ukuran foto alat olahraga tidak boleh melebihi 5MB!",
@@ -56,7 +57,6 @@ class AlatOlahraga extends Controller
         $alat = new ModelsAlatOlahraga();
         $id = $alat->insertAlat($data);
         
-        //dapetin fk_id_alat
         //insert foto alatnya
         $destinasi = "/upload";
         foreach ($request->foto as $key => $value) {

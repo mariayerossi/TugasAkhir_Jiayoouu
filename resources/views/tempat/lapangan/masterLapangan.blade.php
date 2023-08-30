@@ -68,7 +68,8 @@
                 <span class="ml-2 ms-2" style="font-size: 15px">maksimal 300 kata</span>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <textarea class="form-control" name="deskripsi" rows="3" placeholder="Masukkan Deskripsi Lapangan Olahraga">{{ old('deskripsi') }}</textarea>
+                <textarea id="myTextarea" class="form-control" name="deskripsi" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Deskripsi Lapangan Olahraga">{{ old('deskripsi') }}</textarea>
+                <p id="charCount">0/300</p>
             </div>
         </div>
         <div class="row mt-5">
@@ -157,5 +158,22 @@
             statusInput.value = "Aktif";
         }
     });
+    function updateCount() {
+        let textarea = document.getElementById('myTextarea');
+        let textareaValue = textarea.value;
+        let charCount = textareaValue.length;
+        let countElement = document.getElementById('charCount');
+
+        if (charCount > 300) {
+            // Potong teks untuk membatasi hanya 300 karakter
+            textarea.value = textareaValue.substring(0, 300);
+            charCount = 300;
+            countElement.style.color = 'red';
+        } else {
+            countElement.style.color = 'black';
+        }
+
+        countElement.innerText = charCount + "/300";
+    }
 </script>
 @endsection
