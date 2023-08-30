@@ -153,7 +153,7 @@ Sportiva
             <a href="#"><i class="bi bi-house-add me-3"></i>Lapangan Olahraga <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
                 <a href="/masterLapangan">Tambah Lapangan</a>
-                <a href="">Daftar Lapangan</a>
+                <a href="/daftarLapangan">Daftar Lapangan</a>
                 <!-- Add other sports or categories here -->
             </div>
         </div>

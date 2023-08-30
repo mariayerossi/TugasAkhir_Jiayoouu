@@ -31,4 +31,8 @@ class lapanganOlahraga extends Model
 
         return $lapa->id_lapangan;
     }
+
+    public function get_all_data($role){
+        return lapanganOlahraga::where('deleted_at',"=",null)->where("pemilik_lapangan","=",$role)->get();
+    }
 }

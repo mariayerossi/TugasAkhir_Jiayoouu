@@ -1,4 +1,4 @@
-@extends('layouts.sidebarNavbar_pemilik')
+@extends('layouts.sidebarNavbar_tempat')
 
 @section('content')
 <style>
@@ -25,32 +25,30 @@
             <tr>
                 <th>Foto</th>
                 <th>Nama</th>
-                <th>Komisi</th>
-                <th>Stok</th>
+                <th>Harga Sewa</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @if (!$alat->isEmpty())
-                @foreach ($alat as $item)
+            @if (!$lapangan->isEmpty())
+                @foreach ($lapangan as $item)
                     @php
-                        $dataFiles = $files->get_all_data($item->id_alat)->first();
+                        $dataFiles = $files->get_all_data($item->id_lapangan)->first();
                     @endphp
                     <tr>
                         <td>
                             <div class="square-image-container">
-                                <a href="/lihatDetaildiPemilik/{{$item->id_alat}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt=""></a>
+                                <a href="/lihatDetaildiPemilik/{{$item->id_lapangan}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_lapangan) }}" alt=""></a>
                             </div>
                         </td>
-                        <td><a href="/lihatDetaildiPemilik/{{$item->id_alat}}">{{$item->nama_alat}}</a></td>
-                        <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                        <td>{{$item->stok_alat}}</td>
-                        <td><a class="btn btn-outline-success" href="/editAlatdiPemilik/{{$item->id_alat}}">Edit</a></td>
+                        <td><a href="/lihatDetaildiPemilik/{{$item->id_lapangan}}">{{$item->nama_lapangan}}</a></td>
+                        <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
+                        <td><a class="btn btn-outline-success" href="/editAlatdiPemilik/{{$item->id_lapangan}}">Edit</a></td>
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                    <td colspan="4" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
         </tbody>

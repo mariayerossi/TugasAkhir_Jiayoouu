@@ -10,7 +10,9 @@ use App\Http\Middleware\CekTempat;
 use App\Http\Middleware\Guest;
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
 use App\Models\filesAlatOlahraga;
+use App\Models\filesLapanganOlahraga;
 use App\Models\kategori;
+use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -71,7 +73,6 @@ Route::get("/masterAlatdiPemilik", function () {
 })->middleware([CekPemilik::class]);
 Route::post("/tambahAlatdiPemilik", [AlatOlahraga::class, "tambahAlat"]);
 Route::get("/daftarAlatdiPemilik", function () {
-    //ngambil data alat olahraga (blm termasuk file)
     $role = Session::get("dataRole")->id_pemilik;
     $files = new filesAlatOlahraga();
     $alat = new ModelsAlatOlahraga();
@@ -115,3 +116,11 @@ Route::get("/masterLapangan", function () {
     return view("tempat.lapangan.masterLapangan")->with($param);
 })->middleware([CekTempat::class]);
 Route::post("/tambahLapangan", [LapanganOlahraga::class, "tambahLapangan"]);
+Route::get("/daftarLapangan", function () {
+    $role = Session::get("dataRole")->id_tempat;
+    $files = new filesLapanganOlahraga();
+    $lap = new ModelsLapanganOlahraga();
+    $param["lapangan"] = $lap->get_all_data($role);
+    $param["files"] = $files;
+    return view("tempat.lapangan.daftarLapangan")->with($param);
+})->middleware([CekTempat::class]);
