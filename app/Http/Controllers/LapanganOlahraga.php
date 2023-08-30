@@ -60,6 +60,6 @@ class LapanganOlahraga extends Controller
             $file->insertFilesLapangan($data2);
         }
 
-        return redirect()->back()->with("success", "Berhasil Menambah Alat Olahraga!");
+        return redirect()->back()->with("success", "Berhasil Menambah Lapangan Olahraga!");
     }
 }

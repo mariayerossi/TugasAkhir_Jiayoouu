@@ -57,7 +57,7 @@
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
                 <textarea id="myTextarea" class="form-control" name="deskripsi" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Deskripsi Alat Olahraga">{{ old('deskripsi') }}</textarea>
-                <p id="charCount">0/300</p>
+                <p id="charCount">0/500</p>
             </div>
         </div>
         <div class="row mt-5">
@@ -195,16 +195,16 @@
         let charCount = textareaValue.length;
         let countElement = document.getElementById('charCount');
 
-        if (charCount > 300) {
-            // Potong teks untuk membatasi hanya 300 karakter
-            textarea.value = textareaValue.substring(0, 300);
-            charCount = 300;
+        if (charCount > 500) {
+            // Potong teks untuk membatasi hanya 500 karakter
+            textarea.value = textareaValue.substring(0, 500);
+            charCount = 500;
             countElement.style.color = 'red';
         } else {
             countElement.style.color = 'black';
         }
 
-        countElement.innerText = charCount + "/300";
+        countElement.innerText = charCount + "/500";
     }
 </script>
 @endsection

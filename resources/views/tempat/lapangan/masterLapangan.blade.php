@@ -39,7 +39,7 @@
                 <h6>Tipe Lapangan</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <select class="form-control" name="kategori">
+                <select class="form-control" name="tipe">
                     <option value="" disabled selected>Masukkan Tipe Lapangan Olahraga</option>
                     <option value="Outdoor">Outdoor</option>
                     <option value="Indoor">Indoor</option>
@@ -69,7 +69,7 @@
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
                 <textarea id="myTextarea" class="form-control" name="deskripsi" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Deskripsi Lapangan Olahraga">{{ old('deskripsi') }}</textarea>
-                <p id="charCount">0/300</p>
+                <p id="charCount">0/500</p>
             </div>
         </div>
         <div class="row mt-5">
@@ -119,7 +119,7 @@
                 <input type="hidden" id="statusInput" name="status" value="Aktif">
             </div>
         </div>
-        <input type="hidden" name="pemilik" value="{{Session::get("dataRole")->id_pemilik}}">
+        <input type="hidden" name="pemilik" value="{{Session::get("dataRole")->id_tempat}}">
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
@@ -164,16 +164,16 @@
         let charCount = textareaValue.length;
         let countElement = document.getElementById('charCount');
 
-        if (charCount > 300) {
+        if (charCount > 500) {
             // Potong teks untuk membatasi hanya 300 karakter
-            textarea.value = textareaValue.substring(0, 300);
-            charCount = 300;
+            textarea.value = textareaValue.substring(0, 500);
+            charCount = 500;
             countElement.style.color = 'red';
         } else {
             countElement.style.color = 'black';
         }
 
-        countElement.innerText = charCount + "/300";
+        countElement.innerText = charCount + "/500";
     }
 </script>
 @endsection
