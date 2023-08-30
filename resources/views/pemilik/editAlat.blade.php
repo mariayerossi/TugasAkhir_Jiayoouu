@@ -195,8 +195,7 @@
         </div>
         <input type="hidden" name="pemilik" value="{{Session::get("dataRole")->id_pemilik}}">
         <div class="d-flex justify-content-end">
-            <a href="" class="btn btn-outline-danger me-3">Batal</a>
-            {{-- dari sintaks ini "<a href="" class="btn btn-outline-primary me-3">Batal</a>" saya mau agar button batal ini diarahkan kembali ke halaman sebelumnya. bagaimana caranya? --}}
+            <a href="javascript:history.back()" class="btn btn-outline-primary me-3">Batal</a>
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
     </form>
