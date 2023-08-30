@@ -62,4 +62,74 @@ class LapanganOlahraga extends Controller
 
         return redirect()->back()->with("success", "Berhasil Menambah Lapangan Olahraga!");
     }
+
+    public function editLapangan(Request $request){
+        $request->validate([
+            "lapangan" => 'required|min:5|max:255',
+            "kategori" => 'required',
+            "tipe" => 'required',
+            "lokasi" => 'required',
+            "deskripsi" => 'required|max:500',
+            "panjang" => 'required|numeric|min:0',
+            "lebar" => 'required|numeric|min:0',
+            "harga" => 'required|numeric|min:0'
+        ],[
+            "required" => ":attribute lapangan olahraga tidak boleh kosong!",
+            "lapangan.required" => "nama :attribute olahraga tidak boleh kosong!",
+            "lapangan.max" => "nama lapangan olahraga tidak valid!",
+            "lapangan.min" => "nama lapangan olahraga tidak valid!",
+            "min" => ":attribute lapangan olahraga tidak valid!",
+            "numeric" => ":attribute lapangan olahraga tidak valid!",
+            "deskripsi.max" => "deskripsi lapangan olahraga maksimal 500 kata!"
+        ]);
+
+        $harga = intval(str_replace(".", "", $request->harga));
+
+        $luas = $request->panjang . "x" . $request->lebar;
+
+        $data = [
+            "id"=> $request->id,
+            "nama"=>ucwords($request->lapangan),
+            "kategori"=>$request->kategori,
+            "tipe" =>$request->tipe,
+            "lokasi"=>$request->lokasi,
+            "deskripsi"=>$request->deskripsi,
+            "luas"=>$luas,
+            "harga"=>$harga,
+            "status"=>$request->status,
+            "pemilik"=>$request->pemilik
+        ];
+        $lapa = new ModelsLapanganOlahraga();
+        $lapa->updateLapangan($data);
+
+        // Proses unggah foto baru
+        if($request->has('foto')) {
+            $destinasi = "/upload";
+            foreach ($request->foto as $key => $value) {
+                $foto = uniqid().".".$value->getClientOriginalExtension();
+                $value->move(public_path($destinasi),$foto);
+                $data2 = [
+                    "nama"=>$foto,
+                    "fk"=>$request->id
+                ];
+                $file = new filesLapanganOlahraga();
+                $file->insertFilesLapangan($data2);
+            }
+        }
+    
+        // Proses hapus foto
+        if($request->has('delete_photos')) {
+            foreach ($request->delete_photos as $photo_id) {
+                $photo = filesLapanganOlahraga::find($photo_id);
+                if($photo) {
+                    // Hapus file dari storage
+                    @unlink(public_path("/upload/" . $photo->nama));
+                    // Hapus record dari database
+                    $photo->delete();
+                }
+            }
+        }
+    
+        return redirect()->back()->with("success", "Berhasil Mengubah Detail Lapangan!");
+    }
 }

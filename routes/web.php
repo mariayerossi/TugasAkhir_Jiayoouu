@@ -142,3 +142,4 @@ Route::get("/editLapangan/{id}", function ($id) {
     return view("tempat.lapangan.editLapangan")->with($param);
     // echo $id;
 })->middleware([CekTempat::class]);
+Route::post("/editLapangan", [LapanganOlahraga::class, "editLapangan"]);

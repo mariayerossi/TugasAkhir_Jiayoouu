@@ -43,4 +43,18 @@ class lapanganOlahraga extends Model
     public function count_all_data($role){
         return lapanganOlahraga::where('deleted_at',"=",null)->where("pemilik_lapangan","=",$role)->count();
     }
+
+    public function updateLapangan($data){
+        $lapa = lapanganOlahraga::find($data["id"]);
+        $lapa->nama_lapangan = $data["nama"];
+        $lapa->kategori_lapangan = $data["kategori"];
+        $lapa->tipe_lapangan = $data["tipe"];
+        $lapa->lokasi_lapangan = $data["lokasi"];
+        $lapa->deskripsi_lapangan = $data["deskripsi"];
+        $lapa->luas_lapangan = $data["luas"];
+        $lapa->harga_sewa_lapangan = $data["harga"];
+        $lapa->status_lapangan = $data["status"];
+        $lapa->pemilik_lapangan = $data["pemilik"];
+        $lapa->save();
+    }
 }
