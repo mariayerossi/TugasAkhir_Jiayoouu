@@ -23,7 +23,7 @@
     }
 
 </style>
-<div class="container mt-5 p-5" >
+<div class="container mt-5 p-5 mb-5" >
     <div class="row">
         <!-- Image section with carousel -->
         <div class="col-lg-6">
@@ -89,7 +89,7 @@
     <!-- Additional details section -->
     <div class="row mt-5">
         <div class="col-12">
-            <h4>Detail Produk</h4>
+            <h4>Deskripsi Alat Olahraga</h4>
             <p>{!! nl2br(e($alat->first()->deskripsi_alat)) !!}</p>
         </div>
     </div>
@@ -97,7 +97,7 @@
     <!-- Reviews section -->
     <div class="row mt-5">
         <div class="col-12">
-            <h4>Ulasan Produk</h4>
+            <h4>Ulasan Alat Olahraga</h4>
             <!-- Example of a review -->
             <div class="card mb-3">
                 <div class="card-body">

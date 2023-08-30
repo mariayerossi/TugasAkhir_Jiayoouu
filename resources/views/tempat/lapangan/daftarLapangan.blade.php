@@ -38,10 +38,10 @@
                     <tr>
                         <td>
                             <div class="square-image-container">
-                                <a href="/lihatDetaildiPemilik/{{$item->id_lapangan}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_lapangan) }}" alt=""></a>
+                                <a href="/lihatDetailLapangan/{{$item->id_lapangan}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_lapangan) }}" alt=""></a>
                             </div>
                         </td>
-                        <td><a href="/lihatDetaildiPemilik/{{$item->id_lapangan}}">{{$item->nama_lapangan}}</a></td>
+                        <td><a href="/lihatDetailLapangan/{{$item->id_lapangan}}">{{$item->nama_lapangan}}</a></td>
                         <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
                         <td><a class="btn btn-outline-success" href="/editAlatdiPemilik/{{$item->id_lapangan}}">Edit</a></td>
                     </tr>

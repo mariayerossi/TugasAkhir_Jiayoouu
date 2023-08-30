@@ -124,3 +124,11 @@ Route::get("/daftarLapangan", function () {
     $param["files"] = $files;
     return view("tempat.lapangan.daftarLapangan")->with($param);
 })->middleware([CekTempat::class]);
+Route::get("/lihatDetailLapangan/{id}", function ($id) {
+    $lap = new ModelsLapanganOlahraga();
+    $param["lapangan"] = $lap->get_all_data_by_id($id);
+    $files = new filesLapanganOlahraga();
+    $param["files"] = $files->get_all_data($id);
+    return view("tempat.lapangan.detailLapangan")->with($param);
+    // echo $id;
+})->middleware([CekTempat::class]);
