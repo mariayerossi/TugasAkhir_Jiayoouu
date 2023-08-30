@@ -125,5 +125,11 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_basket3.jpg",
+            'fk_id_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
     }
 }

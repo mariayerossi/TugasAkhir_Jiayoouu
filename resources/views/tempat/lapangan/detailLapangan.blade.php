@@ -1,6 +1,16 @@
 @extends('layouts.sidebarNavbar_tempat')
 
 @section('content')
+<style>
+    .image-container {
+        position: relative;
+        width: 100%;
+        padding-top: 75%; /* aspek rasio 4:3 */
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <!-- Carousel Gambar Lapangan -->
     <div class="row mb-4">
@@ -18,7 +28,7 @@
                     @if (!$files->isEmpty())
                         @foreach ($files as $item)
                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                                <img src="{{ asset('upload/' . $item->nama_file_lapangan)}}" class="d-block w-100" alt="">
+                                <div class="image-container" style="background-image: url('{{ asset('upload/' . $item->nama_file_lapangan) }}');"></div>
                             </div>
                         @endforeach
                     @endif
