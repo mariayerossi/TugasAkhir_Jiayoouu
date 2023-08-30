@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
             'nama_pemilik' => "Andika Pratama",
             'email_pemilik' => 'andika@gmail.com',
             'telepon_pemilik' => "086768686774",
-            'ktp_pemilik' => "64db1c79dc9d5.jpg",
+            'ktp_pemilik' => "ktp_pemilik1.jpg",
             'password_pemilik' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_pemilik' => "XQ==",
             'created_at' => date("Y-m-d H:i:s"),
@@ -42,8 +42,8 @@ class DatabaseSeeder extends Seeder
             'email_tempat' => 'mario12@gmail.com',
             'telepon_tempat' => "086547823741",
             'alamat_tempat' => "ngagel jaya, Surabaya",
-            'ktp_tempat' => "64e5a2e7a68d8.jpg",
-            'npwp_tempat' => "64e5a3037e346.jpg",
+            'ktp_tempat' => "ktp_tempat1.jpg",
+            'npwp_tempat' => "npwp_tempat1.jpg",
             'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_tempat' => "XQ==",
             'created_at' => date("Y-m-d H:i:s"),
@@ -83,13 +83,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_alat')->insert([
-            'nama_file_alat' => "64eb19b1e779c.jpg",
+            'nama_file_alat' => "bola_basket1.jpg",
             'fk_id_alat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_alat')->insert([
-            'nama_file_alat' => "64eb19b1ea0df.jpg",
+            'nama_file_alat' => "bola_basket2.jpg",
             'fk_id_alat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -115,13 +115,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_lapangan')->insert([
-            'nama_file_lapangan' => "64eef2f27c458.jpg",
+            'nama_file_lapangan' => "lapangan_basket1.jpg",
             'fk_id_lapangan' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_lapangan')->insert([
-            'nama_file_lapangan' => "64eef2f2924d3.jpg",
+            'nama_file_lapangan' => "lapangan_basket2.jpg",
             'fk_id_lapangan' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
