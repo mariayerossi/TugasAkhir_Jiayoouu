@@ -132,3 +132,13 @@ Route::get("/lihatDetailLapangan/{id}", function ($id) {
     return view("tempat.lapangan.detailLapangan")->with($param);
     // echo $id;
 })->middleware([CekTempat::class]);
+Route::get("/editLapangan/{id}", function ($id) {
+    $kat = new kategori();
+    $param["kategori"] = $kat->get_all_data();
+    $lap = new ModelsLapanganOlahraga();
+    $param["lapangan"] = $lap->get_all_data_by_id($id);
+    $files = new filesLapanganOlahraga();
+    $param["files"] = $files->get_all_data($id);
+    return view("tempat.lapangan.editLapangan")->with($param);
+    // echo $id;
+})->middleware([CekTempat::class]);
