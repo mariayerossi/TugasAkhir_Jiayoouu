@@ -132,5 +132,43 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Futsal Specs",
+            'kategori_alat' => "Futsal",
+            'deskripsi_alat' => "BRAND : SPECSSS
+            MODEL : FUTSAL
+            MATERIAL : PVC, FOAM, POLYESTER FABRIC AND RUBBER
+            MODE : COLD PRESS / SAWING
+            APLICATION : INDOOR & OUTDOOR
+            SIZE : 4 FUTSAL
+            
+            Product Features
+            
+            SPECSS base-level basketball
+            A great 30 panel kick-about ball for the next generation
+            Lightweight & durable perfect for indoor and outdoor",
+            'berat_alat' => "25.5",
+            'ukuran_alat' => "10x10x10",
+            'stok_alat' => 20,
+            'komisi_alat' => 25000,
+            'ganti_rugi_alat' => 150000,
+            'status_alat' => "Aktif",
+            'pemilik_alat' => 1,
+            'role_pemilik_alat' => "Tempat",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_futsal1.jpg",
+            'fk_id_alat' => 2,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_futsal2.jpg",
+            'fk_id_alat' => 2,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
     }
 }

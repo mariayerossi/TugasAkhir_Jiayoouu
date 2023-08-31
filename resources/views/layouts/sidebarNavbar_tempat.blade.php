@@ -161,7 +161,7 @@ Sportiva
             <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
                 <a href="/masterAlatdiTempat">Tambah Alat</a>
-                <a href="">Daftar Alat</a>
+                <a href="/daftarAlatdiTempat">Daftar Alat</a>
                 <!-- Add other sports or categories here -->
             </div>
         </div>

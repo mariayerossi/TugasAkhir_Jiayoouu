@@ -156,3 +156,28 @@ Route::get("/masterAlatdiTempat", function () {
     return view("tempat.alat.masterAlat")->with($param);
 })->middleware([CekTempat::class]);
 Route::post("/tambahAlatdiTempat", [AlatOlahraga::class, "tambahAlat"]);
+Route::get("/daftarAlatdiTempat", function () {
+    $id = Session::get("dataRole")->id_tempat;
+    $files = new filesAlatOlahraga();
+    $alat = new ModelsAlatOlahraga();
+    $param["alat"] = $alat->get_all_data($id, "Tempat");
+    $param["files"] = $files;
+    return view("tempat.alat.daftarAlat")->with($param);
+})->middleware([CekTempat::class]);
+Route::get("/lihatDetaildiTempat/{id}", function ($id) {
+    $alat = new ModelsAlatOlahraga();
+    $param["alat"] = $alat->get_all_data_by_id($id);
+    $files = new filesAlatOlahraga();
+    $param["files"] = $files->get_all_data($id);
+    return view("tempat.alat.detailAlat")->with($param);
+})->middleware([CekTempat::class]);
+Route::get("/editAlatdiTempat/{id}", function ($id) {
+    $kat = new kategori();
+    $param["kategori"] = $kat->get_all_data();
+    $alat = new ModelsAlatOlahraga();
+    $param["alat"] = $alat->get_all_data_by_id($id);
+    $files = new filesAlatOlahraga();
+    $param["files"] = $files->get_all_data($id);
+    return view("tempat.alat.editAlat")->with($param);
+})->middleware([CekTempat::class]);
+Route::post("/editAlatdiTempat", [AlatOlahraga::class, "editAlat"]);
