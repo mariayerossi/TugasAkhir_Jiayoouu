@@ -182,6 +182,8 @@ Route::get("/editAlatdiTempat/{id}", function ($id) {
 })->middleware([CekTempat::class]);
 Route::post("/editAlatdiTempat", [AlatOlahraga::class, "editAlat"]);
 Route::get("/cariAlat", function () {
+    $kat = new kategori();
+    $param["kategori"] = $kat->get_all_data();
     $alat = new ModelsAlatOlahraga();
     $param["alat"] = $alat->get_all_data2();
     $files = new filesAlatOlahraga();
