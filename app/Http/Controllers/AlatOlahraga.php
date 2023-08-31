@@ -152,4 +152,23 @@ class AlatOlahraga extends Controller
     
         return redirect()->back()->with("success", "Berhasil Mengubah Detail Alat Olahraga!");
     }
+
+    public function searchAlat(Request $request)
+    {
+        // $search = $request->input("cari");
+        $query = DB::table('alat_olahraga');
+    
+        if ($request->filled('kategori')) {
+            $query->where('kategori_alat', $request->kategori);
+        }
+        
+        if ($request->filled('cari')) {
+            $query->where('nama_alat', 'like', '%' . $request->cari . '%');
+        }
+        
+        $alat = $query->get();
+        // dd($alat);
+        // Query untuk mengambil data file
+        // $files = DB::table('files_alat_olahraga');
+    }
 }

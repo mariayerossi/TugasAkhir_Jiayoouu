@@ -48,7 +48,7 @@
 
 <div class="container mt-5">
     <div class="d-flex justify-content-center align-items-center mt-3 mb-3"> 
-        <form action="" method="GET" class="input-group responsive-form">
+        <form action="/searchAlat" method="GET" class="input-group responsive-form">
             @csrf
             <div class="input-group-prepend">
                 <select class="form-control" name="kategori">

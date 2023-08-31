@@ -190,3 +190,4 @@ Route::get("/cariAlat", function () {
     $param["files"] = $files;
     return view("tempat.cariAlat")->with($param);
 })->middleware([CekTempat::class]);
+Route::get("/searchAlat", [AlatOlahraga::class, "searchAlat"]);
