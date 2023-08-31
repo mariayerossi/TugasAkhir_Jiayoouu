@@ -79,6 +79,7 @@ class DatabaseSeeder extends Seeder
             'ganti_rugi_alat' => 100000,
             'status_alat' => "Aktif",
             'pemilik_alat' => 1,
+            'role_pemilik_alat' => "Pemilik",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 

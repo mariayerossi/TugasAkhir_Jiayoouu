@@ -52,7 +52,8 @@ class AlatOlahraga extends Controller
             "komisi"=>$komisi,
             "ganti"=>$ganti,
             "status"=>$request->status,
-            "pemilik"=>$request->pemilik
+            "pemilik"=>$request->pemilik,
+            "role" => $request->role
         ];
         $alat = new ModelsAlatOlahraga();
         $id = $alat->insertAlat($data);
@@ -115,7 +116,8 @@ class AlatOlahraga extends Controller
             "komisi" => $komisi,
             "ganti" => $ganti,
             "status" => $request->status,
-            "pemilik" => $request->pemilik
+            "pemilik" => $request->pemilik,
+            "role" => $request->role
         ];
         $alat = new ModelsAlatOlahraga();
         $alat->updateAlat($data);

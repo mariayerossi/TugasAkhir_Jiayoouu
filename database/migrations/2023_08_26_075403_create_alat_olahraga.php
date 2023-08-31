@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('ganti_rugi_alat');
             $table->string('status_alat');
             $table->integer('pemilik_alat');
+            $table->string('role_pemilik_alat');
             $table->timestamps();
             $table->softDeletes();
         });

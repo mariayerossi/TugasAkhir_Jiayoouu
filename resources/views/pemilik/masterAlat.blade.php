@@ -151,6 +151,7 @@
             </div>
         </div>
         <input type="hidden" name="pemilik" value="{{Session::get("dataRole")->id_pemilik}}">
+        <input type="hidden" name="role" value="Pemilik">
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>

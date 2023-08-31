@@ -28,21 +28,22 @@ class alatOlahraga extends Model
         $alat->ganti_rugi_alat = $data["ganti"];
         $alat->status_alat = $data["status"];
         $alat->pemilik_alat = $data["pemilik"];
+        $alat->role_pemilik_alat = $data["role"];
         $alat->save();
 
         return $alat->id_alat;
     }
 
-    public function get_all_data($role){
-        return alatOlahraga::where('deleted_at',"=",null)->where("pemilik_alat","=",$role)->get();
+    public function get_all_data($id, $role){
+        return alatOlahraga::where('deleted_at',"=",null)->where("pemilik_alat","=",$id)->where("role_pemilik_alat","=",$role)->get();
     }
 
     public function get_all_data_by_id($id){
         return alatOlahraga::where('deleted_at',"=",null)->where("id_alat","=",$id)->get();
     }
 
-    public function count_all_data($role){
-        return alatOlahraga::where('deleted_at',"=",null)->where("pemilik_alat","=",$role)->count();
+    public function count_all_data($id, $role){
+        return alatOlahraga::where('deleted_at',"=",null)->where("pemilik_alat","=",$id)->where("role_pemilik_alat","=",$role)->count();
     }
 
     public function updateAlat($data){
@@ -57,6 +58,7 @@ class alatOlahraga extends Model
         $alat->ganti_rugi_alat = $data["ganti"];
         $alat->status_alat = $data["status"];
         $alat->pemilik_alat = $data["pemilik"];
+        $alat->role_pemilik_alat = $data["role"];
         $alat->save();
     }
 }
