@@ -149,6 +149,7 @@ Sportiva
     
     <div id="sidebar">
         <a href="/berandaPemilik"><i class="bi bi-house me-3"></i>Beranda</a>
+        <a href="/cariLapangan"><i class="bi bi-search me-3"></i>Cari Lapangan Olahraga</a>
         <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">

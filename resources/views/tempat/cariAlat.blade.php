@@ -76,7 +76,7 @@
                 @php
                     $dataFiles = $files->get_all_data($item->id_alat)->first();
                 @endphp
-                <a href="">
+                <a href="/detailAlatUmum/{{$item->id_alat}}">
                     <div class="col-md-3 product-col mb-4">
                         <div class="card h-100">
                             <div class="aspect-ratio-square">
