@@ -3,19 +3,19 @@
 @section('content')
 <style>
     .square-image-container {
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.square-image-container img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-}
+    .square-image-container img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
 
 </style>
 <div class="container mt-5">

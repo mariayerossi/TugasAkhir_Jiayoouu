@@ -38,6 +38,10 @@ class alatOlahraga extends Model
         return alatOlahraga::where('deleted_at',"=",null)->where("pemilik_alat","=",$id)->where("role_pemilik_alat","=",$role)->get();
     }
 
+    public function get_all_data2(){
+        return alatOlahraga::where('deleted_at',"=",null)->where("role_pemilik_alat","=","Pemilik")->where("status_alat","=","Aktif")->get();
+    }
+
     public function get_all_data_by_id($id){
         return alatOlahraga::where('deleted_at',"=",null)->where("id_alat","=",$id)->get();
     }

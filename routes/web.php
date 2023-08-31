@@ -181,3 +181,10 @@ Route::get("/editAlatdiTempat/{id}", function ($id) {
     return view("tempat.alat.editAlat")->with($param);
 })->middleware([CekTempat::class]);
 Route::post("/editAlatdiTempat", [AlatOlahraga::class, "editAlat"]);
+Route::get("/cariAlat", function () {
+    $alat = new ModelsAlatOlahraga();
+    $param["alat"] = $alat->get_all_data2();
+    $files = new filesAlatOlahraga();
+    $param["files"] = $files;
+    return view("tempat.cariAlat")->with($param);
+})->middleware([CekTempat::class]);
