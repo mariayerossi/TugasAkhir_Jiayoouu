@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
 use App\Models\filesAlatOlahraga;
+use App\Models\kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -156,7 +157,7 @@ class AlatOlahraga extends Controller
     public function searchAlat(Request $request)
     {
         // $search = $request->input("cari");
-        $query = DB::table('alat_olahraga');
+        $query = DB::table('alat_olahraga')->where('deleted_at',"=",null)->where("role_pemilik_alat","=","Pemilik")->where("status_alat","=","Aktif");
     
         if ($request->filled('kategori')) {
             $query->where('kategori_alat', $request->kategori);
@@ -166,9 +167,13 @@ class AlatOlahraga extends Controller
             $query->where('nama_alat', 'like', '%' . $request->cari . '%');
         }
         
-        $alat = $query->get();
-        // dd($alat);
-        // Query untuk mengambil data file
-        // $files = DB::table('files_alat_olahraga');
+        $hasil = $query->get();
+        $kat = new kategori();
+        $kategori = $kat->get_all_data();
+
+        $files = new filesAlatOlahraga();
+
+        // mengirimkan data ke tampilan
+        return view('tempat.cariAlat', ['alat' => $hasil, 'kategori' => $kategori, 'files' => $files]);
     }
 }
