@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\filesLapanganOlahraga;
+use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LapanganOlahraga extends Controller
 {
@@ -131,5 +133,28 @@ class LapanganOlahraga extends Controller
         }
     
         return redirect()->back()->with("success", "Berhasil Mengubah Detail Lapangan!");
+    }
+
+    public function searchLapangan(Request $request)
+    {
+        // $search = $request->input("cari");
+        $query = DB::table('lapangan_olahraga')->where('deleted_at',"=",null)->where("status_lapangan","=","Aktif");
+    
+        if ($request->filled('kategori')) {
+            $query->where('kategori_lapangan', $request->kategori);
+        }
+        
+        if ($request->filled('cari')) {
+            $query->where('nama_lapangan', 'like', '%' . $request->cari . '%');
+        }
+        
+        $hasil = $query->get();
+        $kat = new kategori();
+        $kategori = $kat->get_all_data();
+
+        $files = new filesLapanganOlahraga();
+
+        // mengirimkan data ke tampilan
+        return view('pemilik.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'files' => $files]);
     }
 }

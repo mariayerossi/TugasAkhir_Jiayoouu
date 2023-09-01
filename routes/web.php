@@ -106,15 +106,15 @@ Route::get("/berandaPemilik", function () {
 })->middleware([CekPemilik::class]);
 Route::post("/editAlatdiPemilik", [AlatOlahraga::class, "editAlat"]);
 Route::get("/cariLapangan", function () {
-    $id = Session::get("dataRole")->id_pemilik;
     $kat = new kategori();
     $param["kategori"] = $kat->get_all_data();
     $lapa = new ModelsLapanganOlahraga();
-    $param["lapangan"] = $lapa->get_all_data2($id);
+    $param["lapangan"] = $lapa->get_all_data2();
     $files = new filesLapanganOlahraga();
     $param["files"] = $files;
     return view("pemilik.cariLapangan")->with($param);
 })->middleware([CekPemilik::class]);
+Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapangan"]);
 
 // -------------------------------
 // HALAMAN PIHAK TEMPAT

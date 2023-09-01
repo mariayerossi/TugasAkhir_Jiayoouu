@@ -60,7 +60,7 @@
                     @endif
                 </select>
             </div>
-            <input type="text" name="cari" class="form-control" placeholder="Cari produk..."> 
+            <input type="text" name="cari" class="form-control" placeholder="Cari Alat..."> 
             <div class="input-group-append">
                 <button class="btn btn-success" type="submit">
                     <i class="bi bi-search"></i>
@@ -73,11 +73,11 @@
     <div class="row mt-4">
         @if (!$alat->isEmpty())
             @foreach ($alat as $item)
-                @php
-                    $dataFiles = $files->get_all_data($item->id_alat)->first();
-                @endphp
-                <a href="/detailAlatUmum/{{$item->id_alat}}">
-                    <div class="col-md-3 product-col mb-4">
+                <div class="col-md-3 product-col mb-4">
+                    @php
+                        $dataFiles = $files->get_all_data($item->id_alat)->first();
+                    @endphp
+                    <a href="/detailAlatUmum/{{$item->id_alat}}">
                         <div class="card h-100">
                             <div class="aspect-ratio-square">
                                 <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" class="card-img-top">
@@ -88,8 +88,8 @@
                                 <p class="card-text">Stok : {{$item->stok_alat}}</p>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             @endforeach
         @endif
     </div>
