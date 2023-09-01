@@ -34,4 +34,8 @@ class pihakTempat extends Model
         $tempat->saldo_tempat = $data["saldo"];
         $tempat->save();
     }
+
+    public function get_all_data(){
+        return pihakTempat::where('deleted_at',"=",null)->get();
+    }
 }

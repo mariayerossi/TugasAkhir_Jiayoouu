@@ -30,4 +30,8 @@ class customer extends Model
     {
         return customer::where('email_user',"=", $isi)->get();
     }
+
+    public function get_all_data(){
+        return customer::where('deleted_at',"=",null)->get();
+    }
 }

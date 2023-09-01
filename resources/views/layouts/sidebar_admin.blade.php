@@ -60,6 +60,30 @@ Sportiva
             #sidebar {padding-top: 15px;}
             #sidebar a {font-size: 18px;}
         }
+
+        /* Style for sidebar dropdown */
+        .sidebar-dropdown-content {
+            display: none;
+            position: relative;
+            background-color: #e3e3e3;
+            min-width: 240px; /* match the sidebar width */
+            box-shadow: none; /* you may want to remove this or adjust according to the sidebar's look */
+            z-index: 1;
+        }
+
+        .sidebar-dropdown:hover .sidebar-dropdown-content {
+            display: block;
+        }
+
+        /* Adjust position of dropdown items */
+        .sidebar-dropdown-content a {
+            padding-left: 30px;
+        }
+
+        .sidebar-dropdown-content a:hover {
+            background-color: #007466;
+            color: white;
+        }
     </style>
     
     <div id="sidebar">
@@ -73,6 +97,23 @@ Sportiva
             <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain</a>
             <a href="/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
             <a href="/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
+            <div class="sidebar-dropdown">
+                <a href="#"><i class="bi bi-box-seam me-3"></i>Daftar Produk <i class="bi bi-caret-down-fill"></i></a>
+                <div class="sidebar-dropdown-content">
+                    <a href="">Alat Olahraga</a>
+                    <a href="">Lapangan Olahraga</a>
+                    <!-- Add other sports or categories here -->
+                </div>
+            </div>
+            <div class="sidebar-dropdown">
+                <a href="#"><i class="bi bi-people me-3"></i>Daftar User <i class="bi bi-caret-down-fill"></i></a>
+                <div class="sidebar-dropdown-content">
+                    <a href="/daftarCustomer">Customer</a>
+                    <a href="/daftarPemilik">Pemilik Alat Olahraga</a>
+                    <a href="/daftarTempat">Tempat Olahraga</a>
+                    <!-- Add other sports or categories here -->
+                </div>
+            </div>
             <a href=""><i class="bi bi-clipboard-data me-3"></i>Laporan</a>
             <a href="/logout"><i class="bi bi-box-arrow-right me-3"></i>Logout</a>
         </div>

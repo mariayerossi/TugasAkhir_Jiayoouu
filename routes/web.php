@@ -9,10 +9,13 @@ use App\Http\Middleware\CekPemilik;
 use App\Http\Middleware\CekTempat;
 use App\Http\Middleware\Guest;
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
+use App\Models\customer;
 use App\Models\filesAlatOlahraga;
 use App\Models\filesLapanganOlahraga;
 use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
+use App\Models\pemilikAlat;
+use App\Models\pihakTempat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -62,6 +65,21 @@ Route::get("/masterKategori", function () {
 })->middleware([CekAdmin::class]);
 Route::post("/tambahKategori", [KategoriOlahraga::class, "tambahKategori"]);
 Route::get("/hapusKategori/{id}", [KategoriOlahraga::class, "hapusKategori"]);
+Route::get("/daftarCustomer", function () {
+    $cust = new customer();
+    $param["customer"] = $cust->get_all_data();
+    return view("admin.daftarCustomer")->with($param);
+})->middleware([CekAdmin::class]);
+Route::get("/daftarPemilik", function () {
+    $pemilik = new pemilikAlat();
+    $param["pemilik"] = $pemilik->get_all_data();
+    return view("admin.daftarPemilik")->with($param);
+})->middleware([CekAdmin::class]);
+Route::get("/daftarTempat", function () {
+    $tempat = new pihakTempat();
+    $param["tempat"] = $tempat->get_all_data();
+    return view("admin.daftarTempat")->with($param);
+})->middleware([CekAdmin::class]);
 
 // -------------------------------
 // HALAMAN PEMILIK ALAT

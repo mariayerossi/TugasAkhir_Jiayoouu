@@ -1,6 +1,14 @@
 @extends('layouts.sidebar_admin')
 
 @section('content')
+<style>
+    .img-ratio-16-9 {
+        width: 150px;
+        height: 84.375px;
+        object-fit: cover;
+    }
+
+</style>
 <div class="container mt-5">
     <h2 class="text-center mb-5">Registrasi Tempat Olahraga</h2>
     @include("layouts.message")
@@ -27,8 +35,8 @@
                             <td>{{$item["alamat"]}}</td>
                             <td>{{$item["email"]}}</td>
                             <td>{{$item["telepon"]}}</td>
-                            <td><a href="{{ asset('upload/' . $item['ktp']) }}"><img src="{{ asset('upload/' . $item['ktp']) }}" alt="" style="width:150px"></a></td>
-                            <td><a href="{{ asset('upload/' . $item['npwp']) }}"><img src="{{ asset('upload/' . $item['npwp']) }}" alt="" style="width:150px"></a></td>
+                            <td><a href="{{ asset('upload/' . $item['ktp']) }}"><img class="img-ratio-16-9" src="{{ asset('upload/' . $item['ktp']) }}" alt=""></a></td>
+                            <td><a href="{{ asset('upload/' . $item['npwp']) }}"><img class="img-ratio-16-9" src="{{ asset('upload/' . $item['npwp']) }}" alt=""></a></td>
                             <td><a href="/konfirmasiTempat/{{$item['ktp']}}" class="btn btn-primary">Konfirmasi</a></td>
                         </tr>
                     @endforeach

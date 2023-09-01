@@ -31,4 +31,8 @@ class pemilikAlat extends Model
         $pemilik->saldo_pemilik = $data["saldo"];
         $pemilik->save();
     }
+
+    public function get_all_data(){
+        return pemilikAlat::where('deleted_at',"=",null)->get();
+    }
 }
