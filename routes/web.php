@@ -115,6 +115,13 @@ Route::get("/cariLapangan", function () {
     return view("pemilik.cariLapangan")->with($param);
 })->middleware([CekPemilik::class]);
 Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapangan"]);
+Route::get("/detailLapanganUmum/{id}", function ($id) {//melihat detail lapangan olahraga milik org lain
+    $lapa = new ModelsLapanganOlahraga();
+    $param["lapangan"] = $lapa->get_all_data_by_id($id);
+    $files = new filesLapanganOlahraga();
+    $param["files"] = $files->get_all_data($id);
+    return view("pemilik.detailLapanganUmum")->with($param);
+})->middleware([CekPemilik::class]);
 
 // -------------------------------
 // HALAMAN PIHAK TEMPAT

@@ -84,7 +84,7 @@
                 Status : {{$alat->first()->status_alat}}
             </p>
 
-            <a href="/requestAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Request Alat</a>
+            <a href="/requestAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Request Alat Olahraga</a>
         </div>
     </div>
 
