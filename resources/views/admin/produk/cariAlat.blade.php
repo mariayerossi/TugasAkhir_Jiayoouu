@@ -77,7 +77,7 @@
                     @php
                         $dataFiles = $files->get_all_data($item->id_alat)->first();
                     @endphp
-                    <a href="/detailAlatUmum/{{$item->id_alat}}">
+                    <a href="/admin/detailAlatUmumdi/{{$item->id_alat}}">
                         <div class="card h-100">
                             <div class="aspect-ratio-square">
                                 <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" class="card-img-top">

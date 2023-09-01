@@ -89,6 +89,15 @@ Route::get("/cariAlatdiAdmin", function () {
     $param["files"] = $files;
     return view("admin.produk.cariAlat")->with($param);
 })->middleware([CekAdmin::class]);
+Route::prefix("/admin")->group(function(){
+    Route::get("/detailAlatUmumdi/{id}", function ($id) {//melihat detail alat olahraga milik org lain
+        $alat = new ModelsAlatOlahraga();
+        $param["alat"] = $alat->get_all_data_by_id($id);
+        $files = new filesAlatOlahraga();
+        $param["files"] = $files->get_all_data($id);
+        return view("admin.produk.detailAlatUmum")->with($param);
+    })->middleware([CekAdmin::class]);
+});
 
 // -------------------------------
 // HALAMAN PEMILIK ALAT

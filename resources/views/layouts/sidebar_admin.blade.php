@@ -112,7 +112,6 @@ Sportiva
                     <a href="/daftarCustomer">Customer</a>
                     <a href="/daftarPemilik">Pemilik Alat Olahraga</a>
                     <a href="/daftarTempat">Tempat Olahraga</a>
-                    <!-- Add other sports or categories here -->
                 </div>
             </div>
             <a href=""><i class="bi bi-clipboard-data me-3"></i>Laporan</a>
