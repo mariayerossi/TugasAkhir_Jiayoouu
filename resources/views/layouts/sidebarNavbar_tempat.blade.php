@@ -11,7 +11,7 @@ Sportiva
             margin: 0;
             padding: 0;
             transition: margin-left 0.5s;
-            background-color: #f3feff;
+            background-color: #f9feff;
         }
     
         #sidebar {
