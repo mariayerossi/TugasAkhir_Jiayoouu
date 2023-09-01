@@ -68,17 +68,26 @@ Route::get("/hapusKategori/{id}", [KategoriOlahraga::class, "hapusKategori"]);
 Route::get("/daftarCustomer", function () {
     $cust = new customer();
     $param["customer"] = $cust->get_all_data();
-    return view("admin.daftarCustomer")->with($param);
+    return view("admin.users.daftarCustomer")->with($param);
 })->middleware([CekAdmin::class]);
 Route::get("/daftarPemilik", function () {
     $pemilik = new pemilikAlat();
     $param["pemilik"] = $pemilik->get_all_data();
-    return view("admin.daftarPemilik")->with($param);
+    return view("admin.users.daftarPemilik")->with($param);
 })->middleware([CekAdmin::class]);
 Route::get("/daftarTempat", function () {
     $tempat = new pihakTempat();
     $param["tempat"] = $tempat->get_all_data();
-    return view("admin.daftarTempat")->with($param);
+    return view("admin.users.daftarTempat")->with($param);
+})->middleware([CekAdmin::class]);
+Route::get("/cariAlatdiAdmin", function () {
+    $kat = new kategori();
+    $param["kategori"] = $kat->get_all_data();
+    $alat = new ModelsAlatOlahraga();
+    $param["alat"] = $alat->get_all_data2();
+    $files = new filesAlatOlahraga();
+    $param["files"] = $files;
+    return view("admin.produk.cariAlat")->with($param);
 })->middleware([CekAdmin::class]);
 
 // -------------------------------
