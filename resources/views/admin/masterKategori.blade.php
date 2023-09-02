@@ -5,7 +5,7 @@
     <h2 class="text-center mb-5">Tambah Kategori Olahraga</h2>
     @include("layouts.message")
 
-    <form action="tambahKategori" method="post">
+    <form action="/admin/tambahKategori" method="post">
         @csrf
         <div class="row">
             <div class="col-md-2 col-12">
@@ -35,7 +35,7 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$item->nama_kategori}}</td>
-                            <td><a href="/hapusKategori/{{$item->id_kategori}}" class="btn btn-danger">Hapus</a></td>
+                            <td><a href="/admin/hapusKategori/{{$item->id_kategori}}" class="btn btn-danger">Hapus</a></td>
                         </tr>
                     @endforeach
                 @else

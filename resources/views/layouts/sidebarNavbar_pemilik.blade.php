@@ -148,13 +148,13 @@ Sportiva
     </style>
     
     <div id="sidebar">
-        <a href="/berandaPemilik"><i class="bi bi-house me-3"></i>Beranda</a>
-        <a href="/cariLapangan"><i class="bi bi-search me-3"></i>Cari Lapangan Olahraga</a>
+        <a href="/pemilik/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
+        <a href="/pemilik/cariLapangan"><i class="bi bi-search me-3"></i>Cari Lapangan Olahraga</a>
         <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
-                <a href="/masterAlatdiPemilik">Tambah Alat</a>
-                <a href="/daftarAlatdiPemilik">Daftar Alat</a>
+                <a href="/pemilik/masterAlat">Tambah Alat</a>
+                <a href="/pemilik/daftarAlat">Daftar Alat</a>
                 <!-- Add other sports or categories here -->
             </div>
         </div>
@@ -174,7 +174,7 @@ Sportiva
             </a>
             <div class="coba">
                 <div class="profile-dropdown">
-                    <img src="../assets/img/user_icon.png" alt="Profile" class="profile-image">
+                    <img src="{{ asset('../assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
                     <div class="dropdown-content">
                         <a href="/editprofile">Profile</a>
                         <a href="/logout">Logout</a>

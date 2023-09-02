@@ -39,13 +39,13 @@
                     <tr>
                         <td>
                             <div class="square-image-container">
-                                <a href="/lihatDetaildiPemilik/{{$item->id_alat}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt=""></a>
+                                <a href="/pemilik/lihatDetail/{{$item->id_alat}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt=""></a>
                             </div>
                         </td>
-                        <td><a href="/lihatDetaildiPemilik/{{$item->id_alat}}">{{$item->nama_alat}}</a></td>
+                        <td><a href="/pemilik/lihatDetail/{{$item->id_alat}}">{{$item->nama_alat}}</a></td>
                         <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
                         <td>{{$item->stok_alat}}</td>
-                        <td><a class="btn btn-outline-success" href="/editAlatdiPemilik/{{$item->id_alat}}">Edit</a></td>
+                        <td><a class="btn btn-outline-success" href="/pemilik/editAlat/{{$item->id_alat}}">Edit</a></td>
                     </tr>
                 @endforeach
             @else

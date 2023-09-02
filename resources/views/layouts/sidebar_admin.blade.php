@@ -94,24 +94,24 @@ Sportiva
             <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
         </a>
         <div class="coba">
-            <a href="/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
+            <a href="/admin/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
             <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain</a>
-            <a href="/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
-            <a href="/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
+            <a href="/admin/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
+            <a href="/admin/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
             <div class="sidebar-dropdown">
                 <a href="#"><i class="bi bi-box-seam me-3"></i>Daftar Produk <i class="bi bi-caret-down-fill"></i></a>
                 <div class="sidebar-dropdown-content">
-                    <a href="/cariAlatdiAdmin">Alat Olahraga</a>
-                    <a href="/cariLapangandiAdmin">Lapangan Olahraga</a>
+                    <a href="/admin/cariAlat">Alat Olahraga</a>
+                    <a href="/admin/cariLapangan">Lapangan Olahraga</a>
                     <!-- Add other sports or categories here -->
                 </div>
             </div>
             <div class="sidebar-dropdown">
                 <a href="#"><i class="bi bi-people me-3"></i>Daftar User <i class="bi bi-caret-down-fill"></i></a>
                 <div class="sidebar-dropdown-content">
-                    <a href="/daftarCustomer">Customer</a>
-                    <a href="/daftarPemilik">Pemilik Alat Olahraga</a>
-                    <a href="/daftarTempat">Tempat Olahraga</a>
+                    <a href="/admin/daftarCustomer">Customer</a>
+                    <a href="/admin/daftarPemilik">Pemilik Alat Olahraga</a>
+                    <a href="/admin/daftarTempat">Tempat Olahraga</a>
                 </div>
             </div>
             <a href=""><i class="bi bi-clipboard-data me-3"></i>Laporan</a>

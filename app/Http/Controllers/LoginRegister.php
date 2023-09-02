@@ -264,7 +264,7 @@ class LoginRegister extends Controller
         if ($request->email == "admin@gmail.com" && $request->password == "asdfghjkl") {
             //masuk role admin
             Session::put("role","admin");
-            return redirect('/beranda');
+            return redirect('/admin/beranda');
         }
         else {
             //cek apakah role user
@@ -286,7 +286,7 @@ class LoginRegister extends Controller
                     //diarahkan ke halaman pemilik
                     Session::put("role","pemilik");
                     Session::put("dataRole", $dataPemilik->first());
-                    return redirect('/berandaPemilik');
+                    return redirect('/pemilik/beranda');
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }

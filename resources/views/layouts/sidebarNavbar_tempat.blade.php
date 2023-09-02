@@ -182,7 +182,7 @@ Sportiva
             </a>
             <div class="coba">
                 <div class="profile-dropdown">
-                    <img src="../assets/img/user_icon.png" alt="Profile" class="profile-image">
+                    <img src="{{ asset('../assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
                     <div class="dropdown-content">
                         <a href="/editprofile">Profile</a>
                         <a href="/logout">Logout</a>

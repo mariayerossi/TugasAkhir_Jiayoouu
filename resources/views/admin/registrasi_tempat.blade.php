@@ -37,7 +37,7 @@
                             <td>{{$item["telepon"]}}</td>
                             <td><a href="{{ asset('upload/' . $item['ktp']) }}"><img class="img-ratio-16-9" src="{{ asset('upload/' . $item['ktp']) }}" alt=""></a></td>
                             <td><a href="{{ asset('upload/' . $item['npwp']) }}"><img class="img-ratio-16-9" src="{{ asset('upload/' . $item['npwp']) }}" alt=""></a></td>
-                            <td><a href="/konfirmasiTempat/{{$item['ktp']}}" class="btn btn-primary">Konfirmasi</a></td>
+                            <td><a href="/admin/konfirmasiTempat/{{$item['ktp']}}" class="btn btn-primary">Konfirmasi</a></td>
                         </tr>
                     @endforeach
                 @else

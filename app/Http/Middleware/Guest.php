@@ -19,7 +19,7 @@ class Guest
         // Cek apakah user pernah login
         if(Session::has("role")){
             // Jika iya kembalikan sesuai posisi semula
-            if (Session::get("role") == "admin") return redirect('/beranda');
+            if (Session::get("role") == "admin") return redirect('/admin/beranda');
             if (Session::get("role") == "pemilik") return redirect('/berandaPemilik');
             if (Session::get("role") == "tempat") return redirect('/berandaTempat');
         }
