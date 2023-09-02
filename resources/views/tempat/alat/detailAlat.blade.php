@@ -82,7 +82,7 @@
                 Status : {{$alat->first()->status_alat}}
             </p>
 
-            <a href="/editAlatdiTempat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Ubah Detail Alat</a>
+            <a href="/tempat/alat/editAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Ubah Detail Alat</a>
         </div>
     </div>
 

@@ -63,7 +63,7 @@
     <div class="row mb-5">
         <div class="col-11">
             <h2>Rp {{number_format($lapangan->first()->harga_sewa_lapangan, 0, ',', '.')}} /jam</h2>
-            <a href="/editLapangan/{{$lapangan->first()->id_lapangan}}" class="btn btn-primary mt-3">Ubah Detail Lapangan</a>
+            <a href="/tempat/lapangan/editLapangan/{{$lapangan->first()->id_lapangan}}" class="btn btn-primary mt-3">Ubah Detail Lapangan</a>
         </div>
     </div>
 

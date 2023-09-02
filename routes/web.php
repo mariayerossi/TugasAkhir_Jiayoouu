@@ -103,6 +103,12 @@ Route::prefix("/admin")->group(function(){
 // HALAMAN PEMILIK ALAT
 // -------------------------------
 Route::prefix("/pemilik")->group(function(){
+    Route::get("/beranda", function () {
+        $id = Session::get("dataRole")->id_pemilik;
+        $alat = new ModelsAlatOlahraga();
+        $param["jumlahAlat"] = $alat->count_all_data($id, "Pemilik");
+        return view("pemilik.beranda")->with($param);
+    })->middleware([CekPemilik::class]);
     Route::get("/masterAlat", function () {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
@@ -135,12 +141,6 @@ Route::prefix("/pemilik")->group(function(){
         return view("pemilik.editAlat")->with($param);
         // echo $id;
     })->middleware([CekPemilik::class]);
-    Route::get("/beranda", function () {
-        $id = Session::get("dataRole")->id_pemilik;
-        $alat = new ModelsAlatOlahraga();
-        $param["jumlahAlat"] = $alat->count_all_data($id, "Pemilik");
-        return view("pemilik.beranda")->with($param);
-    })->middleware([CekPemilik::class]);
     Route::post("/editAlat", [AlatOlahraga::class, "editAlat"]);
     Route::get("/cariLapangan", function () {
         $kat = new kategori();
@@ -165,78 +165,12 @@ Route::prefix("/pemilik")->group(function(){
 // HALAMAN PIHAK TEMPAT
 // -------------------------------
 Route::prefix("/tempat")->group(function(){
-    Route::get("/berandaTempat", function () {
+    Route::get("/beranda", function () {
         $role = Session::get("dataRole")->id_tempat;
         $lapa = new ModelsLapanganOlahraga();
         $param["jumlahLapangan"] = $lapa->count_all_data($role);
         return view("tempat.beranda")->with($param);
     })->middleware([CekTempat::class]);
-    Route::get("/masterLapangan", function () {
-        $kat = new kategori();
-        $param["kategori"] = $kat->get_all_data();
-        return view("tempat.lapangan.masterLapangan")->with($param);
-    })->middleware([CekTempat::class]);
-    Route::post("/tambahLapangan", [LapanganOlahraga::class, "tambahLapangan"]);
-    Route::get("/daftarLapangan", function () {
-        $role = Session::get("dataRole")->id_tempat;
-        $files = new filesLapanganOlahraga();
-        $lap = new ModelsLapanganOlahraga();
-        $param["lapangan"] = $lap->get_all_data($role);
-        $param["files"] = $files;
-        return view("tempat.lapangan.daftarLapangan")->with($param);
-    })->middleware([CekTempat::class]);
-    Route::get("/lihatDetailLapangan/{id}", function ($id) {//melihat detail lapangan olahraga miliknya
-        $lap = new ModelsLapanganOlahraga();
-        $param["lapangan"] = $lap->get_all_data_by_id($id);
-        $files = new filesLapanganOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        return view("tempat.lapangan.detailLapangan")->with($param);
-        // echo $id;
-    })->middleware([CekTempat::class]);
-    Route::get("/editLapangan/{id}", function ($id) {
-        $kat = new kategori();
-        $param["kategori"] = $kat->get_all_data();
-        $lap = new ModelsLapanganOlahraga();
-        $param["lapangan"] = $lap->get_all_data_by_id($id);
-        $files = new filesLapanganOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        return view("tempat.lapangan.editLapangan")->with($param);
-        // echo $id;
-    })->middleware([CekTempat::class]);
-    Route::post("/editLapangan", [LapanganOlahraga::class, "editLapangan"]);
-
-    //Master alat di tempat olahraga
-    Route::get("/masterAlatdiTempat", function () {
-        $kat = new kategori();
-        $param["kategori"] = $kat->get_all_data();
-        return view("tempat.alat.masterAlat")->with($param);
-    })->middleware([CekTempat::class]);
-    Route::post("/tambahAlatdiTempat", [AlatOlahraga::class, "tambahAlat"]);
-    Route::get("/daftarAlatdiTempat", function () {
-        $id = Session::get("dataRole")->id_tempat;
-        $files = new filesAlatOlahraga();
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data($id, "Tempat");
-        $param["files"] = $files;
-        return view("tempat.alat.daftarAlat")->with($param);
-    })->middleware([CekTempat::class]);
-    Route::get("/lihatDetaildiTempat/{id}", function ($id) {//melihat detail alat olahraga miliknya
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data_by_id($id);
-        $files = new filesAlatOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        return view("tempat.alat.detailAlat")->with($param);
-    })->middleware([CekTempat::class]);
-    Route::get("/editAlatdiTempat/{id}", function ($id) {
-        $kat = new kategori();
-        $param["kategori"] = $kat->get_all_data();
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data_by_id($id);
-        $files = new filesAlatOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        return view("tempat.alat.editAlat")->with($param);
-    })->middleware([CekTempat::class]);
-    Route::post("/editAlatdiTempat", [AlatOlahraga::class, "editAlat"]);
     Route::get("/cariAlat", function () {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
@@ -254,4 +188,76 @@ Route::prefix("/tempat")->group(function(){
         $param["files"] = $files->get_all_data($id);
         return view("tempat.detailAlatUmum")->with($param);
     })->middleware([CekTempat::class]);
+
+    //Bagian lapangan olahraga
+    Route::prefix("/lapangan")->group(function(){
+        Route::get("/masterLapangan", function () {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            return view("tempat.lapangan.masterLapangan")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::post("/tambahLapangan", [LapanganOlahraga::class, "tambahLapangan"]);
+        Route::get("/daftarLapangan", function () {
+            $role = Session::get("dataRole")->id_tempat;
+            $files = new filesLapanganOlahraga();
+            $lap = new ModelsLapanganOlahraga();
+            $param["lapangan"] = $lap->get_all_data($role);
+            $param["files"] = $files;
+            return view("tempat.lapangan.daftarLapangan")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::get("/lihatDetailLapangan/{id}", function ($id) {//melihat detail lapangan olahraga miliknya
+            $lap = new ModelsLapanganOlahraga();
+            $param["lapangan"] = $lap->get_all_data_by_id($id);
+            $files = new filesLapanganOlahraga();
+            $param["files"] = $files->get_all_data($id);
+            return view("tempat.lapangan.detailLapangan")->with($param);
+            // echo $id;
+        })->middleware([CekTempat::class]);
+        Route::get("/editLapangan/{id}", function ($id) {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            $lap = new ModelsLapanganOlahraga();
+            $param["lapangan"] = $lap->get_all_data_by_id($id);
+            $files = new filesLapanganOlahraga();
+            $param["files"] = $files->get_all_data($id);
+            return view("tempat.lapangan.editLapangan")->with($param);
+            // echo $id;
+        })->middleware([CekTempat::class]);
+        Route::post("/editLapangan", [LapanganOlahraga::class, "editLapangan"]);
+    });
+
+    //Bagian alat olahraga
+    Route::prefix("/alat")->group(function(){
+        Route::get("/masterAlat", function () {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            return view("tempat.alat.masterAlat")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::post("/tambahAlat", [AlatOlahraga::class, "tambahAlat"]);
+        Route::get("/daftarAlat", function () {
+            $id = Session::get("dataRole")->id_tempat;
+            $files = new filesAlatOlahraga();
+            $alat = new ModelsAlatOlahraga();
+            $param["alat"] = $alat->get_all_data($id, "Tempat");
+            $param["files"] = $files;
+            return view("tempat.alat.daftarAlat")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::get("/lihatDetail/{id}", function ($id) {//melihat detail alat olahraga miliknya
+            $alat = new ModelsAlatOlahraga();
+            $param["alat"] = $alat->get_all_data_by_id($id);
+            $files = new filesAlatOlahraga();
+            $param["files"] = $files->get_all_data($id);
+            return view("tempat.alat.detailAlat")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::get("/editAlat/{id}", function ($id) {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            $alat = new ModelsAlatOlahraga();
+            $param["alat"] = $alat->get_all_data_by_id($id);
+            $files = new filesAlatOlahraga();
+            $param["files"] = $files->get_all_data($id);
+            return view("tempat.alat.editAlat")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::post("/editAlat", [AlatOlahraga::class, "editAlat"]);
+    });
 });

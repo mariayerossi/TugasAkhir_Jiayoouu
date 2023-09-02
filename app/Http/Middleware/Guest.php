@@ -20,8 +20,8 @@ class Guest
         if(Session::has("role")){
             // Jika iya kembalikan sesuai posisi semula
             if (Session::get("role") == "admin") return redirect('/admin/beranda');
-            if (Session::get("role") == "pemilik") return redirect('/berandaPemilik');
-            if (Session::get("role") == "tempat") return redirect('/berandaTempat');
+            if (Session::get("role") == "pemilik") return redirect('/pemilik/beranda');
+            if (Session::get("role") == "tempat") return redirect('/tempat/beranda');
         }
 
         // Jika tidak lanjutkan request

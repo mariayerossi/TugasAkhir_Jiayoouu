@@ -38,12 +38,12 @@
                     <tr>
                         <td>
                             <div class="square-image-container">
-                                <a href="/lihatDetailLapangan/{{$item->id_lapangan}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_lapangan) }}" alt=""></a>
+                                <a href="/tempat/lapangan/lihatDetailLapangan/{{$item->id_lapangan}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_lapangan) }}" alt=""></a>
                             </div>
                         </td>
-                        <td><a href="/lihatDetailLapangan/{{$item->id_lapangan}}">{{$item->nama_lapangan}}</a></td>
+                        <td><a href="/tempat/lapangan/lihatDetailLapangan/{{$item->id_lapangan}}">{{$item->nama_lapangan}}</a></td>
                         <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
-                        <td><a class="btn btn-outline-success" href="/editLapangan/{{$item->id_lapangan}}">Edit</a></td>
+                        <td><a class="btn btn-outline-success" href="/tempat/lapangan/editLapangan/{{$item->id_lapangan}}">Edit</a></td>
                     </tr>
                 @endforeach
             @else

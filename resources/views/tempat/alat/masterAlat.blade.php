@@ -17,7 +17,7 @@
             <li> Alat olahraga harus bebas dari kerusakan yang dapat mengancam keselamatan pengguna.</li>
         </ul>
     </div>
-    <form action="/tambahAlatdiTempat" method="post" enctype="multipart/form-data" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-5 mb-5">
+    <form action="/tempat/alat/tambahAlat" method="post" enctype="multipart/form-data" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-5 mb-5">
         @csrf
         <div class="row">
             <div class="col-md-3 col-12 mt-2">

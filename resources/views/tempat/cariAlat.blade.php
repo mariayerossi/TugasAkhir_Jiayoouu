@@ -48,7 +48,7 @@
 
 <div class="container mt-5">
     <div class="d-flex justify-content-center align-items-center mt-3 mb-3"> 
-        <form action="/searchAlat" method="GET" class="input-group responsive-form">
+        <form action="/tempat/searchAlat" method="GET" class="input-group responsive-form">
             @csrf
             <div class="input-group-prepend">
                 <select class="form-control" name="kategori">
@@ -77,7 +77,7 @@
                     @php
                         $dataFiles = $files->get_all_data($item->id_alat)->first();
                     @endphp
-                    <a href="/detailAlatUmum/{{$item->id_alat}}">
+                    <a href="/tempat/detailAlatUmum/{{$item->id_alat}}">
                         <div class="card h-100">
                             <div class="aspect-ratio-square">
                                 <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" class="card-img-top">

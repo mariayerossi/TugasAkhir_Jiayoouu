@@ -299,7 +299,7 @@ class LoginRegister extends Controller
                 if (password_verify($request->password, $dataTempat->first()->password_tempat)) {
                     Session::put("role","tempat");
                     Session::put("dataRole", $dataTempat->first());
-                    return redirect('/berandaTempat');
+                    return redirect('/tempat/beranda');
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }
