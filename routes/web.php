@@ -81,22 +81,48 @@ Route::prefix("/admin")->group(function(){
         $param["tempat"] = $tempat->get_all_data();
         return view("admin.users.daftarTempat")->with($param);
     })->middleware([CekAdmin::class]);
-    Route::get("/cariAlat", function () {
-        $kat = new kategori();
-        $param["kategori"] = $kat->get_all_data();
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data2();
-        $files = new filesAlatOlahraga();
-        $param["files"] = $files;
-        return view("admin.produk.cariAlat")->with($param);
-    })->middleware([CekAdmin::class]);
-    Route::get("/detailAlatUmum/{id}", function ($id) {//melihat detail alat olahraga milik org lain
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data_by_id($id);
-        $files = new filesAlatOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        return view("admin.produk.detailAlatUmum")->with($param);
-    })->middleware([CekAdmin::class]);
+
+    //Bagian Alat Olahraga
+    Route::prefix("/alat")->group(function(){
+        Route::get("/cariAlat", function () {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            $alat = new ModelsAlatOlahraga();
+            $param["alat"] = $alat->get_all_data2();
+            $files = new filesAlatOlahraga();
+            $param["files"] = $files;
+            return view("admin.produk.cariAlat")->with($param);
+        })->middleware([CekAdmin::class]);
+        Route::get("/detailAlatUmum/{id}", function ($id) {//melihat detail alat olahraga milik org lain
+            $alat = new ModelsAlatOlahraga();
+            $param["alat"] = $alat->get_all_data_by_id($id);
+            $files = new filesAlatOlahraga();
+            $param["files"] = $files->get_all_data($id);
+            return view("admin.produk.detailAlatUmum")->with($param);
+        })->middleware([CekAdmin::class]);
+        Route::get("/searchAlat", [AlatOlahraga::class, "searchAlat"]);
+    });
+
+    //Bagian Lapangan Olahraga
+    Route::prefix("/lapangan")->group(function(){
+        Route::get("/cariLapangan", function () {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            $lapa = new ModelsLapanganOlahraga();
+            $param["lapangan"] = $lapa->get_all_data2();
+            $files = new filesLapanganOlahraga();
+            $param["files"] = $files;
+            return view("admin.produk.cariLapangan")->with($param);
+        })->middleware([CekAdmin::class]);
+        Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapangan"]);
+        Route::get("/detailLapanganUmum/{id}", function ($id) {//melihat detail lapangan olahraga milik org lain
+            $lapa = new ModelsLapanganOlahraga();
+            $param["lapangan"] = $lapa->get_all_data_by_id($id);
+            $files = new filesLapanganOlahraga();
+            $param["files"] = $files->get_all_data($id);
+            return view("admin.produk.detailLapanganUmum")->with($param);
+        })->middleware([CekAdmin::class]);
+    });
 });
 
 // -------------------------------

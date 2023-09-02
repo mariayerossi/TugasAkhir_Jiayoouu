@@ -101,8 +101,8 @@ Sportiva
             <div class="sidebar-dropdown">
                 <a href="#"><i class="bi bi-box-seam me-3"></i>Daftar Produk <i class="bi bi-caret-down-fill"></i></a>
                 <div class="sidebar-dropdown-content">
-                    <a href="/admin/cariAlat">Alat Olahraga</a>
-                    <a href="/admin/cariLapangan">Lapangan Olahraga</a>
+                    <a href="/admin/alat/cariAlat">Alat Olahraga</a>
+                    <a href="/admin/lapangan/cariLapangan">Lapangan Olahraga</a>
                     <!-- Add other sports or categories here -->
                 </div>
             </div>

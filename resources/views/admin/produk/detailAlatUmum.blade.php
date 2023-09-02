@@ -83,8 +83,6 @@
                 Biaya Ganti Rugi : Rp {{number_format($alat->first()->ganti_rugi_alat, 0, ',', '.')}} <br>
                 Status : {{$alat->first()->status_alat}}
             </p>
-
-            <a href="/requestAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Request Alat Olahraga</a>
         </div>
     </div>
 

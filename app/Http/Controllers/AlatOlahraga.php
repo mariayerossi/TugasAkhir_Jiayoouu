@@ -7,6 +7,7 @@ use App\Models\filesAlatOlahraga;
 use App\Models\kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class AlatOlahraga extends Controller
 {
@@ -39,7 +40,7 @@ class AlatOlahraga extends Controller
         ]);
         
         $komisi = intval(str_replace(".", "", $request->komisi));
-        $ganti = intval(str_replace(".", "", $request->komisi));
+        $ganti = intval(str_replace(".", "", $request->ganti));
 
         $ukuran = $request->panjang . "x" . $request->lebar . "x" . $request->tinggi;
 
@@ -101,7 +102,7 @@ class AlatOlahraga extends Controller
         ]);
         
         $komisi = intval(str_replace(".", "", $request->komisi));
-        $ganti = intval(str_replace(".", "", $request->komisi));
+        $ganti = intval(str_replace(".", "", $request->ganti));
         
         $ukuran = $request->panjang . "x" . $request->lebar . "x" . $request->tinggi;
 
@@ -173,7 +174,14 @@ class AlatOlahraga extends Controller
 
         $files = new filesAlatOlahraga();
 
-        // mengirimkan data ke tampilan
-        return view('tempat.cariAlat', ['alat' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+        //Cek role siapa yang sedang search alat
+        $role = Session::get("role");
+        if ($role == "tempat") {
+            // mengirimkan data ke tampilan
+            return view('tempat.cariAlat', ['alat' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+        }
+        else if ($role == "admin") {
+            return view('admin.produk.cariAlat', ['alat' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+        }
     }
 }

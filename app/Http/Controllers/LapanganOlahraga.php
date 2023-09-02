@@ -7,6 +7,7 @@ use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class LapanganOlahraga extends Controller
 {
@@ -154,7 +155,14 @@ class LapanganOlahraga extends Controller
 
         $files = new filesLapanganOlahraga();
 
-        // mengirimkan data ke tampilan
-        return view('pemilik.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+        //Cek role siapa yang sedang search alat
+        $role = Session::get("role");
+        if ($role == "pemilik") {
+            // mengirimkan data ke tampilan
+            return view('pemilik.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+        }
+        else if ($role == "admin") {
+            return view('admin.produk.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+        }
     }
 }

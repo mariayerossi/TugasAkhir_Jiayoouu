@@ -5,7 +5,7 @@
     .aspect-ratio-square {
         position: relative;
         width: 100%;
-        padding-bottom: 100%; /* Aspek rasio 1:1 */
+        padding-bottom: 56.25%; /* Aspek rasio 1:1 */
         background-color: #f5f5f5; /* Warna latar belakang opsional */
         overflow: hidden;
     }
@@ -48,7 +48,7 @@
 
 <div class="container mt-5">
     <div class="d-flex justify-content-center align-items-center mt-3 mb-3"> 
-        <form action="/admin/alat/searchAlat" method="GET" class="input-group responsive-form">
+        <form action="/admin/lapangan/searchLapangan" method="GET" class="input-group responsive-form">
             @csrf
             <div class="input-group-prepend">
                 <select class="form-control" name="kategori">
@@ -60,7 +60,7 @@
                     @endif
                 </select>
             </div>
-            <input type="text" name="cari" class="form-control" placeholder="Cari Alat..."> 
+            <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan..."> 
             <div class="input-group-append">
                 <button class="btn btn-success" type="submit">
                     <i class="bi bi-search"></i>
@@ -68,24 +68,22 @@
             </div>
         </form>
     </div>
-    
     <hr>
     <div class="row mt-4">
-        @if (!$alat->isEmpty())
-            @foreach ($alat as $item)
+        @if (!$lapangan->isEmpty())
+            @foreach ($lapangan as $item)
                 <div class="col-md-3 product-col mb-4">
                     @php
-                        $dataFiles = $files->get_all_data($item->id_alat)->first();
+                        $dataFiles = $files->get_all_data($item->id_lapangan)->first();
                     @endphp
-                    <a href="/admin/alat/detailAlatUmum/{{$item->id_alat}}">
+                    <a href="/admin/lapangan/detailLapanganUmum/{{$item->id_lapangan}}">
                         <div class="card h-100">
                             <div class="aspect-ratio-square">
-                                <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" class="card-img-top">
+                                <img src="{{ asset('upload/' . $dataFiles->nama_file_lapangan) }}" class="card-img-top">
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title">{{$item->nama_alat}}</h5>
-                                <h5 class="card-text"><b>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</b></h5>
-                                <p class="card-text">Stok : {{$item->stok_alat}}</p>
+                                <h5 class="card-title">{{$item->nama_lapangan}}</h5>
+                                <h5 class="card-text"><b>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</b></h5>
                             </div>
                         </div>
                     </a>
