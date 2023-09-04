@@ -16,6 +16,7 @@ use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
+use App\Models\registerTempat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -57,8 +58,13 @@ Route::get("/logout", [LoginRegister::class, "logout"]);
 // -------------------------------
 Route::prefix("/admin")->group(function(){
     Route::view("/beranda", "admin.beranda")->middleware([CekAdmin::class]);
-    Route::view("/registrasi_tempat", "admin.registrasi_tempat")->middleware([CekAdmin::class]);
+    Route::get("/registrasi_tempat", function () {
+        $reg = new registerTempat();
+        $param["register"] = $reg->get_all_data();
+        return view("admin.registrasi_tempat")->with($param);
+    })->middleware([CekAdmin::class]);
     Route::get("/konfirmasiTempat/{id}", [LoginRegister::class, "konfirmasiTempat"]);
+    Route::get("/tolakKonfirmasiTempat/{id}", [LoginRegister::class, "tolakKonfirmasiTempat"]);
     Route::get("/masterKategori", function () {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\customer;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
+use App\Models\registerTempat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -226,10 +227,7 @@ class LoginRegister extends Controller
                 $file1->move(public_path($destinasi),$ktp);
                 $file2->move(public_path($destinasi),$npwp);
 
-                $db = [];
-                if(Session::has("regTempat")) $db = Session::get("regTempat");//ambil data lama
-
-                array_push($db, [//masukin data baru
+                $data = [
                     "nama" => $request->nama,
                     "pemilik" => $request->pemilik,
                     "email" => $request->email,
@@ -239,8 +237,9 @@ class LoginRegister extends Controller
                     "npwp" => $npwp,
                     "password" => $hash_password,
                     "saldo" => $enkripsiSaldo
-                ]);
-                Session::put("regTempat",$db);
+                ];
+                $reg = new registerTempat();
+                $reg->insertRegister($data);
 
                 return redirect()->back()->with("success", "Registrasi menunggu konfirmasi admin!");
             }
@@ -319,38 +318,38 @@ class LoginRegister extends Controller
     }
 
     public function konfirmasiTempat(Request $request){
-        if (Session::has("regTempat")) {
-            $db = [];
-            $db = Session::get("regTempat");
+        $reg = registerTempat::find($request->id);
+        
+        $data = [
+            "nama" => $reg->nama_tempat_reg,
+            "pemilik" => $reg->nama_pemilik_tempat_reg,
+            "email" => $reg->email_tempat_reg,
+            "telepon" => $reg->telepon_tempat_reg,
+            "alamat" => $reg->alamat_tempat_reg,
+            "ktp" => $reg->ktp_tempat_reg,
+            "npwp" => $reg->npwp_tempat_reg,
+            "password" => $reg->password_tempat_reg,
+            "saldo" => $reg->saldo_tempat_reg
+        ];
+        $tempat = new pihakTempat();
+        $tempat->insertTempat($data);
 
-            foreach (Session::get("regTempat") as $key => $value) {
-                if ($value["ktp"] == $request->id) {
-                    $data = [
-                        "nama"=>$value["nama"],
-                        "pemilik"=>$value["pemilik"],
-                        "email"=>$value["email"],
-                        "telepon"=>$value["telepon"],
-                        "alamat"=>$value["alamat"],
-                        "ktp" =>$value["ktp"],
-                        "npwp"=>$value["npwp"],
-                        "password" => $value["password"],
-                        "saldo" => $value["saldo"]
-                    ];
-                    $tempat = new pihakTempat();
-                    $tempat->insertTempat($data);
-                }
-            }
+        $data2 = [
+            "id" => $request->id
+        ];
+        $regis = new registerTempat();
+        $regis->deleteRegister($data2);
 
-            //jika admin mengkonfirmasi maka data akan masuk db dan data di session akan dihapus
-            foreach ($db as $key => $item) {
-                if ($item['ktp'] == $request->id) {
-                    unset($db[$key]);
-                }
-            }
-            Session::forget("regTempat");
-            Session::put("regTempat",$db);
+        return redirect()->back()->with("success", "Berhasil Konfirmasi Register!");
+    }
 
-            return redirect()->back()->with("success", "Berhasil Register!");
-        }
+    public function tolakKonfirmasiTempat(Request $request){
+        $data2 = [
+            "id" => $request->id
+        ];
+        $regis = new registerTempat();
+        $regis->deleteRegister($data2);
+
+        return redirect()->back()->with("success", "Berhasil Menolak Register!");
     }
 }
