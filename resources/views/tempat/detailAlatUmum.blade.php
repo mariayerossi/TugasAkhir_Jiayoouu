@@ -72,24 +72,61 @@
                 <i class="bi bi-chat-dots ms-5"></i> 5 review
             </p>
             <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
-            <h5 class="mt-4">Stok : {{$alat->first()->stok_alat}}</h5>
-            <p class="text-muted mt-2">
-                Kategori : {{$alat->first()->kategori_alat}} <br>
-                Berat : {{$alat->first()->berat_alat}} gram <br>
-                @php
-                    $array = explode("x", $alat->first()->ukuran_alat);
-                @endphp
-                Ukuran : {{$array[0]." cm x ".$array[1]." cm x ".$array[2]." cm"}} <br>
-                Biaya Ganti Rugi : Rp {{number_format($alat->first()->ganti_rugi_alat, 0, ',', '.')}} <br>
-                Status : {{$alat->first()->status_alat}}
-            </p>
+            <h5 class="mt-3">Stok : {{$alat->first()->stok_alat}}</h5>
 
-            <a href="/requestPermintaanAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Request Alat Olahraga</a>
+            <form action="/perequestPermintaanAlat" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                @csrf
+                <div class="d-flex justify-content-center">
+                    <h5><b>Atur Harga dan Jumlah</b></h5>
+                </div>
+                <input type="hidden" name="id_alat" value="{{$alat->first()->id_alat}}">
+                <div class="row">
+                    <div class="col-md-4 col-12 mt-2">
+                        <h6>Harga Sewa</h6>
+                    </div>
+                    <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">Rp</div>
+                            </div>
+                            <input type="number" class="form-control" min="0" name="jumlah" placeholder="Contoh: {{ number_format($alat->first()->komisi_alat + 20000, 0, ',', '.') }}" oninput="formatNumber(this)" value="{{old('harga')}}">
+                        </div>
+                        <span style="font-size: 13px">uang sewa yang customer bayar ketika menyewa alat (*sudah termasuk komisi pemilik alat dan tempat olahraga)</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-12 mt-2">
+                        <h6>Jumlah</h6>
+                    </div>
+                    <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                        <div class="input-group mb-2">
+                            <input type="number" class="form-control" min="0" name="jumlah" placeholder="Contoh: 5" oninput="formatNumber(this)" value="{{old('jumlah')}}">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">pcs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success">Request Alat</button>
+                </div>
+            </form>            
         </div>
     </div>
 
+    <p class="text-muted mt-5">
+        <h4>Detail Alat Olahraga</h4>
+        Kategori : {{$alat->first()->kategori_alat}} <br>
+        Berat : {{$alat->first()->berat_alat}} gram <br>
+        @php
+            $array = explode("x", $alat->first()->ukuran_alat);
+        @endphp
+        Ukuran : {{$array[0]." cm x ".$array[1]." cm x ".$array[2]." cm"}} <br>
+        Biaya Ganti Rugi : Rp {{number_format($alat->first()->ganti_rugi_alat, 0, ',', '.')}} <br>
+    </p>
+
     <!-- Additional details section -->
-    <div class="row mt-5">
+    <div class="row mt-4">
         <div class="col-12">
             <h4>Deskripsi Alat Olahraga</h4>
             <p>{!! nl2br(e($alat->first()->deskripsi_alat)) !!}</p>
@@ -111,4 +148,19 @@
         </div>
     </div>
 </div>
+<script>
+    function formatNumber(input) {
+        // Mengambil value dari input
+        let value = input.value;
+
+        // Menghapus semua titik dan karakter non-numerik lainnya
+        value = value.replace(/\D/g, '');
+
+        // Memformat ulang sebagai angka dengan pemisah ribuan titik
+        value = parseFloat(value).toLocaleString('id-ID');
+
+        // Mengembalikan format yang sudah diubah ke input
+        input.value = value;
+    }
+</script>
 @endsection
