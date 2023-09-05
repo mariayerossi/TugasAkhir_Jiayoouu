@@ -4,6 +4,7 @@ use App\Http\Controllers\AlatOlahraga;
 use App\Http\Controllers\KategoriOlahraga;
 use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\LoginRegister;
+use App\Http\Controllers\RequestPermintaan;
 use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
 use App\Http\Middleware\CekTempat;
@@ -220,7 +221,7 @@ Route::prefix("/tempat")->group(function(){
         $param["files"] = $files->get_all_data($id);
         return view("tempat.detailAlatUmum")->with($param);
     })->middleware([CekTempat::class]);
-    
+    Route::post("/requestPermintaanAlat", [RequestPermintaan::class, "ajukanPermintaan"]);
 
     //Bagian lapangan olahraga
     Route::prefix("/lapangan")->group(function(){

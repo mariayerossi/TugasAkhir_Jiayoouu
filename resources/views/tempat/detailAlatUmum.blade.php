@@ -74,7 +74,7 @@
             <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
             <h5 class="mt-3">Stok : {{$alat->first()->stok_alat}}</h5>
 
-            <form action="/perequestPermintaanAlat" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <form action="/tempat/requestPermintaanAlat" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 @csrf
                 <div class="d-flex justify-content-center">
                     <h5><b>Atur Harga dan Jumlah</b></h5>
@@ -89,7 +89,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">Rp</div>
                             </div>
-                            <input type="number" class="form-control" min="0" name="jumlah" placeholder="Contoh: {{ number_format($alat->first()->komisi_alat + 20000, 0, ',', '.') }}" oninput="formatNumber(this)" value="{{old('harga')}}">
+                            <input type="number" class="form-control" min="1" name="jumlah" placeholder="Contoh: {{ number_format($alat->first()->komisi_alat + 20000, 0, ',', '.') }}" oninput="formatNumber(this)" value="{{old('harga')}}" required>
                         </div>
                         <span style="font-size: 13px">uang sewa yang customer bayar ketika menyewa alat (*sudah termasuk komisi pemilik alat dan tempat olahraga)</span>
                     </div>
@@ -100,7 +100,7 @@
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control" min="0" name="jumlah" placeholder="Contoh: 5" oninput="formatNumber(this)" value="{{old('jumlah')}}">
+                            <input type="number" class="form-control" min="1" max="{{$alat->first()->stok_alat}}" name="jumlah" placeholder="Contoh: 5" oninput="formatNumber(this)" value="{{old('jumlah')}}" required>
                             <div class="input-group-prepend">
                                 <div class="input-group-text">pcs</div>
                             </div>
