@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('files_lapangan', function (Blueprint $table) {
-            $table->integerIncrements('id_file_lapangan');
-            $table->string('nama_file_lapangan');
-            $table->integer('fk_id_lapangan');
+        Schema::create('request_permintaan', function (Blueprint $table) {
+            $table->integerIncrements('id_permintaan');
+            $table->integer('req_harga_sewa');
+            $table->integer('req_id_alat');
+            $table->integer('fk_id_tempat');
+            $table->string('status_permintaan');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('files_lapangan');
+        Schema::dropIfExists('request_permintaan');
     }
 };
