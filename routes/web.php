@@ -220,6 +220,7 @@ Route::prefix("/tempat")->group(function(){
         $param["files"] = $files->get_all_data($id);
         return view("tempat.detailAlatUmum")->with($param);
     })->middleware([CekTempat::class]);
+    
 
     //Bagian lapangan olahraga
     Route::prefix("/lapangan")->group(function(){

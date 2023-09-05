@@ -16,7 +16,8 @@ return new class extends Migration
             $table->integer('req_harga_sewa');
             $table->integer('req_id_alat');
             $table->integer('fk_id_tempat');
-            $table->string('status_permintaan');
+            $table->integer('fk_id_pemilik');
+            $table->string('status_permintaan', null);
             $table->timestamps();
             $table->softDeletes();
         });
