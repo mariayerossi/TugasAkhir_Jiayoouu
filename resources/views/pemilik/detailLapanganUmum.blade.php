@@ -67,7 +67,9 @@
         </div>
     </div>
 
-
+    <h4>Lokasi Lapangan</h4>
+    <p class="mb-5"><i class="bi bi-geo-alt"></i> {{$lapangan->first()->lokasi_lapangan}}</p>
+    
     <!-- Deskripsi & Informasi Lainnya -->
     <div class="row">
         <div class="col-md-8">

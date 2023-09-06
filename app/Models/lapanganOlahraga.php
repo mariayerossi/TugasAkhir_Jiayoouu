@@ -22,6 +22,7 @@ class lapanganOlahraga extends Model
         $lapa->kategori_lapangan = $data["kategori"];
         $lapa->tipe_lapangan = $data["tipe"];
         $lapa->lokasi_lapangan = $data["lokasi"];
+        $lapa->kota_lapangan = $data["kota"];
         $lapa->deskripsi_lapangan = $data["deskripsi"];
         $lapa->luas_lapangan = $data["luas"];
         $lapa->harga_sewa_lapangan = $data["harga"];
@@ -54,6 +55,7 @@ class lapanganOlahraga extends Model
         $lapa->kategori_lapangan = $data["kategori"];
         $lapa->tipe_lapangan = $data["tipe"];
         $lapa->lokasi_lapangan = $data["lokasi"];
+        $lapa->kota_lapangan = $data["kota"];
         $lapa->deskripsi_lapangan = $data["deskripsi"];
         $lapa->luas_lapangan = $data["luas"];
         $lapa->harga_sewa_lapangan = $data["harga"];

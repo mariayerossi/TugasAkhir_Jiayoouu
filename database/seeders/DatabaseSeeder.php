@@ -99,7 +99,8 @@ class DatabaseSeeder extends Seeder
             'nama_lapangan' => "Lapangan Basket Mario 1",
             'kategori_lapangan' => "Basket",
             'tipe_lapangan' => "Outdoor",
-            'lokasi_lapangan' => "Kota Surabaya, Jawa Timur",
+            'lokasi_lapangan' => "jln. ngagel tengah no.23, Surabaya",
+            'kota_lapangan' => "Surabaya",
             'deskripsi_lapangan' => "Fitur Lapangan:
 
             - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.

@@ -51,7 +51,7 @@
             <h1><b>{{$lapangan->first()->nama_lapangan}}</b></h1>
         </div>
     </div>
-    <p class="mb-2">{{$lapangan->first()->lokasi_lapangan}}</p>
+    <p class="mb-2">Kota {{$lapangan->first()->kota_lapangan}}, Indonesia</p>
 
     <p class="text-muted"> 
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16" style="color: gold">
@@ -66,7 +66,9 @@
             <a href="/tempat/lapangan/editLapangan/{{$lapangan->first()->id_lapangan}}" class="btn btn-primary mt-3">Ubah Detail Lapangan</a>
         </div>
     </div>
-
+    
+    <h4>Lokasi Lapangan</h4>
+    <p class="mb-5"><i class="bi bi-geo-alt"></i> {{$lapangan->first()->lokasi_lapangan}}</p>
 
     <!-- Deskripsi & Informasi Lainnya -->
     <div class="row">

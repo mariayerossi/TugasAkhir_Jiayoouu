@@ -5,6 +5,10 @@
     #toggleSwitch {
         cursor: pointer;
     }
+    #suggestion-list .list-group-item:hover {
+        background-color: #e9ecef; /* Warna abu-abu terang dari palette Bootstrap */
+        cursor: pointer;
+    }
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Tambah Lapangan Olahraga</h3>
@@ -51,7 +55,17 @@
                 <h6>Lokasi Lapangan</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <input type="text" class="form-control" name="lokasi" placeholder="Masukkan Lokasi Lapangan Olahraga" value="{{old('lokasi')}}">
+                <input type="text" class="form-control" name="lokasi" placeholder="Masukkan Alamat Lengkap Lapangan" value="{{old('lokasi')}}">
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-3 col-12 mt-2">
+                <h6>Letak Kota</h6>
+            </div>
+            <div class="col-md-8 col-12 mt-2 mt-md-0">
+                <input type="text" class="form-control" id="search-kota" name="kota" placeholder="Ketik nama kota..." value="{{old('kota')}}">
+                <ul class="list-group" id="suggestion-list"></ul>
+                <input type="hidden" id="selected-kota">
             </div>
         </div>
         <div class="row mt-5">
@@ -175,5 +189,29 @@
 
         countElement.innerText = charCount + "/500";
     }
+
+    const kota = ['Jakarta', 'Surabaya', 'Semarang', 'Bandung', 'Medan', 'Makassar', 'Tangerang', 'Solo', 'Sidoarjo', 'Depok', 'Malang', 'Bogor', 'Yogyakarta', 'Gresik', 'Bekasi'];
+    const inputEl = document.getElementById('search-kota');
+    const suggestionList = document.getElementById('suggestion-list');
+    const selectedKotaInput = document.getElementById('selected-kota');
+
+    inputEl.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        suggestionList.innerHTML = ''; // Bersihkan list sebelumnya
+
+        if (query) {
+            kota.filter(item => item.toLowerCase().includes(query)).forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.textContent = item;
+                listItem.addEventListener('click', () => {
+                    inputEl.value = item;
+                    selectedKotaInput.value = item;
+                    suggestionList.innerHTML = ''; // Sembunyikan opsi setelah diklik
+                });
+                suggestionList.appendChild(listItem);
+            });
+        }
+    });
 </script>
 @endsection

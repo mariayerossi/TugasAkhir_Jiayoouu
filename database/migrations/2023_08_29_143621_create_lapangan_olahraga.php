@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('kategori_lapangan');
             $table->string('tipe_lapangan');
             $table->string('lokasi_lapangan');
+            $table->string('kota_lapangan');
             $table->string('deskripsi_lapangan',500);
             $table->string('luas_lapangan');
             $table->integer('harga_sewa_lapangan');
