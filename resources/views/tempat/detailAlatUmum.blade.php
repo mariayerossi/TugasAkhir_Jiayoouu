@@ -114,7 +114,7 @@
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-success">Request Alat</button>
                 </div>
-            </form>            
+            </form>
         </div>
     </div>
 

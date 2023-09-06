@@ -25,4 +25,8 @@ class requestPermintaan extends Model
         $reg->fk_id_pemilik = $data["id_pemilik"];
         $reg->save();
     }
+
+    public function get_all_data($role){
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->get();
+    }
 }

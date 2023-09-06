@@ -158,6 +158,7 @@ Sportiva
                 <!-- Add other sports or categories here -->
             </div>
         </div>
+        <a href="/pemilik/daftarPermintaan"><i class="bi bi-search me-3"></i>Daftar Permintaan</a>
         <a href=""><i class="bi bi-clipboard-data me-3"></i>Laporan</a>
     </div>
 

@@ -18,6 +18,7 @@ use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use App\Models\registerTempat;
+use App\Models\requestPermintaan as ModelsRequestPermintaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -191,6 +192,12 @@ Route::prefix("/pemilik")->group(function(){
         $files = new filesLapanganOlahraga();
         $param["files"] = $files->get_all_data($id);
         return view("pemilik.detailLapanganUmum")->with($param);
+    })->middleware([CekPemilik::class]);
+    Route::get("/daftarPermintaan", function () {
+        $role = Session::get("dataRole")->id_pemilik;
+        $req = new ModelsRequestPermintaan();
+        $param["permintaan"] = $req->get_all_data($role);
+        return view("pemilik.daftarPermintaan")->with($param);
     })->middleware([CekPemilik::class]);
 });
 
