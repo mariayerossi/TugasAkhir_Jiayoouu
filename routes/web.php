@@ -141,6 +141,8 @@ Route::prefix("/pemilik")->group(function(){
         $id = Session::get("dataRole")->id_pemilik;
         $alat = new ModelsAlatOlahraga();
         $param["jumlahAlat"] = $alat->count_all_data($id, "Pemilik");
+        $minta = new ModelsRequestPermintaan();
+        $param["jumlahPermintaan"] = $minta->count_all_data($id);
         return view("pemilik.beranda")->with($param);
     })->middleware([CekPemilik::class]);
     Route::get("/masterAlat", function () {

@@ -73,7 +73,7 @@ Sportiva
             z-index: 1;
         }
 
-        .sidebar-dropdown:hover .sidebar-dropdown-content {
+        .sidebar-dropdown-content.active {
             display: block;
         }
 
@@ -142,7 +142,7 @@ Sportiva
             display: block;
         }
 
-        .profile-dropdown:hover .dropdown-content {
+        .dropdown-content.active {
             display: block;
         }
     </style>
@@ -217,6 +217,40 @@ Sportiva
                 document.getElementById("main").style.marginLeft= "0";
             }
         }
+        document.querySelectorAll('.sidebar-dropdown').forEach((dropdown) => {
+            dropdown.addEventListener('click', function() {
+                let content = this.querySelector('.sidebar-dropdown-content');
+                if (content.classList.contains('active')) {
+                    content.classList.remove('active');
+                } else {
+                    document.querySelectorAll('.sidebar-dropdown-content.active').forEach((activeContent) => {
+                        activeContent.classList.remove('active');
+                    });
+                    content.classList.add('active');
+                }
+            });
+        });
+        document.querySelector('.profile-dropdown').addEventListener('click', function() {
+            let content = this.querySelector('.dropdown-content');
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+            } else {
+                // Tutup semua dropdown lain yang aktif
+                document.querySelectorAll('.dropdown-content.active').forEach((activeContent) => {
+                    activeContent.classList.remove('active');
+                });
+                content.classList.add('active');
+            }
+        });
+
+        // Jika user mengklik di luar dropdown, tutup dropdown
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.profile-dropdown')) {
+                document.querySelectorAll('.dropdown-content.active').forEach((activeContent) => {
+                    activeContent.classList.remove('active');
+                });
+            }
+        });
     </script>
     
 </body>

@@ -72,7 +72,7 @@ Sportiva
             z-index: 1;
         }
 
-        .sidebar-dropdown:hover .sidebar-dropdown-content {
+        .sidebar-dropdown-content.active {
             display: block;
         }
 
@@ -150,5 +150,18 @@ Sportiva
                 document.getElementById("main").style.marginLeft= "0";
             }
         }
+        document.querySelectorAll('.sidebar-dropdown').forEach((dropdown) => {
+            dropdown.addEventListener('click', function() {
+                let content = this.querySelector('.sidebar-dropdown-content');
+                if (content.classList.contains('active')) {
+                    content.classList.remove('active');
+                } else {
+                    document.querySelectorAll('.sidebar-dropdown-content.active').forEach((activeContent) => {
+                        activeContent.classList.remove('active');
+                    });
+                    content.classList.add('active');
+                }
+            });
+        });
     </script>
 </body>

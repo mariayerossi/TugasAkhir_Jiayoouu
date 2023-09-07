@@ -31,6 +31,6 @@ class RequestPermintaan extends Controller
         $kat = new ModelsRequestPermintaan();
         $kat->insertPermintaan($data);
 
-        return redirect()->back()->with("success", "Berhasil Melakukan Request!");
+        return redirect()->back()->with("success", "Berhasil Mengirim Request!");
     }
 }
