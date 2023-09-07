@@ -84,6 +84,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{$item->nama_lapangan}}</h5>
                                 <h5 class="card-text"><b>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</b></h5>
+                                <p class="card-text"><i class="bi bi-geo-alt"></i> Kota {{$item->kota_lapangan}}</p>
                             </div>
                         </div>
                     </a>

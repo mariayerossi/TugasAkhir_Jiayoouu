@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('stok_alat');
             $table->integer('komisi_alat');
             $table->integer('ganti_rugi_alat');
+            $table->string('kota_alat');
             $table->string('status_alat');
             $table->integer('pemilik_alat');
             $table->string('role_pemilik_alat');

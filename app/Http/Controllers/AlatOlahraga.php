@@ -15,6 +15,7 @@ class AlatOlahraga extends Controller
         $request->validate([
             "alat" => 'required|min:5|max:255',
             "kategori" => 'required',
+            "kota" => 'required',
             "foto" => 'required|max:5120',
             "deskripsi" => 'required|max:500',
             "berat" => 'required|numeric|min:0',
@@ -47,6 +48,7 @@ class AlatOlahraga extends Controller
         $data = [
             "nama"=>ucwords($request->alat),
             "kategori"=>$request->kategori,
+            "kota"=>$request->kota,
             "deskripsi"=>$request->deskripsi,
             "berat"=>$request->berat,
             "ukuran"=>$ukuran,
@@ -80,6 +82,7 @@ class AlatOlahraga extends Controller
         $request->validate([
             "alat" => 'required|max:255',
             "kategori" => 'required',
+            "kota"=>'required',
             "deskripsi" => 'required|max:500',
             "berat" => 'required|numeric|min:0',
             "panjang" => 'required|numeric|min:0',
@@ -111,6 +114,7 @@ class AlatOlahraga extends Controller
             "id" => $request->id,
             "nama" => $request->alat,
             "kategori" => $request->kategori,
+            "kota"=>$request->kota,
             "deskripsi" => $request->deskripsi,
             "berat" => $request->berat,
             "ukuran" => $ukuran,
