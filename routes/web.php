@@ -20,6 +20,7 @@ use App\Models\pihakTempat;
 use App\Models\registerTempat;
 use App\Models\requestPermintaan as ModelsRequestPermintaan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
