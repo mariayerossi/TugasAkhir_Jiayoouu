@@ -26,7 +26,6 @@
                 <th>Foto</th>
                 <th>Nama</th>
                 <th>Komisi</th>
-                <th>Stok</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -44,7 +43,6 @@
                         </td>
                         <td><a href="/tempat/alat/lihatDetail/{{$item->id_alat}}">{{$item->nama_alat}}</a></td>
                         <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                        <td>{{$item->stok_alat}}</td>
                         <td><a class="btn btn-outline-success" href="/tempat/alat/editAlat/{{$item->id_alat}}">Edit</a></td>
                     </tr>
                 @endforeach

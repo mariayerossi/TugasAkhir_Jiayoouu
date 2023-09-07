@@ -137,14 +137,6 @@
         </div>
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
-                <h6>Stok Alat Olahraga</h6>
-            </div>
-            <div class="col-md-4 col-12 mt-2 mt-md-0">
-                <input type="number" class="form-control" name="stok" min="0" placeholder="Masukkan Jumlah Stok Alat" value="{{old('stok') ?? $alat->first()->stok_alat}}">
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-md-3 col-12 mt-2">
                 <h6>Komisi Alat Olahraga</h6>
                 <span class="ml-2 ms-2" style="font-size: 15px">harga komisi per jam</span>
             </div>

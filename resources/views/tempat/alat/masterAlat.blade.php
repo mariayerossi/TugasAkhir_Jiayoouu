@@ -44,6 +44,16 @@
         </div>
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
+                <h6>Letak Kota <i class="bi bi-info-circle" data-toggle="tooltip" title="Masukkan kota Anda untuk menemukan tempat olahraga terdekat. Pastikan informasi akurat untuk hasil yang tepat."></i></h6>
+            </div>
+            <div class="col-md-8 col-12 mt-2 mt-md-0">
+                <input type="text" class="form-control" id="search-kota" name="kota" placeholder="Ketik nama kota..." value="{{old('kota')}}">
+                <ul class="list-group" id="suggestion-list"></ul>
+                <input type="hidden" id="selected-kota">
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-3 col-12 mt-2">
                 <h6>Foto Alat Olahraga</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
@@ -104,14 +114,6 @@
         </div>
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
-                <h6>Stok Alat Olahraga</h6>
-            </div>
-            <div class="col-md-4 col-12 mt-2 mt-md-0">
-                <input type="number" class="form-control" name="stok" min="0" placeholder="Masukkan Jumlah Stok Alat" value="{{old('stok')}}">
-            </div>
-        </div>
-        <div class="row mt-5">
-            <div class="col-md-3 col-12 mt-2">
                 <h6>Komisi Alat Olahraga</h6>
                 <span class="ml-2 ms-2" style="font-size: 15px">harga komisi per jam</span>
             </div>
@@ -126,7 +128,7 @@
         </div>
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
-                <h6>Uang Ganti Rugi Alat</h6>
+                <h6>Uang Ganti Rugi Alat <i class="bi bi-info-circle" data-toggle="tooltip" title="Uang ganti rugi yang peminjam bayar jika peminjam merusak alat olahraga."></i></h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0 d-flex align-items-center">
                 <div class="input-group mb-2">
@@ -135,7 +137,6 @@
                     </div>
                     <input type="number" class="form-control" min="0" name="ganti" placeholder="Masukkan Jumlah Ganti Rugi" oninput="formatNumber(this)" value="{{old('ganti')}}">
                 </div>
-                <span class="ml-2 ms-2" style="font-size: 13px">uang ganti rugi yang peminjam bayar jika peminjam merusak alat olahraga</span>
             </div>
         </div>
         <div class="row mt-5 mb-5">
@@ -207,5 +208,33 @@
 
         countElement.innerText = charCount + "/500";
     }
+
+    const kota = ['Jakarta', 'Surabaya', 'Semarang', 'Bandung', 'Medan', 'Makassar', 'Tangerang', 'Solo', 'Sidoarjo', 'Depok', 'Malang', 'Bogor', 'Yogyakarta', 'Gresik', 'Bekasi'];
+    const inputEl = document.getElementById('search-kota');
+    const suggestionList = document.getElementById('suggestion-list');
+    const selectedKotaInput = document.getElementById('selected-kota');
+
+    inputEl.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        suggestionList.innerHTML = ''; // Bersihkan list sebelumnya
+
+        if (query) {
+            kota.filter(item => item.toLowerCase().includes(query)).forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.textContent = item;
+                listItem.addEventListener('click', () => {
+                    inputEl.value = item;
+                    selectedKotaInput.value = item;
+                    suggestionList.innerHTML = ''; // Sembunyikan opsi setelah diklik
+                });
+                suggestionList.appendChild(listItem);
+            });
+        }
+    });
+
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
 </script>
 @endsection

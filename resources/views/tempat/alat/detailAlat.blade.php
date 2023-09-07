@@ -70,7 +70,6 @@
                 <i class="bi bi-chat-dots ms-5"></i> 5 review
             </p>
             <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
-            <h5 class="mt-4">Stok : {{$alat->first()->stok_alat}}</h5>
             <p class="text-muted mt-2">
                 Kategori : {{$alat->first()->kategori_alat}} <br>
                 Berat : {{$alat->first()->berat_alat}} gram <br>

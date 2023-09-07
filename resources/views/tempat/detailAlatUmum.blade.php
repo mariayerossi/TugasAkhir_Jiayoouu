@@ -108,7 +108,6 @@
                     </div>
                 </div>
                 <input type="hidden" name="id_alat" value="{{$alat->first()->id_alat}}">
-                <input type="hidden" name="stok" value="{{$alat->first()->stok_alat}}">
                 <input type="hidden" name="id_pemilik" value="{{$alat->first()->pemilik_alat}}">
                 <input type="hidden" name="id_tempat" value="{{Session::get("dataRole")->id_tempat}}">
                 <div class="d-flex justify-content-center">
