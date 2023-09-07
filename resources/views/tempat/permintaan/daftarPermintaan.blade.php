@@ -10,17 +10,23 @@
     <table class="table table-hover table-bordered table-striped">
         <thead class="thead-dark">
             <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Usia</th>
+                <th>Foto Alat</th>
+                <th>Keterangan</th>
             </tr>
         </thead>
         <tbody>
             @if (!$permintaan->isEmpty())
                 @foreach ($permintaan as $item)
+                    @php
+                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                    @endphp
                     <tr>
-                        <td></td>
+                        <td>
+                            {{-- <div class="square-image-container">
+                                <img src="{{ asset('upload/' . $dataAlat->foto_alat) }}" alt="">
+                            </div> --}}
+                        </td>
+                        <td>Permintaan {{$dataAlat->nama_alat}}</td>
                     </tr>
                 @endforeach
             @else

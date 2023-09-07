@@ -35,7 +35,11 @@ class requestPermintaan extends Model
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->get();
     }
 
-    public function count_all_data($role){
+    public function count_all_data_pemilik($role){
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$role)->count();
+    }
+
+    public function count_all_data_tempat($role){
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat","=",$role)->count();
     }
 }

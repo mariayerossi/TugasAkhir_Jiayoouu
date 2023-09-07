@@ -142,7 +142,7 @@ Route::prefix("/pemilik")->group(function(){
         $alat = new ModelsAlatOlahraga();
         $param["jumlahAlat"] = $alat->count_all_data($id, "Pemilik");
         $minta = new ModelsRequestPermintaan();
-        $param["jumlahPermintaan"] = $minta->count_all_data($id);
+        $param["jumlahPermintaan"] = $minta->count_all_data_pemilik($id);
         return view("pemilik.beranda")->with($param);
     })->middleware([CekPemilik::class]);
     Route::get("/masterAlat", function () {
@@ -215,6 +215,8 @@ Route::prefix("/tempat")->group(function(){
         $role = Session::get("dataRole")->id_tempat;
         $lapa = new ModelsLapanganOlahraga();
         $param["jumlahLapangan"] = $lapa->count_all_data($role);
+        $minta = new ModelsRequestPermintaan();
+        $param["jumlahPermintaan"] = $minta->count_all_data_tempat($role);
         return view("tempat.beranda")->with($param);
     })->middleware([CekTempat::class]);
     Route::get("/cariAlat", function () {

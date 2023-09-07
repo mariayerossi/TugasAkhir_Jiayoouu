@@ -15,22 +15,24 @@
             </a>
         </div>
         <div class="col-md-4">
-            <a href="">
+            <a href="/tempat/permintaan/daftarPermintaan">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Total Permintaan Alat</h5>
-                        <p class="display-5">250</p>
+                        <p class="display-5">{{$jumlahPermintaan}}</p>
                     </div>
                 </div>
             </a>
         </div>
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Total Penawaran Alat</h5>
-                    <p class="display-5">5000</p>
+            <a href="">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Penawaran Alat</h5>
+                        <p class="display-5">5000</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 </div>
