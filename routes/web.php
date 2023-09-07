@@ -148,7 +148,7 @@ Route::prefix("/pemilik")->group(function(){
     Route::get("/masterAlat", function () {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
-        return view("pemilik.masterAlat")->with($param);
+        return view("pemilik.alat.masterAlat")->with($param);
     })->middleware([CekPemilik::class]);
     Route::post("/tambahAlat", [AlatOlahraga::class, "tambahAlat"]);
     Route::get("/daftarAlat", function () {
@@ -157,14 +157,14 @@ Route::prefix("/pemilik")->group(function(){
         $alat = new ModelsAlatOlahraga();
         $param["alat"] = $alat->get_all_data($id, "Pemilik");
         $param["files"] = $files;
-        return view("pemilik.daftarAlat")->with($param);
+        return view("pemilik.alat.daftarAlat")->with($param);
     })->middleware([CekPemilik::class]);
     Route::get("/lihatDetail/{id}", function ($id) {//melihat detail alat olahraga miliknya
         $alat = new ModelsAlatOlahraga();
         $param["alat"] = $alat->get_all_data_by_id($id);
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
-        return view("pemilik.detailAlat")->with($param);
+        return view("pemilik.alat.detailAlat")->with($param);
         // echo $id;
     })->middleware([CekPemilik::class]);
     Route::get("/editAlat/{id}", function ($id) {
@@ -174,7 +174,7 @@ Route::prefix("/pemilik")->group(function(){
         $param["alat"] = $alat->get_all_data_by_id($id);
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
-        return view("pemilik.editAlat")->with($param);
+        return view("pemilik.alat.editAlat")->with($param);
         // echo $id;
     })->middleware([CekPemilik::class]);
     Route::post("/editAlat", [AlatOlahraga::class, "editAlat"]);
