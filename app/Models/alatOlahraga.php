@@ -24,7 +24,6 @@ class alatOlahraga extends Model
         $alat->deskripsi_alat = $data["deskripsi"];
         $alat->berat_alat = $data["berat"];
         $alat->ukuran_alat = $data["ukuran"];
-        $alat->stok_alat = $data["stok"];
         $alat->komisi_alat = $data["komisi"];
         $alat->ganti_rugi_alat = $data["ganti"];
         $alat->kota_alat = $data["kota"];
@@ -60,7 +59,6 @@ class alatOlahraga extends Model
         $alat->deskripsi_alat = $data["deskripsi"];
         $alat->berat_alat = $data["berat"];
         $alat->ukuran_alat = $data["ukuran"];
-        $alat->stok_alat = $data["stok"];
         $alat->komisi_alat = $data["komisi"];
         $alat->ganti_rugi_alat = $data["ganti"];
         $alat->kota_alat = $data["kota"];

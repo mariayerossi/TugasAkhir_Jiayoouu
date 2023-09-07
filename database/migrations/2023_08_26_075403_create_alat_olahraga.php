@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('deskripsi_alat', 500);
             $table->float('berat_alat');
             $table->string('ukuran_alat');
-            $table->integer('stok_alat');
             $table->integer('komisi_alat');
             $table->integer('ganti_rugi_alat');
             $table->string('kota_alat');

@@ -73,7 +73,6 @@
                 <i class="bi bi-chat-dots ms-5"></i> 5 review
             </p>
             <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
-            <h5 class="mt-3">Stok : {{$alat->first()->stok_alat}}</h5>
 
             @include("layouts.message")
             <form action="/tempat/requestPermintaanAlat" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">

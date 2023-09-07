@@ -22,7 +22,6 @@ class AlatOlahraga extends Controller
             "panjang" => 'required|numeric|min:0',
             "lebar" => 'required|numeric|min:0',
             "tinggi" => 'required|numeric|min:0',
-            "stok" => 'required|integer|min:0',
             "komisi" => 'required|numeric|min:0',
             "ganti" => 'required|numeric|min:0'
         ],[
@@ -52,7 +51,6 @@ class AlatOlahraga extends Controller
             "deskripsi"=>$request->deskripsi,
             "berat"=>$request->berat,
             "ukuran"=>$ukuran,
-            "stok"=>$request->stok,
             "komisi"=>$komisi,
             "ganti"=>$ganti,
             "status"=>$request->status,
@@ -88,7 +86,6 @@ class AlatOlahraga extends Controller
             "panjang" => 'required|numeric|min:0',
             "lebar" => 'required|numeric|min:0',
             "tinggi" => 'required|numeric|min:0',
-            "stok" => 'required|integer|min:0',
             "komisi" => 'required|numeric|min:0',
             "ganti" => 'required|numeric|min:0'
         ],[
@@ -118,7 +115,6 @@ class AlatOlahraga extends Controller
             "deskripsi" => $request->deskripsi,
             "berat" => $request->berat,
             "ukuran" => $ukuran,
-            "stok" => $request->stok,
             "komisi" => $komisi,
             "ganti" => $ganti,
             "status" => $request->status,
