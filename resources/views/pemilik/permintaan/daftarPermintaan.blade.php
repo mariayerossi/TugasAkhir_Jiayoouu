@@ -17,6 +17,15 @@
     height: 100%;
 }
 
+@media (max-width: 768px) {
+    .nav-tabs {
+    overflow-x: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+}
+
 </style>
 <div class="container mt-5">
     <div class="row mb-3">
@@ -46,14 +55,16 @@
                         <th>Keterangan</th>
                         <th>Pengaju</th>
                         <th>Durasi</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if (!$permintaan->isEmpty())
-                        @foreach ($permintaan as $item)
+                    @if (!$baru->isEmpty())
+                        @foreach ($baru as $item)
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
                             @endphp
                             <tr>
                                 <td>
@@ -62,6 +73,20 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                @php
+                                    $tanggalAwal = $item->tanggal_minta;
+                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                @endphp
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
+                                @if ($item->req_durasi == "12")
+                                    <td>Dipinjam selama 1 tahun</td>
+                                @elseif ($item->req_durasi == "24")
+                                    <td>Dipinjam selama 2 tahun</td>
+                                @else
+                                    <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
+                                @endif
+                                <td><a href="/pemilik/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else

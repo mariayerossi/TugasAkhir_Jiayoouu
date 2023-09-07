@@ -202,7 +202,7 @@ Route::prefix("/pemilik")->group(function(){
         Route::get("/daftarPermintaan", function () {
             $role = Session::get("dataRole")->id_pemilik;
             $req = new ModelsRequestPermintaan();
-            $param["permintaan"] = $req->get_all_data_by_pemilik($role);
+            $param["baru"] = $req->get_all_data_by_pemilik_baru($role);
             return view("pemilik.permintaan.daftarPermintaan")->with($param);
         })->middleware([CekPemilik::class]);
     });

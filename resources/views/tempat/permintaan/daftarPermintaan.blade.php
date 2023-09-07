@@ -69,7 +69,7 @@
                                 @else
                                     <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
                                 @endif
-                                <td><a href="" class="btn btn-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else

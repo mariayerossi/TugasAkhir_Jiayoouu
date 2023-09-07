@@ -184,6 +184,8 @@ Sportiva
                 <div class="profile-dropdown">
                     <img src="{{ asset('../assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
                     <div class="dropdown-content">
+                        <h6 class="m-3">{{Session::get("dataRole")->nama_pemilik}}</h6>
+                        <hr>
                         <a href="/editprofile">Profile</a>
                         <a href="/logout">Logout</a>
                     </div>
