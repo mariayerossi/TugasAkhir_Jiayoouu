@@ -4,7 +4,7 @@
 <div class="container mt-5">
     <div class="row mb-3">
         <div class="col-12">
-            <h2>Pesanan Baru</h2>
+            <h3 class="text-center mb-5">Daftar Permintaan Alat</h3>
         </div>
     </div>
     <table class="table table-hover table-bordered table-striped">
