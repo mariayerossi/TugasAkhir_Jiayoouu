@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('req_id_alat');
             $table->integer('fk_id_tempat');
             $table->integer('fk_id_pemilik');
+            $table->date('tanggal_minta');
             $table->string('status_permintaan')->nullable();//diisi klo request disetujui/ditolak
             $table->timestamps();
             $table->softDeletes();

@@ -319,7 +319,9 @@ Route::prefix("/tempat")->group(function(){
         Route::get("/daftarPermintaan", function () {
             $role = Session::get("dataRole")->id_tempat;
             $req = new ModelsRequestPermintaan();
-            $param["permintaan"] = $req->get_all_data_by_tempat($role);
+            $param["baru"] = $req->get_all_data_by_tempat_baru($role);
+            $param["diterima"] = $req->get_all_data_by_tempat_diterima($role);
+            $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
             return view("tempat.permintaan.daftarPermintaan")->with($param);
         })->middleware([CekTempat::class]);
     });

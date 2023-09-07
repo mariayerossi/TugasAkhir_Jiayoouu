@@ -20,13 +20,17 @@ class RequestPermintaan extends Controller
 
         $array = explode("-", $request->lapangan);
 
+        date_default_timezone_set("Asia/Jakarta");
+        $tgl_minta = date("Y-m-d H:i:s");
+
         $data = [
             "harga" => $request->harga,
             "durasi" => $request->durasi,
             "lapangan" => $array[0],
             "id_alat" => $request->id_alat,
             "id_tempat" => $request->id_tempat,
-            "id_pemilik" => $request->id_pemilik
+            "id_pemilik" => $request->id_pemilik,
+            "tgl_minta" => $tgl_minta
         ];
         $kat = new ModelsRequestPermintaan();
         $kat->insertPermintaan($data);
