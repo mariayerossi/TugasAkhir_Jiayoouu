@@ -50,6 +50,16 @@
         </div>
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
+                <h6>Letak Kota <i class="bi bi-info-circle" data-toggle="tooltip" title="Masukkan kota Anda untuk menemukan tempat olahraga terdekat. Pastikan informasi akurat untuk hasil yang tepat."></i></h6>
+            </div>
+            <div class="col-md-8 col-12 mt-2 mt-md-0">
+                <input type="text" class="form-control" id="search-kota" name="kota" placeholder="Ketik nama kota..." value="{{old('kota') ?? $alat->first()->kota_alat}}">
+                <ul class="list-group" id="suggestion-list"></ul>
+                <input type="hidden" id="selected-kota">
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-3 col-12 mt-2">
                 <h6>Foto Alat Olahraga</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">

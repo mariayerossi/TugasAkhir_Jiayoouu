@@ -70,6 +70,16 @@
         </div>
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
+                <h6>Letak Kota</h6>
+            </div>
+            <div class="col-md-8 col-12 mt-2 mt-md-0">
+                <input type="text" class="form-control" id="search-kota" name="kota" placeholder="Ketik nama kota..." value="{{old('kota') ?? $lapangan->first()->kota_lapangan}}">
+                <ul class="list-group" id="suggestion-list"></ul>
+                <input type="hidden" id="selected-kota">
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-3 col-12 mt-2">
                 <h6>Foto Lapangan</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
@@ -227,5 +237,28 @@
 
         countElement.innerText = charCount + "/500";
     }
+    const kota = ['Jakarta', 'Surabaya', 'Semarang', 'Bandung', 'Medan', 'Makassar', 'Tangerang', 'Solo', 'Sidoarjo', 'Depok', 'Malang', 'Bogor', 'Yogyakarta', 'Gresik', 'Bekasi'];
+    const inputEl = document.getElementById('search-kota');
+    const suggestionList = document.getElementById('suggestion-list');
+    const selectedKotaInput = document.getElementById('selected-kota');
+
+    inputEl.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        suggestionList.innerHTML = ''; // Bersihkan list sebelumnya
+
+        if (query) {
+            kota.filter(item => item.toLowerCase().includes(query)).forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.textContent = item;
+                listItem.addEventListener('click', () => {
+                    inputEl.value = item;
+                    selectedKotaInput.value = item;
+                    suggestionList.innerHTML = ''; // Sembunyikan opsi setelah diklik
+                });
+                suggestionList.appendChild(listItem);
+            });
+        }
+    });
 </script>
 @endsection
