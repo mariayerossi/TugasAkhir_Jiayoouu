@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('request_permintaan', function (Blueprint $table) {
             $table->integerIncrements('id_permintaan');
             $table->integer('req_harga_sewa');
-            $table->integer('req_jumlah');
+            $table->integer('req_durasi');
+            $table->integer('req_lapangan');
+            $table->date('req_tanggal_mulai')->nullable();//diisi klo request disetujui
+            $table->date('req_tanggal_selesai')->nullable();//diisi klo request disetujui
             $table->integer('req_id_alat');
             $table->integer('fk_id_tempat');
             $table->integer('fk_id_pemilik');
-            $table->string('status_permintaan')->nullable();
+            $table->string('status_permintaan')->nullable();//diisi klo request disetujui/ditolak
             $table->timestamps();
             $table->softDeletes();
         });

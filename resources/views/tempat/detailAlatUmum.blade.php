@@ -82,7 +82,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">
-                        <h6>Harga Sewa</h6>
+                        <h6>Harga Sewa <i class="bi bi-info-circle" data-toggle="tooltip" title="uang sewa yang customer bayar ketika menyewa alat (*sudah termasuk komisi pemilik alat dan tempat olahraga)"></i></h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
                         <div class="input-group mb-2">
@@ -91,25 +91,44 @@
                             </div>
                             <input type="number" class="form-control" min="1" name="harga" placeholder="Contoh: {{ number_format($alat->first()->komisi_alat + 20000, 0, ',', '.') }}" oninput="formatNumber(this)" value="{{old('harga')}}">
                         </div>
-                        <span style="font-size: 13px">uang sewa yang customer bayar ketika menyewa alat (*sudah termasuk komisi pemilik alat dan tempat olahraga)</span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">
-                        <h6>Jumlah</h6>
+                        <h6>Durasi Pinjam</h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                        <div class="input-group mb-2">
-                            <input type="number" class="form-control" min="1" name="jumlah" placeholder="Contoh: 5" oninput="formatNumber(this)" value="{{old('jumlah')}}">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">pcs</div>
-                            </div>
-                        </div>
+                        <select class="form-control" name="durasi">
+                            <option value="" disabled selected>Masukkan Durasi Peminjaman</option>
+                            <option value="1">1 Bulan</option>
+                            <option value="2">2 Bulan</option>
+                            <option value="3">3 Bulan</option>
+                            <option value="5">5 Bulan</option>
+                            <option value="9">9 Bulan</option>
+                            <option value="12">1 Tahun</option>
+                            <option value="24">2 Tahun</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-12 mt-2">
+                        <h6>Lapangan <i class="bi bi-info-circle" data-toggle="tooltip" title="Pilih lapangan mana alat olahraga ini akan digunakan."></i></h6>
+                    </div>
+                    <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                        <select class="form-control" name="lapangan">
+                            <option value="" disabled selected>Pilih Lapangan</option>
+                            @if (!$lapangan->isEmpty())
+                                @foreach ($lapangan as $item)
+                                <option value="{{$item->id_lapangan}}-{{$item->kota_lapangan}}" {{ old('lapangan') == $item->nama_lapangan ? 'selected' : '' }}>{{$item->nama_lapangan}} - {{$item->kota_lapangan}}</option>
+                                @endforeach
+                            @endif
+                        </select>
                     </div>
                 </div>
                 <input type="hidden" name="id_alat" value="{{$alat->first()->id_alat}}">
                 <input type="hidden" name="id_pemilik" value="{{$alat->first()->pemilik_alat}}">
                 <input type="hidden" name="id_tempat" value="{{Session::get("dataRole")->id_tempat}}">
+                <input type="hidden" name="kota_alat" value="{{$alat->first()->kota_alat}}">
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-success">Request Alat</button>
                 </div>
@@ -165,5 +184,39 @@
         // Mengembalikan format yang sudah diubah ke input
         input.value = value;
     }
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const kotaAlatInput = document.querySelector('input[name="kota_alat"]');
+        const lapanganSelect = document.querySelector('select[name="lapangan"]');
+
+        form.addEventListener('submit', function(e) {
+            let selectedOption = lapanganSelect.options[lapanganSelect.selectedIndex].value;
+            let kotaLapangan = selectedOption.split('-')[1];
+
+            if (kotaAlatInput.value !== kotaLapangan) {
+                e.preventDefault();
+
+                swal({
+                    title: "Apakah anda yakin?",
+                    text: "Alat olahraga berasal dari kota yang berbeda dengan kota tempat lapangan anda",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Lanjutkan",
+                    cancelButtonText: "Batalkan",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        form.submit();
+                    }
+                });
+            }
+        });
+    });
 </script>
+
 @endsection

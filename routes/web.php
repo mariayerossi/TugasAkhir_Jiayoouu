@@ -196,7 +196,7 @@ Route::prefix("/pemilik")->group(function(){
     Route::get("/daftarPermintaan", function () {
         $role = Session::get("dataRole")->id_pemilik;
         $req = new ModelsRequestPermintaan();
-        $param["permintaan"] = $req->get_all_data($role);
+        $param["permintaan"] = $req->get_all_data_by_pemilik($role);
         return view("pemilik.daftarPermintaan")->with($param);
     })->middleware([CekPemilik::class]);
 });
@@ -226,6 +226,9 @@ Route::prefix("/tempat")->group(function(){
         $param["alat"] = $alat->get_all_data_by_id($id);
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
+        $role = Session::get("dataRole")->id_tempat;
+        $lapa = new ModelsLapanganOlahraga();
+        $param["lapangan"] = $lapa->get_all_data_status($role);
         return view("tempat.detailAlatUmum")->with($param);
     })->middleware([CekTempat::class]);
     Route::post("/requestPermintaanAlat", [RequestPermintaan::class, "ajukanPermintaan"]);

@@ -37,6 +37,10 @@ class lapanganOlahraga extends Model
         return lapanganOlahraga::where('deleted_at',"=",null)->where("pemilik_lapangan","=",$role)->get();
     }
 
+    public function get_all_data_status($role){
+        return lapanganOlahraga::where('deleted_at',"=",null)->where("pemilik_lapangan","=",$role)->where("status_lapangan","=","Aktif")->get();
+    }
+
     public function get_all_data2(){
         return lapanganOlahraga::where('deleted_at',"=",null)->where("status_lapangan","=","Aktif")->get();
     }

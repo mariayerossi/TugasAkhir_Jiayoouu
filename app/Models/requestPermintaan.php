@@ -19,14 +19,15 @@ class requestPermintaan extends Model
     {
         $reg = new requestPermintaan();
         $reg->req_harga_sewa = $data["harga"];
-        $reg->req_jumlah = $data["jumlah"];
+        $reg->req_durasi = $data["durasi"];
+        $reg->req_lapangan = $data["lapangan"];
         $reg->req_id_alat = $data["id_alat"];
         $reg->fk_id_tempat = $data["id_tempat"];
         $reg->fk_id_pemilik = $data["id_pemilik"];
         $reg->save();
     }
 
-    public function get_all_data($role){
+    public function get_all_data_by_pemilik($role){
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->get();
     }
 }

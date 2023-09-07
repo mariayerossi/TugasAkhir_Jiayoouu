@@ -10,27 +10,27 @@ class RequestPermintaan extends Controller
     public function ajukanPermintaan(Request $request){
         $request->validate([
             "harga" => "required",
-            "jumlah" => "required"
+            "durasi" => "required",
+            "lapangan" => "required"
         ],[
             "harga.required" => "harga sewa tidak boleh kosong!",
-            "jumlah.required" => ucfirst(":attribute")." tidak boleh kosong!"
+            "durasi.required" => "durasi peminjaman tidak boleh kosong!",
+            "lapangan.required" => "lapangan tidak boleh kosong!"
         ]);
 
-        if ($request->jumlah > $request->stok) {
-            return redirect()->back()->with("error", "jumlah tidak boleh lebih dari stok!");
-        }
-        else {
-            $data = [
-                "harga" => $request->harga,
-                "jumlah" => $request->jumlah,
-                "id_alat" => $request->id_alat,
-                "id_tempat" => $request->id_tempat,
-                "id_pemilik" => $request->id_pemilik
-            ];
-            $kat = new ModelsRequestPermintaan();
-            $kat->insertPermintaan($data);
-    
-            return redirect()->back()->with("success", "Berhasil Melakukan Request!");
-        }
+        $array = explode("-", $request->lapangan);
+
+        $data = [
+            "harga" => $request->harga,
+            "durasi" => $request->durasi,
+            "lapangan" => $array[0],
+            "id_alat" => $request->id_alat,
+            "id_tempat" => $request->id_tempat,
+            "id_pemilik" => $request->id_pemilik
+        ];
+        $kat = new ModelsRequestPermintaan();
+        $kat->insertPermintaan($data);
+
+        return redirect()->back()->with("success", "Berhasil Melakukan Request!");
     }
 }
