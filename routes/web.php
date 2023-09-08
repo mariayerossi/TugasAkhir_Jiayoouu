@@ -346,9 +346,16 @@ Route::prefix("/tempat")->group(function(){
         Route::get("/detailPermintaanNego/{id}", function ($id) {
             $req = new ModelsRequestPermintaan();
             $param["permintaan"] = $req->get_all_data_by_id($id);
+            $nego = new ModelsNegosiasi();
+            $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
             return view("tempat.permintaan.detailPermintaanNego")->with($param);
         })->middleware([CekTempat::class]);
         Route::post("/batalPermintaan/{id}", [RequestPermintaan::class, "batalPermintaan"]);
         Route::post("/editHargaSewa/{id}", [RequestPermintaan::class, "editHargaSewa"]);
+
+        //Bagian negosiasi
+        Route::prefix("/negosiasi")->group(function(){
+            Route::post("tambahNego", [Negosiasi::class, "tambahNego"]);
+        });
     });
 });

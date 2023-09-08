@@ -35,8 +35,8 @@ class Negosiasi extends Controller
             $user = $dataPemilik->nama_pemilik;
         }
         else if ($request->role == "Tempat") {
-            $dataTempat = DB::table('tempat_olahraga')->where("id_tempat","=",$request->id_tempat)->get()->first();
-            $user = $dataTempat->nama_tempat;
+            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_user)->get()->first();
+            $user = $dataTempat->nama_pemilik_tempat;
         }
 
         $tanggalAwal = $waktu;

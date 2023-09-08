@@ -174,28 +174,48 @@
         </form>
     </div>
     <hr>
-    <div class="nego">
+    <div class="nego" id="negoDiv">
         <!-- Detail Negosiasi -->
         <h3>Negosiasi</h3>
         <div class="row justify-content-center">
             <div class="col-12 p-4">
                 <!-- Form Balasan -->
-                <form action="" method="post">
+                <form action="/tempat/permintaan/negosiasi/tambahNego" method="post">
                     @csrf
                     <input type="hidden" name="permintaan" value="{{$permintaan->first()->id_permintaan}}">
                     <input type="hidden" name="id_user" value="{{Session::get('dataRole')->id_tempat}}">
                     <input type="hidden" name="role" value="Tempat">
                     <textarea class="form-control mb-3" name="isi" rows="4" placeholder="Tulis pesan Anda di sini..."></textarea>
-                    <button class="btn btn-primary w-100 mb-5">Kirim</button>
+                    <button type="submit" class="btn btn-primary w-100 mb-5">Kirim</button>
                 </form>
 
                 <div class="history">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <strong>Admin:</strong>
-                            <p>Proposal harga Rp1.500.000 dengan durasi 1 tahun. Apakah Anda setuju?</p>
-                        </div>
-                    </div>
+                    @if (!$nego->isEmpty())
+                        @foreach ($nego as $item)
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    @if ($item->role_user == "Pemilik")
+                                        @php
+                                            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
+                                        @endphp
+                                        <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
+                                    @elseif ($item->role_user == "Tempat")
+                                        @php
+                                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
+                                        @endphp
+                                        <h5><strong>{{$dataTempat->nama_tempat}}</strong></h5>
+                                    @endif
+                                    @php
+                                        $tanggalAwal = $item->waktu_negosiasi;
+                                        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                    @endphp
+                                    <p>{{$tanggalBaru}}</p>
+                                    <p class="mt-2">{{$item->isi_negosiasi}}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
@@ -219,28 +239,59 @@
         });
     });
     function konfirmasi() {
-    event.preventDefault(); // Menghentikan submission form secara default
+        event.preventDefault(); // Menghentikan submission form secara default
 
-    swal({
-        title: "Apakah Anda yakin?",
-        text: "Anda akan membatalkan permintaan ini.",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Ya, batalkan!",
-        cancelButtonText: "Tidak, batal!",
-        closeOnConfirm: false,
-        closeOnCancel: true
-    }, function(isConfirm) {
-        if (isConfirm) {
-            // Jika user mengklik "Ya", submit form
-            document.getElementById('cancelForm').submit();
-        } else {
-            swal.close(); // Tutup SweetAlert jika user memilih "Tidak"
-        }
+        swal({
+            title: "Apakah Anda yakin?",
+            text: "Anda akan membatalkan permintaan ini.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Ya, batalkan!",
+            cancelButtonText: "Tidak, batal!",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        }, function(isConfirm) {
+            if (isConfirm) {
+                // Jika user mengklik "Ya", submit form
+                document.getElementById('cancelForm').submit();
+            } else {
+                swal.close(); // Tutup SweetAlert jika user memilih "Tidak"
+            }
+        });
+
+        return false; // Mengembalikan false untuk mencegah submission form
+    }
+
+    $("form[action='/tempat/permintaan/negosiasi/tambahNego']").submit(function(e) {
+        e.preventDefault(); // Menghentikan perilaku default (pengiriman form)
+
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function(response) {
+                if(response.success) {
+
+                    // Menambahkan pesan ke dalam div history
+                    let newMessage = `
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5><strong>${response.user}</strong></h5>
+                                <p>${response.waktu}</p>
+                                <p class="mt-2">${response.data.isi}</p>
+                            </div>
+                        </div>
+                    `;
+
+                    $(".history").prepend(newMessage);
+                } else {
+                    alert("Terjadi kesalahan saat mengirim pesan.");
+                }
+                $("textarea[name='isi']").val('');  // Mengosongkan isian form setelah pesan berhasil dikirim
+            }
+        });
     });
-
-    return false; // Mengembalikan false untuk mencegah submission form
-}
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
