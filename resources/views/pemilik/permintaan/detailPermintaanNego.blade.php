@@ -59,46 +59,50 @@
         <!-- Detail Alat -->
         <div class="col-md-6 col-sm-12">
             <h5>Alat Olahraga yang Diminta <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang dimohon oleh pihak pengelola tempat olahraga"></i></h5>
-            <div class="card h-70">
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Gambar Alat -->
-                        <div class="col-4">
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+            <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+                <div class="card h-70">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Gambar Alat -->
+                            <div class="col-4">
+                                <div class="square-image-container">
+                                    <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Nama Alat -->
-                        <div class="col-8 d-flex align-items-center">
-                            <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                            
+                            <!-- Nama Alat -->
+                            <div class="col-8 d-flex align-items-center">
+                                <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
 
         <!-- Detail Lapangan -->
         <div class="col-md-6 col-sm-12">
             <h5>Lapangan Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Lokasi penggunaan alat olahraga"></i></h5>
-            <div class="card h-70">
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Gambar Lapangan -->
-                        <div class="col-4">
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="" class="img-fluid">
+            <a href="/pemilik/detailLapanganUmum/{{$dataLapangan->id_lapangan}}">
+                <div class="card h-70">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Gambar Lapangan -->
+                            <div class="col-4">
+                                <div class="square-image-container">
+                                    <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="" class="img-fluid">
+                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Nama Lapangan -->
-                        <div class="col-8 d-flex align-items-center">
-                            <h5 class="card-title truncate-text">{{$dataLapangan->nama_lapangan}}</h5>
+                            
+                            <!-- Nama Lapangan -->
+                            <div class="col-8 d-flex align-items-center">
+                                <h5 class="card-title truncate-text">{{$dataLapangan->nama_lapangan}}</h5>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
 

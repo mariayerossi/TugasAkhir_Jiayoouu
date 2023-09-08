@@ -331,7 +331,15 @@ Route::prefix("/tempat")->group(function(){
             $param["diterima"] = $req->get_all_data_by_tempat_diterima($role);
             $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
             $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
+            $param["dibatalkan"] = $req->get_all_data_by_tempat_dibatalkan($role);
             return view("tempat.permintaan.daftarPermintaan")->with($param);
         })->middleware([CekTempat::class]);
+        Route::get("/detailPermintaanNego/{id}", function ($id) {
+            $req = new ModelsRequestPermintaan();
+            $param["permintaan"] = $req->get_all_data_by_id($id);
+            return view("tempat.permintaan.detailPermintaanNego")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::post("/batalPermintaan/{id}", [RequestPermintaan::class, "batalPermintaan"]);
+        Route::post("/editHargaSewa/{id}", [RequestPermintaan::class, "editHargaSewa"]);
     });
 });

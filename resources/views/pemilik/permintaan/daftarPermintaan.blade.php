@@ -138,7 +138,7 @@
                                 @else
                                     <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
                                 @endif
-                                <td><a href="/pemilik/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -188,7 +188,7 @@
                                 @else
                                     <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
                                 @endif
-                                <td><a href="/pemilik/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else

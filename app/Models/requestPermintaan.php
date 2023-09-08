@@ -65,11 +65,29 @@ class requestPermintaan extends Model
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_permintaan","=", "Selesai")->get();
     }
 
+    public function get_all_data_by_tempat_dibatalkan($role){
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_permintaan","=", "Dibatalkan")->get();
+    }
+
     public function count_all_data_pemilik($role){
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$role)->count();
     }
 
     public function count_all_data_tempat($role){
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat","=",$role)->count();
+    }
+
+    public function updateStatus($data)
+    {
+        $per = requestPermintaan::find($data["id"]);
+        $per->status_permintaan = $data["status"];
+        $per->save();
+    }
+
+    public function updateHargaSewa($data)
+    {
+        $per = requestPermintaan::find($data["id"]);
+        $per->req_harga_sewa = $data["harga"];
+        $per->save();
     }
 }

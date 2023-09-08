@@ -44,6 +44,9 @@
         <li class="nav-item">
             <a class="nav-link" id="selesai-tab" data-toggle="tab" href="#selesai" role="tab" aria-controls="selesai" aria-selected="false">Permintaan Selesai</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" id="batal-tab" data-toggle="tab" href="#batal" role="tab" aria-controls="batal" aria-selected="false">Permintaan Dibatalkan</a>
+        </li>
     </ul>
       
     <div class="tab-content" id="myTabContent">
@@ -72,7 +75,7 @@
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td><span style="color:rgb(239, 203, 0)">Menunggu</span></td>
-                                <td><a href="/tempat/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -108,7 +111,7 @@
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td><span style="color:rgb(0, 145, 0)">Diterima</span></td>
-                                <td><a href="/tempat/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -144,7 +147,7 @@
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td><span style="color:red">Ditolak</span></td>
-                                <td><a href="/tempat/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -180,7 +183,43 @@
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td><span style="color:blue">Selesai</span></td>
-                                <td><a href="/tempat/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="batal" role="tabpanel" aria-labelledby="batal-tab">
+            <table class="table table-hover table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Foto Alat</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$dibatalkan->isEmpty())
+                        @foreach ($dibatalkan as $item)
+                            @php
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                            @endphp
+                            <tr>
+                                <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td>
+                                <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                <td><span style="color:red">Dibatalkan</span></td>
+                                <td><a href="" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
