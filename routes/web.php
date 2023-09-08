@@ -208,6 +208,11 @@ Route::prefix("/pemilik")->group(function(){
             $param["selesai"] = $req->get_all_data_by_pemilik_selesai($role);
             return view("pemilik.permintaan.daftarPermintaan")->with($param);
         })->middleware([CekPemilik::class]);
+        Route::get("/detailPermintaanNego/{id}", function ($id) {
+            $req = new ModelsRequestPermintaan();
+            $param["permintaan"] = $req->get_all_data_by_id($id);
+            return view("pemilik.permintaan.detailPermintaanNego")->with($param);
+        })->middleware([CekPemilik::class]);
     });
 });
 

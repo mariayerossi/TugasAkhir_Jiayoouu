@@ -88,7 +88,7 @@
                                 @else
                                     <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
                                 @endif
-                                <td><a href="/pemilik/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -125,7 +125,12 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}} sudah <span style="color:rgb(0, 145, 0)">Diterima</span></td>
-                                <td>Diajukan oleh {{$dataTempat->nama_tempat}}</td>
+                                @php
+                                    $tanggalAwal = $item->tanggal_minta;
+                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                @endphp
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
                                 @if ($item->req_durasi == "12")
                                     <td>Dipinjam selama 1 tahun</td>
                                 @elseif ($item->req_durasi == "24")
@@ -170,7 +175,12 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}} sudah <span style="color:red">Ditolak</span></td>
-                                <td>Diajukan oleh {{$dataTempat->nama_tempat}}</td>
+                                @php
+                                    $tanggalAwal = $item->tanggal_minta;
+                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                @endphp
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
                                 @if ($item->req_durasi == "12")
                                     <td>Dipinjam selama 1 tahun</td>
                                 @elseif ($item->req_durasi == "24")
@@ -215,7 +225,12 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}} sudah <span style="color:blue">Selesai</span></td>
-                                <td>Diajukan oleh {{$dataTempat->nama_tempat}}</td>
+                                @php
+                                    $tanggalAwal = $item->tanggal_minta;
+                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                @endphp
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
                                 @if ($item->req_durasi == "12")
                                     <td>Dipinjam selama 1 tahun</td>
                                 @elseif ($item->req_durasi == "24")
@@ -223,7 +238,7 @@
                                 @else
                                     <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
                                 @endif
-                                <td><a href="/pemilik/permintaan/detailPermintaanNego" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
