@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\negosiasi as ModelsNegosiasi;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Negosiasi extends Controller
 {
@@ -28,7 +30,19 @@ class Negosiasi extends Controller
         $nego = new ModelsNegosiasi();
         $nego->insertNegosiasi($data);
 
-        return redirect()->back();
-        // return redirect()->back()->with("success", "Berhasil Mengirim Request!");
+        if ($request->role == "Pemilik") {
+            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_user)->get()->first();
+            $user = $dataPemilik->nama_pemilik;
+        }
+        else if ($request->role == "Tempat") {
+            $dataTempat = DB::table('tempat_olahraga')->where("id_tempat","=",$request->id_tempat)->get()->first();
+            $user = $dataTempat->nama_tempat;
+        }
+
+        $tanggalAwal = $waktu;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+
+        return response()->json(['success' => true, 'message' => 'Berhasil Mengirim Pesan!', 'data' => $data, 'user' => $user, 'waktu' => $tanggalBaru]);
     }
 }

@@ -160,7 +160,7 @@
         <a href="" class="btn btn-danger me-3">Tolak</a>
     </div>
     <hr>
-    <div class="nego">
+    <div class="nego" id="negoDiv">
         <!-- Detail Negosiasi -->
         <h3>Negosiasi</h3>
         <div class="row justify-content-center">
@@ -187,9 +187,9 @@
                                         <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
                                     @elseif ($item->role_user == "Tempat")
                                         @php
-                                            $dataTempat = DB::table('tempat_olahraga')->where("id_tempat","=",$item->fk_id_user)->get()->first();
+                                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
                                         @endphp
-                                        <strong>{{$dataTempat->nama_tempat}}</strong>
+                                        <h5><strong>{{$dataTempat->nama_tempat}}</strong></h5>
                                     @endif
                                     @php
                                         $tanggalAwal = $item->waktu_negosiasi;
@@ -224,5 +224,37 @@
             $(".nego").show();   // Menampilkan div nego
         });
     });
+
+    $("form[action='/pemilik/permintaan/negosiasi/tambahNego']").submit(function(e) {
+        e.preventDefault(); // Menghentikan perilaku default (pengiriman form)
+
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function(response) {
+                if(response.success) {
+
+                    // Menambahkan pesan ke dalam div history
+                    let newMessage = `
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5><strong>${response.user}</strong></h5>
+                                <p>${response.waktu}</p>
+                                <p class="mt-2">${response.data.isi}</p>
+                            </div>
+                        </div>
+                    `;
+
+                    $(".history").prepend(newMessage);
+                } else {
+                    alert("Terjadi kesalahan saat mengirim pesan.");
+                }
+                $("textarea[name='isi']").val('');  // Mengosongkan isian form setelah pesan berhasil dikirim
+            }
+        });
+    });
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 @endsection

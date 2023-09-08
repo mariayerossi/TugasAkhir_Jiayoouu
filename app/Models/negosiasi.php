@@ -26,6 +26,6 @@ class negosiasi extends Model
     }
 
     public function get_all_data_by_id_permintaan($id){
-        return negosiasi::where('deleted_at',"=",null)->where("fk_id_permintaan", "=", $id)->get();
+        return negosiasi::where('deleted_at',"=",null)->where("fk_id_permintaan", "=", $id)->orderBy('created_at', 'desc')->get();
     }
 }
