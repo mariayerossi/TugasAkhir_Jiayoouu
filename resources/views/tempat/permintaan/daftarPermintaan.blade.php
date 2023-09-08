@@ -16,7 +16,14 @@
     width: 100%;
     height: 100%;
 }
-
+@media (max-width: 768px) {
+    .nav-tabs {
+    overflow-x: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+}
 </style>
 <div class="container mt-5">
     <div class="row mb-3">

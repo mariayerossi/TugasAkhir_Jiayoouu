@@ -20,11 +20,13 @@ class RequestPermintaan extends Controller
 
         $array = explode("-", $request->lapangan);
 
+        $harga = intval(str_replace(".", "", $request->harga));
+
         date_default_timezone_set("Asia/Jakarta");
         $tgl_minta = date("Y-m-d H:i:s");
 
         $data = [
-            "harga" => $request->harga,
+            "harga" => $harga,
             "durasi" => $request->durasi,
             "lapangan" => $array[0],
             "id_alat" => $request->id_alat,

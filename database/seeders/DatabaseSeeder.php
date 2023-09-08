@@ -171,5 +171,19 @@ class DatabaseSeeder extends Seeder
             'fk_id_alat' => 2,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        DB::table('request_permintaan')->insert([
+            'req_harga_sewa' => 50000,
+            'req_durasi' => 12,
+            'req_lapangan' => 1,
+            'req_tanggal_mulai' => null,
+            'req_tanggal_selesai' => null,
+            'req_id_alat' => 1,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 1,
+            'tanggal_minta' => date("Y-m-d H:i:s"),
+            'status_permintaan' => "Menunggu",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
     }
 }
