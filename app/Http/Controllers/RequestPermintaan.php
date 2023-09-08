@@ -30,7 +30,8 @@ class RequestPermintaan extends Controller
             "id_alat" => $request->id_alat,
             "id_tempat" => $request->id_tempat,
             "id_pemilik" => $request->id_pemilik,
-            "tgl_minta" => $tgl_minta
+            "tgl_minta" => $tgl_minta,
+            "status" => "Menunggu"
         ];
         $kat = new ModelsRequestPermintaan();
         $kat->insertPermintaan($data);

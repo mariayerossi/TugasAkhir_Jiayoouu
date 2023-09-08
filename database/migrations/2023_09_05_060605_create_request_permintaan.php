@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('fk_id_tempat');
             $table->integer('fk_id_pemilik');
             $table->timestamp('tanggal_minta');
-            $table->string('status_permintaan')->nullable();//diisi klo request disetujui/ditolak
+            $table->string('status_permintaan');
             $table->timestamps();
             $table->softDeletes();
         });

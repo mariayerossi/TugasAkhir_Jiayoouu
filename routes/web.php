@@ -203,6 +203,9 @@ Route::prefix("/pemilik")->group(function(){
             $role = Session::get("dataRole")->id_pemilik;
             $req = new ModelsRequestPermintaan();
             $param["baru"] = $req->get_all_data_by_pemilik_baru($role);
+            $param["diterima"] = $req->get_all_data_by_pemilik_diterima($role);
+            $param["ditolak"] = $req->get_all_data_by_pemilik_ditolak($role);
+            $param["selesai"] = $req->get_all_data_by_pemilik_selesai($role);
             return view("pemilik.permintaan.daftarPermintaan")->with($param);
         })->middleware([CekPemilik::class]);
     });
@@ -322,6 +325,7 @@ Route::prefix("/tempat")->group(function(){
             $param["baru"] = $req->get_all_data_by_tempat_baru($role);
             $param["diterima"] = $req->get_all_data_by_tempat_diterima($role);
             $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
+            $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
             return view("tempat.permintaan.daftarPermintaan")->with($param);
         })->middleware([CekTempat::class]);
     });

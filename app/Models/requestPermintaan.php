@@ -25,15 +25,28 @@ class requestPermintaan extends Model
         $req->fk_id_tempat = $data["id_tempat"];
         $req->fk_id_pemilik = $data["id_pemilik"];
         $req->tanggal_minta = $data["tgl_minta"];
+        $req->status_permintaan = $data["status"];
         $req->save();
     }
 
     public function get_all_data_by_pemilik_baru($role){
-        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->get();
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->where("status_permintaan","=", "Menunggu")->get();
+    }
+
+    public function get_all_data_by_pemilik_diterima($role){
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->where("status_permintaan","=", "Diterima")->get();
+    }
+
+    public function get_all_data_by_pemilik_ditolak($role){
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->where("status_permintaan","=", "Ditolak")->get();
+    }
+
+    public function get_all_data_by_pemilik_selesai($role){
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->where("status_permintaan","=", "Selesai")->get();
     }
 
     public function get_all_data_by_tempat_baru($role){
-        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_permintaan","=",null)->get();
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_permintaan","=","Menunggu")->get();
     }
 
     public function get_all_data_by_tempat_diterima($role){
@@ -42,6 +55,10 @@ class requestPermintaan extends Model
 
     public function get_all_data_by_tempat_ditolak($role){
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_permintaan","=", "Ditolak")->get();
+    }
+
+    public function get_all_data_by_tempat_selesai($role){
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_permintaan","=", "Selesai")->get();
     }
 
     public function count_all_data_pemilik($role){
