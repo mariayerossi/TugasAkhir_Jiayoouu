@@ -2,7 +2,7 @@
 
 @section('content')
 <style>
-        .square-image-container {
+.square-image-container {
     width: 100px;
     height: 100px;
     overflow: hidden;
@@ -194,17 +194,19 @@
                         @foreach ($nego as $item)
                             <div class="card mb-4">
                                 <div class="card-body">
-                                    @if ($item->role_user == "Pemilik")
-                                        @php
-                                            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
-                                        @endphp
-                                        <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
-                                    @elseif ($item->role_user == "Tempat")
-                                        @php
-                                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
-                                        @endphp
-                                        <h5><strong>{{$dataTempat->nama_tempat}}</strong></h5>
-                                    @endif
+                                    <div class="d-flex align-items-start">
+                                        @if ($item->role_user == "Pemilik")
+                                            @php
+                                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik", "=", $item->fk_id_user)->get()->first();
+                                            @endphp
+                                            <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
+                                        @elseif ($item->role_user == "Tempat")
+                                            @php
+                                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat", "=", $item->fk_id_user)->get()->first();
+                                            @endphp
+                                            <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
+                                        @endif
+                                    </div>
                                     @php
                                         $tanggalAwal = $item->waktu_negosiasi;
                                         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
@@ -217,6 +219,7 @@
                         @endforeach
                     @endif
                 </div>
+                
             </div>
         </div>
     </div>
@@ -272,12 +275,11 @@
             data: $(this).serialize(),
             success: function(response) {
                 if(response.success) {
-
                     // Menambahkan pesan ke dalam div history
                     let newMessage = `
                         <div class="card mb-4">
                             <div class="card-body">
-                                <h5><strong>${response.user}</strong></h5>
+                                <h5> <strong>${response.user}</strong></h5>
                                 <p>${response.waktu}</p>
                                 <p class="mt-2">${response.data.isi}</p>
                             </div>

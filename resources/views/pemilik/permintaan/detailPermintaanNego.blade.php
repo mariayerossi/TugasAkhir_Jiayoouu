@@ -189,7 +189,7 @@
                                         @php
                                             $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
                                         @endphp
-                                        <h5><strong>{{$dataTempat->nama_tempat}}</strong></h5>
+                                        <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
                                     @endif
                                     @php
                                         $tanggalAwal = $item->waktu_negosiasi;
