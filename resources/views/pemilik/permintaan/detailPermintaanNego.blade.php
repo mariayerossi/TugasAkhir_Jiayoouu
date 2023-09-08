@@ -160,17 +160,18 @@
         <h3>Negosiasi</h3>
         <div class="row justify-content-center">
             <div class="col-12 p-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <strong>Admin:</strong>
-                        <p>Proposal harga Rp1.500.000 dengan durasi 1 tahun. Apakah Anda setuju?</p>
+                <!-- Form Balasan -->
+                <textarea class="form-control mb-3" rows="4" placeholder="Tulis pesan Anda di sini..."></textarea>
+                <button class="btn btn-primary w-100 mb-5">Kirim</button>
+                
+                <div class="history">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <strong>Admin:</strong>
+                            <p>Proposal harga Rp1.500.000 dengan durasi 1 tahun. Apakah Anda setuju?</p>
+                        </div>
                     </div>
                 </div>
-                
-                <!-- Form Balasan -->
-                <h5>Balas:</h5>
-                <textarea class="form-control mb-3" rows="4" placeholder="Tulis balasan Anda di sini..."></textarea>
-                <button class="btn btn-primary w-100">Kirim Balasan</button>
             </div>
         </div>
     </div>
@@ -178,6 +179,19 @@
 <script>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();   
+    });
+
+    $(document).ready(function() {
+        @if(!$permintaan)
+        // Menyembunyikan div nego saat halaman pertama kali dimuat
+            $(".nego").hide();
+        @endif
+
+        // Mengatur event ketika tombol Negosiasi diklik
+        $(".btn-warning").click(function(e) {
+            e.preventDefault();  // Menghentikan perilaku default (navigasi)
+            $(".nego").show();   // Menampilkan div nego
+        });
     });
 </script>
 @endsection
