@@ -4,6 +4,7 @@ use App\Http\Controllers\AlatOlahraga;
 use App\Http\Controllers\KategoriOlahraga;
 use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\LoginRegister;
+use App\Http\Controllers\Negosiasi;
 use App\Http\Controllers\RequestPermintaan;
 use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
@@ -15,6 +16,7 @@ use App\Models\filesAlatOlahraga;
 use App\Models\filesLapanganOlahraga;
 use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
+use App\Models\negosiasi as ModelsNegosiasi;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use App\Models\registerTempat;
@@ -211,8 +213,15 @@ Route::prefix("/pemilik")->group(function(){
         Route::get("/detailPermintaanNego/{id}", function ($id) {
             $req = new ModelsRequestPermintaan();
             $param["permintaan"] = $req->get_all_data_by_id($id);
+            $nego = new ModelsNegosiasi();
+            $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
             return view("pemilik.permintaan.detailPermintaanNego")->with($param);
         })->middleware([CekPemilik::class]);
+
+        //Bagian negosiasi
+        Route::prefix("/negosiasi")->group(function(){
+            Route::post("tambahNego", [Negosiasi::class, "tambahNego"]);
+        });
     });
 });
 

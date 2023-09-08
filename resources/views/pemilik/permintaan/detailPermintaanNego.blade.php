@@ -30,6 +30,7 @@
     }
 }
 </style>
+@include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     @php
         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->first()->req_id_alat)->get()->first();
@@ -165,16 +166,42 @@
         <div class="row justify-content-center">
             <div class="col-12 p-4">
                 <!-- Form Balasan -->
-                <textarea class="form-control mb-3" rows="4" placeholder="Tulis pesan Anda di sini..."></textarea>
-                <button class="btn btn-primary w-100 mb-5">Kirim</button>
+                <form action="/pemilik/permintaan/negosiasi/tambahNego" method="post">
+                    @csrf
+                    <input type="hidden" name="permintaan" value="{{$permintaan->first()->id_permintaan}}">
+                    <input type="hidden" name="id_user" value="{{Session::get('dataRole')->id_pemilik}}">
+                    <input type="hidden" name="role" value="Pemilik">
+                    <textarea class="form-control mb-3" rows="4" name="isi" placeholder="Tulis pesan Anda di sini..."></textarea>
+                    <button type="submit" class="btn btn-primary w-100 mb-5">Kirim</button>
+                </form>
                 
                 <div class="history">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <strong>Admin:</strong>
-                            <p>Proposal harga Rp1.500.000 dengan durasi 1 tahun. Apakah Anda setuju?</p>
-                        </div>
-                    </div>
+                    @if (!$nego->isEmpty())
+                        @foreach ($nego as $item)
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    @if ($item->role_user == "Pemilik")
+                                        @php
+                                            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
+                                        @endphp
+                                        <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
+                                    @elseif ($item->role_user == "Tempat")
+                                        @php
+                                            $dataTempat = DB::table('tempat_olahraga')->where("id_tempat","=",$item->fk_id_user)->get()->first();
+                                        @endphp
+                                        <strong>{{$dataTempat->nama_tempat}}</strong>
+                                    @endif
+                                    @php
+                                        $tanggalAwal = $item->waktu_negosiasi;
+                                        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                    @endphp
+                                    <p>{{$tanggalBaru}}</p>
+                                    <p class="mt-2">{{$item->isi_negosiasi}}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
                 </div>
             </div>
         </div>
@@ -186,7 +213,7 @@
     });
 
     $(document).ready(function() {
-        @if(!$permintaan)
+        @if(!$nego)
         // Menyembunyikan div nego saat halaman pertama kali dimuat
             $(".nego").hide();
         @endif

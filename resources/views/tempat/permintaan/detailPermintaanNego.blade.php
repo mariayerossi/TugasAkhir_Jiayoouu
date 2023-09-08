@@ -180,9 +180,15 @@
         <div class="row justify-content-center">
             <div class="col-12 p-4">
                 <!-- Form Balasan -->
-                <textarea class="form-control mb-3" rows="4" placeholder="Tulis pesan Anda di sini..."></textarea>
-                <button class="btn btn-primary w-100 mb-5">Kirim</button>
-                
+                <form action="" method="post">
+                    @csrf
+                    <input type="hidden" name="permintaan" value="{{$permintaan->first()->id_permintaan}}">
+                    <input type="hidden" name="id_user" value="{{Session::get('dataRole')->id_tempat}}">
+                    <input type="hidden" name="role" value="Tempat">
+                    <textarea class="form-control mb-3" name="isi" rows="4" placeholder="Tulis pesan Anda di sini..."></textarea>
+                    <button class="btn btn-primary w-100 mb-5">Kirim</button>
+                </form>
+
                 <div class="history">
                     <div class="card mb-4">
                         <div class="card-body">
