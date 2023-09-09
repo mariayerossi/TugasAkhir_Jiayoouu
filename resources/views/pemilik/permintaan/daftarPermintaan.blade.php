@@ -23,7 +23,7 @@
     display: flex;
     flex-wrap: nowrap;
     -webkit-overflow-scrolling: touch;
-}
+    }
 }
 
 </style>

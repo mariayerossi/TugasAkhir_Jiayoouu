@@ -21,6 +21,7 @@ use App\Models\negosiasi as ModelsNegosiasi;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use App\Models\registerTempat;
+use App\Models\requestPenawaran as ModelsRequestPenawaran;
 use App\Models\requestPermintaan as ModelsRequestPermintaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -233,6 +234,16 @@ Route::prefix("/pemilik")->group(function(){
     //Request penawaran
     Route::prefix("/penawaran")->group(function(){
         Route::post("/requestPenawaranAlat", [RequestPenawaran::class, "ajukanPenawaran"]);
+        Route::get("/daftarPenawaran", function () {
+            $role = Session::get("dataRole")->id_pemilik;
+            $req = new ModelsRequestPenawaran();
+            $param["baru"] = $req->get_all_data_by_pemilik_baru($role);
+            $param["diterima"] = $req->get_all_data_by_pemilik_diterima($role);
+            $param["ditolak"] = $req->get_all_data_by_pemilik_ditolak($role);
+            $param["selesai"] = $req->get_all_data_by_pemilik_selesai($role);
+            $param["dibatalkan"] = $req->get_all_data_by_pemilik_dibatalkan($role);
+            return view("pemilik.penawaran.daftarPenawaran")->with($param);
+        })->middleware([CekPemilik::class]);
     });
 });
 

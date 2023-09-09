@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('request_penawaran', function (Blueprint $table) {
             $table->integerIncrements('id_penawaran');
             $table->integer('req_harga_sewa')->nullable();
-            $table->integer('req_durasi');
+            $table->integer('req_durasi')->nullable();
             $table->integer('req_lapangan');
             $table->date('req_tanggal_mulai')->nullable();//diisi klo request disetujui
             $table->date('req_tanggal_selesai')->nullable();//diisi klo request disetujui
@@ -22,7 +22,9 @@ return new class extends Migration
             $table->integer('fk_id_tempat');
             $table->integer('fk_id_pemilik');
             $table->timestamp('tanggal_tawar');
-            $table->string('status_penawaran');
+            $table->string('status_penawaran');//otomatis berubah "Diterima" jika "status_tempat" dan "status_pemilik" Setuju
+            $table->string('status_tempat')->nullable();//null/Setuju
+            $table->string('status_pemilik')->nullable();//null/Setuju
             $table->timestamps();
             $table->softDeletes();
         });

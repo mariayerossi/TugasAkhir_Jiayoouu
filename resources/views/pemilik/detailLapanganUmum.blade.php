@@ -89,6 +89,10 @@
                         </select>
                     </div>
                 </div>
+                <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
+                <input type="hidden" name="id_tempat" value="{{$lapangan->first()->pemilik_lapangan}}">
+                <input type="hidden" name="id_pemilik" value="{{Session::get("dataRole")->id_pemilik}}">
+                <input type="hidden" name="kota_lapangan" value="{{$lapangan->first()->kota_lapangan}}">
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-success">Tawarkan Alat</button>
                 </div>
@@ -140,6 +144,36 @@
 <script>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();   
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const kotaLapanganInput = document.querySelector('input[name="kota_lapangan"]');
+        const alatSelect = document.querySelector('select[name="alat"]');
+
+        form.addEventListener('submit', function(e) {
+            let selectedOption = alatSelect.options[alatSelect.selectedIndex].value;
+            let kotaAlat = selectedOption.split('-')[1];
+
+            if (kotaLapanganInput.value !== kotaAlat) {
+                e.preventDefault();
+
+                swal({
+                    title: "Apakah anda yakin?",
+                    text: "Alat olahraga anda berasal dari kota yang berbeda dengan kota tempat lapangan",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Lanjutkan",
+                    cancelButtonText: "Batalkan",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        form.submit();
+                    }
+                });
+            }
+        });
     });
 </script>
 @endsection
