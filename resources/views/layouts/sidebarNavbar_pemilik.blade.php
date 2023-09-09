@@ -198,7 +198,7 @@ Sportiva
 
     </div>
     <script>
-        openNav();
+        // openNav();
         function openNav() {
             document.getElementById("sidebar").style.left = "0";
             document.getElementById("main").style.marginLeft = "250px";
@@ -209,16 +209,30 @@ Sportiva
             document.getElementById("main").style.marginLeft= "0";
         }
 
+        let isNavOpen = false;
         function toggleNav() {
-            if (document.getElementById("sidebar").style.left == "-250px") {
-                document.getElementById("sidebar").style.left = "0";
-                document.getElementById("main").style.marginLeft = "250px";
-            }
-            else {
-                document.getElementById("sidebar").style.left = "-250px";
-                document.getElementById("main").style.marginLeft= "0";
+            const sidebar = document.getElementById("sidebar");
+            const main = document.getElementById("main");
+
+            if (!isNavOpen) {
+                sidebar.style.left = "0";
+                main.style.marginLeft = "250px";
+                isNavOpen = true;
+            } else {
+                sidebar.style.left = "-250px";
+                main.style.marginLeft = "0";
+                isNavOpen = false;
             }
         }
+        window.onload = function() {
+            // Cek lebar layar
+            if (window.innerWidth <= 768) {
+                document.getElementById("sidebar").style.left = "-250px";
+            } else {
+                openNav();
+            }
+        }
+
         document.querySelectorAll('.sidebar-dropdown').forEach((dropdown) => {
             dropdown.addEventListener('click', function() {
                 let content = this.querySelector('.sidebar-dropdown-content');

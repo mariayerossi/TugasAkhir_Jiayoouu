@@ -15,7 +15,7 @@
             </a>
         </div>
         <div class="col-md-4">
-            <a href="/pemilik/daftarPermintaan">
+            <a href="/pemilik/permintaan/daftarPermintaan">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Total Permintaan Alat</h5>

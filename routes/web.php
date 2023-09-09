@@ -5,6 +5,7 @@ use App\Http\Controllers\KategoriOlahraga;
 use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Controllers\Negosiasi;
+use App\Http\Controllers\RequestPenawaran;
 use App\Http\Controllers\RequestPermintaan;
 use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
@@ -196,6 +197,9 @@ Route::prefix("/pemilik")->group(function(){
         $param["lapangan"] = $lapa->get_all_data_by_id($id);
         $files = new filesLapanganOlahraga();
         $param["files"] = $files->get_all_data($id);
+        $id = Session::get("dataRole")->id_pemilik;
+        $alat = new ModelsAlatOlahraga();
+        $param["alat"] = $alat->get_all_data_status($id);
         return view("pemilik.detailLapanganUmum")->with($param);
     })->middleware([CekPemilik::class]);
 
@@ -228,7 +232,7 @@ Route::prefix("/pemilik")->group(function(){
 
     //Request penawaran
     Route::prefix("/penawaran")->group(function(){
-        
+        Route::post("/requestPenawaranAlat", [RequestPenawaran::class, "ajukanPenawaran"]);
     });
 });
 
@@ -340,6 +344,7 @@ Route::prefix("/tempat")->group(function(){
 
     //Request permintaan
     Route::prefix("/permintaan")->group(function(){
+        Route::post("/requestPermintaanAlat", [RequestPermintaan::class, "ajukanPermintaan"]);
         Route::get("/daftarPermintaan", function () {
             $role = Session::get("dataRole")->id_tempat;
             $req = new ModelsRequestPermintaan();
