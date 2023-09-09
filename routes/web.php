@@ -225,6 +225,11 @@ Route::prefix("/pemilik")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPermintaan"]);
         });
     });
+
+    //Request penawaran
+    Route::prefix("/penawaran")->group(function(){
+        
+    });
 });
 
 // -------------------------------
@@ -359,5 +364,10 @@ Route::prefix("/tempat")->group(function(){
         Route::prefix("/negosiasi")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPermintaan"]);
         });
+    });
+
+    //Request penawaran
+    Route::prefix("/penawaran")->group(function(){
+
     });
 });
