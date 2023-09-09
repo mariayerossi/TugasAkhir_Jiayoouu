@@ -129,12 +129,16 @@
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Tanggal Mulai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga akan mulai disewakan saat anda menyetujui permintaan"></i></h6>
             @if ($permintaan->first()->req_tanggal_mulai == null)
-                <p>(Menunggu Persetujuan Anda)</p>
+                @if ($permintaan->first()->status_permintaan == "Menunggu")
+                    <p>(Menunggu Persetujuan Anda)</p>
+                @else
+                    <p>(Permintaan telah {{$permintaan->first()->status_permintaan}})</p>
+                @endif
             @else
                 @php
                     $tanggalAwal = $permintaan->first()->req_tanggal_mulai;
-                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                    $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+                    $tanggalBaru = $tanggalObjek->format('d-m-Y');
                 @endphp
                 <p>{{$tanggalBaru}}</p>
             @endif
@@ -143,77 +147,83 @@
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Tanggal Selesai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Waktu berakhirnya peminjaman ditentukan berdasarkan waktu dimulainya peminjaman"></i></h6>
             @if ($permintaan->first()->req_tanggal_selesai == null)
-                <p>(Menunggu Persetujuan Anda)</p>
+                @if ($permintaan->first()->status_permintaan == "Menunggu")
+                    <p>(Menunggu Persetujuan Anda)</p>
+                @else
+                    <p>(Permintaan telah {{$permintaan->first()->status_permintaan}})</p>
+                @endif
             @else
                 @php
                     $tanggalAwal2 = $permintaan->first()->req_tanggal_selesai;
-                    $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
+                    $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
                 @endphp
                 <p>{{$tanggalBaru2}}</p>
             @endif
         </div>
     </div>
-    <div class="d-flex justify-content-end">
-        <form action="/pemilik/permintaan/terimaPermintaan/{{$permintaan->first()->id_permintaan}}" method="post">
-            @csrf
-            <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
-            <button type="submit" class="btn btn-success me-3">Terima</button>
-        </form>
-        <a href="" class="btn btn-secondary me-3">Negosiasi</a>
-        <form action="/pemilik/permintaan/tolakPermintaan/{{$permintaan->first()->id_permintaan}}" method="post">
-            @csrf
-            <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
-            <button type="submit" class="btn btn-danger me-3">Tolak</button>
-        </form>
-    </div>
-    <hr>
-    <div class="nego" id="negoDiv">
-        <!-- Detail Negosiasi -->
-        <h3>Negosiasi</h3>
-        <div class="row justify-content-center">
-            <div class="col-12 p-4">
-                <!-- Form Balasan -->
-                <form action="/pemilik/permintaan/negosiasi/tambahNego" method="post">
-                    @csrf
-                    <input type="hidden" name="permintaan" value="{{$permintaan->first()->id_permintaan}}">
-                    <input type="hidden" name="id_user" value="{{Session::get('dataRole')->id_pemilik}}">
-                    <input type="hidden" name="role" value="Pemilik">
-                    <textarea class="form-control mb-3" rows="4" name="isi" placeholder="Tulis pesan Anda di sini..."></textarea>
-                    <button type="submit" class="btn btn-primary w-100 mb-5">Kirim</button>
-                </form>
-                
-                <div class="history">
-                    @if (!$nego->isEmpty())
-                        @foreach ($nego as $item)
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    @if ($item->role_user == "Pemilik")
+    @if ($permintaan->first()->status_permintaan == "Menunggu")
+        <div class="d-flex justify-content-end">
+            <form action="/pemilik/permintaan/terimaPermintaan/{{$permintaan->first()->id_permintaan}}" method="post">
+                @csrf
+                <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
+                <button type="submit" class="btn btn-success me-3">Terima</button>
+            </form>
+            <a href="" class="btn btn-secondary me-3">Negosiasi</a>
+            <form action="/pemilik/permintaan/tolakPermintaan/{{$permintaan->first()->id_permintaan}}" method="post">
+                @csrf
+                <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
+                <button type="submit" class="btn btn-danger me-3">Tolak</button>
+            </form>
+        </div>
+        <hr>
+        <div class="nego" id="negoDiv">
+            <!-- Detail Negosiasi -->
+            <h3>Negosiasi</h3>
+            <div class="row justify-content-center">
+                <div class="col-12 p-4">
+                    <!-- Form Balasan -->
+                    <form action="/pemilik/permintaan/negosiasi/tambahNego" method="post">
+                        @csrf
+                        <input type="hidden" name="permintaan" value="{{$permintaan->first()->id_permintaan}}">
+                        <input type="hidden" name="id_user" value="{{Session::get('dataRole')->id_pemilik}}">
+                        <input type="hidden" name="role" value="Pemilik">
+                        <textarea class="form-control mb-3" rows="4" name="isi" placeholder="Tulis pesan Anda di sini..."></textarea>
+                        <button type="submit" class="btn btn-primary w-100 mb-5">Kirim</button>
+                    </form>
+                    
+                    <div class="history">
+                        @if (!$nego->isEmpty())
+                            @foreach ($nego as $item)
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        @if ($item->role_user == "Pemilik")
+                                            @php
+                                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
+                                            @endphp
+                                            <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
+                                        @elseif ($item->role_user == "Tempat")
+                                            @php
+                                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
+                                            @endphp
+                                            <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
+                                        @endif
                                         @php
-                                            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
+                                            $tanggalAwal = $item->waktu_negosiasi;
+                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                         @endphp
-                                        <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
-                                    @elseif ($item->role_user == "Tempat")
-                                        @php
-                                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
-                                        @endphp
-                                        <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
-                                    @endif
-                                    @php
-                                        $tanggalAwal = $item->waktu_negosiasi;
-                                        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                    @endphp
-                                    <p>{{$tanggalBaru}}</p>
-                                    <p class="mt-2">{{$item->isi_negosiasi}}</p>
+                                        <p>{{$tanggalBaru}}</p>
+                                        <p class="mt-2">{{$item->isi_negosiasi}}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    @endif
+                            @endforeach
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
 </div>
 <script>
     $(document).ready(function(){

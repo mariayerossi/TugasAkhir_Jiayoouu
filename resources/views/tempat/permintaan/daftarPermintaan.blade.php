@@ -111,7 +111,7 @@
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td><span style="color:rgb(0, 145, 0)">Diterima</span></td>
-                                <td><a href="" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -147,7 +147,7 @@
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td><span style="color:red">Ditolak</span></td>
-                                <td><a href="" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -183,7 +183,7 @@
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td><span style="color:blue">Selesai</span></td>
-                                <td><a href="" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -219,7 +219,7 @@
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td><span style="color:red">Dibatalkan</span></td>
-                                <td><a href="" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
