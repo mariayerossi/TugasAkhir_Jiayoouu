@@ -27,6 +27,10 @@ class requestPenawaran extends Model
         $req->save();
     }
 
+    public function get_all_data_by_id($id){
+        return requestPenawaran::where('deleted_at',"=",null)->where("id_penawaran", "=", $id)->get();
+    }
+
     public function get_all_data_by_pemilik_baru($role){
         return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->where("status_penawaran","=", "Menunggu")->get();
     }

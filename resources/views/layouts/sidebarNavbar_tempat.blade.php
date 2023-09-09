@@ -217,7 +217,7 @@ Sportiva
             document.getElementById("main").style.marginLeft= "0";
         }
 
-        let isNavOpen = false;
+        let isNavOpen;
         function toggleNav() {
             const sidebar = document.getElementById("sidebar");
             const main = document.getElementById("main");
@@ -236,8 +236,10 @@ Sportiva
             // Cek lebar layar
             if (window.innerWidth <= 768) {
                 document.getElementById("sidebar").style.left = "-250px";
+                isNavOpen = false; // Set status navbar ke tertutup
             } else {
                 openNav();
+                isNavOpen = true; // Set status navbar ke terbuka
             }
         }
         

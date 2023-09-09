@@ -29,4 +29,8 @@ class negosiasi extends Model
     public function get_all_data_by_id_permintaan($id){
         return negosiasi::where('deleted_at',"=",null)->where("jenis_request", "=", "Permintaan")->where("fk_id_request", "=", $id)->orderBy('created_at', 'desc')->get();
     }
+
+    public function get_all_data_by_id_penawaran($id){
+        return negosiasi::where('deleted_at',"=",null)->where("jenis_request", "=", "Penawaran")->where("fk_id_request", "=", $id)->orderBy('created_at', 'desc')->get();
+    }
 }

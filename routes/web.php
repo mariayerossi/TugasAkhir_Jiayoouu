@@ -244,6 +244,13 @@ Route::prefix("/pemilik")->group(function(){
             $param["dibatalkan"] = $req->get_all_data_by_pemilik_dibatalkan($role);
             return view("pemilik.penawaran.daftarPenawaran")->with($param);
         })->middleware([CekPemilik::class]);
+        Route::get("/detailPenawaranNego/{id}", function ($id) {
+            $req = new ModelsRequestPenawaran();
+            $param["penawaran"] = $req->get_all_data_by_id($id);
+            $nego = new ModelsNegosiasi();
+            $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
+            return view("pemilik.penawaran.detailPenawaranNego")->with($param);
+        })->middleware([CekPemilik::class]);
     });
 });
 
