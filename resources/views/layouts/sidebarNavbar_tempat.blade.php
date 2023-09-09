@@ -170,7 +170,7 @@ Sportiva
             <a href="#"><i class="bi bi-collection me-3"></i>Daftar Request <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
                 <a href="/tempat/permintaan/daftarPermintaan">Permintaan</a>
-                <a href="">Penawaran</a>
+                <a href="/tempat/penawaran/daftarPenawaran">Penawaran</a>
                 <!-- Add other sports or categories here -->
             </div>
         </div>

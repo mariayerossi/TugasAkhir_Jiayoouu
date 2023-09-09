@@ -75,11 +75,6 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
                                 <td><span style="color:rgb(239, 203, 0)">Menunggu</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -117,11 +112,6 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
                                 <td><span style="color:rgb(0, 145, 0)">Diterima</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -159,11 +149,6 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
                                 <td><span style="color:red">Ditolak</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -201,11 +186,6 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
                                 <td><span style="color:blue">Selesai</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -243,11 +223,6 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
                                 <td><span style="color:red">Dibatalkan</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>

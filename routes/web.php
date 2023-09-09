@@ -384,6 +384,14 @@ Route::prefix("/tempat")->group(function(){
 
     //Request penawaran
     Route::prefix("/penawaran")->group(function(){
-
+        Route::get("/daftarPenawaran", function () {
+            $role = Session::get("dataRole")->id_tempat;
+            $req = new ModelsRequestPenawaran();
+            $param["baru"] = $req->get_all_data_by_tempat_baru($role);
+            $param["diterima"] = $req->get_all_data_by_tempat_diterima($role);
+            $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
+            $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
+            return view("tempat.penawaran.daftarPenawaran")->with($param);
+        })->middleware([CekTempat::class]);
     });
 });
