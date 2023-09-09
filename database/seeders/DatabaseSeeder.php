@@ -189,7 +189,8 @@ class DatabaseSeeder extends Seeder
         DB::table('negosiasi')->insert([
             'isi_negosiasi' => "halo kak! untuk harga sewa tidak bisa dipertimbangkan lagi?",
             'waktu_negosiasi' => date("Y-m-d H:i:s"),
-            'fk_id_permintaan' => 1,
+            'fk_id_request' => 1,
+            'jenis_request' => "Permintaan",
             'fk_id_user' => 1,
             'role_user' => "Pemilik",
             'created_at' => date("Y-m-d H:i:s"),

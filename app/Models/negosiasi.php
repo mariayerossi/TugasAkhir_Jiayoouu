@@ -19,13 +19,14 @@ class negosiasi extends Model
         $nego = new negosiasi();
         $nego->isi_negosiasi = $data["isi"];
         $nego->waktu_negosiasi = $data["waktu"];
-        $nego->fk_id_permintaan = $data["permintaan"];
+        $nego->fk_id_request = $data["request"];
+        $nego->jenis_request = $data["jenis"];
         $nego->fk_id_user = $data["id_user"];
         $nego->role_user = $data["role"];
         $nego->save();
     }
 
     public function get_all_data_by_id_permintaan($id){
-        return negosiasi::where('deleted_at',"=",null)->where("fk_id_permintaan", "=", $id)->orderBy('created_at', 'desc')->get();
+        return negosiasi::where('deleted_at',"=",null)->where("jenis_request", "=", "Permintaan")->where("fk_id_request", "=", $id)->orderBy('created_at', 'desc')->get();
     }
 }

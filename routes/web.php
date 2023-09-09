@@ -222,7 +222,7 @@ Route::prefix("/pemilik")->group(function(){
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
-            Route::post("tambahNego", [Negosiasi::class, "tambahNego"]);
+            Route::post("tambahNego", [Negosiasi::class, "tambahNegoPermintaan"]);
         });
     });
 });
@@ -357,7 +357,7 @@ Route::prefix("/tempat")->group(function(){
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
-            Route::post("tambahNego", [Negosiasi::class, "tambahNego"]);
+            Route::post("tambahNego", [Negosiasi::class, "tambahNegoPermintaan"]);
         });
     });
 });

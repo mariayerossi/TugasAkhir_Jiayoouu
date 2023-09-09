@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class Negosiasi extends Controller
 {
-    public function tambahNego(Request $request) {
+    public function tambahNegoPermintaan(Request $request) {
         $request->validate([
             "isi" => "required"
         ],[
@@ -22,7 +22,8 @@ class Negosiasi extends Controller
         $data = [
             "isi" => $request->isi,
             "waktu" => $waktu,
-            "permintaan" => $request->permintaan,
+            "request" => $request->permintaan,
+            "jenis" => "Permintaan",
             "id_user" => $request->id_user,
             "role" => $request->role
         ];
