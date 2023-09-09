@@ -155,9 +155,17 @@
         </div>
     </div>
     <div class="d-flex justify-content-end">
-        <a href="" class="btn btn-success me-3">Terima</a>
-        <a href="" class="btn btn-warning me-3">Negosiasi</a>
-        <a href="" class="btn btn-danger me-3">Tolak</a>
+        <form action="/pemilik/permintaan/terimaPermintaan/{{$permintaan->first()->id_permintaan}}" method="post">
+            @csrf
+            <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
+            <button type="submit" class="btn btn-success me-3">Terima</button>
+        </form>
+        <a href="" class="btn btn-secondary me-3">Negosiasi</a>
+        <form action="/pemilik/permintaan/tolakPermintaan/{{$permintaan->first()->id_permintaan}}" method="post">
+            @csrf
+            <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
+            <button type="submit" class="btn btn-danger me-3">Tolak</button>
+        </form>
     </div>
     <hr>
     <div class="nego" id="negoDiv">
@@ -210,16 +218,14 @@
 <script>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();   
-    });
 
-    $(document).ready(function() {
-        @if(!$nego)
+        @if($nego->isEmpty())
         // Menyembunyikan div nego saat halaman pertama kali dimuat
             $(".nego").hide();
         @endif
 
         // Mengatur event ketika tombol Negosiasi diklik
-        $(".btn-warning").click(function(e) {
+        $(".btn-secondary").click(function(e) {
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
             $(".nego").show();   // Menampilkan div nego
         });

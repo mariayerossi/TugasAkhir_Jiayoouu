@@ -90,4 +90,12 @@ class requestPermintaan extends Model
         $per->req_harga_sewa = $data["harga"];
         $per->save();
     }
+
+    public function updateTanggal($data)
+    {
+        $per = requestPermintaan::find($data["id"]);
+        $per->req_tanggal_mulai = $data["mulai"];
+        $per->req_tanggal_selesai = $data["selesai"];
+        $per->save();
+    }
 }

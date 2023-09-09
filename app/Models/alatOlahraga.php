@@ -67,4 +67,10 @@ class alatOlahraga extends Model
         $alat->role_pemilik_alat = $data["role"];
         $alat->save();
     }
+
+    public function updateStatus($data){
+        $alat = alatOlahraga::find($data["id"]);
+        $alat->status_alat = $data["status"];
+        $alat->save();
+    }
 }

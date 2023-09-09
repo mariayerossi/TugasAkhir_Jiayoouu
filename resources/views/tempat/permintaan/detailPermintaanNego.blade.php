@@ -166,7 +166,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-end">
-        <a href="" class="btn btn-warning me-3">Negosiasi</a>
+        <a href="" class="btn btn-secondary me-3">Negosiasi</a>
         <form id="cancelForm" action="/tempat/permintaan/batalPermintaan/{{$permintaan->first()->id_permintaan}}" method="post" onsubmit="return konfirmasi();">
             @csrf
             <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
@@ -230,13 +230,13 @@
     });
 
     $(document).ready(function() {
-        @if(!$permintaan)
+        @if($nego->isEmpty())
         // Menyembunyikan div nego saat halaman pertama kali dimuat
             $(".nego").hide();
         @endif
 
         // Mengatur event ketika tombol Negosiasi diklik
-        $(".btn-warning").click(function(e) {
+        $(".btn-secondary").click(function(e) {
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
             $(".nego").show();   // Menampilkan div nego
         });

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h1 class="text-center mb-5">Dashboard Pemilik Alat Olahraga</h1>
+    <h2 class="text-center mb-5">Selamat Datang, {{Session::get("dataRole")->nama_pemilik}}</h2>
     <div class="row">
         <div class="col-md-4">
             <a href="/pemilik/daftarAlat">

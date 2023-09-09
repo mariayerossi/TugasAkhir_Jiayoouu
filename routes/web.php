@@ -217,6 +217,8 @@ Route::prefix("/pemilik")->group(function(){
             $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
             return view("pemilik.permintaan.detailPermintaanNego")->with($param);
         })->middleware([CekPemilik::class]);
+        Route::post("/terimaPermintaan/{id}", [RequestPermintaan::class, "terimaPermintaan"]);
+        Route::post("/tolakPermintaan/{id}", [RequestPermintaan::class, "tolakPermintaan"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
