@@ -101,4 +101,12 @@ class requestPenawaran extends Model
         $pen->req_durasi = $data["durasi"];
         $pen->save();
     }
+
+    public function updateTanggal($data)
+    {
+        $per = requestPenawaran::find($data["id"]);
+        $per->req_tanggal_mulai = $data["mulai"];
+        $per->req_tanggal_selesai = $data["selesai"];
+        $per->save();
+    }
 }

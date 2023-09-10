@@ -88,7 +88,7 @@ display: block;
                                         </div>
                                     </form>
                                 @else
-                                    <p class="card-text">(Tidak dapat mengedit komisi, penawaran telah diterima)</p>
+                                    <p class="card-text">(Tidak dapat mengedit komisi, penawaran telah {{$penawaran->first()->status_penawaran}})</p>
                                 @endif
                             </div>
                         </div>

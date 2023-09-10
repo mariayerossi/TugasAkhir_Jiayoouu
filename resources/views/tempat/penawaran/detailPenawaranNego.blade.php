@@ -127,7 +127,7 @@
                     </div>
                 </form>
             @else
-                <p class="card-text">(Tidak dapat mengedit harga sewa, penawaran telah dikonfirmasi)</p>
+                <p class="card-text">(Tidak dapat mengedit harga sewa, penawaran telah {{$penawaran->first()->status_penawaran}})</p>
             @endif
         </div>
 
@@ -168,7 +168,7 @@
                     </div>
                 </form>
             @else
-                <p class="card-text">(Tidak dapat mengedit durasi, penawaran telah dikonfirmasi)</p>
+                <p class="card-text">(Tidak dapat mengedit durasi, penawaran telah {{$penawaran->first()->status_penawaran}})</p>
             @endif
         </div>
         

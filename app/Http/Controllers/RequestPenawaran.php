@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\alatOlahraga;
 use App\Models\requestPenawaran as ModelsRequestPenawaran;
+use DateInterval;
+use DateTime;
 use Illuminate\Http\Request;
 
 class RequestPenawaran extends Controller
@@ -142,23 +145,54 @@ class RequestPenawaran extends Controller
         return redirect()->back()->with("success", "Berhasil mengedit durasi sewa!");
     }
 
+    private function hitungTanggalPengembalian($tanggal_mulai, $durasi_bulan) {
+        // Membuat objek DateTime dari tanggal mulai
+        $tanggal = new DateTime($tanggal_mulai);
+        
+        // Menambahkan durasi ke tanggal mulai
+        $tanggal->add(new DateInterval("P{$durasi_bulan}M"));
+        
+        // Mengembalikan tanggal pengembalian dalam format Y-m-d
+        return $tanggal->format('Y-m-d');
+    }
+
     public function konfirmasiPenawaran(Request $request){
         $req = new ModelsRequestPenawaran();
         $dataReq = $req->get_all_data_by_id($request->id_penawaran)->first();
         if ($dataReq->status_penawaran == "Menunggu") {
-            //cek dulu apakah harga sewa dan durasi masih null atau tidak
             $data = [
                 "id" => $request->id_penawaran,
                 "status" => "Setuju"
             ];
-            $per = new ModelsRequestPenawaran();
-            $per->updateStatusPemilik($data);
+            $req->updateStatusPemilik($data);
 
+            //ubah status penerimaan diterima
             $data2 = [
                 "id" => $request->id_penawaran,
                 "status" => "Diterima"
             ];
-            $per->updateStatus($data2);
+            $req->updateStatus($data2);
+
+            //isi tgl mulai sewa dan tanggal selesai sewa
+            date_default_timezone_set("Asia/Jakarta");
+            $tgl_mulai = date("Y-m-d");
+            $tgl_kembali = $this->hitungTanggalPengembalian($tgl_mulai, $dataReq->req_durasi);
+            // dd($tgl_mulai);
+            $data3 = [
+                "id" => $request->id_penawaran,
+                "mulai" => $tgl_mulai,
+                "selesai" => $tgl_kembali
+            ];
+            $req->updateTanggal($data3);
+
+            //ubah status alat menjadi non aktif
+            $data4 = [
+                "id" => $dataReq->req_id_alat,
+                "status" => "Non Aktif"
+            ];
+            $alat = new alatOlahraga();
+            $alat->updateStatus($data4);
+            return redirect("/pemilik/penawaran/daftarPenawaran");
         }
         else {
             return redirect()->back()->with("error", "Gagal mengkonfirmasi penawaran! status penawaran sudah $dataReq->status_penawaran");

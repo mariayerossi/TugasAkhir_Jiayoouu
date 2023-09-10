@@ -195,5 +195,31 @@ class DatabaseSeeder extends Seeder
             'role_user' => "Pemilik",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        DB::table('request_penawaran')->insert([
+            'req_harga_sewa' => 40000,
+            'req_durasi' => 9,
+            'req_lapangan' => 1,
+            'req_tanggal_mulai' => null,
+            'req_tanggal_selesai' => null,
+            'req_id_alat' => 1,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 1,
+            'tanggal_tawar' => date("Y-m-d H:i:s"),
+            'status_penawaran' => "Menunggu",
+            'status_tempat' => null,
+            'status_pemilik' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('negosiasi')->insert([
+            'isi_negosiasi' => "hai! saya mau menawarkan alat olahraga, monggo mungkin tertarik untuk menyewakannya",
+            'waktu_negosiasi' => date("Y-m-d H:i:s"),
+            'fk_id_request' => 1,
+            'jenis_request' => "Penawaran",
+            'fk_id_user' => 1,
+            'role_user' => "Pemilik",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
     }
 }
