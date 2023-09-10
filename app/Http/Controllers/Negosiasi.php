@@ -46,4 +46,42 @@ class Negosiasi extends Controller
 
         return response()->json(['success' => true, 'message' => 'Berhasil Mengirim Pesan!', 'data' => $data, 'user' => $user, 'waktu' => $tanggalBaru]);
     }
+
+    public function tambahNegoPenawaran(Request $request) {
+        $request->validate([
+            "isi" => "required"
+        ],[
+            "required" => "isi pesan tidak boleh kosong!"
+        ]);
+
+        date_default_timezone_set("Asia/Jakarta");
+        $waktu = date("Y-m-d H:i:s");
+
+        $data = [
+            "isi" => $request->isi,
+            "waktu" => $waktu,
+            "request" => $request->penawaran,
+            "jenis" => "Penawaran",
+            "id_user" => $request->id_user,
+            "role" => $request->role
+        ];
+
+        $nego = new ModelsNegosiasi();
+        $nego->insertNegosiasi($data);
+
+        if ($request->role == "Pemilik") {
+            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_user)->get()->first();
+            $user = $dataPemilik->nama_pemilik;
+        }
+        else if ($request->role == "Tempat") {
+            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_user)->get()->first();
+            $user = $dataTempat->nama_pemilik_tempat;
+        }
+
+        $tanggalAwal = $waktu;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+
+        return response()->json(['success' => true, 'message' => 'Berhasil Mengirim Pesan!', 'data' => $data, 'user' => $user, 'waktu' => $tanggalBaru]);
+    }
 }

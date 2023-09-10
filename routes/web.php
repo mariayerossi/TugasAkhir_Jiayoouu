@@ -252,6 +252,11 @@ Route::prefix("/pemilik")->group(function(){
             return view("pemilik.penawaran.detailPenawaranNego")->with($param);
         })->middleware([CekPemilik::class]);
         Route::post("/batalPenawaran/{id}", [RequestPenawaran::class, "batalPenawaran"]);
+
+        //Bagian negosiasi
+        Route::prefix("/negosiasi")->group(function(){
+            Route::post("tambahNego", [Negosiasi::class, "tambahNegoPenawaran"]);
+        });
     });
 });
 

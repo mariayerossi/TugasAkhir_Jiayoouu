@@ -179,9 +179,69 @@ display: block;
             </form>
         </div>
         <hr>
+        <div class="nego" id="negoDiv">
+            <!-- Detail Negosiasi -->
+            <h3>Negosiasi</h3>
+            <div class="row justify-content-center">
+                <div class="col-12 p-4">
+                    <!-- Form Balasan -->
+                    <form action="/pemilik/penawaran/negosiasi/tambahNego" method="post">
+                        @csrf
+                        <input type="hidden" name="penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                        <input type="hidden" name="id_user" value="{{Session::get('dataRole')->id_pemilik}}">
+                        <input type="hidden" name="role" value="Pemilik">
+                        <textarea class="form-control mb-3" rows="4" name="isi" placeholder="Tulis pesan Anda di sini..."></textarea>
+                        <button type="submit" class="btn btn-primary w-100 mb-5">Kirim</button>
+                    </form>
+                    
+                    <div class="history">
+                        @if (!$nego->isEmpty())
+                            @foreach ($nego as $item)
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        @if ($item->role_user == "Pemilik")
+                                            @php
+                                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
+                                            @endphp
+                                            <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
+                                        @elseif ($item->role_user == "Tempat")
+                                            @php
+                                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
+                                            @endphp
+                                            <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
+                                        @endif
+                                        @php
+                                            $tanggalAwal = $item->waktu_negosiasi;
+                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                        @endphp
+                                        <p>{{$tanggalBaru}}</p>
+                                        <p class="mt-2">{{$item->isi_negosiasi}}</p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
     @endif
 </div>
 <script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+
+        @if($nego->isEmpty())
+        // Menyembunyikan div nego saat halaman pertama kali dimuat
+            $(".nego").hide();
+        @endif
+
+        // Mengatur event ketika tombol Negosiasi diklik
+        $(".btn-secondary").click(function(e) {
+            e.preventDefault();  // Menghentikan perilaku default (navigasi)
+            $(".nego").show();   // Menampilkan div nego
+        });
+    });
     function konfirmasi() {
         event.preventDefault(); // Menghentikan submission form secara default
 
@@ -206,5 +266,35 @@ display: block;
 
         return false; // Mengembalikan false untuk mencegah submission form
     }
+    $("form[action='/pemilik/penawaran/negosiasi/tambahNego']").submit(function(e) {
+        e.preventDefault(); // Menghentikan perilaku default (pengiriman form)
+
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'),
+            data: $(this).serialize(),
+            success: function(response) {
+                if(response.success) {
+
+                    // Menambahkan pesan ke dalam div history
+                    let newMessage = `
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5><strong>${response.user}</strong></h5>
+                                <p>${response.waktu}</p>
+                                <p class="mt-2">${response.data.isi}</p>
+                            </div>
+                        </div>
+                    `;
+
+                    $(".history").prepend(newMessage);
+                } else {
+                    alert("Terjadi kesalahan saat mengirim pesan.");
+                }
+                $("textarea[name='isi']").val('');  // Mengosongkan isian form setelah pesan berhasil dikirim
+            }
+        });
+    });
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
