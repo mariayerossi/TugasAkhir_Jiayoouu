@@ -187,12 +187,12 @@ display: block;
         <div class="container">
             <div class="row justify-content-end mb-3">
                 <div class="col-12 col-md-6">
-                    <form action="/pemilik/penawaran/terimaPenawaran/{{$penawaran->first()->id_penawaran}}" method="post">
+                    <form action="/pemilik/penawaran/konfirmasiPenawaran" method="post">
                         @csrf
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <hr>
                         <span style="font-size: 14px">Konfirmasi detail penawaran setelah pihak pengelola tempat menyetujui penawaran</span>
-                        @if ($penawaran->first()->status_tempat == "Setuju")
+                        @if ($penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == "Setuju")
                             <button type="submit" class="btn btn-success w-100">Konfirmasi</button>
                         @else
                             <button type="submit" disabled class="btn btn-success w-100">Konfirmasi</button>

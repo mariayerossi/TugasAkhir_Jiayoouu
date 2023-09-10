@@ -55,29 +55,37 @@ class RequestPenawaran extends Controller
     public function terimaPenawaran(Request $request) {
         $req = new ModelsRequestPenawaran();
         $dataReq = $req->get_all_data_by_id($request->id_penawaran)->first();
-        if ($dataReq->status_penawaran == "Menunggu") {
-            //cek dulu apakah harga sewa dan durasi masih null atau tidak
-            if ($dataReq->req_harga_sewa != null) {
-                if ($dataReq->req_durasi != null) {
-                    $data = [
-                        "id" => $request->id_penawaran,
-                        "status" => "Setuju"
-                    ];
-                    $per = new ModelsRequestPenawaran();
-                    $per->updateStatusTempat($data);
-            
-                    return redirect()->back()->with("success", "Menunggu konfirmasi pemilik alat olahraga");
+
+        $alat = new alatOlahraga();
+        $dataAlat = $alat->get_all_data_by_id($dataReq->req_id_alat)->first();
+        if ($dataAlat->status_alat == "Aktif") {
+            if ($dataReq->status_penawaran == "Menunggu") {
+                //cek dulu apakah harga sewa dan durasi masih null atau tidak
+                if ($dataReq->req_harga_sewa != null) {
+                    if ($dataReq->req_durasi != null) {
+                        $data = [
+                            "id" => $request->id_penawaran,
+                            "status" => "Setuju"
+                        ];
+                        $per = new ModelsRequestPenawaran();
+                        $per->updateStatusTempat($data);
+                
+                        return redirect()->back()->with("success", "Menunggu konfirmasi pemilik alat olahraga");
+                    }
+                    else {
+                        return redirect()->back()->with("error", "Masukkan durasi sewa terlebih dahulu!");
+                    }
                 }
                 else {
-                    return redirect()->back()->with("error", "Masukkan durasi sewa terlebih dahulu!");
+                    return redirect()->back()->with("error", "Masukkan harga sewa terlebih dahulu!");
                 }
             }
             else {
-                return redirect()->back()->with("error", "Masukkan harga sewa terlebih dahulu!");
+                return redirect()->back()->with("error", "Gagal menerima penawaran! status penawaran sudah $dataReq->status_penawaran");
             }
         }
         else {
-            return redirect()->back()->with("error", "Gagal menerima penawaran! status alat sudah $dataReq->req_harga_sewa");
+            return redirect()->back()->with("error", "Gagal menerima penawaran! status alat tidak aktif!");
         }
     }
 
@@ -132,5 +140,28 @@ class RequestPenawaran extends Controller
         $pen->updateDurasi($data);
 
         return redirect()->back()->with("success", "Berhasil mengedit durasi sewa!");
+    }
+
+    public function konfirmasiPenawaran(Request $request){
+        $req = new ModelsRequestPenawaran();
+        $dataReq = $req->get_all_data_by_id($request->id_penawaran)->first();
+        if ($dataReq->status_penawaran == "Menunggu") {
+            //cek dulu apakah harga sewa dan durasi masih null atau tidak
+            $data = [
+                "id" => $request->id_penawaran,
+                "status" => "Setuju"
+            ];
+            $per = new ModelsRequestPenawaran();
+            $per->updateStatusPemilik($data);
+
+            $data2 = [
+                "id" => $request->id_penawaran,
+                "status" => "Diterima"
+            ];
+            $per->updateStatus($data2);
+        }
+        else {
+            return redirect()->back()->with("error", "Gagal mengkonfirmasi penawaran! status penawaran sudah $dataReq->status_penawaran");
+        }
     }
 }

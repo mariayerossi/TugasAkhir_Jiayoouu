@@ -253,6 +253,7 @@ Route::prefix("/pemilik")->group(function(){
             return view("pemilik.penawaran.detailPenawaranNego")->with($param);
         })->middleware([CekPemilik::class]);
         Route::post("/batalPenawaran", [RequestPenawaran::class, "batalPenawaran"]);
+        Route::post("/konfirmasiPenawaran", [RequestPenawaran::class, "konfirmasiPenawaran"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
