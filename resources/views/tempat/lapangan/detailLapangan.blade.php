@@ -90,6 +90,31 @@
             </ul>
         </div>
     </div>
+    @if (!$permintaan->isEmpty() || !$penawaran->isEmpty())
+        <div class="row mt-4">
+            <div class="col-md-6 col-sm-12">
+                <h4>Alat Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang disewakan di lapangan ini"></i></h4>
+                <div class="card h-70">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Gambar Alat -->
+                            <div class="col-4">
+                                <div class="square-image-container">
+                                    {{-- <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid"> --}}
+                                </div>
+                            </div>
+                            
+                            <!-- Nama Alat -->
+                            <div class="col-8 d-flex flex-column justify-content-center">
+                                {{-- <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                <p class="card-text">komisi: Rp {{number_format($dataAlat->komisi_alat, 0, ',', '.')}}/jam</p> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     <!-- Reviews section -->
     <div class="row mt-5">
         <div class="col-12">
@@ -105,4 +130,9 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 @endsection

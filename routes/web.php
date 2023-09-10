@@ -317,8 +317,13 @@ Route::prefix("/tempat")->group(function(){
             $param["lapangan"] = $lap->get_all_data_by_id($id);
             $files = new filesLapanganOlahraga();
             $param["files"] = $files->get_all_data($id);
+
+            $per = new ModelsRequestPermintaan();
+            $param["permintaan"] = $per->get_all_data_by_lapangan($id);
+            $pen = new ModelsRequestPenawaran();
+            $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
+            //piye iki yooo puseng akuuu
             return view("tempat.lapangan.detailLapangan")->with($param);
-            // echo $id;
         })->middleware([CekTempat::class]);
         Route::get("/editLapangan/{id}", function ($id) {
             $kat = new kategori();
