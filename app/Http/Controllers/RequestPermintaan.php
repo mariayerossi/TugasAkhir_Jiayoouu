@@ -20,7 +20,7 @@ class RequestPermintaan extends Controller
             "durasi.required" => "durasi peminjaman tidak boleh kosong!",
             "lapangan.required" => "lapangan tidak boleh kosong!"
         ]);
-
+        
         $array = explode("-", $request->lapangan);
 
         $harga = intval(str_replace(".", "", $request->harga));
@@ -46,11 +46,11 @@ class RequestPermintaan extends Controller
 
     public function batalPermintaan(Request $request){
         $req = new ModelsRequestPermintaan();
-        $status = $req->get_all_data_by_id($request->id)->first()->status_permintaan;
+        $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
 
         if ($status == "Menunggu") {
             $data = [
-                "id" => $request->id,
+                "id" => $request->id_permintaan,
                 "status" => "Dibatalkan"
             ];
             $per = new ModelsRequestPermintaan();
@@ -70,11 +70,11 @@ class RequestPermintaan extends Controller
             "required"=> "Harga sewa alat olahraga tidak boleh kosong!"
         ]);
         $req = new ModelsRequestPermintaan();
-        $status = $req->get_all_data_by_id($request->id)->first()->status_permintaan;
+        $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
 
         if ($status == "Menunggu") {
             $data = [
-                "id" => $request->id,
+                "id" => $request->id_permintaan,
                 "harga" => $request->harga_sewa
             ];
             $per = new ModelsRequestPermintaan();
@@ -100,52 +100,60 @@ class RequestPermintaan extends Controller
 
     public function terimaPermintaan(Request $request){
         $req = new ModelsRequestPermintaan();
-        $status = $req->get_all_data_by_id($request->id)->first()->status_permintaan;
-        $durasi = $req->get_all_data_by_id($request->id)->first()->req_durasi;
-        $id_alat = $req->get_all_data_by_id($request->id)->first()->req_id_alat;
+        $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
+        $durasi = $req->get_all_data_by_id($request->id_permintaan)->first()->req_durasi;
+        $id_alat = $req->get_all_data_by_id($request->id_permintaan)->first()->req_id_alat;
 
-        if ($status == "Menunggu") {
-            $data = [
-                "id" => $request->id,
-                "status" => "Diterima"
-            ];
-            $per = new ModelsRequestPermintaan();
-            $per->updateStatus($data);
+        $alat = new alatOlahraga();
+        $dataAlat = $alat->get_all_data_by_id($id_alat)->first();
+        if ($dataAlat->status_alat == "Aktif") {
 
-            //isi tgl mulai sewa dan tanggal selesai sewa
-            date_default_timezone_set("Asia/Jakarta");
-            $tgl_mulai = date("Y-m-d");
+            if ($status == "Menunggu") {
+                $data = [
+                    "id" => $request->id_permintaan,
+                    "status" => "Diterima"
+                ];
+                $per = new ModelsRequestPermintaan();
+                $per->updateStatus($data);
 
-            $tgl_kembali = $this->hitungTanggalPengembalian($tgl_mulai, $durasi);
-            $data2 = [
-                "id" => $request->id,
-                "mulai" => $tgl_mulai,
-                "selesai" => $tgl_kembali
-            ];
-            $per2 = new ModelsRequestPermintaan();
-            $per2->updateTanggal($data2);
+                //isi tgl mulai sewa dan tanggal selesai sewa
+                date_default_timezone_set("Asia/Jakarta");
+                $tgl_mulai = date("Y-m-d");
 
-            $data3 = [
-                "id" => $id_alat,
-                "status" => "Non Aktif"
-            ];
-            $alat = new alatOlahraga();
-            $alat->updateStatus($data3);
-    
-            return redirect("/pemilik/permintaan/daftarPermintaan");
+                $tgl_kembali = $this->hitungTanggalPengembalian($tgl_mulai, $durasi);
+                $data2 = [
+                    "id" => $request->id_permintaan,
+                    "mulai" => $tgl_mulai,
+                    "selesai" => $tgl_kembali
+                ];
+                $per2 = new ModelsRequestPermintaan();
+                $per2->updateTanggal($data2);
+
+                $data3 = [
+                    "id" => $id_alat,
+                    "status" => "Non Aktif"
+                ];
+                $alat = new alatOlahraga();
+                $alat->updateStatus($data3);
+        
+                return redirect("/pemilik/permintaan/daftarPermintaan");
+            }
+            else {
+                return redirect()->back()->with("error", "Gagal menerima permintaan! status alat sudah $status");
+            }
         }
         else {
-            return redirect()->back()->with("error", "Gagal menerima permintaan! status alat sudah $status");
+            return redirect()->back()->with("error", "Gagal menerima request! status alat olahraga tidak aktif!");
         }
     }
 
     public function tolakPermintaan(Request $request){
         $req = new ModelsRequestPermintaan();
-        $status = $req->get_all_data_by_id($request->id)->first()->status_permintaan;
+        $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
 
         if ($status == "Menunggu") {
             $data = [
-                "id" => $request->id,
+                "id" => $request->id_permintaan,
                 "status" => "Ditolak"
             ];
             $per = new ModelsRequestPermintaan();

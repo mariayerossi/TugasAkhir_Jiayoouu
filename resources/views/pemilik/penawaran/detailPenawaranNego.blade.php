@@ -76,16 +76,18 @@ display: block;
                             <div class="col-8 d-flex flex-column justify-content-center">
                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                 <p class="card-text">komisi: Rp {{number_format($dataAlat->komisi_alat, 0, ',', '.')}}/jam</p>
-                                <form action="/pemilik/editHargaKomisi" method="post" id="noRedirectInput">
-                                    @csrf
-                                    <div class="input-group">
-                                        <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
-                                        <input type="number" min="0" name="harga_komisi" value="{{$dataAlat->komisi_alat}}" class="form-control">
-                                        <div class="input-group-append">
-                                            <button type="submit" class="btn btn-primary"id="submitBtn">Edit Harga</button>
+                                @if ($penawaran->first()->status_penawaran == "Menunggu")
+                                    <form action="/pemilik/editHargaKomisi" method="post" id="noRedirectInput">
+                                        @csrf
+                                        <div class="input-group">
+                                            <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
+                                            <input type="number" min="0" name="harga_komisi" value="{{$dataAlat->komisi_alat}}" class="form-control">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary"id="submitBtn">Edit Harga</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -202,7 +204,7 @@ display: block;
                     <a href="" class="btn btn-secondary w-100">Negosiasi</a>
                 </div>
                 <div class="col-12 col-md-3">
-                    <form id="cancelForm" action="/pemilik/penawaran/batalPenawaran/{{$penawaran->first()->id_penawaran}}" method="post" onsubmit="return konfirmasi();">
+                    <form id="cancelForm" action="/pemilik/penawaran/batalPenawaran" method="post" onsubmit="return konfirmasi();">
                         @csrf
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <button type="submit" class="btn btn-danger w-100">Batalkan</button>

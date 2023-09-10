@@ -35,11 +35,11 @@ class RequestPenawaran extends Controller
 
     public function batalPenawaran(Request $request) {
         $req = new ModelsRequestPenawaran();
-        $status = $req->get_all_data_by_id($request->id)->first()->status_penawaran;
+        $status = $req->get_all_data_by_id($request->id_penawaran)->first()->status_penawaran;
 
         if ($status == "Menunggu") {
             $data = [
-                "id" => $request->id,
+                "id" => $request->id_penawaran,
                 "status" => "Dibatalkan"
             ];
             $per = new ModelsRequestPenawaran();
@@ -49,6 +49,54 @@ class RequestPenawaran extends Controller
         }
         else {
             return redirect()->back()->with("error", "Gagal membatalkan penawaran! status alat sudah $status");
+        }
+    }
+
+    public function terimaPenawaran(Request $request) {
+        $req = new ModelsRequestPenawaran();
+        $dataReq = $req->get_all_data_by_id($request->id_penawaran)->first();
+        if ($dataReq->status_penawaran == "Menunggu") {
+            //cek dulu apakah harga sewa dan durasi masih null atau tidak
+            if ($dataReq->req_harga_sewa != null) {
+                if ($dataReq->req_durasi != null) {
+                    $data = [
+                        "id" => $request->id_penawaran,
+                        "status" => "Setuju"
+                    ];
+                    $per = new ModelsRequestPenawaran();
+                    $per->updateStatusTempat($data);
+            
+                    return redirect()->back()->with("error", "Menunggu konfirmasi pemilik alat olahraga");
+                }
+                else {
+                    return redirect()->back()->with("error", "Masukkan durasi sewa terlebih dahulu!");
+                }
+            }
+            else {
+                return redirect()->back()->with("error", "Masukkan harga sewa terlebih dahulu!");
+            }
+        }
+        else {
+            return redirect()->back()->with("error", "Gagal menerima penawaran! status alat sudah $dataReq->req_harga_sewa");
+        }
+    }
+
+    public function tolakPenawaran(Request $request) {
+        $req = new ModelsRequestPenawaran();
+        $status = $req->get_all_data_by_id($request->id_penawaran)->first()->status_penawaran;
+
+        if ($status == "Menunggu") {
+            $data = [
+                "id" => $request->id_penawaran,
+                "status" => "Ditolak"
+            ];
+            $per = new ModelsRequestPenawaran();
+            $per->updateStatus($data);
+    
+            return redirect("/tempat/penawaran/daftarPenawaran");
+        }
+        else {
+            return redirect()->back()->with("error", "Gagal menolak penawaran! status alat sudah $status");
         }
     }
 }

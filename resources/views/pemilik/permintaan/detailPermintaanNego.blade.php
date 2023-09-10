@@ -165,13 +165,13 @@
     </div>
     @if ($permintaan->first()->status_permintaan == "Menunggu")
         <div class="d-flex justify-content-end">
-            <form action="/pemilik/permintaan/terimaPermintaan/{{$permintaan->first()->id_permintaan}}" method="post">
+            <form action="/pemilik/permintaan/terimaPermintaan" method="post">
                 @csrf
                 <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
                 <button type="submit" class="btn btn-success me-3">Terima</button>
             </form>
             <a href="" class="btn btn-secondary me-3">Negosiasi</a>
-            <form action="/pemilik/permintaan/tolakPermintaan/{{$permintaan->first()->id_permintaan}}" method="post">
+            <form action="/pemilik/permintaan/tolakPermintaan" method="post">
                 @csrf
                 <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
                 <button type="submit" class="btn btn-danger me-3">Tolak</button>

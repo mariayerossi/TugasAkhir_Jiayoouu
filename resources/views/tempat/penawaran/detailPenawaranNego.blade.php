@@ -114,6 +114,19 @@
             @else
                 <p>(Anda belum mengisi harga sewa)</p>
             @endif
+
+            @if ($penawaran->first()->status_penawaran == "Menunggu")
+                <form action="/tempat/penawaran/editHargaSewa" method="post">
+                    @csrf
+                    <div class="input-group">
+                        <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                        <input type="number" min="0" name="harga_sewa" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}" class="form-control">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Edit Harga</button>
+                        </div>
+                    </div>
+                </form>
+            @endif
         </div>
 
         <div class="col-md-6 col-sm-12 mb-3">
@@ -128,6 +141,30 @@
                 @endif
             @else
                 <p>(Anda belum mengisi durasi pinjam)</p>
+            @endif
+            
+            @if ($penawaran->first()->status_penawaran == "Menunggu")
+                <form action="/tempat/penawaran/editDurasi" method="post">
+                    @csrf
+                    <div class="input-group">
+                        <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                            <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                            <select class="form-control" name="durasi">
+                                <option value="" disabled selected>Masukkan Durasi Peminjaman</option>
+                                <option value="1" {{ old('durasi')?? $penawaran->first()->req_durasi == '1' ? 'selected' : '' }}>1 Bulan</option>
+                                <option value="2" {{ old('durasi')?? $penawaran->first()->req_durasi == '2' ? 'selected' : '' }}>2 Bulan</option>
+                                <option value="3" {{ old('durasi')?? $penawaran->first()->req_durasi == '3' ? 'selected' : '' }}>3 Bulan</option>
+                                <option value="5" {{ old('durasi')?? $penawaran->first()->req_durasi == '5' ? 'selected' : '' }}>5 Bulan</option>
+                                <option value="9" {{ old('durasi')?? $penawaran->first()->req_durasi == '9' ? 'selected' : '' }}>9 Bulan</option>
+                                <option value="12" {{ old('durasi')?? $penawaran->first()->req_durasi == '12' ? 'selected' : '' }}>1 Tahun</option>
+                                <option value="24" {{ old('durasi')?? $penawaran->first()->req_durasi == '24' ? 'selected' : '' }}>2 Tahun</option>
+                            </select>
+                        </div>
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Edit Durasi</button>
+                        </div>
+                    </div>
+                </form>
             @endif
         </div>
         
@@ -169,18 +206,31 @@
         </div>
     </div>
     @if ($penawaran->first()->status_penawaran == "Menunggu")
-        <div class="d-flex justify-content-end">
-            <form action="/tempat/penawaran/terimaPenawaran/{{$penawaran->first()->id_penawaran}}" method="post">
-                @csrf
-                <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
-                <button type="submit" class="btn btn-success me-3">Terima</button>
-            </form>
-            <a href="" class="btn btn-secondary me-3">Negosiasi</a>
-            <form action="/tempat/penawaran/tolakPenawaran/{{$penawaran->first()->id_penawaran}}" method="post">
-                @csrf
-                <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
-                <button type="submit" class="btn btn-danger me-3">Tolak</button>
-            </form>
+        <div class="container">
+            <div class="row justify-content-end mb-3">
+                <div class="col-12 col-md-6">
+                    <form action="/tempat/penawaran/terimaPenawaran" method="post">
+                        @csrf
+                        <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                        <hr>
+                        <span style="font-size: 14px">Terima penawaran membutuhkan konfirmasi pemilik alat</span>
+                        <button type="submit" class="btn btn-success w-100">Terima</button>
+                    </form>
+                    <hr>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-12 col-md-3 mb-3">
+                    <a href="" class="btn btn-secondary w-100">Negosiasi</a>
+                </div>
+                <div class="col-12 col-md-3">
+                    <form action="/tempat/penawaran/tolakPenawaran" method="post">
+                        @csrf
+                        <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                        <button type="submit" class="btn btn-danger w-100">Tolak</button>
+                    </form>
+                </div>
+            </div>
         </div>
         <hr>
         <div class="nego" id="negoDiv">

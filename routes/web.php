@@ -223,8 +223,8 @@ Route::prefix("/pemilik")->group(function(){
             $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
             return view("pemilik.permintaan.detailPermintaanNego")->with($param);
         })->middleware([CekPemilik::class]);
-        Route::post("/terimaPermintaan/{id}", [RequestPermintaan::class, "terimaPermintaan"]);
-        Route::post("/tolakPermintaan/{id}", [RequestPermintaan::class, "tolakPermintaan"]);
+        Route::post("/terimaPermintaan", [RequestPermintaan::class, "terimaPermintaan"]);
+        Route::post("/tolakPermintaan", [RequestPermintaan::class, "tolakPermintaan"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
@@ -252,7 +252,7 @@ Route::prefix("/pemilik")->group(function(){
             $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
             return view("pemilik.penawaran.detailPenawaranNego")->with($param);
         })->middleware([CekPemilik::class]);
-        Route::post("/batalPenawaran/{id}", [RequestPenawaran::class, "batalPenawaran"]);
+        Route::post("/batalPenawaran", [RequestPenawaran::class, "batalPenawaran"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
@@ -387,8 +387,8 @@ Route::prefix("/tempat")->group(function(){
             $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
             return view("tempat.permintaan.detailPermintaanNego")->with($param);
         })->middleware([CekTempat::class]);
-        Route::post("/batalPermintaan/{id}", [RequestPermintaan::class, "batalPermintaan"]);
-        Route::post("/editHargaSewa/{id}", [RequestPermintaan::class, "editHargaSewa"]);
+        Route::post("/batalPermintaan", [RequestPermintaan::class, "batalPermintaan"]);
+        Route::post("/editHargaSewa", [RequestPermintaan::class, "editHargaSewa"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
@@ -414,6 +414,9 @@ Route::prefix("/tempat")->group(function(){
             $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
             return view("tempat.penawaran.detailPenawaranNego")->with($param);
         })->middleware([CekTempat::class]);
+        Route::post("/terimaPenawaran", [RequestPenawaran::class, "terimaPenawaran"]);
+        Route::post("/tolakPenawaran", [RequestPenawaran::class, "tolakPenawaran"]);
+        Route::post("/editHargaSewa", [RequestPenawaran::class, "editHargaSewa"]);
 
         Route::prefix("/negosiasi")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPenawaran"]);
