@@ -111,7 +111,7 @@
     <div class="row mb-3 mt-3">
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
-            <p>Rp {{number_format($permintaan->first()->req_harga_sewa, 0, ',', '.')}}</p>
+            <p>Rp {{number_format($permintaan->first()->req_harga_sewa, 0, ',', '.')}}/jam</p>
         </div>
 
         <div class="col-md-6 col-sm-12 mb-3">

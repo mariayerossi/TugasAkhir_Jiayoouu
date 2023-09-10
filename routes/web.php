@@ -203,6 +203,7 @@ Route::prefix("/pemilik")->group(function(){
         $param["alat"] = $alat->get_all_data_status($id);
         return view("pemilik.detailLapanganUmum")->with($param);
     })->middleware([CekPemilik::class]);
+    Route::post('editHargaKomisi',[AlatOlahraga::class, "editHargaKomisi"]);
 
     //Request permintaan
     Route::prefix("/permintaan")->group(function(){
@@ -406,5 +407,16 @@ Route::prefix("/tempat")->group(function(){
             $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
             return view("tempat.penawaran.daftarPenawaran")->with($param);
         })->middleware([CekTempat::class]);
+        Route::get("/detailPenawaranNego/{id}", function ($id) {
+            $req = new ModelsRequestPenawaran();
+            $param["penawaran"] = $req->get_all_data_by_id($id);
+            $nego = new ModelsNegosiasi();
+            $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
+            return view("tempat.penawaran.detailPenawaranNego")->with($param);
+        })->middleware([CekTempat::class]);
+
+        Route::prefix("/negosiasi")->group(function(){
+            Route::post("tambahNego", [Negosiasi::class, "tambahNegoPenawaran"]);
+        });
     });
 });

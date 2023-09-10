@@ -77,7 +77,7 @@
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
                                 <td>Diajukan oleh {{$dataPemilik->nama_pemilik}} pada {{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -119,7 +119,7 @@
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
                                 <td>Diajukan oleh {{$dataPemilik->nama_pemilik}} pada {{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -161,7 +161,7 @@
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
                                 <td>Diajukan oleh {{$dataPemilik->nama_pemilik}} pada {{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else
@@ -203,7 +203,7 @@
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
                                 <td>Diajukan oleh {{$dataPemilik->nama_pemilik}} pada {{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
                     @else

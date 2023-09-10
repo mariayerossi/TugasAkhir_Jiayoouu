@@ -111,13 +111,13 @@
     <div class="row mb-3 mt-3">
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat)"></i></h6>
-            <p>Rp {{number_format($permintaan->first()->req_harga_sewa, 0, ',', '.')}}</p>
+            <p>Rp {{number_format($permintaan->first()->req_harga_sewa, 0, ',', '.')}}/jam</p>
             
             <!-- Form Edit Harga Sewa -->
             <form action="/tempat/permintaan/editHargaSewa/{{$permintaan->first()->id_permintaan}}" method="post">
                 @csrf
                 <div class="input-group">
-                    <input type="number" name="harga_sewa" value="{{$permintaan->first()->req_harga_sewa}}" class="form-control">
+                    <input type="number" min="0" name="harga_sewa" value="{{$permintaan->first()->req_harga_sewa}}" class="form-control">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-primary">Edit Harga</button>
                     </div>

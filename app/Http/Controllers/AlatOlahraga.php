@@ -184,4 +184,21 @@ class AlatOlahraga extends Controller
             return view('admin.produk.cariAlat', ['alat' => $hasil, 'kategori' => $kategori, 'files' => $files]);
         }
     }
+
+    public function editHargaKomisi(Request $request){
+        $request->validate([
+            "harga_komisi" => "required"
+        ],[
+            "required" => "Harga komisi tidak boleh kosong!"
+        ]);
+
+        $data = [
+            "id" => $request->id_alat,
+            "komisi" => $request->harga_komisi
+        ];
+        $alat = new ModelsAlatOlahraga();
+        $alat->updateKomisi($data);
+        
+        return redirect()->back()->with("success", "Berhasil Mengubah Komisi Alat Olahraga!");
+    }
 }

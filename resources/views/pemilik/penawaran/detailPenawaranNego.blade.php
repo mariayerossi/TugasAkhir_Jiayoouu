@@ -60,9 +60,9 @@ display: block;
     <div class="row mb-5">
         <!-- Detail Alat -->
         <div class="col-md-6 col-sm-12">
-            <h5>Alat Olahraga yang Diminta <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang ditawarkan kepada pihak pengelola tempat olahraga"></i></h5>
+            <h5 class="mt-3">Alat Olahraga yang Ditawarkan <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang ditawarkan oleh pemilik alat"></i></h5>
             <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
-                <div class="card h-70">
+                <div class="card h-75">
                     <div class="card-body">
                         <div class="row">
                             <!-- Gambar Alat -->
@@ -73,8 +73,19 @@ display: block;
                             </div>
                             
                             <!-- Nama Alat -->
-                            <div class="col-8 d-flex align-items-center">
+                            <div class="col-8 d-flex flex-column justify-content-center">
                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                <p class="card-text">komisi: Rp {{number_format($dataAlat->komisi_alat, 0, ',', '.')}}/jam</p>
+                                <form action="/pemilik/editHargaKomisi" method="post" id="noRedirectInput">
+                                    @csrf
+                                    <div class="input-group">
+                                        <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
+                                        <input type="number" min="0" name="harga_komisi" value="{{$dataAlat->komisi_alat}}" class="form-control">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-primary"id="submitBtn">Edit Harga</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -82,12 +93,11 @@ display: block;
             </a>
         </div>
 
-
         <!-- Detail Lapangan -->
         <div class="col-md-6 col-sm-12">
-            <h5>Lapangan Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Lokasi penggunaan alat olahraga"></i></h5>
+            <h5 class="mt-3">Lapangan Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Lokasi penggunaan alat olahraga"></i></h5>
             <a href="/pemilik/detailLapanganUmum/{{$dataLapangan->id_lapangan}}">
-                <div class="card h-70">
+                <div class="card h-75">
                     <div class="card-body">
                         <div class="row">
                             <!-- Gambar Lapangan -->
@@ -109,7 +119,7 @@ display: block;
     </div>
     <div class="row mb-3 mt-3">
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Permintaan Harga Komisi: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
+            <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
             @if ($penawaran->first()->req_harga_sewa != null)
                 <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}</p>
             @else
@@ -170,14 +180,37 @@ display: block;
         </div>
     </div>
     @if ($penawaran->first()->status_penawaran == "Menunggu")
-        <div class="d-flex justify-content-end">
-            <a href="" class="btn btn-secondary me-3">Negosiasi</a>
-            <form id="cancelForm" action="/pemilik/penawaran/batalPenawaran/{{$penawaran->first()->id_penawaran}}" method="post" onsubmit="return konfirmasi();">
-                @csrf
-                <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
-                <button type="submit" class="btn btn-danger me-3">Batalkan</button>
-            </form>
+        <div class="container">
+            <div class="row justify-content-end mb-3">
+                <div class="col-12 col-md-6">
+                    <form action="/pemilik/penawaran/terimaPenawaran/{{$penawaran->first()->id_penawaran}}" method="post">
+                        @csrf
+                        <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                        <hr>
+                        <span style="font-size: 14px">Konfirmasi detail penawaran setelah pihak pengelola tempat menyetujui penawaran</span>
+                        @if ($penawaran->first()->status_tempat == "Terima")
+                            <button type="submit" class="btn btn-success w-100">Konfirmasi</button>
+                        @else
+                            <button type="submit" disabled class="btn btn-success w-100">Konfirmasi</button>
+                        @endif
+                    </form>
+                    <hr>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-12 col-md-3 mb-3">
+                    <a href="" class="btn btn-secondary w-100">Negosiasi</a>
+                </div>
+                <div class="col-12 col-md-3">
+                    <form id="cancelForm" action="/pemilik/penawaran/batalPenawaran/{{$penawaran->first()->id_penawaran}}" method="post" onsubmit="return konfirmasi();">
+                        @csrf
+                        <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                        <button type="submit" class="btn btn-danger w-100">Batalkan</button>
+                    </form>
+                </div>
+            </div>
         </div>
+        
         <hr>
         <div class="nego" id="negoDiv">
             <!-- Detail Negosiasi -->
@@ -293,6 +326,21 @@ display: block;
                 }
                 $("textarea[name='isi']").val('');  // Mengosongkan isian form setelah pesan berhasil dikirim
             }
+        });
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var input = document.getElementById('noRedirectInput');
+        var submitBtn = document.getElementById('submitBtn');
+
+        // Mencegah perilaku default dari <a> saat input diklik
+        input.addEventListener('click', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+        });
+
+        // Mencegah perilaku default dari <a> namun mengizinkan form untuk disubmit
+        submitBtn.addEventListener('click', function(event) {
+            event.stopPropagation();
         });
     });
 </script>

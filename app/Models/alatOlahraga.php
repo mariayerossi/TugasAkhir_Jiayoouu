@@ -77,4 +77,10 @@ class alatOlahraga extends Model
         $alat->status_alat = $data["status"];
         $alat->save();
     }
+
+    public function updateKomisi($data){
+        $alat = alatOlahraga::find($data["id"]);
+        $alat->komisi_alat = $data["komisi"];
+        $alat->save();
+    }
 }
