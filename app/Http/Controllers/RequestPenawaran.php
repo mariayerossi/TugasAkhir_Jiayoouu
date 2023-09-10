@@ -116,4 +116,21 @@ class RequestPenawaran extends Controller
 
         return redirect()->back()->with("success", "Berhasil mengedit harga sewa!");
     }
+
+    public function editDurasi(Request $request) {
+        $request->validate([
+            "durasi" => "required"
+        ],[
+            "required" => "durasi sewa tidak boleh kosong!"
+        ]);
+
+        $data = [
+            "id" => $request->id_penawaran,
+            "durasi" => $request->durasi
+        ];
+        $pen = new ModelsRequestPenawaran();
+        $pen->updateDurasi($data);
+
+        return redirect()->back()->with("success", "Berhasil mengedit durasi sewa!");
+    }
 }

@@ -417,6 +417,7 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/terimaPenawaran", [RequestPenawaran::class, "terimaPenawaran"]);
         Route::post("/tolakPenawaran", [RequestPenawaran::class, "tolakPenawaran"]);
         Route::post("/editHargaSewa", [RequestPenawaran::class, "editHargaSewa"]);
+        Route::post("/editDurasi", [RequestPenawaran::class, "editDurasi"]);
 
         Route::prefix("/negosiasi")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPenawaran"]);
