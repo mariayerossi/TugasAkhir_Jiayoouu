@@ -66,7 +66,7 @@ class RequestPenawaran extends Controller
                     $per = new ModelsRequestPenawaran();
                     $per->updateStatusTempat($data);
             
-                    return redirect()->back()->with("error", "Menunggu konfirmasi pemilik alat olahraga");
+                    return redirect()->back()->with("success", "Menunggu konfirmasi pemilik alat olahraga");
                 }
                 else {
                     return redirect()->back()->with("error", "Masukkan durasi sewa terlebih dahulu!");

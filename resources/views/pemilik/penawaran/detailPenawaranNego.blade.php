@@ -76,7 +76,7 @@ display: block;
                             <div class="col-8 d-flex flex-column justify-content-center">
                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                 <p class="card-text">komisi: Rp {{number_format($dataAlat->komisi_alat, 0, ',', '.')}}/jam</p>
-                                @if ($penawaran->first()->status_penawaran == "Menunggu")
+                                @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_tempat == null)
                                     <form action="/pemilik/editHargaKomisi" method="post" id="noRedirectInput">
                                         @csrf
                                         <div class="input-group">
@@ -87,6 +87,8 @@ display: block;
                                             </div>
                                         </div>
                                     </form>
+                                @else
+                                    <p class="card-text">(Tidak dapat mengedit komisi, penawaran telah diterima)</p>
                                 @endif
                             </div>
                         </div>
@@ -190,7 +192,7 @@ display: block;
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <hr>
                         <span style="font-size: 14px">Konfirmasi detail penawaran setelah pihak pengelola tempat menyetujui penawaran</span>
-                        @if ($penawaran->first()->status_tempat == "Terima")
+                        @if ($penawaran->first()->status_tempat == "Setuju")
                             <button type="submit" class="btn btn-success w-100">Konfirmasi</button>
                         @else
                             <button type="submit" disabled class="btn btn-success w-100">Konfirmasi</button>

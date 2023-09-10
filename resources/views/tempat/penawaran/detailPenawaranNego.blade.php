@@ -115,7 +115,7 @@
                 <p>(Anda belum mengisi harga sewa)</p>
             @endif
 
-            @if ($penawaran->first()->status_penawaran == "Menunggu")
+            @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null)
                 <form action="/tempat/penawaran/editHargaSewa" method="post">
                     @csrf
                     <div class="input-group">
@@ -126,6 +126,8 @@
                         </div>
                     </div>
                 </form>
+            @else
+                <p class="card-text">(Tidak dapat mengedit harga sewa, penawaran telah dikonfirmasi)</p>
             @endif
         </div>
 
@@ -143,7 +145,7 @@
                 <p>(Anda belum mengisi durasi pinjam)</p>
             @endif
             
-            @if ($penawaran->first()->status_penawaran == "Menunggu")
+            @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null)
                 <form action="/tempat/penawaran/editDurasi" method="post">
                     @csrf
                     <div class="input-group">
@@ -165,6 +167,8 @@
                         </div>
                     </div>
                 </form>
+            @else
+                <p class="card-text">(Tidak dapat mengedit durasi, penawaran telah dikonfirmasi)</p>
             @endif
         </div>
         
@@ -214,7 +218,11 @@
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <hr>
                         <span style="font-size: 14px">Terima penawaran membutuhkan konfirmasi pemilik alat</span>
-                        <button type="submit" class="btn btn-success w-100">Terima</button>
+                        @if ($penawaran->first()->status_tempat != "Setuju")
+                            <button type="submit" class="btn btn-success w-100">Terima</button>
+                        @else
+                            <button type="submit" disabled class="btn btn-success w-100">Terima</button>
+                        @endif
                     </form>
                     <hr>
                 </div>
