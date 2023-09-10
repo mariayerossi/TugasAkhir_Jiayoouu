@@ -87,4 +87,18 @@ class requestPenawaran extends Model
         $pen->status_pemilik = $data["status"];
         $pen->save();
     }
+
+    public function updateHargaSewa($data)
+    {
+        $pen = requestPenawaran::find($data["id"]);
+        $pen->req_harga_sewa = $data["harga"];
+        $pen->save();
+    }
+
+    public function updateDurasi($data)
+    {
+        $pen = requestPenawaran::find($data["id"]);
+        $pen->req_durasi = $data["durasi"];
+        $pen->save();
+    }
 }

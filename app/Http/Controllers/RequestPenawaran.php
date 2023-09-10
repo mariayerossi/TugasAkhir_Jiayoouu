@@ -99,4 +99,21 @@ class RequestPenawaran extends Controller
             return redirect()->back()->with("error", "Gagal menolak penawaran! status alat sudah $status");
         }
     }
+    
+    public function editHargaSewa(Request $request) {
+        $request->validate([
+            "harga_sewa" => "required"
+        ],[
+            "required" => "harga sewa tidak boleh kosong!"
+        ]);
+
+        $data = [
+            "id" => $request->id_penawaran,
+            "harga" => $request->harga_sewa
+        ];
+        $pen = new ModelsRequestPenawaran();
+        $pen->updateHargaSewa($data);
+
+        return redirect()->back()->with("success", "Berhasil mengedit harga sewa!");
+    }
 }
