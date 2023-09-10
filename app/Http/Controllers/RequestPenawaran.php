@@ -32,4 +32,23 @@ class RequestPenawaran extends Controller
 
         return redirect()->back()->with("success", "Berhasil Menawarkan Alat!");
     }
+
+    public function batalPenawaran(Request $request) {
+        $req = new ModelsRequestPenawaran();
+        $status = $req->get_all_data_by_id($request->id)->first()->status_penawaran;
+
+        if ($status == "Menunggu") {
+            $data = [
+                "id" => $request->id,
+                "status" => "Dibatalkan"
+            ];
+            $per = new ModelsRequestPenawaran();
+            $per->updateStatus($data);
+    
+            return redirect("/pemilik/penawaran/daftarPenawaran");
+        }
+        else {
+            return redirect()->back()->with("error", "Gagal membatalkan penawaran! status alat sudah $status");
+        }
+    }
 }

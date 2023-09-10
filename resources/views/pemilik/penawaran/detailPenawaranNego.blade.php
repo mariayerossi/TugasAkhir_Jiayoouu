@@ -107,5 +107,104 @@ display: block;
             </a>
         </div>
     </div>
+    <div class="row mb-3 mt-3">
+        <div class="col-md-6 col-sm-12 mb-3">
+            <h6>Permintaan Harga Komisi: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
+            @if ($penawaran->first()->req_harga_sewa != null)
+                <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}</p>
+            @else
+                <p>(Harga sewa belum diisi oleh pihak pengelola tempat)</p>
+            @endif
+        </div>
+
+        <div class="col-md-6 col-sm-12 mb-3">
+            <h6>Permintaan Durasi Pinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Durasi peminjaman alat olahraga oleh pihak pengelola tempat olahraga"></i></h6>
+            @if ($penawaran->first()->req_durasi != null)
+                @if ($penawaran->first()->req_durasi == "12")
+                    <p>1 Tahun</p>
+                @elseif($penawaran->first()->req_durasi == "24")
+                    <p>2 Tahun</p>
+                @else
+                    <p>{{$penawaran->first()->req_durasi}} Bulan</p>
+                @endif
+            @else
+                <p>(Durasi pinjam belum diisi oleh pihak pengelola tempat)</p>
+            @endif
+        </div>
+        
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6 col-sm-12 mb-3">
+                <h6>Tanggal Mulai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga akan mulai disewakan saat kedua pihak menyetujui penawaran"></i></h6>
+                @if ($penawaran->first()->req_tanggal_mulai == null)
+                    @if ($penawaran->first()->status_penawaran == "Menunggu")
+                        <p>(Menunggu Persetujuan)</p>
+                    @else
+                        <p>(Penawaran telah {{$penawaran->first()->status_penawaran}})</p>
+                    @endif
+                @else
+                    @php
+                        $tanggalAwal = $penawaran->first()->req_tanggal_mulai;
+                        $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+                        $tanggalBaru = $tanggalObjek->format('d-m-Y');
+                    @endphp
+                    <p>{{$tanggalBaru}}</p>
+                @endif
+            </div>
+            <div class="col-md-6 col-sm-12 mb-3">
+                <h6>Tanggal Selesai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Waktu berakhirnya peminjaman ditentukan berdasarkan waktu dimulainya peminjaman"></i></h6>
+                @if ($penawaran->first()->req_tanggal_selesai == null)
+                    @if ($penawaran->first()->status_penawaran == "Menunggu")
+                        <p>(Menunggu Persetujuan)</p>
+                    @else
+                        <p>(Penawaran telah {{$penawaran->first()->status_penawaran}})</p>
+                    @endif
+                @else
+                    @php
+                        $tanggalAwal2 = $penawaran->first()->req_tanggal_selesai;
+                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                    @endphp
+                    <p>{{$tanggalBaru2}}</p>
+                @endif
+            </div>
+        </div>
+    </div>
+    @if ($penawaran->first()->status_penawaran == "Menunggu")
+        <div class="d-flex justify-content-end">
+            <a href="" class="btn btn-secondary me-3">Negosiasi</a>
+            <form id="cancelForm" action="/pemilik/penawaran/batalPenawaran/{{$penawaran->first()->id_penawaran}}" method="post" onsubmit="return konfirmasi();">
+                @csrf
+                <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                <button type="submit" class="btn btn-danger me-3">Batalkan</button>
+            </form>
+        </div>
+        <hr>
+    @endif
 </div>
+<script>
+    function konfirmasi() {
+        event.preventDefault(); // Menghentikan submission form secara default
+
+        swal({
+            title: "Apakah Anda yakin?",
+            text: "Anda akan membatalkan penawaran ini.",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Ya, batalkan!",
+            cancelButtonText: "Tidak, batal!",
+            closeOnConfirm: false,
+            closeOnCancel: true
+        }, function(isConfirm) {
+            if (isConfirm) {
+                // Jika user mengklik "Ya", submit form
+                document.getElementById('cancelForm').submit();
+            } else {
+                swal.close(); // Tutup SweetAlert jika user memilih "Tidak"
+            }
+        });
+
+        return false; // Mengembalikan false untuk mencegah submission form
+    }
+</script>
 @endsection

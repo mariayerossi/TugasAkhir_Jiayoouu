@@ -251,6 +251,7 @@ Route::prefix("/pemilik")->group(function(){
             $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
             return view("pemilik.penawaran.detailPenawaranNego")->with($param);
         })->middleware([CekPemilik::class]);
+        Route::post("/batalPenawaran/{id}", [RequestPenawaran::class, "batalPenawaran"]);
     });
 });
 

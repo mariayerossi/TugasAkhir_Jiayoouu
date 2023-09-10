@@ -66,4 +66,11 @@ class requestPenawaran extends Model
     public function get_all_data_by_tempat_selesai($role){
         return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_penawaran","=", "Selesai")->get();
     }
+
+    public function updateStatus($data)
+    {
+        $pen = requestPenawaran::find($data["id"]);
+        $pen->status_penawaran = $data["status"];
+        $pen->save();
+    }
 }
