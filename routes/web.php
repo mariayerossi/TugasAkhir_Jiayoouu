@@ -201,6 +201,11 @@ Route::prefix("/pemilik")->group(function(){
         $id = Session::get("dataRole")->id_pemilik;
         $alat = new ModelsAlatOlahraga();
         $param["alat"] = $alat->get_all_data_status($id);
+
+        $per = new ModelsRequestPermintaan();
+        $param["permintaan"] = $per->get_all_data_by_lapangan($id);
+        $pen = new ModelsRequestPenawaran();
+        $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
         return view("pemilik.detailLapanganUmum")->with($param);
     })->middleware([CekPemilik::class]);
     Route::post('editHargaKomisi',[AlatOlahraga::class, "editHargaKomisi"]);
@@ -322,7 +327,6 @@ Route::prefix("/tempat")->group(function(){
             $param["permintaan"] = $per->get_all_data_by_lapangan($id);
             $pen = new ModelsRequestPenawaran();
             $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
-            //piye iki yooo puseng akuuu
             return view("tempat.lapangan.detailLapangan")->with($param);
         })->middleware([CekTempat::class]);
         Route::get("/editLapangan/{id}", function ($id) {

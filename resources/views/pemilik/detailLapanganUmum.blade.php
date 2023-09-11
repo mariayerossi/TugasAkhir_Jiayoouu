@@ -10,6 +10,37 @@
         background-repeat: no-repeat;
         background-size: cover;
     }
+    .square-image-container {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.square-image-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+.truncate-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+}
+@media (max-width: 768px) {
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .square-image-container {
+        width: 60px;
+        height: 60px;
+    }
+}
 </style>
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <!-- Carousel Gambar Lapangan -->
@@ -125,6 +156,68 @@
                 <li>Luas: {{$array[0]." m x ".$array[1]." m"}} </li>
                 <li>Status : {{$lapangan->first()->status_lapangan}}</li>
             </ul>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6 col-sm-12">
+            <h4>Alat Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang disewakan di lapangan ini"></i></h4>
+            @if ($permintaan->isEmpty() && $penawaran->isEmpty())
+                <p>(Tidak ada alat olahraga yang disewakan di lapangan ini)</p>
+            @endif
+            @if (!$permintaan->isEmpty())
+                @foreach ($permintaan as $item)
+                    @php
+                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                    @endphp
+                    <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+                        <div class="card h-70 mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Gambar Alat -->
+                                    <div class="col-4">
+                                        <div class="square-image-container">
+                                            <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Nama Alat -->
+                                    <div class="col-8 d-flex align-items-center">
+                                        <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+            @if (!$penawaran->isEmpty())
+                @foreach ($penawaran as $item)
+                    @php
+                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                    @endphp
+                    <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+                        <div class="card h-70 mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Gambar Alat -->
+                                    <div class="col-4">
+                                        <div class="square-image-container">
+                                            <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Nama Alat -->
+                                    <div class="col-8 d-flex align-items-center">
+                                        <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
         </div>
     </div>
     <!-- Reviews section -->
