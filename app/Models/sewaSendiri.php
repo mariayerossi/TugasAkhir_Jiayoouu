@@ -23,4 +23,15 @@ class sewaSendiri extends Model
         $sewa->fk_id_tempat = $data["tempat"];
         $sewa->save();
     }
+
+    public function deleteSewa($data)
+    {
+        $sewa = sewaSendiri::find($data["id"]);
+        $sewa->deleted_at = $data["delete"];
+        $sewa->save();
+    }
+
+    public function get_all_data_by_lapangan($id){
+        return sewaSendiri::where('deleted_at',"=",null)->where("req_lapangan", "=", $id)->get();
+    }
 }

@@ -126,7 +126,7 @@
         <!-- Bagian form (menggunakan 6 kolom) -->
         <div class="col-md-8">
             @include("layouts.message")
-            <form action="/tempat/penawaran/requestPenawaranAlat" method="post" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <form action="/tempat/sewa/tambahSewaSendiri" method="post" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 @csrf
                 <div class="d-flex justify-content-center">
                     <h5><b>Sewakan Alat Olahragamu Sendiri</b></h5>
@@ -140,6 +140,9 @@
                             <option value="" disabled selected>Pilih Alat Olahraga</option>
                             @if (!$alat->isEmpty())
                                 @foreach ($alat as $item)
+                                @php
+                                    
+                                @endphp
                                 <option value="{{$item->id_alat}}" {{ old('alat') == $item->nama_alat ? 'selected' : '' }}>{{$item->nama_alat}}</option>
                                 @endforeach
                             @endif
@@ -211,6 +214,38 @@
                                     <!-- Nama Alat -->
                                     <div class="col-8 d-flex align-items-center">
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+            @if (!$sewa->isEmpty())
+                @foreach ($sewa as $item)
+                    @php
+                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                    @endphp
+                    <a href="/tempat/alat/lihatDetail/{{$dataAlat->id_alat}}">
+                        <div class="card h-70 mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Gambar Alat -->
+                                    <div class="col-4">
+                                        <div class="square-image-container">
+                                            <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Nama Alat -->
+                                    <div class="col-8 d-flex align-items-center justify-content-between">
+                                        <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                        <form action="/tempat/sewa/hapusSewaSendiri" method="post">
+                                            @csrf
+                                            <input type="hidden" name="id_sewa" value="{{$item->id_sewa}}">
+                                            <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

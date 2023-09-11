@@ -7,6 +7,7 @@ use App\Http\Controllers\LoginRegister;
 use App\Http\Controllers\Negosiasi;
 use App\Http\Controllers\RequestPenawaran;
 use App\Http\Controllers\RequestPermintaan;
+use App\Http\Controllers\SewaSendiri;
 use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
 use App\Http\Middleware\CekTempat;
@@ -23,6 +24,7 @@ use App\Models\pihakTempat;
 use App\Models\registerTempat;
 use App\Models\requestPenawaran as ModelsRequestPenawaran;
 use App\Models\requestPermintaan as ModelsRequestPermintaan;
+use App\Models\sewaSendiri as ModelsSewaSendiri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -328,12 +330,15 @@ Route::prefix("/tempat")->group(function(){
             $files = new filesLapanganOlahraga();
             $param["files"] = $files->get_all_data($id);
             $alat = new ModelsAlatOlahraga();
-            $param["alat"] = $alat->get_all_data3();
+            $param["alat"] = $alat->get_all_data3(Session::get("dataRole")->id_tempat);
 
             $per = new ModelsRequestPermintaan();
             $param["permintaan"] = $per->get_all_data_by_lapangan($id);
             $pen = new ModelsRequestPenawaran();
             $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
+
+            $sewa = new ModelsSewaSendiri();
+            $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
             return view("tempat.lapangan.detailLapangan")->with($param);
         })->middleware([CekTempat::class]);
         Route::get("/editLapangan/{id}", function ($id) {
@@ -441,7 +446,8 @@ Route::prefix("/tempat")->group(function(){
         });
     });
 
-    Route::prefix("/alat")->group(function(){
-        
+    Route::prefix("/sewa")->group(function(){
+        Route::post("/tambahSewaSendiri", [SewaSendiri::class, "tambahSewaSendiri"]);
+        Route::post("/hapusSewaSendiri", [SewaSendiri::class, "hapusSewaSendiri"]);
     });
 });
