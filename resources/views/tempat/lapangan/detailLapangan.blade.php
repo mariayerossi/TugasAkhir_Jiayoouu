@@ -141,10 +141,10 @@
                             @if (!$alat->isEmpty())
                                 @foreach ($alat as $item)
                                 @php
-                                    $sew = DB::table('sewa_sendiri')->where("deleted_at","=",null)->where("req_id_alat","=",$item->id_alat)->exists();
+                                    $sew = DB::table('sewa_sendiri')->where("deleted_at","=",null)->where("req_lapangan","=",$lapangan->first()->id_lapangan)->where("req_id_alat","=",$item->id_alat)->exists();
                                 @endphp
                                 @if (!$sew)
-                                <option value="{{$item->id_alat}}" {{ old('alat') == $item->nama_alat ? 'selected' : '' }}>{{$item->nama_alat}}</option>
+                                    <option value="{{$item->id_alat}}" {{ old('alat') == $item->nama_alat ? 'selected' : '' }}>{{$item->nama_alat}}</option>
                                 @endif
                                 @endforeach
                             @endif
@@ -166,7 +166,7 @@
     <div class="row mt-4">
         <div class="col-md-6 col-sm-12">
             <h4>Alat Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang disewakan di lapangan ini"></i></h4>
-            @if ($permintaan->isEmpty() && $penawaran->isEmpty())
+            @if ($permintaan->isEmpty() && $penawaran->isEmpty() && $sewa->isEmpty())
                 <p>(Tidak ada alat olahraga yang disewakan di lapangan ini)</p>
             @endif
             @if (!$permintaan->isEmpty())
