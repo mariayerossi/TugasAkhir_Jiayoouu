@@ -328,7 +328,7 @@ Route::prefix("/tempat")->group(function(){
             $files = new filesLapanganOlahraga();
             $param["files"] = $files->get_all_data($id);
             $alat = new ModelsAlatOlahraga();
-            $param["alat"] = $alat->get_all_data2();
+            $param["alat"] = $alat->get_all_data3();
 
             $per = new ModelsRequestPermintaan();
             $param["permintaan"] = $per->get_all_data_by_lapangan($id);
@@ -439,5 +439,9 @@ Route::prefix("/tempat")->group(function(){
         Route::prefix("/negosiasi")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPenawaran"]);
         });
+    });
+
+    Route::prefix("/alat")->group(function(){
+        
     });
 });
