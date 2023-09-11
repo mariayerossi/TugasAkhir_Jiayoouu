@@ -157,8 +157,13 @@ class AlatOlahraga extends Controller
 
     public function searchAlat(Request $request)
     {
+        if (Session::get("role") == "admin") {
+            $query = DB::table('alat_olahraga')->where('deleted_at',"=",null);
+        }
+        else {
+            $query = DB::table('alat_olahraga')->where('deleted_at',"=",null)->where("role_pemilik_alat","=","Pemilik")->where("status_alat","=","Aktif");
+        }
         // $search = $request->input("cari");
-        $query = DB::table('alat_olahraga')->where('deleted_at',"=",null)->where("role_pemilik_alat","=","Pemilik")->where("status_alat","=","Aktif");
     
         if ($request->filled('kategori')) {
             $query->where('kategori_alat', $request->kategori);

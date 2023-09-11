@@ -129,7 +129,32 @@ Sportiva
 
     </div>
     <script>
-        openNav();
+        // openNav();
+        let isNavOpen;
+        function toggleNav() {
+            const sidebar = document.getElementById("sidebar");
+            const main = document.getElementById("main");
+
+            if (!isNavOpen) {
+                sidebar.style.left = "0";
+                main.style.marginLeft = "250px";
+                isNavOpen = true;
+            } else {
+                sidebar.style.left = "-250px";
+                main.style.marginLeft = "0";
+                isNavOpen = false;
+            }
+        }
+        window.onload = function() {
+            // Cek lebar layar
+            if (window.innerWidth <= 768) {
+                document.getElementById("sidebar").style.left = "-250px";
+                isNavOpen = false; // Set status navbar ke tertutup
+            } else {
+                openNav();
+                isNavOpen = true; // Set status navbar ke terbuka
+            }
+        }
         function openNav() {
             document.getElementById("sidebar").style.left = "0";
             document.getElementById("main").style.marginLeft = "250px";

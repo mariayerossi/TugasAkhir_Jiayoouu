@@ -124,6 +124,44 @@
     </div>
     <div class="row mt-4">
         <div class="col-md-6 col-sm-12">
+            <div class="row">
+                <!-- Bagian form (menggunakan 6 kolom) -->
+                <div class="col-md-8">
+                    @include("layouts.message")
+                    <form action="/pemilik/penawaran/requestPenawaranAlat" method="post" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        @csrf
+                        <div class="d-flex justify-content-center">
+                            <h5><b>Tambahkan alat olahragamu sendiri</b></h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Alat Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Pilih alat olahraga yang akan ditawarkan"></i></h6>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                <select class="form-control" name="alat">
+                                    <option value="" disabled selected>Pilih Alat Olahraga</option>
+                                    @if (!$alat->isEmpty())
+                                        @foreach ($alat as $item)
+                                        <option value="{{$item->id_alat}}-{{$item->kota_alat}}" {{ old('alat') == $item->nama_alat ? 'selected' : '' }}>{{$item->nama_alat}} - {{$item->kota_alat}}</option>
+                                        @endforeach
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
+                        <input type="hidden" name="id_tempat" value="{{$lapangan->first()->pemilik_lapangan}}">
+                        <input type="hidden" name="id_pemilik" value="{{Session::get("dataRole")->id_pemilik}}">
+                        <input type="hidden" name="kota_lapangan" value="{{$lapangan->first()->kota_lapangan}}">
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-success">Tawarkan Alat</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Ruang kosong (menggunakan 6 kolom lainnya) -->
+                <div class="col-md-4">
+                    <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
+                </div>
+            </div>
             <h4>Alat Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang disewakan di lapangan ini"></i></h4>
             @if ($permintaan->isEmpty() && $penawaran->isEmpty())
                 <p>(Tidak ada alat olahraga yang disewakan di lapangan ini)</p>

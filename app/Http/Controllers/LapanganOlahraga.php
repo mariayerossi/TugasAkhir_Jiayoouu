@@ -143,7 +143,12 @@ class LapanganOlahraga extends Controller
     public function searchLapangan(Request $request)
     {
         // $search = $request->input("cari");
-        $query = DB::table('lapangan_olahraga')->where('deleted_at',"=",null)->where("status_lapangan","=","Aktif");
+        if (Session::get("role") == "admin") {
+            $query = DB::table('lapangan_olahraga')->where('deleted_at',"=",null);
+        }
+        else {
+            $query = DB::table('lapangan_olahraga')->where('deleted_at',"=",null)->where("status_lapangan","=","Aktif");
+        }
     
         if ($request->filled('kategori')) {
             $query->where('kategori_lapangan', $request->kategori);

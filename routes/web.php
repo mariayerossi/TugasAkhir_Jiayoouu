@@ -101,7 +101,7 @@ Route::prefix("/admin")->group(function(){
             $kat = new kategori();
             $param["kategori"] = $kat->get_all_data();
             $alat = new ModelsAlatOlahraga();
-            $param["alat"] = $alat->get_all_data2();
+            $param["alat"] = $alat->get_all_data_for_admin();
             $files = new filesAlatOlahraga();
             $param["files"] = $files;
             return view("admin.produk.cariAlat")->with($param);
@@ -122,7 +122,7 @@ Route::prefix("/admin")->group(function(){
             $kat = new kategori();
             $param["kategori"] = $kat->get_all_data();
             $lapa = new ModelsLapanganOlahraga();
-            $param["lapangan"] = $lapa->get_all_data2();
+            $param["lapangan"] = $lapa->get_all_data_for_admin();
             $files = new filesLapanganOlahraga();
             $param["files"] = $files;
             return view("admin.produk.cariLapangan")->with($param);
@@ -133,6 +133,11 @@ Route::prefix("/admin")->group(function(){
             $param["lapangan"] = $lapa->get_all_data_by_id($id);
             $files = new filesLapanganOlahraga();
             $param["files"] = $files->get_all_data($id);
+
+            $per = new ModelsRequestPermintaan();
+            $param["permintaan"] = $per->get_all_data_by_lapangan($id);
+            $pen = new ModelsRequestPenawaran();
+            $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
             return view("admin.produk.detailLapanganUmum")->with($param);
         })->middleware([CekAdmin::class]);
     });
@@ -322,6 +327,8 @@ Route::prefix("/tempat")->group(function(){
             $param["lapangan"] = $lap->get_all_data_by_id($id);
             $files = new filesLapanganOlahraga();
             $param["files"] = $files->get_all_data($id);
+            $alat = new ModelsAlatOlahraga();
+            $param["alat"] = $alat->get_all_data2();
 
             $per = new ModelsRequestPermintaan();
             $param["permintaan"] = $per->get_all_data_by_lapangan($id);

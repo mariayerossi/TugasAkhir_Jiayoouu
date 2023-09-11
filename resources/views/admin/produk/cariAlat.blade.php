@@ -85,7 +85,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{$item->nama_alat}}</h5>
                                 <h5 class="card-text"><b>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</b></h5>
-                                <p class="card-text">Stok : {{$item->stok_alat}}</p>
+                                <p class="card-text"><i class="bi bi-geo-alt"></i> Kota {{$item->kota_alat}}</p>
                             </div>
                         </div>
                     </a>
