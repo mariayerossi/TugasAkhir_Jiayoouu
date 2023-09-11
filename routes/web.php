@@ -66,7 +66,15 @@ Route::get("/logout", [LoginRegister::class, "logout"]);
 // HALAMAN ADMIN
 // -------------------------------
 Route::prefix("/admin")->group(function(){
-    Route::view("/beranda", "admin.beranda")->middleware([CekAdmin::class]);
+    Route::get("/beranda", function () {
+        $cust = new customer();
+        $param["jumlahCustomer"] = $cust->count_all_data_admin();
+        $alat = new ModelsAlatOlahraga();
+        $param["jumlahAlat"] = $alat->count_all_data_admin();
+        $lapangan = new ModelsLapanganOlahraga();
+        $param["jumlahLapangan"] = $lapangan->count_all_data_admin();
+        return view("admin.beranda")->with($param);
+    })->middleware([CekAdmin::class]);
     Route::get("/registrasi_tempat", function () {
         $reg = new registerTempat();
         $param["register"] = $reg->get_all_data();
@@ -140,6 +148,8 @@ Route::prefix("/admin")->group(function(){
             $param["permintaan"] = $per->get_all_data_by_lapangan($id);
             $pen = new ModelsRequestPenawaran();
             $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
+            $sewa = new ModelsSewaSendiri();
+            $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
             return view("admin.produk.detailLapanganUmum")->with($param);
         })->middleware([CekAdmin::class]);
     });
@@ -155,6 +165,8 @@ Route::prefix("/pemilik")->group(function(){
         $param["jumlahAlat"] = $alat->count_all_data($id, "Pemilik");
         $minta = new ModelsRequestPermintaan();
         $param["jumlahPermintaan"] = $minta->count_all_data_pemilik($id);
+        $tawar = new ModelsRequestPenawaran();
+        $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($id);
         return view("pemilik.beranda")->with($param);
     })->middleware([CekPemilik::class]);
     Route::get("/masterAlat", function () {
@@ -205,14 +217,16 @@ Route::prefix("/pemilik")->group(function(){
         $param["lapangan"] = $lapa->get_all_data_by_id($id);
         $files = new filesLapanganOlahraga();
         $param["files"] = $files->get_all_data($id);
-        $id = Session::get("dataRole")->id_pemilik;
+        $role = Session::get("dataRole")->id_pemilik;
         $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data_status($id);
+        $param["alat"] = $alat->get_all_data_status($role);
 
         $per = new ModelsRequestPermintaan();
         $param["permintaan"] = $per->get_all_data_by_lapangan($id);
         $pen = new ModelsRequestPenawaran();
         $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
+        $sewa = new ModelsSewaSendiri();
+        $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
         return view("pemilik.detailLapanganUmum")->with($param);
     })->middleware([CekPemilik::class]);
     Route::post('editHargaKomisi',[AlatOlahraga::class, "editHargaKomisi"]);
@@ -284,6 +298,8 @@ Route::prefix("/tempat")->group(function(){
         $param["jumlahLapangan"] = $lapa->count_all_data($role);
         $minta = new ModelsRequestPermintaan();
         $param["jumlahPermintaan"] = $minta->count_all_data_tempat($role);
+        $tawar = new ModelsRequestPenawaran();
+        $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($role);
         return view("tempat.beranda")->with($param);
     })->middleware([CekTempat::class]);
     Route::get("/cariAlat", function () {

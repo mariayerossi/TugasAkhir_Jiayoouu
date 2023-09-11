@@ -70,7 +70,7 @@ class requestPermintaan extends Model
     }
 
     public function count_all_data_pemilik($role){
-        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$role)->where("status_permintaan","!=","Dibatalkan")->count();
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$role)->where("status_permintaan","!=","Dibatalkan")->where("status_permintaan","!=","Ditolak")->count();
     }
 
     public function count_all_data_tempat($role){

@@ -122,7 +122,7 @@
     <div class="row mt-4">
         <div class="col-md-6 col-sm-12">
             <h4>Alat Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang disewakan di lapangan ini"></i></h4>
-            @if ($permintaan->isEmpty() && $penawaran->isEmpty())
+            @if ($permintaan->isEmpty() && $penawaran->isEmpty() && $sewa->isEmpty())
                 <p>(Tidak ada alat olahraga yang disewakan di lapangan ini)</p>
             @endif
             @if (!$permintaan->isEmpty())
@@ -171,6 +171,33 @@
                                     
                                     <!-- Nama Alat -->
                                     <div class="col-8 d-flex align-items-center">
+                                        <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                @endforeach
+            @endif
+            @if (!$sewa->isEmpty())
+                @foreach ($sewa as $item)
+                    @php
+                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                    @endphp
+                    <a href="/admin/alat/detailAlatUmum/{{$dataAlat->id_alat}}">
+                        <div class="card h-70 mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Gambar Alat -->
+                                    <div class="col-4">
+                                        <div class="square-image-container">
+                                            <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Nama Alat -->
+                                    <div class="col-8 d-flex align-items-center justify-content-between">
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                     </div>
                                 </div>

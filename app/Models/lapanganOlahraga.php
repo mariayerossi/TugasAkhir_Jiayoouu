@@ -57,6 +57,10 @@ class lapanganOlahraga extends Model
         return lapanganOlahraga::where('deleted_at',"=",null)->where("pemilik_lapangan","=",$role)->count();
     }
 
+    public function count_all_data_admin(){
+        return lapanganOlahraga::where('deleted_at',"=",null)->count();
+    }
+
     public function updateLapangan($data){
         $lapa = lapanganOlahraga::find($data["id"]);
         $lapa->nama_lapangan = $data["nama"];

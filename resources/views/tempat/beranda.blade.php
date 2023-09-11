@@ -29,7 +29,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Total Penawaran Alat</h5>
-                        <p class="display-5">5000</p>
+                        <p class="display-5">{{$jumlahPenawaran}}</p>
                     </div>
                 </div>
             </a>
