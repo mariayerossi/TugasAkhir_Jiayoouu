@@ -28,6 +28,10 @@
         padding-left: 0;
         padding-right: 0;
     }
+    .square-image-container {
+        width: 60px;
+        height: 60px;
+    }
 }
 </style>
 @include("layouts.message")

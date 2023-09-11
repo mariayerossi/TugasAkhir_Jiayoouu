@@ -28,6 +28,10 @@ display: block;
     padding-left: 0;
     padding-right: 0;
 }
+.square-image-container {
+        width: 60px;
+        height: 60px;
+    }
 }
 </style>
 @include("layouts.message")
@@ -88,7 +92,7 @@ display: block;
                                         </div>
                                     </form>
                                 @else
-                                    <p class="card-text">(Tidak dapat mengedit komisi, penawaran telah {{$penawaran->first()->status_penawaran}})</p>
+                                    <p class="card-text">(Tidak dapat mengedit komisi)</p>
                                 @endif
                             </div>
                         </div>
@@ -191,10 +195,11 @@ display: block;
                         @csrf
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <hr>
-                        <span style="font-size: 14px">Konfirmasi detail penawaran setelah pihak pengelola tempat menyetujui penawaran</span>
                         @if ($penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == "Setuju")
+                            <span style="font-size: 14px">Penawaran telah disetujui pihak pengelola tempat olahraga, Silahkan konfirmasi detail penawaran</span>
                             <button type="submit" class="btn btn-success w-100">Konfirmasi</button>
                         @else
+                            <span style="font-size: 14px">Konfirmasi detail penawaran setelah pihak pengelola tempat menyetujui penawaran</span>
                             <button type="submit" disabled class="btn btn-success w-100">Konfirmasi</button>
                         @endif
                     </form>

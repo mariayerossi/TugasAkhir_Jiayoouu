@@ -28,6 +28,10 @@
         padding-left: 0;
         padding-right: 0;
     }
+    .square-image-container {
+        width: 60px;
+        height: 60px;
+    }
 }
 </style>
 @include("layouts.message")
@@ -217,10 +221,11 @@
                         @csrf
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <hr>
-                        <span style="font-size: 14px">Terima penawaran membutuhkan konfirmasi pemilik alat</span>
                         @if ($penawaran->first()->status_tempat != "Setuju")
+                            <span style="font-size: 14px">Silahkan konfirmasi dan terima penawaran yang diajukan pemilik</span>
                             <button type="submit" class="btn btn-success w-100">Terima</button>
                         @else
+                            <span style="font-size: 14px">Penawaran telah disetujui, tunggu konfirmasi dari pemilik alat olahraga</span>
                             <button type="submit" disabled class="btn btn-success w-100">Terima</button>
                         @endif
                     </form>

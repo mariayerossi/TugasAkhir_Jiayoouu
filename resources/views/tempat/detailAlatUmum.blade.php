@@ -145,6 +145,7 @@
         @endphp
         Ukuran : {{$array[0]." cm x ".$array[1]." cm x ".$array[2]." cm"}} <br>
         Biaya Ganti Rugi : Rp {{number_format($alat->first()->ganti_rugi_alat, 0, ',', '.')}} <br>
+        Status : {{$alat->first()->status_alat}}
     </p>
 
     <!-- Additional details section -->

@@ -2,7 +2,7 @@
 
 @section('content')
 <style>
-        .square-image-container {
+.square-image-container {
     width: 100px;
     height: 100px;
     overflow: hidden;
@@ -27,6 +27,10 @@
     .container-fluid {
         padding-left: 0;
         padding-right: 0;
+    }
+    .square-image-container {
+        width: 60px;
+        height: 60px;
     }
 }
 </style>

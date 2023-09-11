@@ -123,6 +123,7 @@
                     $array = explode("x", $lapangan->first()->luas_lapangan);
                 @endphp
                 <li>Luas: {{$array[0]." m x ".$array[1]." m"}} </li>
+                <li>Status : {{$lapangan->first()->status_lapangan}}</li>
             </ul>
         </div>
     </div>
