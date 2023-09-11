@@ -141,9 +141,11 @@
                             @if (!$alat->isEmpty())
                                 @foreach ($alat as $item)
                                 @php
-                                    
+                                    $sew = DB::table('sewa_sendiri')->where("deleted_at","=",null)->where("req_id_alat","=",$item->id_alat)->exists();
                                 @endphp
+                                @if (!$sew)
                                 <option value="{{$item->id_alat}}" {{ old('alat') == $item->nama_alat ? 'selected' : '' }}>{{$item->nama_alat}}</option>
+                                @endif
                                 @endforeach
                             @endif
                         </select>
