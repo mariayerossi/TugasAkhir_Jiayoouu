@@ -134,6 +134,86 @@
             </div>
         </div>
         <input type="hidden" name="pemilik" value="{{Session::get("dataRole")->id_tempat}}">
+        <hr>
+        <h4>Atur Jam Buka Lapangan</h4>
+        <div id="inputContainer" class="mb-5 mt-3">
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="hari1" class="form-label">Hari:</label>
+                    <select id="hari1" name="hari1" class="form-select">
+                        <option value="" disabled selected>Masukkan Hari</option>
+                        <option value="senin">Senin</option>
+                        <option value="selasa">Selasa</option>
+                        <option value="rabu">Rabu</option>
+                        <option value="kamis">Kamis</option>
+                        <option value="jumat">Jumat</option>
+                        <option value="sabtu">Sabtu</option>
+                        <option value="minggu">Minggu</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="buka1" class="form-label">Jam Buka:</label>
+                    <select id="buka1" name="buka1" class="form-select">
+                        <option value="" disabled selected>Masukkan Jam Buka</option>
+                        <option value="00:00">00:00</option>
+                        <option value="01:00">01:00</option>
+                        <option value="02:00">02:00</option>
+                        <option value="03:00">03:00</option>
+                        <option value="04:00">04:00</option>
+                        <option value="05:00">05:00</option>
+                        <option value="06:00">06:00</option>
+                        <option value="07:00">07:00</option>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                        <option value="22:00">22:00</option>
+                        <option value="23:00">23:00</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="tutup1" class="form-label">Jam Tutup:</label>
+                    <select id="tutup1" name="tutup1" class="form-select">
+                        <option value="" disabled selected>Masukkan Jam Tutup</option>
+                        <option value="00:00">00:00</option>
+                        <option value="01:00">01:00</option>
+                        <option value="02:00">02:00</option>
+                        <option value="03:00">03:00</option>
+                        <option value="04:00">04:00</option>
+                        <option value="05:00">05:00</option>
+                        <option value="06:00">06:00</option>
+                        <option value="07:00">07:00</option>
+                        <option value="08:00">08:00</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                        <option value="21:00">21:00</option>
+                        <option value="22:00">22:00</option>
+                        <option value="23:00">23:00</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-secondary mb-3" onclick="addTimeInput()">Add</button>
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
@@ -213,5 +293,100 @@
             });
         }
     });
+    let counter = 2;
+
+    function addTimeInput() {
+        const container = document.getElementById('inputContainer');
+        
+        const row = document.createElement('div');
+        row.className = 'row mb-3';
+
+        const colHari = document.createElement('div');
+        colHari.className = 'col';
+        colHari.innerHTML = `
+            <select id="hari${counter}" name="hari${counter}" class="form-select">
+                <option value="" disabled selected>Masukkan Hari</option>
+                <option value="senin">Senin</option>
+                <option value="selasa">Selasa</option>
+                <option value="rabu">Rabu</option>
+                <option value="kamis">Kamis</option>
+                <option value="jumat">Jumat</option>
+                <option value="sabtu">Sabtu</option>
+                <option value="minggu">Minggu</option>
+            </select>
+        `;
+
+        const colBuka = document.createElement('div');
+        colBuka.className = 'col';
+        colBuka.innerHTML = `
+        <select id="buka${counter}" name="buka${counter}" class="form-select">
+            <option value="" disabled selected>Masukkan Jam Buka</option>
+            <option value="00:00">00:00</option>
+            <option value="01:00">01:00</option>
+            <option value="02:00">02:00</option>
+            <option value="03:00">03:00</option>
+            <option value="04:00">04:00</option>
+            <option value="05:00">05:00</option>
+            <option value="06:00">06:00</option>
+            <option value="07:00">07:00</option>
+            <option value="08:00">08:00</option>
+            <option value="09:00">09:00</option>
+            <option value="10:00">10:00</option>
+            <option value="11:00">11:00</option>
+            <option value="12:00">12:00</option>
+            <option value="13:00">13:00</option>
+            <option value="14:00">14:00</option>
+            <option value="15:00">15:00</option>
+            <option value="16:00">16:00</option>
+            <option value="17:00">17:00</option>
+            <option value="18:00">18:00</option>
+            <option value="19:00">19:00</option>
+            <option value="20:00">20:00</option>
+            <option value="21:00">21:00</option>
+            <option value="22:00">22:00</option>
+            <option value="23:00">23:00</option>
+        </select>
+        `;
+
+        const colTutup = document.createElement('div');
+        colTutup.className = 'col';
+        colTutup.innerHTML = `
+        <select id="tutup${counter}" name="tutup${counter}" class="form-select">
+            <option value="" disabled selected>Masukkan Jam Tutup</option>
+            <option value="00:00">00:00</option>
+            <option value="01:00">01:00</option>
+            <option value="02:00">02:00</option>
+            <option value="03:00">03:00</option>
+            <option value="04:00">04:00</option>
+            <option value="05:00">05:00</option>
+            <option value="06:00">06:00</option>
+            <option value="07:00">07:00</option>
+            <option value="08:00">08:00</option>
+            <option value="09:00">09:00</option>
+            <option value="10:00">10:00</option>
+            <option value="11:00">11:00</option>
+            <option value="12:00">12:00</option>
+            <option value="13:00">13:00</option>
+            <option value="14:00">14:00</option>
+            <option value="15:00">15:00</option>
+            <option value="16:00">16:00</option>
+            <option value="17:00">17:00</option>
+            <option value="18:00">18:00</option>
+            <option value="19:00">19:00</option>
+            <option value="20:00">20:00</option>
+            <option value="21:00">21:00</option>
+            <option value="22:00">22:00</option>
+            <option value="23:00">23:00</option>
+        </select>
+        `;
+
+        row.appendChild(colHari);
+        row.appendChild(colBuka);
+        row.appendChild(colTutup);
+        container.appendChild(row);
+
+        counter++;
+    }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection
