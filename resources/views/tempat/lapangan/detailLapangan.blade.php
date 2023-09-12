@@ -122,6 +122,18 @@
             </ul>
         </div>
     </div>
+    <div class="row mt-4 mb-4">
+        <div class="col-md-6 col-sm-12">
+            <h4>Jam Operasional Lapangan</h4>
+            <ul>
+                @if (!$slot->isEmpty())
+                    @foreach ($slot as $item)
+                        <li>{{$item->hari}} : {{$item->jam_buka}} - {{$item->jam_tutup}}</li>
+                    @endforeach
+                @endif
+            </ul>
+        </div>
+    </div>
     <div class="row">
         <!-- Bagian form (menggunakan 6 kolom) -->
         <div class="col-md-8">

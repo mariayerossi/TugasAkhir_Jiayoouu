@@ -137,7 +137,22 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '08:00',
-            'jam_tutup' => '15:00'
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '15:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 1
         ]);
 
         DB::table('alat_olahraga')->insert([

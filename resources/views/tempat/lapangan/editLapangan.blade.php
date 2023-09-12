@@ -182,6 +182,28 @@
             <input type="hidden" id="" name="id" value="{{$lapangan->first()->id_lapangan}}">
         </div>
         <input type="hidden" name="pemilik" value="{{Session::get("dataRole")->id_tempat}}">
+        <hr>
+        <h4>Atur Jam Buka Lapangan</h4>
+        <div id="inputContainer" class="mb-5 mt-3">
+            @if (!$slot->isEmpty())
+                @foreach ($slot as $item)
+                    <div class="row mb-3">
+                        <div class="col">
+                            <select id="hari{{$loop->iteration}}" name="hari{{$loop->iteration}}" class="form-select">
+                                <option value="" disabled selected>Masukkan Hari</option>
+                                <option value="Senin">Senin</option>
+                                <option value="Selasa">Selasa</option>
+                                <option value="Rabu">Rabu</option>
+                                <option value="Kamis">Kamis</option>
+                                <option value="Jumat">Jumat</option>
+                                <option value="Sabtu">Sabtu</option>
+                                <option value="Minggu">Minggu</option>
+                            </select>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>

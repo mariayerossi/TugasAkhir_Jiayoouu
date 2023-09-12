@@ -13,6 +13,7 @@ use App\Http\Middleware\CekPemilik;
 use App\Http\Middleware\CekTempat;
 use App\Http\Middleware\Guest;
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
+use App\Models\slotWaktu as ModelsSlotWaktu;
 use App\Models\customer;
 use App\Models\filesAlatOlahraga;
 use App\Models\filesLapanganOlahraga;
@@ -347,6 +348,8 @@ Route::prefix("/tempat")->group(function(){
             $param["files"] = $files->get_all_data($id);
             $alat = new ModelsAlatOlahraga();
             $param["alat"] = $alat->get_all_data3(Session::get("dataRole")->id_tempat);
+            $slot = new ModelsSlotWaktu();
+            $param["slot"] = $slot->get_all_data_by_lapangan($id);
 
             $per = new ModelsRequestPermintaan();
             $param["permintaan"] = $per->get_all_data_by_lapangan($id);
@@ -364,6 +367,8 @@ Route::prefix("/tempat")->group(function(){
             $param["lapangan"] = $lap->get_all_data_by_id($id);
             $files = new filesLapanganOlahraga();
             $param["files"] = $files->get_all_data($id);
+            $slot = new ModelsSlotWaktu();
+            $param["slot"] = $slot->get_all_data_by_lapangan($id);
             return view("tempat.lapangan.editLapangan")->with($param);
             // echo $id;
         })->middleware([CekTempat::class]);
