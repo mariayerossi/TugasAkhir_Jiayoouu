@@ -467,3 +467,10 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/hapusSewaSendiri", [SewaSendiri::class, "hapusSewaSendiri"]);
     });
 });
+
+// -------------------------------
+// HALAMAN CUSTOMER
+// -------------------------------
+Route::prefix("/customer")->group(function(){
+    Route::view("/beranda", "customer.beranda");
+});

@@ -270,8 +270,10 @@ class LoginRegister extends Controller
             $user = new customer();
             $dataUser = $user->cek_email_user($request->email);
             if (!$dataUser->isEmpty()) {
-                if (password_verify($request->password, $dataUser->first()->password_pemilik)) {
-                    //diarahkan ke halaman user
+                if (password_verify($request->password, $dataUser->first()->password_user)) {
+                    Session::put("role","customer");
+                    Session::put("dataRole", $dataUser->first());
+                    return redirect('/customer/beranda');
                 } else {
                     return redirect()->back()->with("error", "Password salah!");
                 }
