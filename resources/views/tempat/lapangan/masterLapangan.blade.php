@@ -135,7 +135,7 @@
         </div>
         <input type="hidden" name="pemilik" value="{{Session::get("dataRole")->id_tempat}}">
         <hr>
-        <h4>Atur Jam Buka Lapangan</h4>
+        <h4>Atur Jam Operasional Lapangan</h4>
         <div id="inputContainer" class="mb-5 mt-3">
             <div class="row mb-3">
                 <div class="col">
