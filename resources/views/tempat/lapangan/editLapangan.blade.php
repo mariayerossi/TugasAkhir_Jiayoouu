@@ -187,6 +187,7 @@
         <div id="inputContainer" class="mb-5 mt-3">
             @if (!$slot->isEmpty())
                 @foreach ($slot as $item)
+                    <input type="hidden" name="id_slot{{$loop->iteration}}" value="{{$item->id_slot}}">
                     <div class="row mb-3">
                         <div class="col">
                             <select id="hari{{$loop->iteration}}" name="hari{{$loop->iteration}}" class="form-select">
@@ -201,7 +202,7 @@
                             </select>
                         </div>
                         <div class="col">
-                            <select id="buka1" name="buka1" class="form-select">
+                            <select id="buka{{$loop->iteration}}" name="buka{{$loop->iteration}}" class="form-select">
                                 <option value="" disabled selected>Masukkan Jam Buka</option>
                                 <option value="01:00" {{ old('buka'.$loop->iteration) ?? $item->jam_buka == "01:00:00" ? 'selected' : '' }}>01:00</option>
                                 <option value="02:00" {{ old('buka'.$loop->iteration) ?? $item->jam_buka == "02:00:00" ? 'selected' : '' }}>02:00</option>
@@ -230,7 +231,7 @@
                             </select>
                         </div>
                         <div class="col">
-                            <select id="tutup1" name="tutup1" class="form-select">
+                            <select id="tutup{{$loop->iteration}}" name="tutup{{$loop->iteration}}" class="form-select">
                                 <option value="" disabled selected>Masukkan Jam Tutup</option>
                                 <option value="01:00" {{ old('tutup'.$loop->iteration) ?? $item->jam_tutup == "01:00:00" ? 'selected' : '' }}>01:00</option>
                                 <option value="02:00" {{ old('tutup'.$loop->iteration) ?? $item->jam_tutup == "02:00:00" ? 'selected' : '' }}>02:00</option>

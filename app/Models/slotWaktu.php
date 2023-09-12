@@ -28,4 +28,13 @@ class slotWaktu extends Model
     public function get_all_data_by_lapangan($id){
         return slotWaktu::where('deleted_at',"=",null)->where("fk_id_lapangan", "=", $id)->orderByRaw("FIELD(hari, 'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu')")->orderBy('jam_buka', 'asc')->get();
     }
+
+    public function updateSlot($data)
+    {
+        $slot = slotWaktu::find($data["id"]);
+        $slot->hari = $data["hari"];
+        $slot->jam_buka = $data["buka"];
+        $slot->jam_tutup = $data["tutup"];
+        $slot->save();
+    }
 }

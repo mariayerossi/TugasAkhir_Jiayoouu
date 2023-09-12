@@ -73,7 +73,6 @@ class LapanganOlahraga extends Controller
         }
 
         $index = 1;
-
         // Asumsikan Anda memiliki model "Jadwal"
         while ($request->has("hari$index") && $request->has("buka$index") && $request->has("tutup$index")) {
 
@@ -110,7 +109,10 @@ class LapanganOlahraga extends Controller
             "deskripsi" => 'required|max:500',
             "panjang" => 'required|numeric|min:0',
             "lebar" => 'required|numeric|min:0',
-            "harga" => 'required|numeric|min:0'
+            "harga" => 'required|numeric|min:0',
+            "hari1" => 'required',
+            "buka1" => 'required',
+            "tutup1" => 'required'
         ],[
             "required" => ":attribute lapangan olahraga tidak boleh kosong!",
             "lapangan.required" => "nama :attribute olahraga tidak boleh kosong!",
@@ -118,7 +120,10 @@ class LapanganOlahraga extends Controller
             "lapangan.min" => "nama lapangan olahraga tidak valid!",
             "min" => ":attribute lapangan olahraga tidak valid!",
             "numeric" => ":attribute lapangan olahraga tidak valid!",
-            "deskripsi.max" => "deskripsi lapangan olahraga maksimal 500 kata!"
+            "deskripsi.max" => "deskripsi lapangan olahraga maksimal 500 kata!",
+            "hari1.required" => "hari operasional lapangan tidak boleh kosong!",
+            "buka1.required" => "jam buka lapangan tidak boleh kosong!",
+            "tutup1.required" => "jam tutup lapangan tidak boleh kosong!"
         ]);
 
         $harga = intval(str_replace(".", "", $request->harga));
@@ -167,6 +172,30 @@ class LapanganOlahraga extends Controller
                     $photo->delete();
                 }
             }
+        }
+
+        $index = 1;
+        // Asumsikan Anda memiliki model "Jadwal"
+        while ($request->has("hari$index") && $request->has("buka$index") && $request->has("tutup$index")) {
+
+            $jamBuka = $request->input("buka$index");
+            $jamTutup = $request->input("tutup$index");
+
+            // Pengecekan apakah jam buka lebih awal dari jam tutup
+            if (strtotime($jamBuka) >= strtotime($jamTutup)) {
+                return redirect()->back()->with('error', 'Jam buka harus lebih awal daripada jam tutup!');
+            }
+
+            $data3 = [
+                "id" => $request->id_slot.$index,
+                "hari" => $request->input("hari$index"),
+                "buka" => $jamBuka,
+                "tutup" => $jamTutup
+            ];
+            $slot = new slotWaktu();
+            $slot->updateSlot($data3);
+
+            $index++; // Pergi ke set input berikutnya
         }
     
         return redirect()->back()->with("success", "Berhasil Mengubah Detail Lapangan!");
