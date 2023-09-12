@@ -191,13 +191,42 @@
                         <div class="col">
                             <select id="hari{{$loop->iteration}}" name="hari{{$loop->iteration}}" class="form-select">
                                 <option value="" disabled selected>Masukkan Hari</option>
-                                <option value="Senin">Senin</option>
-                                <option value="Selasa">Selasa</option>
-                                <option value="Rabu">Rabu</option>
-                                <option value="Kamis">Kamis</option>
-                                <option value="Jumat">Jumat</option>
-                                <option value="Sabtu">Sabtu</option>
-                                <option value="Minggu">Minggu</option>
+                                <option value="Senin" {{ old('hari'.$loop->iteration) ?? $item->hari == "Senin" ? 'selected' : '' }}>Senin</option>
+                                <option value="Selasa" {{ old('hari'.$loop->iteration) ?? $item->hari == "Selasa" ? 'selected' : '' }}>Selasa</option>
+                                <option value="Rabu" {{ old('hari'.$loop->iteration) ?? $item->hari == "Rabu" ? 'selected' : '' }}>Rabu</option>
+                                <option value="Kamis" {{ old('hari'.$loop->iteration) ?? $item->hari == "Kamis" ? 'selected' : '' }}>Kamis</option>
+                                <option value="Jumat" {{ old('hari'.$loop->iteration) ?? $item->hari == "Jumat" ? 'selected' : '' }}>Jumat</option>
+                                <option value="Sabtu" {{ old('hari'.$loop->iteration) ?? $item->hari == "Sabtu" ? 'selected' : '' }}>Sabtu</option>
+                                <option value="Minggu" {{ old('hari'.$loop->iteration) ?? $item->hari == "Minggu" ? 'selected' : '' }}>Minggu</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select id="buka1" name="buka1" class="form-select">
+                                <option value="" disabled selected>Masukkan Jam Buka</option>
+                                <option value="01:00" {{ old('buka'.$loop->iteration) ?? $item->jam_buka == "01:00" ? 'selected' : '' }}>01:00</option>
+                                <option value="02:00">02:00</option>
+                                <option value="03:00">03:00</option>
+                                <option value="04:00">04:00</option>
+                                <option value="05:00">05:00</option>
+                                <option value="06:00">06:00</option>
+                                <option value="07:00">07:00</option>
+                                <option value="08:00" {{ old('buka'.$loop->iteration) ?? $item->jam_buka == "08:00" ? 'selected' : '' }}>08:00</option>
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                                <option value="23:00">23:00</option>
+                                <option value="24:00">24:00</option>
                             </select>
                         </div>
                     </div>
