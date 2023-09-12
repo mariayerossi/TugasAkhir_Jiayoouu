@@ -134,6 +134,12 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '15:00'
+        ]);
+
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Futsal Specs",
             'kategori_alat' => "Futsal",

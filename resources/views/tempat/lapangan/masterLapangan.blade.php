@@ -138,24 +138,23 @@
         <h4>Atur Jam Buka Lapangan</h4>
         <div id="inputContainer" class="mb-5 mt-3">
             <div class="row mb-3">
-                <div class="col-md-4">
+                <div class="col">
                     <label for="hari1" class="form-label">Hari:</label>
                     <select id="hari1" name="hari1" class="form-select">
                         <option value="" disabled selected>Masukkan Hari</option>
-                        <option value="senin">Senin</option>
-                        <option value="selasa">Selasa</option>
-                        <option value="rabu">Rabu</option>
-                        <option value="kamis">Kamis</option>
-                        <option value="jumat">Jumat</option>
-                        <option value="sabtu">Sabtu</option>
-                        <option value="minggu">Minggu</option>
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option>
+                        <option value="Sabtu">Sabtu</option>
+                        <option value="Minggu">Minggu</option>
                     </select>
                 </div>
-                <div class="col-md-4">
-                    <label for="buka1" class="form-label">Jam Buka:</label>
+                <div class="col">
+                    <label for="buka1" class="form-label">Buka:</label>
                     <select id="buka1" name="buka1" class="form-select">
                         <option value="" disabled selected>Masukkan Jam Buka</option>
-                        <option value="00:00">00:00</option>
                         <option value="01:00">01:00</option>
                         <option value="02:00">02:00</option>
                         <option value="03:00">03:00</option>
@@ -179,13 +178,13 @@
                         <option value="21:00">21:00</option>
                         <option value="22:00">22:00</option>
                         <option value="23:00">23:00</option>
+                        <option value="24:00">24:00</option>
                     </select>
                 </div>
-                <div class="col-md-4">
-                    <label for="tutup1" class="form-label">Jam Tutup:</label>
+                <div class="col">
+                    <label for="tutup1" class="form-label">Tutup:</label>
                     <select id="tutup1" name="tutup1" class="form-select">
                         <option value="" disabled selected>Masukkan Jam Tutup</option>
-                        <option value="00:00">00:00</option>
                         <option value="01:00">01:00</option>
                         <option value="02:00">02:00</option>
                         <option value="03:00">03:00</option>
@@ -209,11 +208,12 @@
                         <option value="21:00">21:00</option>
                         <option value="22:00">22:00</option>
                         <option value="23:00">23:00</option>
+                        <option value="24:00">24:00</option>
                     </select>
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-secondary mb-3" onclick="addTimeInput()">Add</button>
+        <button type="button" class="btn btn-primary mb-3" onclick="addTimeInput()">Add</button>
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
@@ -306,13 +306,13 @@
         colHari.innerHTML = `
             <select id="hari${counter}" name="hari${counter}" class="form-select">
                 <option value="" disabled selected>Masukkan Hari</option>
-                <option value="senin">Senin</option>
-                <option value="selasa">Selasa</option>
-                <option value="rabu">Rabu</option>
-                <option value="kamis">Kamis</option>
-                <option value="jumat">Jumat</option>
-                <option value="sabtu">Sabtu</option>
-                <option value="minggu">Minggu</option>
+                <option value="Senin">Senin</option>
+                <option value="Selasa">Selasa</option>
+                <option value="Rabu">Rabu</option>
+                <option value="Kamis">Kamis</option>
+                <option value="Jumat">Jumat</option>
+                <option value="Sabtu">Sabtu</option>
+                <option value="Minggu">Minggu</option>
             </select>
         `;
 
@@ -321,7 +321,6 @@
         colBuka.innerHTML = `
         <select id="buka${counter}" name="buka${counter}" class="form-select">
             <option value="" disabled selected>Masukkan Jam Buka</option>
-            <option value="00:00">00:00</option>
             <option value="01:00">01:00</option>
             <option value="02:00">02:00</option>
             <option value="03:00">03:00</option>
@@ -345,6 +344,7 @@
             <option value="21:00">21:00</option>
             <option value="22:00">22:00</option>
             <option value="23:00">23:00</option>
+            <option value="24:00">24:00</option>
         </select>
         `;
 
@@ -353,7 +353,6 @@
         colTutup.innerHTML = `
         <select id="tutup${counter}" name="tutup${counter}" class="form-select">
             <option value="" disabled selected>Masukkan Jam Tutup</option>
-            <option value="00:00">00:00</option>
             <option value="01:00">01:00</option>
             <option value="02:00">02:00</option>
             <option value="03:00">03:00</option>
@@ -377,6 +376,7 @@
             <option value="21:00">21:00</option>
             <option value="22:00">22:00</option>
             <option value="23:00">23:00</option>
+            <option value="24:00">24:00</option>
         </select>
         `;
 
