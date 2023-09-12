@@ -144,6 +144,8 @@ Route::prefix("/admin")->group(function(){
             $param["lapangan"] = $lapa->get_all_data_by_id($id);
             $files = new filesLapanganOlahraga();
             $param["files"] = $files->get_all_data($id);
+            $slot = new ModelsSlotWaktu();
+            $param["slot"] = $slot->get_all_data_by_lapangan($id);
 
             $per = new ModelsRequestPermintaan();
             $param["permintaan"] = $per->get_all_data_by_lapangan($id);
@@ -221,6 +223,8 @@ Route::prefix("/pemilik")->group(function(){
         $role = Session::get("dataRole")->id_pemilik;
         $alat = new ModelsAlatOlahraga();
         $param["alat"] = $alat->get_all_data_status($role);
+        $slot = new ModelsSlotWaktu();
+        $param["slot"] = $slot->get_all_data_by_lapangan($id);
 
         $per = new ModelsRequestPermintaan();
         $param["permintaan"] = $per->get_all_data_by_lapangan($id);
