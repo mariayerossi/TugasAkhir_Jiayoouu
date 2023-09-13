@@ -342,7 +342,7 @@
             });
         }
     });
-    let counter = <?php echo strlen($slot); ?> + 1;
+    let counter = <?php echo count($slot); ?> + 1;
     function addTimeInput() {
         const container = document.getElementById('inputContainer');
         
@@ -352,6 +352,7 @@
         const colHari = document.createElement('div');
         colHari.className = 'col';
         colHari.innerHTML = `
+        <input type="hidden" name="id_slot${counter}" value="${counter}">
             <select id="hari${counter}" name="hari${counter}" class="form-select">
                 <option value="" disabled selected>Masukkan Hari</option>
                 <option value="Senin">Senin</option>
