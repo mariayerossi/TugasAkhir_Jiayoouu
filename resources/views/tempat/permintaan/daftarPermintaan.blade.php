@@ -36,16 +36,19 @@
           <a class="nav-link active" id="baru-tab" data-toggle="tab" href="#baru" role="tab" aria-controls="baru" aria-selected="true">Permintaan Baru</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Permintaan Diterima</a>
+          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Permintaan Ditolak</a>
+            <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Ditolak</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="selesai-tab" data-toggle="tab" href="#selesai" role="tab" aria-controls="selesai" aria-selected="false">Permintaan Selesai</a>
+            <a class="nav-link" id="selesai-tab" data-toggle="tab" href="#selesai" role="tab" aria-controls="selesai" aria-selected="false">Selesai</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="batal-tab" data-toggle="tab" href="#batal" role="tab" aria-controls="batal" aria-selected="false">Permintaan Dibatalkan</a>
+            <a class="nav-link" id="batal-tab" data-toggle="tab" href="#batal" role="tab" aria-controls="batal" aria-selected="false">Dibatalkan</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="dikomplain-tab" data-toggle="tab" href="#dikomplain" role="tab" aria-controls="dikomplain" aria-selected="false">Dikomplain</a>
         </li>
     </ul>
       
@@ -219,6 +222,42 @@
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td><span style="color:red">Dibatalkan</span></td>
+                                <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="dikomplain" role="tabpanel" aria-labelledby="dikomplain-tab">
+            <table class="table table-hover table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Foto Alat</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$dikomplain->isEmpty())
+                        @foreach ($dikomplain as $item)
+                            @php
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                            @endphp
+                            <tr>
+                                <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td>
+                                <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                <td><span style="color:red">Dikomplain</span></td>
                                 <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach

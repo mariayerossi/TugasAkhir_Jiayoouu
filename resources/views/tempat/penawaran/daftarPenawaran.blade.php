@@ -36,16 +36,19 @@
           <a class="nav-link active" id="baru-tab" data-toggle="tab" href="#baru" role="tab" aria-controls="baru" aria-selected="true">Penawaran Baru</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Penawaran Diterima</a>
+          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Penawaran Ditolak</a>
+            <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Ditolak</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="selesai-tab" data-toggle="tab" href="#selesai" role="tab" aria-controls="selesai" aria-selected="false">Penawaran Selesai</a>
+            <a class="nav-link" id="selesai-tab" data-toggle="tab" href="#selesai" role="tab" aria-controls="selesai" aria-selected="false">Selesai</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="dibatalkan-tab" data-toggle="tab" href="#dibatalkan" role="tab" aria-controls="dibatalkan" aria-selected="false">Penawaran Dibatalkan</a>
+            <a class="nav-link" id="dibatalkan-tab" data-toggle="tab" href="#dibatalkan" role="tab" aria-controls="dibatalkan" aria-selected="false">Dibatalkan</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="dikomplain-tab" data-toggle="tab" href="#dikomplain" role="tab" aria-controls="dikomplain" aria-selected="false">Dikomplain</a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -242,6 +245,48 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} sudah <span style="color:red">Dibatalkan</span></td>
+                                @php
+                                    $tanggalAwal = $item->tanggal_tawar;
+                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                @endphp
+                                <td>Diajukan oleh {{$dataPemilik->nama_pemilik}} pada {{$tanggalBaru}}</td>
+                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="dikomplain" role="tabpanel" aria-labelledby="dikomplain-tab">
+            <table class="table table-hover table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Foto Alat</th>
+                        <th>Keterangan</th>
+                        <th>Pengaju</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$dikomplain->isEmpty())
+                        @foreach ($dikomplain as $item)
+                            @php
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                            @endphp
+                            <tr>
+                                <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td>
+                                <td>Penawaran {{$dataAlat->nama_alat}} <span style="color:red">Dikomplain</span> oleh</td>
                                 @php
                                     $tanggalAwal = $item->tanggal_tawar;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);

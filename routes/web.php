@@ -247,6 +247,7 @@ Route::prefix("/pemilik")->group(function(){
             $param["ditolak"] = $req->get_all_data_by_pemilik_ditolak($role);
             $param["selesai"] = $req->get_all_data_by_pemilik_selesai($role);
             $param["dibatalkan"] = $req->get_all_data_by_pemilik_dibatalkan($role);
+            $param["dikomplain"] = $req->get_all_data_by_pemilik_dikomplain($role);
             return view("pemilik.permintaan.daftarPermintaan")->with($param);
         })->middleware([CekPemilik::class]);
         Route::get("/detailPermintaanNego/{id}", function ($id) {
@@ -276,6 +277,7 @@ Route::prefix("/pemilik")->group(function(){
             $param["ditolak"] = $req->get_all_data_by_pemilik_ditolak($role);
             $param["selesai"] = $req->get_all_data_by_pemilik_selesai($role);
             $param["dibatalkan"] = $req->get_all_data_by_pemilik_dibatalkan($role);
+            $param["dikomplain"] = $req->get_all_data_by_pemilik_dikomplain($role);
             return view("pemilik.penawaran.daftarPenawaran")->with($param);
         })->middleware([CekPemilik::class]);
         Route::get("/detailPenawaranNego/{id}", function ($id) {
@@ -427,6 +429,7 @@ Route::prefix("/tempat")->group(function(){
             $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
             $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
             $param["dibatalkan"] = $req->get_all_data_by_tempat_dibatalkan($role);
+            $param["dikomplain"] = $req->get_all_data_by_tempat_dikomplain($role);
             return view("tempat.permintaan.daftarPermintaan")->with($param);
         })->middleware([CekTempat::class]);
         Route::get("/detailPermintaanNego/{id}", function ($id) {
@@ -455,6 +458,7 @@ Route::prefix("/tempat")->group(function(){
             $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
             $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
             $param["dibatalkan"] = $req->get_all_data_by_tempat_dibatalkan($role);
+            $param["dikomplain"] = $req->get_all_data_by_tempat_dikomplain($role);
             return view("tempat.penawaran.daftarPenawaran")->with($param);
         })->middleware([CekTempat::class]);
         Route::get("/detailPenawaranNego/{id}", function ($id) {

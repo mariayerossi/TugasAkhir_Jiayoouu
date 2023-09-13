@@ -38,16 +38,19 @@
           <a class="nav-link active" id="baru-tab" data-toggle="tab" href="#baru" role="tab" aria-controls="baru" aria-selected="true">Permintaan Baru</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Permintaan Diterima</a>
+          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Permintaan Ditolak</a>
+            <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Ditolak</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="selesai-tab" data-toggle="tab" href="#selesai" role="tab" aria-controls="selesai" aria-selected="false">Permintaan Selesai</a>
+            <a class="nav-link" id="selesai-tab" data-toggle="tab" href="#selesai" role="tab" aria-controls="selesai" aria-selected="false">Selesai</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="dibatalkan-tab" data-toggle="tab" href="#dibatalkan" role="tab" aria-controls="dibatalkan" aria-selected="false">Penawaran Dibatalkan</a>
+            <a class="nav-link" id="dibatalkan-tab" data-toggle="tab" href="#dibatalkan" role="tab" aria-controls="dibatalkan" aria-selected="false">Dibatalkan</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="dikomplain-tab" data-toggle="tab" href="#dikomplain" role="tab" aria-controls="dikomplain" aria-selected="false">Dikomplain</a>
         </li>
     </ul>
       
@@ -278,6 +281,56 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}} sudah <span style="color:red">Dibatalkan</span></td>
+                                @php
+                                    $tanggalAwal = $item->tanggal_minta;
+                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                @endphp
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
+                                @if ($item->req_durasi == "12")
+                                    <td>Dipinjam selama 1 tahun</td>
+                                @elseif ($item->req_durasi == "24")
+                                    <td>Dipinjam selama 2 tahun</td>
+                                @else
+                                    <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
+                                @endif
+                                <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+          </table>
+        </div>
+        <div class="tab-pane fade" id="dikomplain" role="tabpanel" aria-labelledby="dikomplain-tab">
+            <table class="table table-hover table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Foto Alat</th>
+                        <th>Keterangan</th>
+                        <th>Pengaju</th>
+                        <th>Durasi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$dikomplain->isEmpty())
+                        @foreach ($dikomplain as $item)
+                            @php
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+                            @endphp
+                            <tr>
+                                <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td>
+                                <td>Permintaan {{$dataAlat->nama_alat}} <span style="color:red">Dikomplain</span> oleh</td>
                                 @php
                                     $tanggalAwal = $item->tanggal_minta;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
