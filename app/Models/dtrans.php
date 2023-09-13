@@ -17,6 +17,6 @@ class dtrans extends Model
     //---------------------------------
 
     public function get_all_data_by_id_htrans($id){
-        return htrans::where('deleted_at',"=",null)->where("fk_id_htrans", "=", $id)->get();
+        return dtrans::where('deleted_at',"=",null)->where("fk_id_htrans", "=", $id)->get();
     }
 }

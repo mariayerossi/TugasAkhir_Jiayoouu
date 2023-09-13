@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class Htrans extends Controller
+class Transaksi extends Controller
 {
     //
 }
