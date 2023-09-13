@@ -174,6 +174,7 @@ Sportiva
                 <!-- Add other sports or categories here -->
             </div>
         </div>
+        <a href="/tempat/transaksi/daftarTransaksi"><i class="bi bi-journal-text me-3"></i></i>Transaksi</a>
         <a href=""><i class="bi bi-clipboard-data me-3"></i>Laporan</a>
     </div>
 

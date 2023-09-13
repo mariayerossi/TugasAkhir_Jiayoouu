@@ -66,6 +66,10 @@ class requestPenawaran extends Model
     public function get_all_data_by_tempat_selesai($role){
         return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_penawaran","=", "Selesai")->get();
     }
+    
+    public function get_all_data_by_tempat_dibatalkan($role){
+        return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_penawaran","=", "Dibatalkan")->get();
+    }
 
     public function count_all_data_pemilik($role){
         return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$role)->where("status_penawaran","!=","Dibatalkan")->where("status_penawaran","!=","Ditolak")->count();

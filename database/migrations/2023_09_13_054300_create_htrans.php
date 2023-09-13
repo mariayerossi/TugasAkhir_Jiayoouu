@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer("durasi_sewa");//jam
             $table->integer("total_trans");
             $table->integer("fk_id_user");
+            $table->integer("fk_id_tempat");
+            $table->string("status_trans");
             $table->timestamps();
             $table->softDeletes();
         });

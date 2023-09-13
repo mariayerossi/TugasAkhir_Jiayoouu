@@ -258,7 +258,10 @@ class DatabaseSeeder extends Seeder
             'jam_sewa' => '16:00',
             'durasi_sewa' => 2,
             'total_trans' => 300000,
-            'fk_id_user' => 1
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'status_trans' => "Menunggu",
+            'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('dtrans')->insert([
@@ -267,7 +270,9 @@ class DatabaseSeeder extends Seeder
             'harga_sewa_alat' => 50000,
             'subtotal_alat' => 100000,
             'total_komisi_pemilik' => 40000,
-            'total_komisi_tempat' => 60000
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
         ]);
     }
 }
