@@ -14,6 +14,7 @@ use App\Http\Middleware\CekTempat;
 use App\Http\Middleware\Guest;
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
 use App\Models\htrans as ModelsHtrans;
+use App\Models\dtrans as ModelsDtrans;
 use App\Models\slotWaktu as ModelsSlotWaktu;
 use App\Models\customer;
 use App\Models\filesAlatOlahraga;
@@ -496,7 +497,14 @@ Route::prefix("/tempat")->group(function(){
             $param["selesai"] = $trans->get_all_data_by_tempat_selesai($role);
             $param["dikomplain"] = $trans->get_all_data_by_tempat_dikomplain($role);
             $param["dibatalkan"] = $trans->get_all_data_by_tempat_dibatalkan($role);
-            return view("tempat.penawaran.daftarTransaksi")->with($param);
+            return view("tempat.transaksi.daftarTransaksi")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::get("/detailTransaksi/{id}", function ($id) {
+            $htrans = new ModelsHtrans();
+            $param["htrans"] = $htrans->get_all_data_by_id($id);
+            $dtrans = new ModelsDtrans();
+            $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
+            return view("tempat.transaksi.detailTransaksi")->with($param);
         })->middleware([CekTempat::class]);
     });
 });
