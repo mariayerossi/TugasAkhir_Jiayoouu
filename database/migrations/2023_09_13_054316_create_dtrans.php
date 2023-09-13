@@ -12,8 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dtrans', function (Blueprint $table) {
-            $table->id();
+            $table->integerIncrements("id_dtrans");
+            $table->integer("fk_id_htrans");
+            $table->integer("fk_id_alat")->nullable();//dibuat null krn opsional
+            $table->integer("subtotal_alat")->nullable();//harga * durasi
+            $table->integer("fk_id_request")->nullable();//utk mengetahui harga sewa dan komisi
+            $table->string("jenis_request");
+            $table->integer("total_komisi_pemilik");// komisi * durasi = 20.000 * 2
+            $table->integer("total_komisi_tempat");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
