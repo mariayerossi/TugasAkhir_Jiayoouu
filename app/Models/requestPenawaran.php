@@ -51,6 +51,10 @@ class requestPenawaran extends Model
         return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->where("status_penawaran","=", "Dibatalkan")->get();
     }
 
+    public function get_all_data_by_pemilik_dikomplain($role){
+        return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $role)->where("status_penawaran","=", "Dikomplain")->get();
+    }
+
     public function get_all_data_by_tempat_baru($role){
         return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_penawaran","=", "Menunggu")->get();
     }
@@ -69,6 +73,10 @@ class requestPenawaran extends Model
     
     public function get_all_data_by_tempat_dibatalkan($role){
         return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_penawaran","=", "Dibatalkan")->get();
+    }
+
+    public function get_all_data_by_tempat_dikomplain($role){
+        return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_penawaran","=", "Dikomplain")->get();
     }
 
     public function count_all_data_pemilik($role){
