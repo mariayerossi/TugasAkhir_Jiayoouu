@@ -12,8 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('htrans', function (Blueprint $table) {
-            $table->id();
+            $table->integerIncrements("id_htrans");
+            $table->integer("fk_id_lapangan");
+            $table->integer("subtotal_lapangan");
+            $table->date("tanggal_trans");
+            $table->time("jam_sewa");
+            $table->integer("durasi_sewa");
+            $table->integer("total_trans");
+            $table->integer("fk_id_user");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
