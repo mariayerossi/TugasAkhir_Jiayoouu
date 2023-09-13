@@ -177,7 +177,7 @@ class LapanganOlahraga extends Controller
         $index = 1;
         // Asumsikan Anda memiliki model "Jadwal"
         while ($request->has("hari$index") && $request->has("buka$index") && $request->has("tutup$index")) {
-
+            $hari = $request->input("hari$index");
             $jamBuka = $request->input("buka$index");
             $jamTutup = $request->input("tutup$index");
 
@@ -185,15 +185,28 @@ class LapanganOlahraga extends Controller
             if (strtotime($jamBuka) >= strtotime($jamTutup)) {
                 return redirect()->back()->with('error', 'Jam buka harus lebih awal daripada jam tutup!');
             }
-
-            $data3 = [
-                "id" => $request->id_slot.$index,
-                "hari" => $request->input("hari$index"),
-                "buka" => $jamBuka,
-                "tutup" => $jamTutup
-            ];
-            $slot = new slotWaktu();
-            $slot->updateSlot($data3);
+            
+            $slot2 = slotWaktu::where('id_slot', $request->id_slot.$index)->first();
+            if ($slot2) {
+                $data3 = [
+                    "id" => $request->id_slot.$index,
+                    "hari" => $request->input("hari$index"),
+                    "buka" => $jamBuka,
+                    "tutup" => $jamTutup
+                ];
+                $slot = new slotWaktu();
+                $slot->updateSlot($data3);
+            }
+            else {
+                $data4 = [
+                    "hari" => $request->input("hari$index"),
+                    "buka" => $jamBuka,
+                    "tutup" => $jamTutup,
+                    "lapangan" => $request->id
+                ];
+                $slot = new slotWaktu();
+                $slot->insertSlot($data4);
+            }
 
             $index++; // Pergi ke set input berikutnya
         }

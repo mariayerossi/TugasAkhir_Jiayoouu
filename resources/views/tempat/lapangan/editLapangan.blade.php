@@ -342,7 +342,7 @@
             });
         }
     });
-    let counter = 2;
+    let counter = <?php echo strlen($slot); ?> + 1;
     function addTimeInput() {
         const container = document.getElementById('inputContainer');
         
