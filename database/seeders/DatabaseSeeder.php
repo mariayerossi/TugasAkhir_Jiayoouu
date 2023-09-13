@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
             - Kursi penonton bagi yang ingin mendukung timnya.
             - Fasilitas toilet dan kamar ganti bersih.",
             'luas_lapangan' => "28x15",
-            'harga_sewa_lapangan' => 70000,
+            'harga_sewa_lapangan' => 100000,
             'status_lapangan' => "Aktif",
             'pemilik_lapangan' => 1,
             'created_at' => date("Y-m-d H:i:s")
@@ -144,13 +144,20 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '15:00',
+            'jam_tutup' => '20:00',
             'fk_id_lapangan' => 1
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
             'jam_tutup' => '20:00',
             'fk_id_lapangan' => 1
         ]);
@@ -197,13 +204,13 @@ class DatabaseSeeder extends Seeder
             'req_harga_sewa' => 50000,
             'req_durasi' => 12,
             'req_lapangan' => 1,
-            'req_tanggal_mulai' => null,
-            'req_tanggal_selesai' => null,
+            'req_tanggal_mulai' => "2023-10-13",
+            'req_tanggal_selesai' => "2023-09-13",
             'req_id_alat' => 1,
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
             'tanggal_minta' => date("Y-m-d H:i:s"),
-            'status_permintaan' => "Menunggu",
+            'status_permintaan' => "Diterima",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -241,6 +248,26 @@ class DatabaseSeeder extends Seeder
             'fk_id_user' => 1,
             'role_user' => "Pemilik",
             'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('htrans')->insert([
+            'fk_id_lapangan' => 1,
+            'subtotal_lapangan' => 200000,
+            'tanggal_trans' => date("Y-m-d H:i:s"),
+            'tanggal_sewa'=> '2023-09-20',
+            'jam_sewa' => '16:00',
+            'durasi_sewa' => 2,
+            'total_trans' => 300000,
+            'fk_id_user' => 1
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 1,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000
         ]);
     }
 }

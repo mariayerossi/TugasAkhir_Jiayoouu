@@ -15,11 +15,10 @@ return new class extends Migration
             $table->integerIncrements("id_dtrans");
             $table->integer("fk_id_htrans");
             $table->integer("fk_id_alat")->nullable();//dibuat null krn opsional
+            $table->integer("harga_sewa_alat")->nullable();
             $table->integer("subtotal_alat")->nullable();//harga * durasi
-            $table->integer("fk_id_request")->nullable();//utk mengetahui harga sewa dan komisi
-            $table->string("jenis_request");
-            $table->integer("total_komisi_pemilik");// komisi * durasi = 20.000 * 2
-            $table->integer("total_komisi_tempat");
+            $table->integer("total_komisi_pemilik")->nullable();// komisi * durasi = 20.000 * 2
+            $table->integer("total_komisi_tempat")->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
