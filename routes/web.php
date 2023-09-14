@@ -296,6 +296,16 @@ Route::prefix("/pemilik")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPenawaran"]);
         });
     });
+
+    //Bagian transaksi
+    Route::prefix("/disewakan")->group(function(){
+        Route::get("/daftarDisewakan", function () {
+            $role = Session::get("dataRole")->id_pemilik;
+            $trans = new ModelsDtrans();
+            $param["disewakan"] = $trans->get_all_data_by_pemilik($role);
+            return view("pemilik.disewakan.daftarDisewakan")->with($param);
+        })->middleware([CekPemilik::class]);
+    });
 });
 
 // -------------------------------

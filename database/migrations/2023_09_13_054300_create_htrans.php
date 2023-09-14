@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('htrans', function (Blueprint $table) {
             $table->integerIncrements("id_htrans");
+            $table->string("kode_trans");
             $table->integer("fk_id_lapangan");
             $table->integer("subtotal_lapangan");// harga * durasi
+            $table->integer("subtotal_alat");//jumlah dari subtotal semua alat
             $table->timestamp("tanggal_trans");
             $table->date("tanggal_sewa");
             $table->time("jam_sewa");

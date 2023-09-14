@@ -250,14 +250,23 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('sewa_sendiri')->insert([
+            'req_lapangan' => 1,
+            'req_id_alat' => 2,
+            'fk_id_tempat' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
         DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0001",
             'fk_id_lapangan' => 1,
             'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 150000,
             'tanggal_trans' => date("Y-m-d H:i:s"),
             'tanggal_sewa'=> '2023-09-20',
             'jam_sewa' => '16:00',
             'durasi_sewa' => 2,
-            'total_trans' => 300000,
+            'total_trans' => 350000,
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
             'status_trans' => "Menunggu",
@@ -272,6 +281,19 @@ class DatabaseSeeder extends Seeder
             'total_komisi_pemilik' => 40000,
             'total_komisi_tempat' => 60000,
             'fk_id_pemilik' => 1,
+            'fk_role_pemilik' => "Pemilik",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 1,
+            'fk_id_alat' => 2,
+            'harga_sewa_alat' => 25000,
+            'subtotal_alat' => 50000,
+            'total_komisi_pemilik' => null,
+            'total_komisi_tempat' => 25000,
+            'fk_id_pemilik' => 1,
+            'fk_role_pemilik' => "Tempat",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
     }

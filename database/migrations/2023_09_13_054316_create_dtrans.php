@@ -17,9 +17,10 @@ return new class extends Migration
             $table->integer("fk_id_alat");
             $table->integer("harga_sewa_alat");
             $table->integer("subtotal_alat");//harga * durasi
-            $table->integer("total_komisi_pemilik");// komisi * durasi = 20.000 * 2
+            $table->integer("total_komisi_pemilik")->nullable();// komisi * durasi = 20.000 * 2
             $table->integer("total_komisi_tempat");
             $table->integer("fk_id_pemilik");
+            $table->string("fk_role_pemilik");
             $table->timestamps();
             $table->softDeletes();
         });
