@@ -90,13 +90,20 @@
         $tanggalDenganNamaBulan = implode(' ', $pecahTanggal); 
     @endphp
 
-    <div class="row mb-5 mt-4">
+    <div class="row mb-4 mt-4">
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Tanggal Sewa: {{$tanggalDenganNamaBulan}}</h6>
         </div>
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Jam Sewa: {{$htrans->first()->jam_sewa}} WIB</h6>
         </div>
+    </div>
+    <div class="d-flex justify-content-end mt-3 me-3 mb-5">
+        @if ($htrans->first()->status_trans == "Ditolak" || $htrans->first()->status_trans == "Dibatalkan")
+            <h6><b>Status Transaksi: </b><b style="color: red">{{$htrans->first()->status_trans}}</b></h6>
+        @else
+            <h6><b>Status Transaksi: {{$htrans->first()->status_trans}}</b></h6>
+        @endif
     </div>
     <h5>Lapangan yang Disewa</h5>
     <a href="/tempat/lapangan/lihatDetailLapangan/{{$htrans->first()->fk_id_lapangan}}">
