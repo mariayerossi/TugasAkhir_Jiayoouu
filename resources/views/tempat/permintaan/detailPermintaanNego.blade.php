@@ -44,9 +44,9 @@
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$permintaan->first()->req_lapangan)->get()->first();
         $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
 
-        $tanggalAwal = $permintaan->first()->tanggal_minta;
-        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+        $tanggalAwal3 = $permintaan->first()->tanggal_minta;
+        $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
+        $tanggalBaru3 = $tanggalObjek3->format('d-m-Y H:i:s');
     @endphp
 
     <div class="row mb-5 mt-5">
@@ -57,7 +57,7 @@
         
         <!-- Tanggal Permintaan -->
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Tanggal Pengajuan: {{$tanggalBaru}}</h6>
+            <h6>Tanggal Pengajuan: {{$tanggalBaru3}}</h6>
         </div>
     </div>
 
@@ -156,8 +156,8 @@
             @else
                 @php
                     $tanggalAwal = $permintaan->first()->req_tanggal_mulai;
-                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                    $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+                    $tanggalBaru = $tanggalObjek->format('d-m-Y');
                 @endphp
                 <p>{{$tanggalBaru}}</p>
             @endif
@@ -174,8 +174,8 @@
             @else
                 @php
                     $tanggalAwal2 = $permintaan->first()->req_tanggal_selesai;
-                    $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
+                    $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
                 @endphp
                 <p>{{$tanggalBaru2}}</p>
             @endif

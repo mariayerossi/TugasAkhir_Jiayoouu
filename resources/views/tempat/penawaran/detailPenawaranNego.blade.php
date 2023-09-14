@@ -45,9 +45,9 @@
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$penawaran->first()->req_lapangan)->get()->first();
         $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
 
-        $tanggalAwal = $penawaran->first()->tanggal_tawar;
-        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+        $tanggalAwal1 = $penawaran->first()->tanggal_tawar;
+        $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
+        $tanggalBaru1 = $tanggalObjek1->format('d-m-Y H:i:s');
     @endphp
     <div class="row mb-5 mt-5">
         <!-- Nama Pengirim -->
@@ -57,7 +57,7 @@
         
         <!-- Tanggal Permintaan -->
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Tanggal Pengajuan: {{$tanggalBaru}}</h6>
+            <h6>Tanggal Pengajuan: {{$tanggalBaru1}}</h6>
         </div>
     </div>
     <div class="row mb-5">
@@ -187,11 +187,11 @@
                     @endif
                 @else
                     @php
-                        $tanggalAwal = $penawaran->first()->req_tanggal_mulai;
-                        $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
-                        $tanggalBaru = $tanggalObjek->format('d-m-Y');
+                        $tanggalAwal2 = $penawaran->first()->req_tanggal_mulai;
+                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
                     @endphp
-                    <p>{{$tanggalBaru}}</p>
+                    <p>{{$tanggalBaru2}}</p>
                 @endif
             </div>
             <div class="col-md-6 col-sm-12 mb-3">
@@ -204,11 +204,11 @@
                     @endif
                 @else
                     @php
-                        $tanggalAwal2 = $penawaran->first()->req_tanggal_selesai;
-                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                        $tanggalAwal3 = $penawaran->first()->req_tanggal_selesai;
+                        $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+                        $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
                     @endphp
-                    <p>{{$tanggalBaru2}}</p>
+                    <p>{{$tanggalBaru3}}</p>
                 @endif
             </div>
         </div>
@@ -278,11 +278,11 @@
                                             <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
                                         @endif
                                         @php
-                                            $tanggalAwal = $item->waktu_negosiasi;
-                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                            $tanggalAwal4 = $item->waktu_negosiasi;
+                                            $tanggalObjek4 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal4);
+                                            $tanggalBaru4 = $tanggalObjek4->format('d-m-Y H:i:s');
                                         @endphp
-                                        <p>{{$tanggalBaru}}</p>
+                                        <p>{{$tanggalBaru4}}</p>
                                         <p class="mt-2">{{$item->isi_negosiasi}}</p>
                                     </div>
                                 </div>

@@ -44,9 +44,9 @@ display: block;
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$penawaran->first()->req_lapangan)->get()->first();
         $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
 
-        $tanggalAwal = $penawaran->first()->tanggal_tawar;
-        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+        $tanggalAwal1 = $penawaran->first()->tanggal_tawar;
+        $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
+        $tanggalBaru1 = $tanggalObjek1->format('d-m-Y H:i:s');
     @endphp
     
     <div class="row mb-5 mt-5">
@@ -57,7 +57,7 @@ display: block;
         
         <!-- Tanggal penawaran -->
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Tanggal Pengajuan: {{$tanggalBaru}}</h6>
+            <h6>Tanggal Pengajuan: {{$tanggalBaru1}}</h6>
         </div>
     </div>
 
