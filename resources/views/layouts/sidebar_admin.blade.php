@@ -114,6 +114,7 @@ Sportiva
                     <a href="/admin/daftarTempat">Tempat Olahraga</a>
                 </div>
             </div>
+            <a href="/admin/transaksi/daftarTransaksi"><i class="bi bi-journal-text me-3"></i></i>Transaksi</a>
             <a href=""><i class="bi bi-clipboard-data me-3"></i>Laporan</a>
             <a href="/logout"><i class="bi bi-box-arrow-right me-3"></i>Logout</a>
         </div>

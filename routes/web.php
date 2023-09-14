@@ -158,6 +158,21 @@ Route::prefix("/admin")->group(function(){
             return view("admin.produk.detailLapanganUmum")->with($param);
         })->middleware([CekAdmin::class]);
     });
+
+    Route::prefix("/transaksi")->group(function(){
+        Route::get("/daftarTransaksi", function () {
+            $trans = new ModelsHtrans();
+            $param["trans"] = $trans->get_all_data_by_admin();
+            return view("admin.transaksi.daftarTransaksi")->with($param);
+        })->middleware([CekAdmin::class]);
+        Route::get("/detailTransaksi/{id}", function ($id) {
+            $htrans = new ModelsHtrans();
+            $param["htrans"] = $htrans->get_all_data_by_id($id);
+            $dtrans = new ModelsDtrans();
+            $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
+            return view("tempat.transaksi.detailTransaksi")->with($param);
+        })->middleware([CekTempat::class]);
+    });
 });
 
 // -------------------------------

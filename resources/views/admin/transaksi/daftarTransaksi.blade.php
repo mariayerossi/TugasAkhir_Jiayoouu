@@ -1,5 +1,6 @@
-@extends('layouts.sidebarNavbar_tempat')
+@extends('layouts.sidebar_admin')
 
+<!-- DataTables -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
 @section('content')
 <style>
@@ -17,34 +18,41 @@
     width: 100%;
     height: 100%;
 }
-
 </style>
 <div class="container mt-5">
-    <h3 class="text-center mb-5">Daftar Alat Olahraga</h3>
+    <div class="row mb-3">
+        <div class="col-12">
+            <h3 class="text-center mb-5">Daftar Transaksi</h3>
+        </div>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>Kode</th>
                 <th>Foto</th>
                 <th>Nama</th>
-                <th>Harga Sewa</th>
+                <th>Total</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @if (!$lapangan->isEmpty())
-                @foreach ($lapangan as $item)
+            @if (!$trans->isEmpty())
+                @foreach ($trans as $item)
                     @php
-                        $dataFiles = $files->get_all_data($item->id_lapangan)->first();
+                        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
+                        $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
+                        $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
                     @endphp
                     <tr>
+                        <td>{{$item->kode_trans}}</td>
                         <td>
                             <div class="square-image-container">
-                                <a href="/tempat/lapangan/lihatDetailLapangan/{{$item->id_lapangan}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_lapangan) }}" alt=""></a>
+                                <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
                             </div>
                         </td>
-                        <td><a href="/tempat/lapangan/lihatDetailLapangan/{{$item->id_lapangan}}">{{$item->nama_lapangan}}</a></td>
-                        <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
-                        <td><a class="btn btn-outline-success" href="/tempat/lapangan/editLapangan/{{$item->id_lapangan}}">Edit</a></td>
+                        <td>{{$dataLapangan->nama_lapangan}}</td>
+                        <td>Rp {{ number_format($item->total_trans, 0, ',', '.') }}</td>
+                        <td><a class="btn btn-outline-success" href="/admin/transaksi/detailTransaksi/{{$item->id_htrans}}">Lihat Detail</a></td>
                     </tr>
                 @endforeach
             @else

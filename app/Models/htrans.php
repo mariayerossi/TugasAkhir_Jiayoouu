@@ -19,6 +19,10 @@ class htrans extends Model
     public function get_all_data_by_id($id){
         return htrans::where('deleted_at',"=",null)->where("id_htrans", "=", $id)->get();
     }
+    
+    public function get_all_data_by_admin(){
+        return htrans::where('deleted_at',"=",null)->get();
+    }
 
     public function get_all_data_by_tempat_baru($role){
         return htrans::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_trans","=", "Menunggu")->get();
