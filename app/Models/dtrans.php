@@ -21,6 +21,6 @@ class dtrans extends Model
     }
 
     public function get_all_data_by_pemilik($id){
-        return dtrans::where('deleted_at',"=",null)->where("fk_role_user","=","Pemilik")->where("fk_id_pemilik", "=", $id)->get();
+        return dtrans::where('deleted_at',"=",null)->where("fk_role_pemilik","=","Pemilik")->where("fk_id_pemilik", "=", $id)->get();
     }
 }
