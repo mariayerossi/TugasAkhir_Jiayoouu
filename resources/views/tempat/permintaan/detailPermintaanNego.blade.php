@@ -243,30 +243,89 @@
     @endif
 
     @if ($permintaan->first()->status_permintaan == "Diterima")
-        <button class="btn btn-warning">Ajukan Komplain</button>
+        @if ($komplain->isEmpty())
+            <button class="btn btn-warning">Ajukan Komplain</button>
 
-        <div class="row komplain mt-4">
-            <div class="col-md-8">
-                <form action="" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                    @csrf
-                    <div class="d-flex justify-content-center">
-                        <h5><b>Ajukan Komplain</b></h5>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 col-12 mt-2">
-                            <h6>Jelaskan Komplain</h6>
+            <div class="row form_komplain mt-4">
+                <div class="col-md-8">
+                    <form action="/tempat/permintaan/komplain/tambahKomplain" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        @csrf
+                        <div class="d-flex justify-content-center">
+                            <h5><b>Ajukan Komplain</b></h5>
                         </div>
-                        <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                            <textarea id="myTextarea" class="form-control" name="keterangan" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Deskripsi Lapangan Olahraga">{{ old('deskripsi') }}</textarea>
-                            <p id="charCount">0/500</p>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Jenis Komplain</h6>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                <input type="radio" class="btn-check" name="jenis" id="info-outlined" autocomplete="off" value="Alat tidak sesuai">
+                                <label class="btn btn-outline-info" for="info-outlined"><i class="bi bi-box-seam me-2"></i>Alat tidak sesuai</label>
+
+                                <input type="radio" class="btn-check" name="jenis" id="danger-outlined" autocomplete="off" value="Alat rusak">
+                                <label class="btn btn-outline-danger" for="danger-outlined"><i class="bi bi-heartbreak me-2"></i>Alat Rusak</label>
+
+                                <input type="radio" class="btn-check" name="jenis" id="primary-outlined" autocomplete="off" value="Lainnya">
+                                <label class="btn btn-outline-primary" for="primary-outlined"><i class="bi bi-justify-left me-2"></i></i>Lainnya</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Jelaskan Komplain</h6>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                <textarea id="myTextarea" class="form-control" name="keterangan" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Keterangan Komplain">{{ old('keterangan') }}</textarea>
+                                <p id="charCount">0/500</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Lampirkan Bukti <i class="bi bi-info-circle" data-toggle="tooltip" title="Lampirkan bukti komplain yang dapat memperkuat pernyataan"></i></h6>
+                                <span style="font-size: 14px">lampirkan 2 file sekaligus</span>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                <input type="file" class="form-control" name="foto[]" multiple accept=".jpg,.png,.jpeg">
+                            </div>
+                        </div>
+                        <input type="hidden" name="fk_id_request" value="{{$permintaan->first()->id_permintaan}}">
+                        <input type="hidden" name="jenis_request" value="Permintaan">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success">Kirim</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4">
+                    <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
+                </div>
+            </div>
+        @else
+            <div class="komplain">
+                <div class="card h-70">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Gambar Alat -->
+                            <div class="col-4">
+                                <div class="square-image-container">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                      </svg>
+                                </div>
+                            </div>
+                            
+                            <!-- Nama Alat -->
+                            <div class="col-8 d-flex flex-column justify-content-center">
+                                <h4 class="card-title truncate-text"><b>Komplain Anda telah dikirim!</b></h4>
+                                @if ($komplain->first()->status_komplain == "Menunggu")
+                                    <p class="card-text">Komplain kamu menunggu konfirmasi admin</p>
+                                @else
+                                    <p class="card-text">Komplain kamu sudah {{$komplain->first()->status_komplain}} oleh admin</p>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
-            <div class="col-md-4">
-                <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
-            </div>
-        </div>
+        @endif
     @endif
 </div>
 <script>
@@ -282,7 +341,7 @@
 
         @if($komplain->isEmpty())
         // Menyembunyikan div nego saat halaman pertama kali dimuat
-            $(".komplain").hide();
+            $(".form_komplain").hide();
         @endif
 
         // Mengatur event ketika tombol Negosiasi diklik
@@ -293,7 +352,7 @@
 
         $(".btn-warning").click(function(e) {
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
-            $(".komplain").show();   // Menampilkan div nego
+            $(".form_komplain").show();   // Menampilkan div nego
         });
     });
     function konfirmasi() {

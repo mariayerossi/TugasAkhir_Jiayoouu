@@ -15,6 +15,20 @@ class komplainRequest extends Model
     public $incrementing = true;//utk increment
     //---------------------------------
 
+    public function insertKomplainReq($data)
+    {
+        $komp = new komplainRequest();
+        $komp->jenis_komplain = $data["jenis"];
+        $komp->keterangan_komplain = $data["keterangan"];
+        $komp->fk_id_request = $data["id_req"];
+        $komp->jenis_request = $data["req"];
+        $komp->waktu_komplain = $data["waktu"];
+        $komp->status_komplain = "Menunggu";
+        $komp->save();
+
+        return $komp->id_komplain_req;
+    }
+
     public function get_all_data_by_id_htrans($id, $jenis){
         return komplainRequest::where('deleted_at',"=",null)->where("fk_id_request","=",$id)->where("jenis_request","=",$jenis)->get();
     }

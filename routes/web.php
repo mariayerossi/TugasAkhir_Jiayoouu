@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlatOlahraga;
 use App\Http\Controllers\KategoriOlahraga;
+use App\Http\Controllers\KomplainRequest;
 use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Controllers\Negosiasi;
@@ -474,6 +475,11 @@ Route::prefix("/tempat")->group(function(){
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPermintaan"]);
+        });
+
+        //Bagian komplain
+        Route::prefix("/komplain")->group(function(){
+            Route::post("tambahKomplain", [KomplainRequest::class, "tambahKomplain"]);
         });
     });
 

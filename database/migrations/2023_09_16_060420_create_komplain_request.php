@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('komplain_request', function (Blueprint $table) {
             $table->integerIncrements("id_komplain_req");
+            $table->string("jenis_komplain");
             $table->string("keterangan_komplain",500);
             $table->integer("fk_id_request");
             $table->string("jenis_request");
+            $table->timestamp("waktu_komplain");
             $table->string("status_komplain");//Menunggu, Diterima, Ditolak
-            $table->string("penanganan_komplain");//pengembalian dana ke pemilik/pihak
+            $table->string("penanganan_komplain")->nullable();//pengembalian dana ke pemilik/pihak, tidak ada dll
             $table->timestamps();
             $table->softDeletes();
         });
