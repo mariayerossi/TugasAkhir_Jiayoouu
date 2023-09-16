@@ -11,11 +11,11 @@ class KomplainRequest extends Controller
         $request->validate([
             "jenis" => "required",
             "keterangan" => "required",
-            "foto[]" => 'required|max:5120'
+            "foto.*" => 'required|max:5120'
         ],[
-            "foto[].max" => "ukuran foto alat olahraga tidak boleh melebihi 5MB!",
+            "foto.*.max" => "ukuran foto alat olahraga tidak boleh melebihi 5MB!",
             "required" => ":attribute komplain tidak boleh kosong!",
-            "foto[].required" => "foto bukti komplain tidak boleh kosong!"
+            "foto.*.required" => "foto bukti komplain tidak boleh kosong!"
         ]);
 
         date_default_timezone_set("Asia/Jakarta");
@@ -30,5 +30,7 @@ class KomplainRequest extends Controller
         ];
         $komp = new ModelsKomplainRequest();
         $id = $komp->insertKomplainReq($data);
+
+        
     }
 }
