@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('komplain_request', function (Blueprint $table) {
-            $table->id();
+            $table->integerIncrements("id_komplain_req");
+            $table->string("keterangan_komplain");
+            $table->integer("fk_id_request");
+            $table->string("jenis_request");
+            $table->string("status_komplain");//Menunggu, Diterima, Ditolak
+            $table->string("penanganan_komplain");//pengembalian dana ke pemilik/pihak
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

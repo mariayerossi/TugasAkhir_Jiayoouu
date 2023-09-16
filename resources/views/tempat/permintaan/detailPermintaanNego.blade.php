@@ -241,6 +241,17 @@
             </div>
         </div>
     @endif
+
+    @if ($permintaan->first()->status_permintaan == "Diterima")
+        <button class="btn btn-warning">Ajukan Komplain</button>
+
+        <div class="komplain">
+            <form action="" method="post">
+                @csrf
+                <textarea name="keterangan" id="" cols="30" rows="10"></textarea>
+            </form>
+        </div>
+    @endif
 </div>
 <script>
     $(document).ready(function(){
@@ -253,10 +264,20 @@
             $(".nego").hide();
         @endif
 
+        @if($komplain->isEmpty())
+        // Menyembunyikan div nego saat halaman pertama kali dimuat
+            $(".komplain").hide();
+        @endif
+
         // Mengatur event ketika tombol Negosiasi diklik
         $(".btn-secondary").click(function(e) {
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
             $(".nego").show();   // Menampilkan div nego
+        });
+
+        $(".btn-warning").click(function(e) {
+            e.preventDefault();  // Menghentikan perilaku default (navigasi)
+            $(".komplain").show();   // Menampilkan div nego
         });
     });
     function konfirmasi() {

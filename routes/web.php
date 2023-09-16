@@ -22,6 +22,7 @@ use App\Models\filesLapanganOlahraga;
 use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
 use App\Models\negosiasi as ModelsNegosiasi;
+use App\Models\komplainRequest as ModelsKomplainRequest;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use App\Models\registerTempat;
@@ -463,6 +464,8 @@ Route::prefix("/tempat")->group(function(){
             $param["permintaan"] = $req->get_all_data_by_id($id);
             $nego = new ModelsNegosiasi();
             $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
+            $komplain = new ModelsKomplainRequest();
+            $param["komplain"] = $komplain->get_all_data_by_id_htrans($id, "Permintaan");
             return view("tempat.permintaan.detailPermintaanNego")->with($param);
         })->middleware([CekTempat::class]);
         Route::post("/batalPermintaan", [RequestPermintaan::class, "batalPermintaan"]);
