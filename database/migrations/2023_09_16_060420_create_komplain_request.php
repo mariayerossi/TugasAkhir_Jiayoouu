@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('komplain_request', function (Blueprint $table) {
             $table->integerIncrements("id_komplain_req");
-            $table->string("keterangan_komplain");
+            $table->string("keterangan_komplain",500);
             $table->integer("fk_id_request");
             $table->string("jenis_request");
             $table->string("status_komplain");//Menunggu, Diterima, Ditolak

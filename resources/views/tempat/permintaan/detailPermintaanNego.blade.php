@@ -245,11 +245,27 @@
     @if ($permintaan->first()->status_permintaan == "Diterima")
         <button class="btn btn-warning">Ajukan Komplain</button>
 
-        <div class="komplain">
-            <form action="" method="post">
-                @csrf
-                <textarea name="keterangan" id="" cols="30" rows="10"></textarea>
-            </form>
+        <div class="row komplain mt-4">
+            <div class="col-md-8">
+                <form action="" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    @csrf
+                    <div class="d-flex justify-content-center">
+                        <h5><b>Ajukan Komplain</b></h5>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-12 mt-2">
+                            <h6>Jelaskan Komplain</h6>
+                        </div>
+                        <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                            <textarea id="myTextarea" class="form-control" name="keterangan" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Deskripsi Lapangan Olahraga">{{ old('deskripsi') }}</textarea>
+                            <p id="charCount">0/500</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
+            </div>
         </div>
     @endif
 </div>
@@ -333,6 +349,24 @@
             }
         });
     });
+
+    function updateCount() {
+        let textarea = document.getElementById('myTextarea');
+        let textareaValue = textarea.value;
+        let charCount = textareaValue.length;
+        let countElement = document.getElementById('charCount');
+
+        if (charCount > 500) {
+            // Potong teks untuk membatasi hanya 300 karakter
+            textarea.value = textareaValue.substring(0, 500);
+            charCount = 500;
+            countElement.style.color = 'red';
+        } else {
+            countElement.style.color = 'black';
+        }
+
+        countElement.innerText = charCount + "/500";
+    }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
