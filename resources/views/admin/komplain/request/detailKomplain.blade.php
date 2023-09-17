@@ -81,5 +81,7 @@
         <div class="col-md-6 col-sm-12 mb-3">
         </div>
     </div>
+
+    <h5 class="text-center mb-5">Penanganan Komplain</h5>
 </div>
 @endsection
