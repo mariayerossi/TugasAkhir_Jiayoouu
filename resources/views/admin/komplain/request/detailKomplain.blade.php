@@ -73,7 +73,11 @@
         </div>
     </div>
 
-    <div class="row mb-5 mt-5">
+    <div class="d-flex justify-content-start mt-3">
+        <h6><b>Jenis Komplain: {{$komplain->first()->jenis_komplain}}</b></h6>
+    </div>
+
+    <div class="row mb-5 mt-4">
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Keterangan: <br>{{$komplain->first()->keterangan_komplain}}</h6>
         </div>
