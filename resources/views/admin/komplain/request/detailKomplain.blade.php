@@ -43,6 +43,10 @@
     <div class="d-flex justify-content-end mt-3 me-3">
         @if ($komplain->first()->status_komplain == "Menunggu")
             <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$komplain->first()->status_komplain}}</b></h6>
+        @elseif($komplain->first()->status_komplain == "Diterima")
+            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$komplain->first()->status_komplain}}</b></h6>
+        @elseif($komplain->first()->status_komplain == "Ditolak")
+            <h6><b>Status Komplain: </b><b style="color:red">{{$komplain->first()->status_komplain}}</b></h6>
         @endif
     </div>
     @php
