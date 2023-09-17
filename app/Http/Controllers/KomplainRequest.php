@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\filesKomplainReq;
 use App\Models\komplainRequest as ModelsKomplainRequest;
+use App\Models\requestPenawaran;
+use App\Models\requestPermintaan;
 use Illuminate\Http\Request;
 
 class KomplainRequest extends Controller
@@ -45,6 +47,24 @@ class KomplainRequest extends Controller
             ];
             $file = new filesKomplainReq();
             $file->insertFilesKomplainReq($data2);
+        }
+
+        //mengubah status request menjadi "Dikomplain"
+        if ($request->jenis_request == "Permintaan") {
+            $data3 = [
+                "id" => $request->fk_id_request,
+                "status" => "Dikomplain"
+            ];
+            $per = new requestPermintaan();
+            $per->updateStatus($data3);
+        }
+        else if ($request->jenis_request == "Penawaran") {
+            $data3 = [
+                "id" => $request->fk_id_request,
+                "status" => "Dikomplain"
+            ];
+            $pen = new requestPenawaran();
+            $pen->updateStatus($data3);
         }
 
         return redirect()->back()->with("success", "Berhasil Mengajukan Komplain!");

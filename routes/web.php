@@ -175,6 +175,16 @@ Route::prefix("/admin")->group(function(){
             return view("admin.transaksi.detailTransaksi")->with($param);
         })->middleware([CekAdmin::class]);
     });
+
+    Route::prefix("/komplain")->group(function(){
+        Route::prefix("/request")->group(function(){
+            Route::get("/daftarKomplain", function () {
+                $komp = new ModelsKomplainRequest();
+                $param["komplain"] = $komp->get_all_data_by_admin();
+                return view("admin.komplain.request.daftarKomplain")->with($param);
+            })->middleware([CekAdmin::class]);
+        });
+    });
 });
 
 // -------------------------------

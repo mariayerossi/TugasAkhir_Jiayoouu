@@ -330,7 +330,7 @@
                                         <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="">
                                     </div>
                                 </td>
-                                <td>Permintaan {{$dataAlat->nama_alat}} <span style="color:red">Dikomplain</span> oleh</td>
+                                <td>Permintaan {{$dataAlat->nama_alat}} <span style="color:red">Dikomplain</span></td>
                                 @php
                                     $tanggalAwal = $item->tanggal_minta;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);

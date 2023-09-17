@@ -95,7 +95,14 @@ Sportiva
         </a>
         <div class="coba">
             <a href="/admin/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
-            <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain</a>
+            <div class="sidebar-dropdown">
+                <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain <i class="bi bi-caret-down-fill"></i></a>
+                <div class="sidebar-dropdown-content">
+                    <a href="/admin/komplain/request/daftarKomplain">Request</a>
+                    <a href="">Transaksi</a>
+                    <!-- Add other sports or categories here -->
+                </div>
+            </div>
             <a href="/admin/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
             <a href="/admin/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
             <div class="sidebar-dropdown">
