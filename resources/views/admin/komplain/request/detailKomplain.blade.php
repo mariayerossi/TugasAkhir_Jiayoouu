@@ -82,7 +82,62 @@
         </div>
     </div>
 
-    <h5 class="text-center mb-5">Penanganan Komplain</h5>
-    
+    <h5 class="mb-5">Penanganan Komplain</h5>
+    <form action="" method="POST">
+        @csrf
+        <div class="row mb-5 mt-5">
+            <div class="col-md-4 col-sm-12 mt-2">
+                <h6>Pengembalian dana sebesar </h6>
+            </div>
+            
+            <div class="col-md-4 col-sm-12">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Rp</div>
+                    </div>
+                    <input type="number" class="form-control" min="0" name="dana" placeholder="50.000" oninput="formatNumber(this)" value="{{old('dana')}}">
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-12 mt-2">
+                <h6>dikembalikan kepada {{$namaUser}}</h6>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success me-3">Terima</button>
+            <button class="btn btn-danger" onclick="event.preventDefault(); confirmTolak();">Tolak</button>
+        </div>
+    </form>
 </div>
+<script>
+    function confirmTolak() {
+        swal({
+            title: "Apakah Anda yakin?",
+            text: "Apakah Anda yakin ingin menolak komplain ini?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Ya, Tolak!",
+            cancelButtonText: "Batal",
+            closeOnConfirm: false
+        }, function(isConfirm) {
+            if (isConfirm) {
+                window.location.href = "/admin/komplain/request/tolakKomplain/{{$komplain->first()->id_komplain_req}}";
+            }
+        });
+    }
+    function formatNumber(input) {
+        // Mengambil value dari input
+        let value = input.value;
+
+        // Menghapus semua titik dan karakter non-numerik lainnya
+        value = value.replace(/\D/g, '');
+
+        // Memformat ulang sebagai angka dengan pemisah ribuan titik
+        value = parseFloat(value).toLocaleString('id-ID');
+
+        // Mengembalikan format yang sudah diubah ke input
+        input.value = value;
+    }
+</script>
 @endsection
