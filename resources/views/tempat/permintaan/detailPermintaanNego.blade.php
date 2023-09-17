@@ -248,7 +248,7 @@
 
             <div class="row form_komplain mt-4">
                 <div class="col-md-8">
-                    <form action="/tempat/permintaan/komplain/tambahKomplain" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <form action="/tempat/komplain/tambahKomplain" method="post" class="mt-3" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         @csrf
                         <div class="d-flex justify-content-center">
                             <h5><b>Ajukan Komplain</b></h5>

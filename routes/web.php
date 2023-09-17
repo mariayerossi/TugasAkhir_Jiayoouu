@@ -476,11 +476,6 @@ Route::prefix("/tempat")->group(function(){
         Route::prefix("/negosiasi")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPermintaan"]);
         });
-
-        //Bagian komplain
-        Route::prefix("/komplain")->group(function(){
-            Route::post("tambahKomplain", [KomplainRequest::class, "tambahKomplain"]);
-        });
     });
 
     //Request penawaran
@@ -501,6 +496,8 @@ Route::prefix("/tempat")->group(function(){
             $param["penawaran"] = $req->get_all_data_by_id($id);
             $nego = new ModelsNegosiasi();
             $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
+            $komplain = new ModelsKomplainRequest();
+            $param["komplain"] = $komplain->get_all_data_by_id_htrans($id, "Penawaran");
             return view("tempat.penawaran.detailPenawaranNego")->with($param);
         })->middleware([CekTempat::class]);
         Route::post("/terimaPenawaran", [RequestPenawaran::class, "terimaPenawaran"]);
@@ -511,6 +508,11 @@ Route::prefix("/tempat")->group(function(){
         Route::prefix("/negosiasi")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPenawaran"]);
         });
+    });
+
+    //Bagian komplain
+    Route::prefix("/komplain")->group(function(){
+        Route::post("tambahKomplain", [KomplainRequest::class, "tambahKomplain"]);
     });
 
     //Bagian sewa sendiri

@@ -26,7 +26,7 @@ class komplainRequest extends Model
         $komp->status_komplain = "Menunggu";
         $komp->save();
 
-        return $komp->id_komplain_req;
+        return $komp->id_komplain_request;
     }
 
     public function get_all_data_by_id_htrans($id, $jenis){
