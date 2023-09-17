@@ -39,8 +39,16 @@ class komplainRequest extends Model
         return komplainRequest::where('deleted_at',"=",null)->where("fk_id_request","=",$id)->where("jenis_request","=",$jenis)->where("fk_id_user","=",$role)->where("jenis_role","=","Pemilik")->get();
     }
 
-    public function get_all_data_by_admin(){
-        return komplainRequest::where('deleted_at',"=",null)->get();
+    public function get_all_data_by_admin_baru(){
+        return komplainRequest::where('deleted_at',"=",null)->where("status_komplain","=","Menunggu")->get();
+    }
+
+    public function get_all_data_by_admin_diterima(){
+        return komplainRequest::where('deleted_at',"=",null)->where("status_komplain","=","Diterima")->get();
+    }
+
+    public function get_all_data_by_admin_ditolak(){
+        return komplainRequest::where('deleted_at',"=",null)->where("status_komplain","=","Ditolak")->get();
     }
 
     public function get_all_data_by_id($id){

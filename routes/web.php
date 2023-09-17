@@ -180,7 +180,9 @@ Route::prefix("/admin")->group(function(){
         Route::prefix("/request")->group(function(){
             Route::get("/daftarKomplain", function () {
                 $komp = new ModelsKomplainRequest();
-                $param["komplain"] = $komp->get_all_data_by_admin();
+                $param["baru"] = $komp->get_all_data_by_admin_baru();
+                $param["diterima"] = $komp->get_all_data_by_admin_diterima();
+                $param["ditolak"] = $komp->get_all_data_by_admin_ditolak();
                 return view("admin.komplain.request.daftarKomplain")->with($param);
             })->middleware([CekAdmin::class]);
             Route::get("/detailKomplain/{id}", function ($id) {
