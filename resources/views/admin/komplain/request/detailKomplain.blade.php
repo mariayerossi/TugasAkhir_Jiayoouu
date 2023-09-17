@@ -40,6 +40,11 @@
     <div class="d-flex justify-content-end mt-3 me-3">
         <h6><b>Jenis Request: {{$komplain->first()->jenis_request}}</b></h6>
     </div>
+    <div class="d-flex justify-content-end mt-3 me-3">
+        @if ($komplain->first()->status_komplain == "Menunggu")
+            <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$komplain->first()->status_komplain}}</b></h6>
+        @endif
+    </div>
     @php
         if ($komplain->first()->jenis_role == "Pemilik") {
             $namaUser = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->first()->fk_id_user)->get()->first()->nama_pemilik;
