@@ -42,4 +42,8 @@ class komplainRequest extends Model
     public function get_all_data_by_admin(){
         return komplainRequest::where('deleted_at',"=",null)->get();
     }
+
+    public function get_all_data_by_id($id){
+        return komplainRequest::where('deleted_at',"=",null)->where("id_komplain_req","=",$id)->get();
+    }
 }

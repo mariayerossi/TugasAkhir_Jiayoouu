@@ -183,6 +183,11 @@ Route::prefix("/admin")->group(function(){
                 $param["komplain"] = $komp->get_all_data_by_admin();
                 return view("admin.komplain.request.daftarKomplain")->with($param);
             })->middleware([CekAdmin::class]);
+            Route::get("/detailKomplain/{id}", function ($id) {
+                $komp = new ModelsKomplainRequest();
+                $param["komplain"] = $komp->get_all_data_by_id($id);
+                return view("admin.komplain.request.detailKomplain")->with($param);
+            })->middleware([CekAdmin::class]);
         });
     });
 });

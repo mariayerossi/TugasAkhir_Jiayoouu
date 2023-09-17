@@ -31,6 +31,7 @@
                 <th>Jenis Komplain</th>
                 <th>Pengaju</th>
                 <th>Jenis Request</th>
+                <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -53,6 +54,13 @@
                             <td>{{$dataTempat->nama_tempat}}</td>
                         @endif
                         <td>{{$item->jenis_request}}</td>
+                        @if ($item->status_komplain == "Menunggu")
+                            <td style="color:rgb(239, 203, 0)">{{$item->status_komplain}}</td>
+                        @elseif($item->status_komplain == "Diterima")
+                            <td style="color:rgb(0, 145, 0)">{{$item->status_komplain}}</td>
+                        @elseif($item->status_komplain == "Ditolak")
+                            <td style="color:red">{{$item->status_komplain}}</td>
+                        @endif
                         <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
                     </tr>
                 @endforeach
