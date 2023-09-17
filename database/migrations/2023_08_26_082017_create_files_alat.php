@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('files_alat', function (Blueprint $table) {
             $table->integerIncrements('id_file_alat');
             $table->string('nama_file_alat');
-            $table->integer('fk_id_alat');
+            $table->unsignedInteger('fk_id_alat');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('fk_id_alat')
+                  ->references('id_alat')
+                  ->on('alat_olahraga');
         });
     }
 

@@ -15,16 +15,28 @@ return new class extends Migration
             $table->integerIncrements('id_permintaan');
             $table->integer('req_harga_sewa');
             $table->integer('req_durasi');
-            $table->integer('req_lapangan');
+            $table->unsignedInteger('req_lapangan');
             $table->date('req_tanggal_mulai')->nullable();//diisi klo request disetujui
             $table->date('req_tanggal_selesai')->nullable();//diisi klo request disetujui
-            $table->integer('req_id_alat');
-            $table->integer('fk_id_tempat');
-            $table->integer('fk_id_pemilik');
+            $table->unsignedInteger('req_id_alat');
+            $table->unsignedInteger('fk_id_tempat');
+            $table->unsignedInteger('fk_id_pemilik');
             $table->timestamp('tanggal_minta');
             $table->string('status_permintaan');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('req_lapangan')
+                  ->references('id_lapangan')
+                  ->on('lapangan_olahraga');
+            $table->foreign('req_id_alat')
+                  ->references('id_alat')
+                  ->on('alat_olahraga');
+            $table->foreign('fk_id_tempat')
+                  ->references('id_tempat')
+                  ->on('pihak_tempat');
+            $table->foreign('fk_id_pemilik')
+                  ->references('id_pemilik')
+                  ->on('pemilik_alat');
         });
     }
 

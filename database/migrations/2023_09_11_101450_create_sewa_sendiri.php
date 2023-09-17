@@ -13,11 +13,20 @@ return new class extends Migration
     {
         Schema::create('sewa_sendiri', function (Blueprint $table) {
             $table->integerIncrements("id_sewa");
-            $table->integer('req_lapangan');
-            $table->integer('req_id_alat');
-            $table->integer('fk_id_tempat');
+            $table->unsignedInteger('req_lapangan');
+            $table->unsignedInteger('req_id_alat');
+            $table->unsignedInteger('fk_id_tempat');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('req_lapangan')
+                  ->references('id_lapangan')
+                  ->on('lapangan_olahraga');
+            $table->foreign('req_id_alat')
+                  ->references('id_alat')
+                  ->on('alat_olahraga');
+            $table->foreign('fk_id_tempat')
+                  ->references('id_tempat')
+                  ->on('pihak_tempat');
         });
     }
 

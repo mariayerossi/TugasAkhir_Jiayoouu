@@ -15,9 +15,9 @@ return new class extends Migration
             $table->integerIncrements("id_negosiasi");
             $table->string("isi_negosiasi", 500);
             $table->timestamp("waktu_negosiasi");
-            $table->integer("fk_id_request");
+            $table->unsignedInteger("fk_id_request");
             $table->string("jenis_request");
-            $table->integer("fk_id_user");
+            $table->unsignedInteger("fk_id_user");
             $table->string("role_user");
             $table->timestamps();
             $table->softDeletes();

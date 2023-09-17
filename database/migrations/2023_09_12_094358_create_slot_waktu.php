@@ -16,9 +16,12 @@ return new class extends Migration
             $table->string("hari");
             $table->time("jam_buka");
             $table->time("jam_tutup");
-            $table->integer("fk_id_lapangan");
+            $table->unsignedInteger("fk_id_lapangan");
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('fk_id_lapangan')
+                  ->references('id_lapangan')
+                  ->on('lapangan_olahraga');
         });
     }
 

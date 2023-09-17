@@ -22,9 +22,12 @@ return new class extends Migration
             $table->string('luas_lapangan');
             $table->integer('harga_sewa_lapangan');
             $table->string('status_lapangan');
-            $table->integer('pemilik_lapangan');
+            $table->unsignedInteger('pemilik_lapangan');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('pemilik_lapangan')
+                  ->references('id_tempat')
+                  ->on('pihak_tempat');
         });
     }
 

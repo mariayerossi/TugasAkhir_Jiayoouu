@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integerIncrements("id_komplain_req");
             $table->string("jenis_komplain");
             $table->string("keterangan_komplain",500);
-            $table->integer("fk_id_request");
+            $table->unsignedInteger("fk_id_request");
             $table->string("jenis_request");
             $table->timestamp("waktu_komplain");
             $table->string("status_komplain");//Menunggu, Diterima, Ditolak
