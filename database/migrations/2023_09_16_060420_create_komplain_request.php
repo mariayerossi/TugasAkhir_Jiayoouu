@@ -20,6 +20,8 @@ return new class extends Migration
             $table->timestamp("waktu_komplain");
             $table->string("status_komplain");//Menunggu, Diterima, Ditolak
             $table->string("penanganan_komplain")->nullable();//pengembalian dana ke pemilik/pihak, tidak ada dll
+            $table->unsignedInteger("fk_id_user");
+            $table->string("jenis_role");
             $table->timestamps();
             $table->softDeletes();
         });

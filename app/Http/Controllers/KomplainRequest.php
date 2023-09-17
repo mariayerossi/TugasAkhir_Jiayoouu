@@ -27,11 +27,13 @@ class KomplainRequest extends Controller
             "keterangan" => $request->keterangan,
             "id_req" => $request->fk_id_request,
             "req" => $request->jenis_request,
-            "waktu" => $tgl_komplain
+            "waktu" => $tgl_komplain,
+            "user" => $request->id_user,
+            "role" => $request->role_user
         ];
         $komp = new ModelsKomplainRequest();
         $id = $komp->insertKomplainReq($data);
-        
+
         //insert foto alatnya
         $destinasi = "/upload";
         foreach ($request->foto as $key => $value) {

@@ -288,6 +288,8 @@
                         </div>
                         <input type="hidden" name="fk_id_request" value="{{$permintaan->first()->id_permintaan}}">
                         <input type="hidden" name="jenis_request" value="Permintaan">
+                        <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_tempat}}">
+                        <input type="hidden" name="role_user" value="Tempat">
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-success">Kirim</button>
                         </div>
@@ -314,7 +316,7 @@
                             
                             <!-- Nama Alat -->
                             <div class="col-8 d-flex flex-column justify-content-center">
-                                <h4 class="card-title truncate-text"><b>Komplain Anda telah dikirim!</b></h4>
+                                <h4 class="card-title"><b>Komplain Anda telah dikirim!</b></h4>
                                 @if ($komplain->first()->status_komplain == "Menunggu")
                                     <p class="card-text">Komplain kamu menunggu konfirmasi admin</p>
                                 @else
