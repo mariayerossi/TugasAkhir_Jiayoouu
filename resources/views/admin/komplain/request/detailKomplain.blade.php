@@ -89,7 +89,6 @@
             <div class="col-md-4 col-sm-12 mt-2">
                 <h6>Pengembalian dana sebesar </h6>
             </div>
-            
             <div class="col-md-4 col-sm-12">
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -98,7 +97,6 @@
                     <input type="number" class="form-control" min="0" name="dana" placeholder="50.000" oninput="formatNumber(this)" value="{{old('dana')}}">
                 </div>
             </div>
-
             <div class="col-md-4 col-sm-12 mt-2">
                 <h6>dikembalikan kepada {{$namaUser}}</h6>
             </div>
