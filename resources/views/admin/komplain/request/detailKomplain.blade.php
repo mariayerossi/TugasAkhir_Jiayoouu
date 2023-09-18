@@ -92,7 +92,9 @@
             </div>
           </div>
         </div>
-      </div>
+    </div>
+    {{-- detail request --}}
+    
     <h5 class="mb-5">Penanganan Komplain</h5>
     <form action="" method="POST">
         @csrf
@@ -122,14 +124,27 @@
             <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel3">
                 <h6>Penonaktifkan akun</h6>
             </div>
+            @php
+                if ($komplain->first()->jenis_request == "Permintaan") {
+                    $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
+                    $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+
+                    $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+                    $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
+                }
+                else if ($komplain->first()->jenis_request == "Penawaran") {
+                    $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
+                    $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+
+                    $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+                    $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
+                }
+            @endphp
             <div class="col-md-7 col-sm-12" id="pengembalianInput3">
-                <select class="form-control" name="kategori">
+                <select class="form-control" name="akun">
                     <option value="" disabled selected>Masukkan akun yang akan dinonaktifkan</option>
-                    {{-- @if (!$kategori->isEmpty())
-                        @foreach ($kategori as $item)
-                        <option value="{{$item->nama_kategori}}" {{ old('kategori') == $item->nama_kategori ? 'selected' : '' }}>{{$item->nama_kategori}}</option>
-                        @endforeach
-                    @endif --}}
+                    <option value="{{$nama_tempat}}" {{ old('akun') == $nama_tempat ? 'selected' : '' }}>{{$nama_tempat}}</option>
+                    <option value="{{$nama_pemilik}}" {{ old('akun') == $nama_pemilik ? 'selected' : '' }}>{{$nama_pemilik}}</option>
                 </select>
             </div>
         </div>
