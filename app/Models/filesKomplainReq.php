@@ -22,4 +22,8 @@ class filesKomplainReq extends Model
         $file->fk_id_komplain_req = $data["fk"];
         $file->save();
     }
+
+    public function get_all_data($fk_id){
+        return filesKomplainReq::where('deleted_at',"=",null)->where("fk_id_komplain_req","=",$fk_id)->get();
+    }
 }

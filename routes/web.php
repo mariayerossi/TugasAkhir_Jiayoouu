@@ -19,11 +19,13 @@ use App\Models\dtrans as ModelsDtrans;
 use App\Models\slotWaktu as ModelsSlotWaktu;
 use App\Models\customer;
 use App\Models\filesAlatOlahraga;
+use App\Models\filesKomplainReq;
 use App\Models\filesLapanganOlahraga;
 use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
 use App\Models\negosiasi as ModelsNegosiasi;
 use App\Models\komplainRequest as ModelsKomplainRequest;
+use App\Models\filesKomplainReq as ModelsFilesKomplainReq;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use App\Models\registerTempat;
@@ -188,6 +190,8 @@ Route::prefix("/admin")->group(function(){
             Route::get("/detailKomplain/{id}", function ($id) {
                 $komp = new ModelsKomplainRequest();
                 $param["komplain"] = $komp->get_all_data_by_id($id);
+                $files = new ModelsFilesKomplainReq();
+                $param["files"] = $files->get_all_data($id);
                 return view("admin.komplain.request.detailKomplain")->with($param);
             })->middleware([CekAdmin::class]);
         });

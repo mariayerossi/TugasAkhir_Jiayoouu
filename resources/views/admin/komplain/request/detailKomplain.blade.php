@@ -2,36 +2,21 @@
 
 @section('content')
 <style>
-.square-image-container {
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.card-custom {
+    max-width: 80%; /* Ubah sesuai keinginan */
+    margin: 0 auto; /* Pusatkan card */
 }
 
-.square-image-container img {
-    object-fit: cover;
+.image-square {
+    background-size: cover;
+    background-position: center;
     width: 100%;
-    height: 100%;
+    padding-bottom: 100%;
+    position: relative;
 }
-.truncate-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    display: block;
-}
-@media (max-width: 768px) {
-    .container-fluid {
-        padding-left: 0;
-        padding-right: 0;
-    }
-    .square-image-container {
-        width: 60px;
-        height: 60px;
-    }
+.image-square:hover {
+    transform: scale(1.1); /* Zoom 10% */
+    transition: transform .2s; /* Animasi smooth */
 }
 </style>
 @include("layouts.message")
@@ -86,23 +71,66 @@
         </div>
     </div>
 
+    <h5 class="mb-2">Foto Bukti Komplain</h5>
+    <div class="row mb-5">
+        @if (!$files->isEmpty())
+            @foreach ($files as $gambar)
+            <div class="col-md-4 col-sm-6 mb-3">
+                <div class="card card-custom" onclick="showImage('{{ asset('upload/'.$gambar->nama_file_komplain) }}')">
+                    <div class="image-square" style="background-image: url('{{ asset('upload/'.$gambar->nama_file_komplain) }}');"></div>
+                </div>
+            </div>
+            @endforeach
+        @endif
+    </div>
+    {{-- fitur show image --}}
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-body">
+              <img src="" id="modalImage" class="img-fluid">
+            </div>
+          </div>
+        </div>
+      </div>
     <h5 class="mb-5">Penanganan Komplain</h5>
     <form action="" method="POST">
         @csrf
         <div class="row mb-5 mt-5">
-            <div class="col-md-4 col-sm-12 mt-2">
-                <h6>Pengembalian dana sebesar </h6>
+            <div class="col-md-1 col-sm-2 d-flex align-items-center">
+                <input type="checkbox" name="pengembalianCheckbox" id="pengembalianCheckbox" onchange="toggleInput()">
             </div>
-            <div class="col-md-4 col-sm-12">
+            <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
+                <h6>Pengembalian dana user sebesar</h6>
+            </div>
+            <div class="col-md-3 col-sm-12" id="pengembalianInput">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">Rp</div>
                     </div>
-                    <input type="number" class="form-control" min="0" name="dana" placeholder="50.000" oninput="formatNumber(this)" value="{{old('dana')}}">
+                    <input type="number" class="form-control" min="0" name="dana" placeholder="50.000" oninput="formatNumber(this)" value="{{ old('dana') }}" disabled>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-12 mt-2">
+            <div class="col-md-4 col-sm-12 mt-2" id="pengembalianLabel2">
                 <h6>dikembalikan kepada {{$namaUser}}</h6>
+            </div>
+        </div>
+        <div class="row mb-5 mt-5">
+            <div class="col-md-1 col-sm-2 d-flex align-items-center">
+                <input type="checkbox" name="pengembalianCheckbox2" id="pengembalianCheckbox2" onchange="toggleInput2()">
+            </div>
+            <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel3">
+                <h6>Penonaktifkan akun</h6>
+            </div>
+            <div class="col-md-7 col-sm-12" id="pengembalianInput3">
+                <select class="form-control" name="kategori">
+                    <option value="" disabled selected>Masukkan akun yang akan dinonaktifkan</option>
+                    {{-- @if (!$kategori->isEmpty())
+                        @foreach ($kategori as $item)
+                        <option value="{{$item->nama_kategori}}" {{ old('kategori') == $item->nama_kategori ? 'selected' : '' }}>{{$item->nama_kategori}}</option>
+                        @endforeach
+                    @endif --}}
+                </select>
             </div>
         </div>
         <div class="d-flex justify-content-end">
@@ -112,6 +140,10 @@
     </form>
 </div>
 <script>
+    function showImage(imgPath) {
+    document.getElementById('modalImage').src = imgPath;
+    $('#imageModal').modal('show');
+}
     function confirmTolak() {
         swal({
             title: "Apakah Anda yakin?",
@@ -127,6 +159,41 @@
                 window.location.href = "/admin/komplain/request/tolakKomplain/{{$komplain->first()->id_komplain_req}}";
             }
         });
+    }
+    toggleInput();
+    toggleInput2();
+    function toggleInput() {
+        var checkbox = document.getElementById("pengembalianCheckbox");
+        var label = document.getElementById("pengembalianLabel");
+        var label2 = document.getElementById("pengembalianLabel2");
+        var inputGroup = document.getElementById("pengembalianInput");
+
+        if (checkbox.checked) {
+            label.style.opacity = "1";
+            label2.style.opacity = "1";
+            inputGroup.style.opacity = "1";
+            inputGroup.querySelector('input').disabled = false;
+        } else {
+            label.style.opacity = "0.5";
+            label2.style.opacity = "0.5";
+            inputGroup.style.opacity = "0.5";
+            inputGroup.querySelector('input').disabled = true;
+        }
+    }
+    function toggleInput2() {
+        var checkbox = document.getElementById("pengembalianCheckbox2");
+        var label = document.getElementById("pengembalianLabel3");
+        var inputGroup = document.getElementById("pengembalianInput3");
+
+        if (checkbox.checked) {
+            label.style.opacity = "1";
+            inputGroup.style.opacity = "1";
+            inputGroup.querySelector('select').disabled = false;
+        } else {
+            label.style.opacity = "0.5";
+            inputGroup.style.opacity = "0.5";
+            inputGroup.querySelector('select').disabled = true;
+        }
     }
     function formatNumber(input) {
         // Mengambil value dari input
