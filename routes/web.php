@@ -196,6 +196,20 @@ Route::prefix("/admin")->group(function(){
             })->middleware([CekAdmin::class]);
         });
     });
+
+    Route::prefix("/request")->group(function(){
+        Route::get("/detailRequest/{jenis}/{id}", function ($jenis, $id) {
+            if ($jenis == "Permintaan") {
+                $req = new ModelsRequestPermintaan();
+            }
+            else {
+                $req = new ModelsRequestPenawaran();
+            }
+            $param["request"] = $req->get_all_data_by_id($id);
+            $param["jenis"] = $jenis;
+            return view("admin.request.detailRequest")->with($param);
+        })->middleware([CekAdmin::class]);
+    });
 });
 
 // -------------------------------

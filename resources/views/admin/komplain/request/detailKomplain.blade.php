@@ -18,6 +18,37 @@
     transform: scale(1.1); /* Zoom 10% */
     transition: transform .2s; /* Animasi smooth */
 }
+.square-image-container {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.square-image-container img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+.truncate-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+}
+@media (max-width: 768px) {
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .square-image-container {
+        width: 60px;
+        height: 60px;
+    }
+}
 </style>
 @include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
@@ -93,9 +124,52 @@
           </div>
         </div>
     </div>
+    @php
+        if ($komplain->first()->jenis_request == "Permintaan") {
+            $dataRequest = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first();
+            $id_request = $dataRequest->id_permintaan;
+
+            $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
+            $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
+        }
+        else if ($komplain->first()->jenis_request == "Penawaran") {
+            $dataRequest = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first();
+            $id_request = $dataRequest->id_penawaran;
+
+            $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
+            $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
+        }
+        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataRequest->req_id_alat)->get()->first();
+        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+    @endphp
     {{-- detail request --}}
-    
-    <h5 class="mb-5">Penanganan Komplain</h5>
+    <h5>Detail Request</h5>
+        <a href="/admin/request/detailRequest/{{$komplain->first()->jenis_request}}/{{$id_request}}">
+            <div class="card h-70">
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Gambar Alat -->
+                        <div class="col-4">
+                            <div class="square-image-container">
+                                <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                            </div>
+                        </div>
+                        
+                        <!-- Nama Alat -->
+                        <div class="col-8 d-flex flex-column justify-content-center">
+                            <h5 class="card-title truncate-text">{{$komplain->first()->jenis_request}} {{$dataAlat->nama_alat}}</h5>
+                            <p class="card-text">Pemilik alat: {{$nama_pemilik}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </a>
+
+    <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
     <form action="" method="POST">
         @csrf
         <div class="row mb-5 mt-5">
