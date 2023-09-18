@@ -1,5 +1,7 @@
 @extends('layouts.sidebar_admin')
 
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
 @section('content')
 <style>
     .img-ratio-16-9 {
@@ -40,4 +42,12 @@
         </table>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    });
+</script>
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 @endsection

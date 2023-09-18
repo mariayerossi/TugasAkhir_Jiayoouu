@@ -1,5 +1,7 @@
 @extends('layouts.sidebar_admin')
 
+<!-- DataTables -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
 @section('content')
 <style>
     .img-ratio-16-9 {
@@ -18,9 +20,9 @@
                 <tr>
                     <th>Nama Tempat Olahraga</th>
                     <th>Nama Pemilik</th>
-                    <th>Lokasi</th>
                     <th>Email</th>
                     <th>No. Telepon</th>
+                    <th>Lokasi</th>
                     <th>Foto KTP</th>
                     <th>Foto NPWP</th>
                     <th>Konfirmasi</th>
@@ -67,5 +69,11 @@
         document.getElementById('modalImage').src = imgPath;
         $('#imageModal').modal('show');
     }
+    $(document).ready(function() {
+        $('.table').DataTable();
+    });
 </script>
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 @endsection
