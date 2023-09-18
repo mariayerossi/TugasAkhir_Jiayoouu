@@ -331,11 +331,9 @@
     @endif
 </div>
 <script>
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();   
-    });
-
     $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+        
         @if($nego->isEmpty())
         // Menyembunyikan div nego saat halaman pertama kali dimuat
             $(".nego").hide();

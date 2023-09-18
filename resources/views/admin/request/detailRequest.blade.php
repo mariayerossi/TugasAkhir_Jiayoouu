@@ -63,8 +63,8 @@
     <div class="row mb-5">
         <!-- Detail Alat -->
         <div class="col-md-6 col-sm-12">
-            <h5>Alat Olahraga yang Diminta <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang dimohon oleh pihak pengelola tempat olahraga"></i></h5>
-            <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+            <h5>Alat Olahraga yang Diminta <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang direquest"></i></h5>
+            <a href="/admin/alat/detailAlatUmum/{{$dataAlat->id_alat}}">
                 <div class="card h-70">
                     <div class="card-body">
                         <div class="row">
@@ -89,7 +89,7 @@
         <!-- Detail Lapangan -->
         <div class="col-md-6 col-sm-12">
             <h5>Lapangan Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Lokasi penggunaan alat olahraga"></i></h5>
-            <a href="/pemilik/detailLapanganUmum/{{$dataLapangan->id_lapangan}}">
+            <a href="/admin/lapangan/detailLapanganUmum/{{$dataLapangan->id_lapangan}}">
                 <div class="card h-70">
                     <div class="card-body">
                         <div class="row">
@@ -112,7 +112,7 @@
     </div>
     <div class="row mb-3 mt-3">
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
+            <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat)"></i></h6>
             <p>Rp {{number_format($request->first()->req_harga_sewa, 0, ',', '.')}}/jam</p>
         </div>
 
@@ -130,40 +130,29 @@
 
     <div class="row mb-3 mt-3">
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Tanggal Mulai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga akan mulai disewakan saat anda menyetujui permintaan"></i></h6>
-            @if ($request->first()->req_tanggal_mulai == null)
-                @if ($request->first()->status_permintaan == "Menunggu")
-                    <p>(Menunggu Persetujuan Anda)</p>
-                @else
-                    <p>(Permintaan telah {{$request->first()->status_permintaan}})</p>
-                @endif
-            @else
-                @php
-                    $tanggalAwal2 = $request->first()->req_tanggal_mulai;
-                    $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
-                @endphp
-                <p>{{$tanggalBaru2}}</p>
-            @endif
+            <h6>Tanggal Mulai Dipinjam:</h6>
+            @php
+                $tanggalAwal2 = $request->first()->req_tanggal_mulai;
+                $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+            @endphp
+            <p>{{$tanggalBaru2}}</p>
         </div>
 
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Tanggal Selesai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Waktu berakhirnya peminjaman ditentukan berdasarkan waktu dimulainya peminjaman"></i></h6>
-            @if ($request->first()->req_tanggal_selesai == null)
-                @if ($request->first()->status_permintaan == "Menunggu")
-                    <p>(Menunggu Persetujuan Anda)</p>
-                @else
-                    <p>(Permintaan telah {{$request->first()->status_permintaan}})</p>
-                @endif
-            @else
-                @php
-                    $tanggalAwal3 = $request->first()->req_tanggal_selesai;
-                    $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
-                    $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
-                @endphp
-                <p>{{$tanggalBaru3}}</p>
-            @endif
+            <h6>Tanggal Selesai Dipinjam:</h6>
+            @php
+                $tanggalAwal3 = $request->first()->req_tanggal_selesai;
+                $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+                $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+            @endphp
+            <p>{{$tanggalBaru3}}</p>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+</script>
 @endsection
