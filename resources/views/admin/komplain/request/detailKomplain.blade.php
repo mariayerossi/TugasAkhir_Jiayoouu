@@ -17,6 +17,7 @@
 .image-square:hover {
     transform: scale(1.1); /* Zoom 10% */
     transition: transform .2s; /* Animasi smooth */
+    cursor: zoom-in;
 }
 .square-image-container {
     width: 100px;
@@ -230,9 +231,9 @@
 </div>
 <script>
     function showImage(imgPath) {
-    document.getElementById('modalImage').src = imgPath;
-    $('#imageModal').modal('show');
-}
+        document.getElementById('modalImage').src = imgPath;
+        $('#imageModal').modal('show');
+    }
     function confirmTolak() {
         swal({
             title: "Apakah Anda yakin?",

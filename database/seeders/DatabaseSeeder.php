@@ -36,6 +36,19 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('register_tempat')->insert([
+            'nama_tempat_reg' => "Herry Sport",
+            'nama_pemilik_tempat_reg' => "Herry Tanoe",
+            'email_tempat_reg' => 'herry12@gmail.com',
+            'telepon_tempat_reg' => "0843235434528",
+            'alamat_tempat_reg' => "mayjend sungkono, Surabaya",
+            'ktp_tempat_reg' => "ktp_tempat1.jpg",
+            'npwp_tempat_reg' => "npwp_tempat1.jpg",
+            'password_tempat_reg' => password_hash('1234567890', PASSWORD_BCRYPT),
+            'saldo_tempat_reg' => "XQ==",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
         DB::table('pihak_tempat')->insert([
             'nama_tempat' => "Mario Sport",
             'nama_pemilik_tempat' => "Mario Wijaya",

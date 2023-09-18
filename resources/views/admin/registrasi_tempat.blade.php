@@ -35,14 +35,24 @@
                             <td>{{$item->email_tempat_reg}}</td>
                             <td>{{$item->telepon_tempat_reg}}</td>
                             <td>{{$item->alamat_tempat_reg}}</td>
-                            <td><a href="{{ asset('upload/' . $item->ktp_tempat_reg) }}"><img class="img-ratio-16-9" src="{{ asset('upload/' . $item->ktp_tempat_reg) }}" alt=""></a></td>
-                            <td><a href="{{ asset('upload/' . $item->npwp_tempat_reg) }}"><img class="img-ratio-16-9" src="{{ asset('upload/' . $item->npwp_tempat_reg) }}" alt=""></a></td>
+                            <td><img onclick="showImage('{{ asset('upload/'.$item->ktp_tempat_reg) }}')" style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $item->ktp_tempat_reg) }}" alt=""></td>
+                            <td><img onclick="showImage('{{ asset('upload/'.$item->npwp_tempat_reg) }}')" style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $item->npwp_tempat_reg) }}" alt=""></td>
                             <td>
                                 <a href="/admin/konfirmasiTempat/{{$item->id_register}}" class="btn btn-primary">Terima</a>
                                 <a href="/admin/tolakKonfirmasiTempat/{{$item->id_register}}" class="btn btn-danger">Tolak</a>
                             </td>
                         </tr>
                     @endforeach
+                    {{-- fitur show image --}}
+                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                            <img src="" id="modalImage" class="img-fluid">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 @else
                     <tr>
                         <td colspan="8" class="text-center">Tidak Ada Data</td>
@@ -52,4 +62,10 @@
         </table>
     </div>
 </div>
+<script>
+    function showImage(imgPath) {
+        document.getElementById('modalImage').src = imgPath;
+        $('#imageModal').modal('show');
+    }
+</script>
 @endsection
