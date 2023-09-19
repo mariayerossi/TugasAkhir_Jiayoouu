@@ -297,6 +297,7 @@ Route::prefix("/pemilik")->group(function(){
             $req = new ModelsRequestPermintaan();
             $param["baru"] = $req->get_all_data_by_pemilik_baru($role);
             $param["diterima"] = $req->get_all_data_by_pemilik_diterima($role);
+            $param["disewakan"] = $req->get_all_data_by_pemilik_disewakan($role);
             $param["ditolak"] = $req->get_all_data_by_pemilik_ditolak($role);
             $param["selesai"] = $req->get_all_data_by_pemilik_selesai($role);
             $param["dibatalkan"] = $req->get_all_data_by_pemilik_dibatalkan($role);
@@ -332,6 +333,7 @@ Route::prefix("/pemilik")->group(function(){
             $param["baru"] = $req->get_all_data_by_pemilik_baru($role);
             $param["diterima"] = $req->get_all_data_by_pemilik_diterima($role);
             $param["ditolak"] = $req->get_all_data_by_pemilik_ditolak($role);
+            $param["disewakan"] = $req->get_all_data_by_pemilik_disewakan($role);
             $param["selesai"] = $req->get_all_data_by_pemilik_selesai($role);
             $param["dibatalkan"] = $req->get_all_data_by_pemilik_dibatalkan($role);
             $param["dikomplain"] = $req->get_all_data_by_pemilik_dikomplain($role);

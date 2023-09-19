@@ -41,6 +41,9 @@
           <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" id="disewakan-tab" data-toggle="tab" href="#disewakan" role="tab" aria-controls="disewakan" aria-selected="false">Disewakan</a>
+          </li>
+        <li class="nav-item">
             <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Ditolak</a>
         </li>
         <li class="nav-item">
@@ -62,7 +65,7 @@
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
                         <th>Pengaju</th>
-                        <th>Durasi</th>
+                        <th>Waktu Pengajuan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -86,14 +89,8 @@
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
-                                @if ($item->req_durasi == "12")
-                                    <td>Dipinjam selama 1 tahun</td>
-                                @elseif ($item->req_durasi == "24")
-                                    <td>Dipinjam selama 2 tahun</td>
-                                @else
-                                    <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
-                                @endif
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
@@ -112,7 +109,7 @@
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
                         <th>Pengaju</th>
-                        <th>Durasi</th>
+                        <th>Waktu</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -136,14 +133,52 @@
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
-                                @if ($item->req_durasi == "12")
-                                    <td>Dipinjam selama 1 tahun</td>
-                                @elseif ($item->req_durasi == "24")
-                                    <td>Dipinjam selama 2 tahun</td>
-                                @else
-                                    <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
-                                @endif
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
+                                <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+          </table>
+        </div>
+        <div class="tab-pane fade" id="disewakan" role="tabpanel" aria-labelledby="disewakan-tab">
+            <table class="table table-hover table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Foto Alat</th>
+                        <th>Keterangan</th>
+                        <th>Pengaju</th>
+                        <th>Waktu</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$disewakan->isEmpty())
+                        @foreach ($disewakan as $item)
+                            @php
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+                            @endphp
+                            <tr>
+                                <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td>
+                                <td>Permintaan {{$dataAlat->nama_alat}} sudah <span style="color:rgb(0, 145, 0)">Disewakan</span></td>
+                                @php
+                                    $tanggalAwal = $item->tanggal_minta;
+                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                @endphp
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
@@ -162,7 +197,7 @@
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
                         <th>Pengaju</th>
-                        <th>Durasi</th>
+                        <th>Waktu</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -186,14 +221,8 @@
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
-                                @if ($item->req_durasi == "12")
-                                    <td>Dipinjam selama 1 tahun</td>
-                                @elseif ($item->req_durasi == "24")
-                                    <td>Dipinjam selama 2 tahun</td>
-                                @else
-                                    <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
-                                @endif
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} </td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
@@ -212,7 +241,7 @@
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
                         <th>Pengaju</th>
-                        <th>Durasi</th>
+                        <th>Waktu</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -236,14 +265,8 @@
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
-                                @if ($item->req_durasi == "12")
-                                    <td>Dipinjam selama 1 tahun</td>
-                                @elseif ($item->req_durasi == "24")
-                                    <td>Dipinjam selama 2 tahun</td>
-                                @else
-                                    <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
-                                @endif
+                                <td>Diajukan oleh {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
@@ -262,7 +285,7 @@
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
                         <th>Pengaju</th>
-                        <th>Durasi</th>
+                        <th>Waktu</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -287,13 +310,7 @@
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
                                 <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
-                                @if ($item->req_durasi == "12")
-                                    <td>Dipinjam selama 1 tahun</td>
-                                @elseif ($item->req_durasi == "24")
-                                    <td>Dipinjam selama 2 tahun</td>
-                                @else
-                                    <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
-                                @endif
+                                <td>{{$tanggalBaru}}</td>
                                 <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
@@ -312,7 +329,7 @@
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
                         <th>Pengaju</th>
-                        <th>Durasi</th>
+                        <th>Waktu</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -337,13 +354,7 @@
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
                                 <td>Diajukan oleh {{$dataTempat->nama_tempat}} pada {{$tanggalBaru}}</td>
-                                @if ($item->req_durasi == "12")
-                                    <td>Dipinjam selama 1 tahun</td>
-                                @elseif ($item->req_durasi == "24")
-                                    <td>Dipinjam selama 2 tahun</td>
-                                @else
-                                    <td>Dipinjam selama {{$item->req_durasi}} bulan</td>
-                                @endif
+                                <td>{{$tanggalBaru}}</td>
                                 <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
