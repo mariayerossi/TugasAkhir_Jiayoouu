@@ -88,7 +88,7 @@
 
         <!-- Detail Lapangan -->
         <div class="col-md-6 col-sm-12">
-            <h5>Lapangan Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Lokasi penggunaan alat olahraga"></i></h5>
+            <h5>Lokasi Penggunaan Alat</h5>
             <a href="/tempat/lapangan/lihatDetailLapangan/{{$dataLapangan->id_lapangan}}">
                 <div class="card h-70">
                     <div class="card-body">
@@ -136,49 +136,11 @@
         </div>
 
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Permintaan Durasi Pinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Durasi peminjaman alat olahraga oleh pihak pengelola tempat olahraga"></i></h6>
-            @if ($penawaran->first()->req_durasi != null)
-                @if ($penawaran->first()->req_durasi == "12")
-                    <p>1 Tahun</p>
-                @elseif($penawaran->first()->req_durasi == "24")
-                    <p>2 Tahun</p>
-                @else
-                    <p>{{$penawaran->first()->req_durasi}} Bulan</p>
-                @endif
-            @else
-                <p>(Anda belum mengisi durasi pinjam)</p>
-            @endif
-            
-            @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null)
-                <form action="/tempat/penawaran/editDurasi" method="post">
-                    @csrf
-                    <div class="input-group">
-                        <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                            <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
-                            <select class="form-control" name="durasi">
-                                <option value="" disabled selected>Masukkan Durasi Peminjaman</option>
-                                <option value="1" {{ old('durasi')?? $penawaran->first()->req_durasi == '1' ? 'selected' : '' }}>1 Bulan</option>
-                                <option value="2" {{ old('durasi')?? $penawaran->first()->req_durasi == '2' ? 'selected' : '' }}>2 Bulan</option>
-                                <option value="3" {{ old('durasi')?? $penawaran->first()->req_durasi == '3' ? 'selected' : '' }}>3 Bulan</option>
-                                <option value="5" {{ old('durasi')?? $penawaran->first()->req_durasi == '5' ? 'selected' : '' }}>5 Bulan</option>
-                                <option value="9" {{ old('durasi')?? $penawaran->first()->req_durasi == '9' ? 'selected' : '' }}>9 Bulan</option>
-                                <option value="12" {{ old('durasi')?? $penawaran->first()->req_durasi == '12' ? 'selected' : '' }}>1 Tahun</option>
-                                <option value="24" {{ old('durasi')?? $penawaran->first()->req_durasi == '24' ? 'selected' : '' }}>2 Tahun</option>
-                            </select>
-                        </div>
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary">Edit Durasi</button>
-                        </div>
-                    </div>
-                </form>
-            @else
-                <p class="card-text">(Tidak dapat mengedit durasi, penawaran telah {{$penawaran->first()->status_penawaran}})</p>
-            @endif
         </div>
         
         <div class="row mb-3 mt-3">
             <div class="col-md-6 col-sm-12 mb-3">
-                <h6>Tanggal Mulai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga akan mulai disewakan saat kedua pihak menyetujui penawaran"></i></h6>
+                <h6>Tanggal Mulai Dipinjam:</h6>
                 @if ($penawaran->first()->req_tanggal_mulai == null)
                     @if ($penawaran->first()->status_penawaran == "Menunggu")
                         <p>(Menunggu Persetujuan)</p>
@@ -195,7 +157,7 @@
                 @endif
             </div>
             <div class="col-md-6 col-sm-12 mb-3">
-                <h6>Tanggal Selesai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Waktu berakhirnya peminjaman ditentukan berdasarkan waktu dimulainya peminjaman"></i></h6>
+                <h6>Tanggal Selesai Dipinjam:</h6>
                 @if ($penawaran->first()->req_tanggal_selesai == null)
                     @if ($penawaran->first()->status_penawaran == "Menunggu")
                         <p>(Menunggu Persetujuan)</p>

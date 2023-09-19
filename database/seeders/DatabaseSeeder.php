@@ -215,10 +215,9 @@ class DatabaseSeeder extends Seeder
 
         DB::table('request_permintaan')->insert([
             'req_harga_sewa' => 50000,
-            'req_durasi' => 12,
             'req_lapangan' => 1,
-            'req_tanggal_mulai' => "2023-10-13",
-            'req_tanggal_selesai' => "2023-09-13",
+            'req_tanggal_mulai' => "2023-9-13",
+            'req_tanggal_selesai' => "2023-10-13",
             'req_id_alat' => 1,
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
@@ -240,10 +239,9 @@ class DatabaseSeeder extends Seeder
 
         DB::table('request_penawaran')->insert([
             'req_harga_sewa' => 40000,
-            'req_durasi' => 9,
             'req_lapangan' => 1,
-            'req_tanggal_mulai' => "2023-10-13",
-            'req_tanggal_selesai' => "2023-09-13",
+            'req_tanggal_mulai' => "2023-09-13",
+            'req_tanggal_selesai' => "2023-11-13",
             'req_id_alat' => 1,
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,

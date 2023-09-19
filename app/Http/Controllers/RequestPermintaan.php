@@ -34,24 +34,25 @@ class RequestPermintaan extends Controller
         $date_selesai = new DateTime($request->tgl_selesai);
         
         if ($date_selesai <= $date_mulai) {
-            dd("Tanggal Kembali tidak boleh lebih awal atau sama dengan Tanggal Pinjam!");
+            return redirect()->back()->with("success", "Tanggal kembali tidak sesuai!");
         }
-
-        $data = [
-            "harga" => $harga,
-            "lapangan" => $array[0],
-            "mulai" => $request->tgl_mulai,
-            "selesai" => $request->tgl_selesai,
-            "id_alat" => $request->id_alat,
-            "id_tempat" => $request->id_tempat,
-            "id_pemilik" => $request->id_pemilik,
-            "tgl_minta" => $tgl_minta,
-            "status" => "Menunggu"
-        ];
-        $per = new ModelsRequestPermintaan();
-        $per->insertPermintaan($data);
-
-        return redirect()->back()->with("success", "Berhasil Mengirim Request!");
+        else {
+            $data = [
+                "harga" => $harga,
+                "lapangan" => $array[0],
+                "mulai" => $request->tgl_mulai,
+                "selesai" => $request->tgl_selesai,
+                "id_alat" => $request->id_alat,
+                "id_tempat" => $request->id_tempat,
+                "id_pemilik" => $request->id_pemilik,
+                "tgl_minta" => $tgl_minta,
+                "status" => "Menunggu"
+            ];
+            $per = new ModelsRequestPermintaan();
+            $per->insertPermintaan($data);
+    
+            return redirect()->back()->with("success", "Berhasil Mengirim Request!");
+        }
     }
 
     public function batalPermintaan(Request $request){
@@ -97,21 +98,9 @@ class RequestPermintaan extends Controller
         }
     }
 
-    private function hitungTanggalPengembalian($tanggal_mulai, $durasi_bulan) {
-        // Membuat objek DateTime dari tanggal mulai
-        $tanggal = new DateTime($tanggal_mulai);
-        
-        // Menambahkan durasi ke tanggal mulai
-        $tanggal->add(new DateInterval("P{$durasi_bulan}M"));
-        
-        // Mengembalikan tanggal pengembalian dalam format Y-m-d
-        return $tanggal->format('Y-m-d');
-    }
-
     public function terimaPermintaan(Request $request){
         $req = new ModelsRequestPermintaan();
         $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
-        $durasi = $req->get_all_data_by_id($request->id_permintaan)->first()->req_durasi;
         $id_alat = $req->get_all_data_by_id($request->id_permintaan)->first()->req_id_alat;
 
         $alat = new alatOlahraga();
@@ -125,19 +114,6 @@ class RequestPermintaan extends Controller
                 ];
                 $per = new ModelsRequestPermintaan();
                 $per->updateStatus($data);
-
-                //isi tgl mulai sewa dan tanggal selesai sewa
-                date_default_timezone_set("Asia/Jakarta");
-                $tgl_mulai = date("Y-m-d");
-
-                $tgl_kembali = $this->hitungTanggalPengembalian($tgl_mulai, $durasi);
-                $data2 = [
-                    "id" => $request->id_permintaan,
-                    "mulai" => $tgl_mulai,
-                    "selesai" => $tgl_kembali
-                ];
-                $per2 = new ModelsRequestPermintaan();
-                $per2->updateTanggal($data2);
 
                 $data3 = [
                     "id" => $id_alat,

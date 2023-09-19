@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('request_penawaran', function (Blueprint $table) {
             $table->integerIncrements('id_penawaran');
             $table->integer('req_harga_sewa')->nullable();
-            $table->integer('req_durasi')->nullable();
             $table->unsignedInteger('req_lapangan');
-            $table->date('req_tanggal_mulai')->nullable();//diisi klo request disetujui
-            $table->date('req_tanggal_selesai')->nullable();//diisi klo request disetujui
+            $table->date('req_tanggal_mulai');//diisi klo request disetujui
+            $table->date('req_tanggal_selesai');//diisi klo request disetujui
             $table->unsignedInteger('req_id_alat');
             $table->unsignedInteger('fk_id_tempat');
             $table->unsignedInteger('fk_id_pemilik');

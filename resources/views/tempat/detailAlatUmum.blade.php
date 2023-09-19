@@ -78,7 +78,7 @@
             <form action="/tempat/permintaan/requestPermintaanAlat" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 @csrf
                 <div class="d-flex justify-content-center">
-                    <h5><b>Atur Harga dan Durasi</b></h5>
+                    <h5><b>Atur Harga dan Tanggal</b></h5>
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">

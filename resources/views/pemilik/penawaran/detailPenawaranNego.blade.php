@@ -103,7 +103,7 @@ display: block;
 
         <!-- Detail Lapangan -->
         <div class="col-md-6 col-sm-12">
-            <h5 class="mt-3">Lapangan Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Lokasi penggunaan alat olahraga"></i></h5>
+            <h5 class="mt-3">Lokasi Penggunaan Alat</h5>
             <a href="/pemilik/detailLapanganUmum/{{$dataLapangan->id_lapangan}}">
                 <div class="card h-75">
                     <div class="card-body">
@@ -136,23 +136,11 @@ display: block;
         </div>
 
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Permintaan Durasi Pinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Durasi peminjaman alat olahraga oleh pihak pengelola tempat olahraga"></i></h6>
-            @if ($penawaran->first()->req_durasi != null)
-                @if ($penawaran->first()->req_durasi == "12")
-                    <p>1 Tahun</p>
-                @elseif($penawaran->first()->req_durasi == "24")
-                    <p>2 Tahun</p>
-                @else
-                    <p>{{$penawaran->first()->req_durasi}} Bulan</p>
-                @endif
-            @else
-                <p>(Durasi pinjam belum diisi oleh pihak pengelola tempat)</p>
-            @endif
         </div>
         
         <div class="row mb-3 mt-3">
             <div class="col-md-6 col-sm-12 mb-3">
-                <h6>Tanggal Mulai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga akan mulai disewakan saat kedua pihak menyetujui penawaran"></i></h6>
+                <h6>Tanggal Mulai Dipinjam:</h6>
                 @if ($penawaran->first()->req_tanggal_mulai == null)
                     @if ($penawaran->first()->status_penawaran == "Menunggu")
                         <p>(Menunggu Persetujuan)</p>
@@ -169,7 +157,7 @@ display: block;
                 @endif
             </div>
             <div class="col-md-6 col-sm-12 mb-3">
-                <h6>Tanggal Selesai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Waktu berakhirnya peminjaman ditentukan berdasarkan waktu dimulainya peminjaman"></i></h6>
+                <h6>Tanggal Selesai Dipinjam:</h6>
                 @if ($penawaran->first()->req_tanggal_selesai == null)
                     @if ($penawaran->first()->status_penawaran == "Menunggu")
                         <p>(Menunggu Persetujuan)</p>
