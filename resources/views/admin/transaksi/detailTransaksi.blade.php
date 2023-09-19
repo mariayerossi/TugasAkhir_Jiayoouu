@@ -106,7 +106,7 @@
         @endif
     </div>
     <h5>Lapangan yang Disewa</h5>
-    <a href="/tempat/lapangan/lihatDetailLapangan/{{$htrans->first()->fk_id_lapangan}}">
+    <a href="/admin/lapangan/detailLapanganUmum/{{$htrans->first()->fk_id_lapangan}}">
         <div class="card">
             <div class="card-body">
                 <div class="row d-md-flex align-items-md-center">

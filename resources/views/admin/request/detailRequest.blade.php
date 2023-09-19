@@ -43,7 +43,12 @@
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$request->first()->req_lapangan)->get()->first();
         $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
 
-        $tanggalAwal1 = $request->first()->tanggal_minta;
+        if ($jenis == "Permintaan") {
+            $tanggalAwal1 = $request->first()->tanggal_minta;
+        }
+        else {
+            $tanggalAwal1 = $request->first()->tanggal_tawar;
+        }
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
         $tanggalBaru1 = $tanggalObjek1->format('d-m-Y H:i:s');
     @endphp
