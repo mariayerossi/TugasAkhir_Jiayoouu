@@ -74,6 +74,10 @@
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                                 $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_tawar;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -82,6 +86,7 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:rgb(239, 203, 0)">Menunggu</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -100,6 +105,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -111,6 +117,10 @@
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                                 $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_tawar;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -119,6 +129,7 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:rgb(0, 145, 0)">Diterima</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -137,6 +148,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -148,6 +160,10 @@
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                                 $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_tawar;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -156,6 +172,7 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:rgb(0, 145, 0)">Diterima</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -174,6 +191,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -185,6 +203,10 @@
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                                 $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_tawar;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -193,6 +215,7 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:red">Ditolak</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -211,6 +234,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -222,6 +246,10 @@
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                                 $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_tawar;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -230,6 +258,7 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:blue">Selesai</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -248,6 +277,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -259,6 +289,10 @@
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                                 $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_tawar;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -267,6 +301,7 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:red">Dibatalkan</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -285,6 +320,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -296,6 +332,10 @@
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                                 $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_tawar;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -304,6 +344,7 @@
                                     </div>
                                 </td>
                                 <td>Penawaran {{$dataAlat->nama_alat}} kepada {{$dataTempat->nama_tempat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:red">Dikomplain</span></td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
