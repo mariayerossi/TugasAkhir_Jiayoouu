@@ -15,8 +15,8 @@ return new class extends Migration
             $table->integerIncrements('id_penawaran');
             $table->integer('req_harga_sewa')->nullable();
             $table->unsignedInteger('req_lapangan');
-            $table->date('req_tanggal_mulai');//diisi klo request disetujui
-            $table->date('req_tanggal_selesai');//diisi klo request disetujui
+            $table->date('req_tanggal_mulai')->nullable();
+            $table->date('req_tanggal_selesai')->nullable();
             $table->unsignedInteger('req_id_alat');
             $table->unsignedInteger('fk_id_tempat');
             $table->unsignedInteger('fk_id_pemilik');

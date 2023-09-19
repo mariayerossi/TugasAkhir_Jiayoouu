@@ -557,7 +557,8 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/terimaPenawaran", [RequestPenawaran::class, "terimaPenawaran"]);
         Route::post("/tolakPenawaran", [RequestPenawaran::class, "tolakPenawaran"]);
         Route::post("/editHargaSewa", [RequestPenawaran::class, "editHargaSewa"]);
-        Route::post("/editDurasi", [RequestPenawaran::class, "editDurasi"]);
+        Route::post("/editTanggalMulai", [RequestPenawaran::class, "editTanggalMulai"]);
+        Route::post("/editTanggalSelesai", [RequestPenawaran::class, "editTanggalSelesai"]);
         Route::post("/simpanKodeMulai", [RequestPenawaran::class, "simpanKodeMulai"]);
 
         Route::prefix("/negosiasi")->group(function(){

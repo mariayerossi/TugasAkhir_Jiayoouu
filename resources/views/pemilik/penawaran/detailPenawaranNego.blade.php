@@ -142,11 +142,7 @@ display: block;
             <div class="col-md-6 col-sm-12 mb-3">
                 <h6>Tanggal Mulai Dipinjam:</h6>
                 @if ($penawaran->first()->req_tanggal_mulai == null)
-                    @if ($penawaran->first()->status_penawaran == "Menunggu")
-                        <p>(Menunggu Persetujuan)</p>
-                    @else
-                        <p>(Penawaran telah {{$penawaran->first()->status_penawaran}})</p>
-                    @endif
+                    <p>(Tanggal mulai peminjaman belum diisi oleh pihak pengelola tempat)</p>
                 @else
                     @php
                         $tanggalAwal = $penawaran->first()->req_tanggal_mulai;
@@ -159,11 +155,7 @@ display: block;
             <div class="col-md-6 col-sm-12 mb-3">
                 <h6>Tanggal Selesai Dipinjam:</h6>
                 @if ($penawaran->first()->req_tanggal_selesai == null)
-                    @if ($penawaran->first()->status_penawaran == "Menunggu")
-                        <p>(Menunggu Persetujuan)</p>
-                    @else
-                        <p>(Penawaran telah {{$penawaran->first()->status_penawaran}})</p>
-                    @endif
+                    <p>(Tanggal selesai peminjaman belum diisi oleh pihak pengelola tempat)</p>
                 @else
                     @php
                         $tanggalAwal2 = $penawaran->first()->req_tanggal_selesai;

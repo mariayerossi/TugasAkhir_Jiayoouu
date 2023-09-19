@@ -63,6 +63,8 @@ class RequestPenawaran extends Controller
         $dataAlat = $alat->get_all_data_by_id($dataReq->req_id_alat)->first();
         if ($dataAlat->status_alat == "Aktif") {
             if ($dataReq->status_penawaran == "Menunggu") {
+                //(BELOM) KASIH PENGECEKAN APAKAH TANGGAL MULAI DAN SELESAI NULL TIDAK, KASIH PENGECEKAN APAKAH TANGGAL SELESAI LEBIH BESAR DARI TANGGAL SELESAI?
+
                 //cek dulu apakah harga sewa dan durasi masih null atau tidak
                 if ($dataReq->req_harga_sewa != null) {
                     if ($dataReq->req_durasi != null) {
@@ -128,21 +130,38 @@ class RequestPenawaran extends Controller
         return redirect()->back()->with("success", "Berhasil mengedit harga sewa!");
     }
 
-    public function editDurasi(Request $request) {
+    public function editTanggalMulai(Request $request) {
         $request->validate([
-            "durasi" => "required"
+            "tanggal_mulai" => "required"
         ],[
-            "required" => "durasi sewa tidak boleh kosong!"
+            "required" => "tanggal mulai peminjaman tidak boleh kosong!"
         ]);
 
         $data = [
             "id" => $request->id_penawaran,
-            "durasi" => $request->durasi
+            "tanggal" => $request->tanggal_mulai
         ];
         $pen = new ModelsRequestPenawaran();
-        $pen->updateDurasi($data);
+        $pen->updateTanggalMulai($data);
 
-        return redirect()->back()->with("success", "Berhasil mengedit durasi sewa!");
+        return redirect()->back()->with("success", "Berhasil mengedit tanggal mulai sewa!");
+    }
+
+    public function editTanggalSelesai(Request $request) {
+        $request->validate([
+            "tanggal_selesai" => "required"
+        ],[
+            "required" => "tanggal mulai peminjaman tidak boleh kosong!"
+        ]);
+
+        $data = [
+            "id" => $request->id_penawaran,
+            "tanggal" => $request->tanggal_selesai
+        ];
+        $pen = new ModelsRequestPenawaran();
+        $pen->updateTanggalSelesai($data);
+
+        return redirect()->back()->with("success", "Berhasil mengedit tanggal selesai sewa!");
     }
 
     private function hitungTanggalPengembalian($tanggal_mulai, $durasi_bulan) {
