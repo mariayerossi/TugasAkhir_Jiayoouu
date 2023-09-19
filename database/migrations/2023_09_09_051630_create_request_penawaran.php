@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('status_penawaran');//otomatis berubah "Diterima" jika "status_tempat" dan "status_pemilik" Setuju
             $table->string('status_tempat')->nullable();//null/Setuju
             $table->string('status_pemilik')->nullable();//null/Setuju
+            $table->string('kode_mulai')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('req_lapangan')

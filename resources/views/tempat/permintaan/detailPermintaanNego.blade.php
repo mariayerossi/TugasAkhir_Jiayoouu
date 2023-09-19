@@ -1,5 +1,5 @@
 @extends('layouts.sidebarNavbar_tempat')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+
 @section('content')
 <style>
 .square-image-container {
@@ -249,7 +249,7 @@
             <button class="btn btn-primary" onclick="generateCode()" disabled>Konfirmasi</button>
             <div class="kode mt-3 mb-4">
                 <h5><b>{{$permintaan->first()->kode_mulai}}</b></h5>
-                <p></p>
+                <p>Berikan kode ini kepada pemiliki alat olahraga untuk mengkonfirmasi</p>
             </div>
         @else
             <button class="btn btn-primary" onclick="generateCode()">Konfirmasi</button>
@@ -353,11 +353,11 @@
         const currentDate = new Date();
         const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
         const day = ("0" + currentDate.getDate()).slice(-2);
-        const formattedDate = `REQ${currentDate.getFullYear()}${month}${day}`;
+        const formattedDate = `${currentDate.getFullYear()}${month}${day}`;
         // Nomor urut (misalnya Anda bisa gunakan timestamp atau counter untuk ini)
         const sequenceNumber = currentDate.getTime(); // Contoh ini menggunakan timestamp, Anda bisa menggantinya dengan sistem nomor urut yang Anda inginkan.
 
-        const code = `${formattedDate}<?=$permintaan->first()->id_permintaan;?>`;
+        const code = `REQM${formattedDate}<?=$permintaan->first()->id_permintaan;?>`;
         const kodeElement = document.querySelector('.kode');
         kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan Kode Konfirmasi ini kepada pemilik alat olahraga untuk mengkonfirmasi</p>`;
         // kodeElement.style.fontWeight = 'bold';

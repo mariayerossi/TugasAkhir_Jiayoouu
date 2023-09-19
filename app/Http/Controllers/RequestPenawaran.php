@@ -198,4 +198,19 @@ class RequestPenawaran extends Controller
             return redirect()->back()->with("error", "Gagal mengkonfirmasi penawaran! status penawaran sudah $dataReq->status_penawaran");
         }
     }
+
+    public function simpanKodeMulai(Request $request){
+        $kode = $request->input('kode');
+        $id = $request->input('id');
+    
+        // Contoh simpel untuk menyimpan kode:
+        $data = [
+            "id" => $id,
+            "kode" => $kode
+        ];
+        $per = new ModelsRequestPenawaran();
+        $per->updateKodeMulai($data);
+
+        return response()->json(['success' => true, 'message' => 'Kode berhasil disimpan']);
+    }
 }
