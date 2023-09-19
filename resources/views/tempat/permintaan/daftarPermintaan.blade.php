@@ -39,6 +39,9 @@
           <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link" id="disewakan-tab" data-toggle="tab" href="#disewakan" role="tab" aria-controls="disewakan" aria-selected="false">Disewakan</a>
+          </li>
+        <li class="nav-item">
             <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Ditolak</a>
         </li>
         <li class="nav-item">
@@ -59,6 +62,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -69,6 +73,10 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_minta;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -77,6 +85,7 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:rgb(239, 203, 0)">Menunggu</span></td>
                                 <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -95,6 +104,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -105,6 +115,10 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_minta;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -113,7 +127,50 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:rgb(0, 145, 0)">Diterima</span></td>
+                                <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="disewakan" role="tabpanel" aria-labelledby="disewakan-tab">
+            <table class="table table-hover table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Foto Alat</th>
+                        <th>Keterangan</th>
+                        <th>Waktu</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$disewakan->isEmpty())
+                        @foreach ($disewakan as $item)
+                            @php
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_minta;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                            @endphp
+                            <tr>
+                                <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td>
+                                <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                <td>{{$tanggalBaru}}</td>
+                                <td><span style="color:rgb(0, 145, 0)">Disewakan</span></td>
                                 <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach
@@ -131,6 +188,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -141,6 +199,10 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_minta;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -149,6 +211,7 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:red">Ditolak</span></td>
                                 <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -167,6 +230,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -177,6 +241,10 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_minta;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -185,6 +253,7 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:blue">Selesai</span></td>
                                 <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -203,6 +272,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -213,6 +283,10 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_minta;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -221,6 +295,7 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:red">Dibatalkan</span></td>
                                 <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -239,6 +314,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -249,6 +325,10 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $tanggalAwal = $item->tanggal_minta;
+                                $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                             @endphp
                             <tr>
                                 <td>
@@ -257,6 +337,7 @@
                                     </div>
                                 </td>
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
+                                <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:red">Dikomplain</span></td>
                                 <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
