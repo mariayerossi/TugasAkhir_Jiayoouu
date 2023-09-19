@@ -25,7 +25,7 @@
             </a>
         </div>
         <div class="col-md-4">
-            <a href="">
+            <a href="/tempat/penawaran/daftarPenawaran">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Total Penawaran Alat</h5>
