@@ -315,6 +315,7 @@ Route::prefix("/pemilik")->group(function(){
         })->middleware([CekPemilik::class]);
         Route::post("/terimaPermintaan", [RequestPermintaan::class, "terimaPermintaan"]);
         Route::post("/tolakPermintaan", [RequestPermintaan::class, "tolakPermintaan"]);
+        Route::post("/confirmKodeMulai", [RequestPermintaan::class, "confirmKodeMulai"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
@@ -348,6 +349,7 @@ Route::prefix("/pemilik")->group(function(){
         })->middleware([CekPemilik::class]);
         Route::post("/batalPenawaran", [RequestPenawaran::class, "batalPenawaran"]);
         Route::post("/konfirmasiPenawaran", [RequestPenawaran::class, "konfirmasiPenawaran"]);
+        Route::post("/confirmKodeMulai", [RequestPenawaran::class, "confirmKodeMulai"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){

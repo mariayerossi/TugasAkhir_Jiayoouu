@@ -36,7 +36,7 @@
 </style>
 @include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
-    <h3 class="text-center mb-5">Detail Permintaan Alat</h3>
+    <h3 class="text-center mb-5">Permohonan Peminjaman Alat</h3>
     @php
         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->first()->req_id_alat)->get()->first();
         $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
@@ -231,6 +231,28 @@
     @endif
 
     @if ($permintaan->first()->status_permintaan == "Diterima")
+        <form action="/pemilik/permintaan/confirmKodeMulai" method="post">
+            @csrf
+            <div class="row mb-5 mt-5">
+                <!-- Nama Pengirim -->
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk konfirmasi penyewaan alat olahraga</p>
+                    <div class="input-group">
+                        <input type="hidden" name="id" value="{{$permintaan->first()->id_permintaan}}">
+                        <input type="hidden" name="kode" value="{{$permintaan->first()->kode_mulai}}">
+                        <input type="text" name="isi" class="form-control" placeholder="Masukkan kode konfirmasi">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary"id="submitBtn">Konfirmasi</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12 mb-3">
+                    
+                </div>
+            </div>
+        </form>
+        <hr>
         @if ($komplain->isEmpty())
             <button class="btn btn-warning">Ajukan Komplain</button>
 

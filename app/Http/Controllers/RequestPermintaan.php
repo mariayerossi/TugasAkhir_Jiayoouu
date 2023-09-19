@@ -180,4 +180,25 @@ class RequestPermintaan extends Controller
 
         return response()->json(['success' => true, 'message' => 'Kode berhasil disimpan']);
     }
+
+    public function confirmKodeMulai(Request $request){
+        $request->validate([
+            "isi" => "required"
+        ],[
+            "required" => "kode konfirmasi tidak boleh kosong!"
+        ]);
+
+        if ($request->isi == $request->kode) {
+            $data = [
+                "id" => $request->id,
+                "status" => "Disewakan"
+            ];
+            $per = new ModelsRequestPermintaan();
+            $per->updateStatus($data);
+            return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
+        }
+        else {
+            return redirect()->back()->with("error", "Kode Konfirmasi salah!");
+        }
+    }
 }
