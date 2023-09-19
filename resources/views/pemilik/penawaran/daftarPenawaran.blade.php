@@ -62,6 +62,7 @@
                     <tr>
                         <th>Foto Alat</th>
                         <th>Keterangan</th>
+                        <th>Waktu</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
