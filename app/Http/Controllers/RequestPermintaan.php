@@ -13,11 +13,13 @@ class RequestPermintaan extends Controller
     public function ajukanPermintaan(Request $request){
         $request->validate([
             "harga" => "required",
-            "durasi" => "required",
+            "tgl_mulai" => "required",
+            "tgl_selesai" => "required",
             "lapangan" => "required"
         ],[
             "harga.required" => "harga sewa tidak boleh kosong!",
-            "durasi.required" => "durasi peminjaman tidak boleh kosong!",
+            "tgl_mulai.required" => "tanggal pinjam tidak boleh kosong!",
+            "tgl_selesai.required" => "tanggal kembali tidak boleh kosong!",
             "lapangan.required" => "lapangan tidak boleh kosong!"
         ]);
         
@@ -28,10 +30,18 @@ class RequestPermintaan extends Controller
         date_default_timezone_set("Asia/Jakarta");
         $tgl_minta = date("Y-m-d H:i:s");
 
+        $date_mulai = new DateTime($request->tgl_mulai);
+        $date_selesai = new DateTime($request->tgl_selesai);
+        
+        if ($date_selesai <= $date_mulai) {
+            dd("Tanggal Kembali tidak boleh lebih awal atau sama dengan Tanggal Pinjam!");
+        }
+
         $data = [
             "harga" => $harga,
-            "durasi" => $request->durasi,
             "lapangan" => $array[0],
+            "mulai" => $request->tgl_mulai,
+            "selesai" => $request->tgl_selesai,
             "id_alat" => $request->id_alat,
             "id_tempat" => $request->id_tempat,
             "id_pemilik" => $request->id_pemilik,

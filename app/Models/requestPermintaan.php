@@ -19,8 +19,9 @@ class requestPermintaan extends Model
     {
         $req = new requestPermintaan();
         $req->req_harga_sewa = $data["harga"];
-        $req->req_durasi = $data["durasi"];
         $req->req_lapangan = $data["lapangan"];
+        $req->req_tanggal_mulai= $data["mulai"];
+        $req->req_tanggal_selesai = $data["selesai"];
         $req->req_id_alat = $data["id_alat"];
         $req->fk_id_tempat = $data["id_tempat"];
         $req->fk_id_pemilik = $data["id_pemilik"];

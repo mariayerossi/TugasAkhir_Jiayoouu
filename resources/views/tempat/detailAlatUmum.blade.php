@@ -95,19 +95,18 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">
-                        <h6>Durasi Pinjam</h6>
+                        <h6>Tanggal Pinjam</h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                        <select class="form-control" name="durasi">
-                            <option value="" disabled selected>Masukkan Durasi Peminjaman</option>
-                            <option value="1">1 Bulan</option>
-                            <option value="2">2 Bulan</option>
-                            <option value="3">3 Bulan</option>
-                            <option value="5">5 Bulan</option>
-                            <option value="9">9 Bulan</option>
-                            <option value="12">1 Tahun</option>
-                            <option value="24">2 Tahun</option>
-                        </select>
+                        <input type="date" name="tgl_mulai" id="" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-12 mt-2">
+                        <h6>Tanggal Kembali</h6>
+                    </div>
+                    <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                        <input type="date" name="tgl_selesai" id="" class="form-control">
                     </div>
                 </div>
                 <div class="row">
