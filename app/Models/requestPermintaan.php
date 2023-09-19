@@ -81,6 +81,10 @@ class requestPermintaan extends Model
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_permintaan","=", "Dibatalkan")->get();
     }
 
+    public function get_all_data_by_tempat_disewakan($role){
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_permintaan","=", "Disewakan")->get();
+    }
+
     public function get_all_data_by_tempat_dikomplain($role){
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_permintaan","=", "Dikomplain")->get();
     }

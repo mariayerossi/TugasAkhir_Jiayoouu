@@ -505,6 +505,7 @@ Route::prefix("/tempat")->group(function(){
             $param["diterima"] = $req->get_all_data_by_tempat_diterima($role);
             $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
             $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
+            $param["disewakan"] = $req->get_all_data_by_tempat_disewakan($role);
             $param["dibatalkan"] = $req->get_all_data_by_tempat_dibatalkan($role);
             $param["dikomplain"] = $req->get_all_data_by_tempat_dikomplain($role);
             return view("tempat.permintaan.daftarPermintaan")->with($param);
@@ -538,6 +539,7 @@ Route::prefix("/tempat")->group(function(){
             $param["diterima"] = $req->get_all_data_by_tempat_diterima($role);
             $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
             $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
+            $param["disewakan"] = $req->get_all_data_by_tempat_disewakan($role);
             $param["dibatalkan"] = $req->get_all_data_by_tempat_dibatalkan($role);
             $param["dikomplain"] = $req->get_all_data_by_tempat_dikomplain($role);
             return view("tempat.penawaran.daftarPenawaran")->with($param);
