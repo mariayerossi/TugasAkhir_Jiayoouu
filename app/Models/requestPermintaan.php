@@ -96,6 +96,13 @@ class requestPermintaan extends Model
         $per->save();
     }
 
+    public function updateKodeMulai($data)
+    {
+        $per = requestPermintaan::find($data["id"]);
+        $per->kode_mulai = $data["kode"];
+        $per->save();
+    }
+
     public function updateHargaSewa($data)
     {
         $per = requestPermintaan::find($data["id"]);

@@ -1,5 +1,5 @@
 @extends('layouts.sidebarNavbar_tempat')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
 <style>
 .square-image-container {
@@ -243,6 +243,24 @@
     @endif
 
     @if ($permintaan->first()->status_permintaan == "Diterima")
+        {{-- konfirmasi alat telah diantar oleh pemilik ke pihak tempat --}}
+        <p>Sudah menerima alat olahraga? Silahkan Konfirmasi penerimaan alat</p>
+        @if ($permintaan->first()->kode_mulai != null)
+            <button class="btn btn-primary" onclick="generateCode()" disabled>Konfirmasi</button>
+            <div class="kode mt-3 mb-4">
+                <h5><b>{{$permintaan->first()->kode_mulai}}</b></h5>
+                <p></p>
+            </div>
+        @else
+            <button class="btn btn-primary" onclick="generateCode()">Konfirmasi</button>
+            <div class="kode mt-3 mb-4">
+
+            </div>
+        @endif 
+
+        <hr>
+        
+        {{-- bagian komplain --}}
         @if ($komplain->isEmpty())
             <button class="btn btn-warning">Ajukan Komplain</button>
 
@@ -331,6 +349,40 @@
     @endif
 </div>
 <script>
+    function generateCode() {
+        const currentDate = new Date();
+        const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+        const day = ("0" + currentDate.getDate()).slice(-2);
+        const formattedDate = `REQ${currentDate.getFullYear()}${month}${day}`;
+        // Nomor urut (misalnya Anda bisa gunakan timestamp atau counter untuk ini)
+        const sequenceNumber = currentDate.getTime(); // Contoh ini menggunakan timestamp, Anda bisa menggantinya dengan sistem nomor urut yang Anda inginkan.
+
+        const code = `${formattedDate}<?=$permintaan->first()->id_permintaan;?>`;
+        const kodeElement = document.querySelector('.kode');
+        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan Kode Konfirmasi ini kepada pemilik alat olahraga untuk mengkonfirmasi</p>`;
+        // kodeElement.style.fontWeight = 'bold';
+
+        // Kirim kode ke server:
+        fetch('/tempat/permintaan/simpanKodeMulai', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ kode: code, id: <?= $permintaan->first()->id_permintaan ?> })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        const buttonElement = document.querySelector('.btn.btn-primary');
+        buttonElement.disabled = true;
+    }
+
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
         

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedInteger('fk_id_pemilik');
             $table->timestamp('tanggal_minta');
             $table->string('status_permintaan');
+            $table->string('kode_mulai')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('req_lapangan')

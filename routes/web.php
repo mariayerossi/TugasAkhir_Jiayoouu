@@ -517,6 +517,7 @@ Route::prefix("/tempat")->group(function(){
         })->middleware([CekTempat::class]);
         Route::post("/batalPermintaan", [RequestPermintaan::class, "batalPermintaan"]);
         Route::post("/editHargaSewa", [RequestPermintaan::class, "editHargaSewa"]);
+        Route::post("/simpanKodeMulai", [RequestPermintaan::class, "simpanKodeMulai"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
