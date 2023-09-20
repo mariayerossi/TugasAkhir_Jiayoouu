@@ -171,4 +171,8 @@ class KomplainRequest extends Controller
 
         return redirect()->back()->with("success", "Berhasil menangani komplain!");
     }
+
+    public function tolakKomplain(Request $request) {
+        
+    }
 }
