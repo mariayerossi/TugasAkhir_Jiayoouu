@@ -106,7 +106,7 @@
         @endif
     </div>
     <h5>Lapangan yang Disewa</h5>
-    <a href="/admin/lapangan/detailLapanganUmum/{{$htrans->first()->fk_id_lapangan}}">
+    @if ($dataLapangan->deleted_at == null)<a href="/admin/lapangan/detailLapanganUmum/{{$htrans->first()->fk_id_lapangan}}">@endif
         <div class="card">
             <div class="card-body">
                 <div class="row d-md-flex align-items-md-center">
@@ -140,7 +140,7 @@
                         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
                         $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
                     @endphp
-                    <a href="/admin/alat/detailAlatUmum/{{$dataAlat->id_alat}}">
+                    @if ($dataAlat->deleted_at == null)<a href="/admin/alat/detailAlatUmum/{{$dataAlat->id_alat}}">@endif
                         <div class="card h-70 mb-3">
                             <div class="card-body">
                                 <div class="row d-md-flex align-items-md-center">

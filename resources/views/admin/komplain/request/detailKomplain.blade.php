@@ -146,6 +146,8 @@
         }
         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataRequest->req_id_alat)->get()->first();
         $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataRequest->req_lapangan)->get()->first();
     @endphp
     {{-- detail request --}}
     <h5>Detail Request</h5>
@@ -171,32 +173,28 @@
         </a>
 
     <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
-    <form action="" method="POST">
+    <form action="/admin/komplain/request/penangananKomplain" method="POST">
         @csrf
         <div class="row mb-5 mt-5">
             <div class="col-md-1 col-sm-2 d-flex align-items-center">
                 <input type="checkbox" name="pengembalianCheckbox" id="pengembalianCheckbox" onchange="toggleInput()">
             </div>
             <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
-                <h6>Pengembalian dana user sebesar</h6>
+                <h6>Penghapusan Produk</h6>
             </div>
-            <div class="col-md-3 col-sm-12" id="pengembalianInput">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">Rp</div>
-                    </div>
-                    <input type="number" class="form-control" min="0" name="dana" placeholder="50.000" oninput="formatNumber(this)" value="{{ old('dana') }}" disabled>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-12 mt-2" id="pengembalianLabel2">
-                <h6>dikembalikan kepada {{$namaUser}}</h6>
+            <div class="col-md-7 col-sm-12" id="pengembalianInput">
+                <select class="form-control" name="produk">
+                    <option value="" disabled selected>Masukkan produk yang akan dihapus</option>
+                    <option value="{{$dataAlat->id_alat}}-alat" {{ old('produk') == $dataAlat->id_alat ? 'selected' : '' }}>{{$dataAlat->nama_alat}}</option>
+                    <option value="{{$dataLapangan->id_lapangan}}-lapangan" {{ old('produk') == $dataLapangan->id_lapangan ? 'selected' : '' }}>{{$dataLapangan->nama_lapangan}}</option>
+                </select>
             </div>
         </div>
         <div class="row mb-5 mt-5">
             <div class="col-md-1 col-sm-2 d-flex align-items-center">
                 <input type="checkbox" name="pengembalianCheckbox2" id="pengembalianCheckbox2" onchange="toggleInput2()">
             </div>
-            <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel3">
+            <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel2">
                 <h6>Penonaktifkan akun</h6>
             </div>
             @php
@@ -215,11 +213,11 @@
                     $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
                 }
             @endphp
-            <div class="col-md-7 col-sm-12" id="pengembalianInput3">
+            <div class="col-md-7 col-sm-12" id="pengembalianInput2">
                 <select class="form-control" name="akun">
                     <option value="" disabled selected>Masukkan akun yang akan dinonaktifkan</option>
-                    <option value="{{$nama_tempat}}" {{ old('akun') == $nama_tempat ? 'selected' : '' }}>{{$nama_tempat}}</option>
-                    <option value="{{$nama_pemilik}}" {{ old('akun') == $nama_pemilik ? 'selected' : '' }}>{{$nama_pemilik}}</option>
+                    <option value="{{$id_tempat}}-tempat" {{ old('akun') == $id_tempat ? 'selected' : '' }}>{{$nama_tempat}}</option>
+                    <option value="{{$id_pemilik}}-pemilik" {{ old('akun') == $id_pemilik ? 'selected' : '' }}>{{$nama_pemilik}}</option>
                 </select>
             </div>
         </div>
@@ -255,25 +253,22 @@
     function toggleInput() {
         var checkbox = document.getElementById("pengembalianCheckbox");
         var label = document.getElementById("pengembalianLabel");
-        var label2 = document.getElementById("pengembalianLabel2");
         var inputGroup = document.getElementById("pengembalianInput");
 
         if (checkbox.checked) {
             label.style.opacity = "1";
-            label2.style.opacity = "1";
             inputGroup.style.opacity = "1";
-            inputGroup.querySelector('input').disabled = false;
+            inputGroup.querySelector('select').disabled = false;
         } else {
             label.style.opacity = "0.5";
-            label2.style.opacity = "0.5";
             inputGroup.style.opacity = "0.5";
-            inputGroup.querySelector('input').disabled = true;
+            inputGroup.querySelector('select').disabled = true;
         }
     }
     function toggleInput2() {
         var checkbox = document.getElementById("pengembalianCheckbox2");
-        var label = document.getElementById("pengembalianLabel3");
-        var inputGroup = document.getElementById("pengembalianInput3");
+        var label = document.getElementById("pengembalianLabel2");
+        var inputGroup = document.getElementById("pengembalianInput2");
 
         if (checkbox.checked) {
             label.style.opacity = "1";

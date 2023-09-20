@@ -95,4 +95,10 @@ class alatOlahraga extends Model
         $alat->komisi_alat = $data["komisi"];
         $alat->save();
     }
+
+    public function softDelete($data){
+        $alat = alatOlahraga::find($data["id"]);
+        $alat->deleted_at = $data["tanggal"];
+        $alat->save();
+    }
 }

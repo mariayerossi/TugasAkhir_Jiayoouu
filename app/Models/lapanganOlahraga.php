@@ -75,4 +75,10 @@ class lapanganOlahraga extends Model
         $lapa->pemilik_lapangan = $data["pemilik"];
         $lapa->save();
     }
+
+    public function softDelete($data){
+        $lapa = lapanganOlahraga::find($data["id"]);
+        $lapa->deleted_at = $data["tanggal"];
+        $lapa->save();
+    }
 }

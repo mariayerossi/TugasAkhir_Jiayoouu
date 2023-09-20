@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\alatOlahraga;
 use App\Models\filesKomplainReq;
 use App\Models\komplainRequest as ModelsKomplainRequest;
+use App\Models\lapanganOlahraga;
 use App\Models\requestPenawaran;
 use App\Models\requestPermintaan;
 use Illuminate\Http\Request;
@@ -68,5 +70,53 @@ class KomplainRequest extends Controller
         }
 
         return redirect()->back()->with("success", "Berhasil Mengajukan Komplain!");
+    }
+
+    public function penangananKomplain(Request $request) {
+        // Pengecekan checkbox pertama
+        if ($request->has('pengembalianCheckbox')) {
+            if ($request->produk != "") {
+                $array = explode("-", $request->produk);
+
+                date_default_timezone_set("Asia/Jakarta");
+                $tanggal = date("Y-m-d H:i:s");
+                
+                $data = [
+                    "id" => $array[0],
+                    "tanggal" => $tanggal
+                ];
+
+                if ($array[1] == "alat") {
+                    $alat = new alatOlahraga();
+                    $alat->softDelete($data);
+                }
+                else if ($array[1] == "lapangan") {
+                    $lapangan = new lapanganOlahraga();
+                    $lapangan->softDelete($data);
+                }
+            }
+            else {
+                return redirect()->back()->with("error", "produk yang akan dihapus tidak boleh kosong!");
+            }
+        }
+
+        // Pengecekan checkbox kedua
+        if ($request->has('pengembalianCheckbox2')) {
+            if ($request->akun != "") {
+                $array = explode("-", $request->akun);
+
+                if ($array[1] == "tempat") {
+                    
+                }
+                else if ($array[1] == "pemilik") {
+
+                }
+            }
+            else {
+                return redirect()->back()->with("error", "akun yang akan dinonaktifkan tidak boleh kosong!");
+            }
+        }
+
+        //pembatalan request otomatis
     }
 }

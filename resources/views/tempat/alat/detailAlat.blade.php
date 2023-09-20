@@ -23,6 +23,7 @@
     }
 
 </style>
+@if (!$alat->isEmpty())
 <div class="container mt-5 p-5 mb-5" >
     <div class="row">
         <!-- Image section with carousel -->
@@ -108,4 +109,7 @@
         </div>
     </div>
 </div>
+@else
+<h1>Alat Olahraga tidak tersedia</h1>
+@endif
 @endsection

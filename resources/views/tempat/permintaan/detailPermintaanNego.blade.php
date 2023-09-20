@@ -65,7 +65,7 @@
         <!-- Detail Alat -->
         <div class="col-md-6 col-sm-12">
             <h5>Alat Olahraga yang Diminta <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang dimohon oleh pihak pengelola tempat olahraga"></i></h5>
-            <a href="/tempat/detailAlatUmum/{{$dataAlat->id_alat}}">
+            @if ($dataAlat->deleted_at == null) <a href="/tempat/detailAlatUmum/{{$dataAlat->id_alat}}"> @endif
                 <div class="card h-70">
                     <div class="card-body">
                         <div class="row">
@@ -90,7 +90,7 @@
         <!-- Detail Lapangan -->
         <div class="col-md-6 col-sm-12">
             <h5>Lokasi Penggunaan Alat</h5>
-            <a href="/tempat/lapangan/lihatDetailLapangan/{{$dataLapangan->id_lapangan}}">
+            @if ($dataLapangan->deleted_at == null)<a href="/tempat/lapangan/lihatDetailLapangan/{{$dataLapangan->id_lapangan}}">@endif
                 <div class="card h-70">
                     <div class="card-body">
                         <div class="row">
