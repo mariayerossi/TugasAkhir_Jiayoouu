@@ -39,7 +39,7 @@ class KomplainRequest extends Controller
         ];
         $komp = new ModelsKomplainRequest();
         $id = $komp->insertKomplainReq($data);
-
+        
         //insert foto alatnya
         $destinasi = "/upload";
         foreach ($request->foto as $key => $value) {

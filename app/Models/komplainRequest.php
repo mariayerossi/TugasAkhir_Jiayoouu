@@ -28,7 +28,7 @@ class komplainRequest extends Model
         $komp->jenis_role = $data["role"];
         $komp->save();
 
-        return $komp->id_komplain_request;
+        return $komp->id_komplain_req;
     }
 
     public function get_all_data_by_id_req_tempat($id, $jenis, $role){

@@ -172,8 +172,8 @@
         </div>
     </a>
 
+    <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
     @if ($komplain->first()->status_komplain == "Menunggu")
-        <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
         <form action="/admin/komplain/request/terimaKomplain" method="POST">
             @csrf
             <div class="row mb-5 mt-5">
@@ -230,9 +230,37 @@
                 <button class="btn btn-danger" onclick="event.preventDefault(); confirmTolak();">Tolak</button>
             </div>
         </form>
-    @elseif ($komplain->first()->status_komplain == "Diterima" || $komplain->first()->status_komplain == "Ditolak")
+    @elseif ($komplain->first()->status_komplain == "Diterima")
         {{-- tampilkan detail penanganan komplain --}}
-        
+        @if ($komplain->first()->penanganan_komplain != null)
+            <div class="row mb-5 mt-4">
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <h6>Penanganan: {{$komplain->first()->penanganan_komplain}} dan Pembatalan Request oleh admin</h6>
+                </div>
+                
+                <div class="col-md-6 col-sm-12 mb-3">
+                </div>
+            </div>
+        @else
+            <div class="row mb-5 mt-4">
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <h6>Penanganan: Pembatalan Request oleh admin</h6>
+                </div>
+                
+                <div class="col-md-6 col-sm-12 mb-3">
+                </div>
+            </div>
+        @endif
+    @elseif ($komplain->first()->status_komplain == "Ditolak")
+        {{-- tampilkan detail penanganan komplain --}}
+        <div class="row mb-5 mt-4">
+            <div class="col-md-6 col-sm-12 mb-3">
+                <h6>Penanganan: Komplain Ditolak oleh admin</h6>
+            </div>
+            
+            <div class="col-md-6 col-sm-12 mb-3">
+            </div>
+        </div>
     @endif
 </div>
 <script>
