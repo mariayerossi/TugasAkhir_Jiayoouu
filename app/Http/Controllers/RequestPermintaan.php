@@ -34,7 +34,7 @@ class RequestPermintaan extends Controller
         $date_selesai = new DateTime($request->tgl_selesai);
         
         if ($date_selesai <= $date_mulai) {
-            return redirect()->back()->with("success", "Tanggal kembali tidak sesuai!");
+            return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
         }
         else {
             $data = [

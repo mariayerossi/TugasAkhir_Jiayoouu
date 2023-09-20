@@ -65,20 +65,29 @@ class RequestPenawaran extends Controller
             if ($dataReq->status_penawaran == "Menunggu") {
                 //(BELOM) KASIH PENGECEKAN APAKAH TANGGAL MULAI DAN SELESAI NULL TIDAK, KASIH PENGECEKAN APAKAH TANGGAL SELESAI LEBIH BESAR DARI TANGGAL SELESAI?
 
-                //cek dulu apakah harga sewa dan durasi masih null atau tidak
+                //cek dulu apakah harga sewa dan tanggal masih null atau tidak
                 if ($dataReq->req_harga_sewa != null) {
-                    if ($dataReq->req_durasi != null) {
-                        $data = [
-                            "id" => $request->id_penawaran,
-                            "status" => "Setuju"
-                        ];
-                        $per = new ModelsRequestPenawaran();
-                        $per->updateStatusTempat($data);
-                
-                        return redirect()->back()->with("success", "Menunggu konfirmasi pemilik alat olahraga");
+                    if ($dataReq->req_tanggal_mulai != null && $dataReq->req_tanggal_selesai != null) {
+                        //cek apakah tanggal awal lbh awal dari tanggal berakhir?
+                        $date_mulai = new DateTime($dataReq->req_tanggal_mulai);
+                        $date_selesai = new DateTime($dataReq->req_tanggal_selesai);
+                        
+                        if ($date_selesai <= $date_mulai) {
+                            return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
+                        }
+                        else {
+                            $data = [
+                                "id" => $request->id_penawaran,
+                                "status" => "Setuju"
+                            ];
+                            $per = new ModelsRequestPenawaran();
+                            $per->updateStatusTempat($data);
+                    
+                            return redirect()->back()->with("success", "Menunggu konfirmasi pemilik alat olahraga");
+                        }
                     }
                     else {
-                        return redirect()->back()->with("error", "Masukkan durasi sewa terlebih dahulu!");
+                        return redirect()->back()->with("error", "Masukkan tanggal mulai dan tanggal selesai terlebih dahulu!");
                     }
                 }
                 else {
@@ -164,17 +173,6 @@ class RequestPenawaran extends Controller
         return redirect()->back()->with("success", "Berhasil mengedit tanggal selesai sewa!");
     }
 
-    private function hitungTanggalPengembalian($tanggal_mulai, $durasi_bulan) {
-        // Membuat objek DateTime dari tanggal mulai
-        $tanggal = new DateTime($tanggal_mulai);
-        
-        // Menambahkan durasi ke tanggal mulai
-        $tanggal->add(new DateInterval("P{$durasi_bulan}M"));
-        
-        // Mengembalikan tanggal pengembalian dalam format Y-m-d
-        return $tanggal->format('Y-m-d');
-    }
-
     public function konfirmasiPenawaran(Request $request){
         $req = new ModelsRequestPenawaran();
         $dataReq = $req->get_all_data_by_id($request->id_penawaran)->first();
@@ -191,18 +189,6 @@ class RequestPenawaran extends Controller
                 "status" => "Diterima"
             ];
             $req->updateStatus($data2);
-
-            //isi tgl mulai sewa dan tanggal selesai sewa
-            date_default_timezone_set("Asia/Jakarta");
-            $tgl_mulai = date("Y-m-d");
-            $tgl_kembali = $this->hitungTanggalPengembalian($tgl_mulai, $dataReq->req_durasi);
-            // dd($tgl_mulai);
-            $data3 = [
-                "id" => $request->id_penawaran,
-                "mulai" => $tgl_mulai,
-                "selesai" => $tgl_kembali
-            ];
-            $req->updateTanggal($data3);
 
             //ubah status alat menjadi non aktif
             $data4 = [
