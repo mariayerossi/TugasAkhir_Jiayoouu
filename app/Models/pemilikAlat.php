@@ -17,7 +17,7 @@ class pemilikAlat extends Model
 
     public function cek_email_pemilik($isi)
     {
-        return pemilikAlat::where('email_pemilik',"=", $isi)->get();
+        return pemilikAlat::where('deleted_at',"=",null)->where('email_pemilik',"=", $isi)->get();
     }
 
     public function insertPemilik($data)
@@ -34,5 +34,11 @@ class pemilikAlat extends Model
 
     public function get_all_data(){
         return pemilikAlat::where('deleted_at',"=",null)->get();
+    }
+
+    public function softDelete($data){
+        $pemi = pemilikAlat::find($data["id"]);
+        $pemi->deleted_at = $data["tanggal"];
+        $pemi->save();
     }
 }

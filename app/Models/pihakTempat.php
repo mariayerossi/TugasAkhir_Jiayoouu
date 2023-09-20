@@ -17,7 +17,7 @@ class pihakTempat extends Model
 
     public function cek_email_tempat($isi)
     {
-        return pihakTempat::where('email_tempat',"=", $isi)->get();
+        return pihakTempat::where('deleted_at',"=",null)->where('email_tempat',"=", $isi)->get();
     }
 
     public function insertTempat($data)
@@ -37,5 +37,11 @@ class pihakTempat extends Model
 
     public function get_all_data(){
         return pihakTempat::where('deleted_at',"=",null)->get();
+    }
+
+    public function softDelete($data){
+        $temp = pihakTempat::find($data["id"]);
+        $temp->deleted_at = $data["tanggal"];
+        $temp->save();
     }
 }

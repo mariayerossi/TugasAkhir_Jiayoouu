@@ -28,7 +28,7 @@ class customer extends Model
 
     public function cek_email_user($isi)
     {
-        return customer::where('email_user',"=", $isi)->get();
+        return customer::where('deleted_at',"=",null)->where('email_user',"=", $isi)->get();
     }
 
     public function get_all_data(){

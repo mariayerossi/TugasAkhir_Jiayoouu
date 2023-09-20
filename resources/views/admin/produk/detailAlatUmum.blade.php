@@ -25,7 +25,7 @@
     }
 
 </style>
-@if (!$alat->isEmpty)
+@if (!$alat->isEmpty())
 <div class="container mt-5 p-5 mb-5" >
     <div class="row">
         <!-- Image section with carousel -->

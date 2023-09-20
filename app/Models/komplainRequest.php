@@ -10,7 +10,7 @@ class komplainRequest extends Model
     use HasFactory;
     //-------- !HARUS ADA! ------------
     protected $table ="komplain_request";//diganti dengan nama table di database
-    protected $primaryKey ="id_komplain_request";//diganti dengan nama primary key dari table
+    protected $primaryKey ="id_komplain_req";//diganti dengan nama primary key dari table
     public $timestamp = true; //klo true otomatis akan nambah field create_at dan update_at
     public $incrementing = true;//utk increment
     //---------------------------------
@@ -53,5 +53,19 @@ class komplainRequest extends Model
 
     public function get_all_data_by_id($id){
         return komplainRequest::where('deleted_at',"=",null)->where("id_komplain_req","=",$id)->get();
+    }
+
+    public function updateStatus($data)
+    {
+        $komp = komplainRequest::find($data["id"]);
+        $komp->status_komplain = $data["status"];
+        $komp->save();
+    }
+
+    public function updatePenanganan($data)
+    {
+        $komp = komplainRequest::find($data["id"]);
+        $komp->penanganan_komplain = $data["penanganan"];
+        $komp->save();
     }
 }

@@ -151,81 +151,86 @@
     @endphp
     {{-- detail request --}}
     <h5>Detail Request</h5>
-        <a href="/admin/request/detailRequest/{{$komplain->first()->jenis_request}}/{{$id_request}}">
-            <div class="card h-70">
-                <div class="card-body">
-                    <div class="row">
-                        <!-- Gambar Alat -->
-                        <div class="col-4">
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
-                            </div>
+    <a href="/admin/request/detailRequest/{{$komplain->first()->jenis_request}}/{{$id_request}}">
+        <div class="card h-70">
+            <div class="card-body">
+                <div class="row">
+                    <!-- Gambar Alat -->
+                    <div class="col-4">
+                        <div class="square-image-container">
+                            <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
                         </div>
-                        
-                        <!-- Nama Alat -->
-                        <div class="col-8 d-flex flex-column justify-content-center">
-                            <h5 class="card-title truncate-text">{{$komplain->first()->jenis_request}} {{$dataAlat->nama_alat}}</h5>
-                            <p class="card-text">Pemilik alat: {{$nama_pemilik}}</p>
-                        </div>
+                    </div>
+                    
+                    <!-- Nama Alat -->
+                    <div class="col-8 d-flex flex-column justify-content-center">
+                        <h5 class="card-title truncate-text">{{$komplain->first()->jenis_request}} {{$dataAlat->nama_alat}}</h5>
+                        <p class="card-text">Pemilik alat: {{$nama_pemilik}}</p>
                     </div>
                 </div>
             </div>
-        </a>
-
-    <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
-    <form action="/admin/komplain/request/penangananKomplain" method="POST">
-        @csrf
-        <div class="row mb-5 mt-5">
-            <div class="col-md-1 col-sm-2 d-flex align-items-center">
-                <input type="checkbox" name="pengembalianCheckbox" id="pengembalianCheckbox" onchange="toggleInput()">
-            </div>
-            <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
-                <h6>Penghapusan Produk</h6>
-            </div>
-            <div class="col-md-7 col-sm-12" id="pengembalianInput">
-                <select class="form-control" name="produk">
-                    <option value="" disabled selected>Masukkan produk yang akan dihapus</option>
-                    <option value="{{$dataAlat->id_alat}}-alat" {{ old('produk') == $dataAlat->id_alat ? 'selected' : '' }}>{{$dataAlat->nama_alat}}</option>
-                    <option value="{{$dataLapangan->id_lapangan}}-lapangan" {{ old('produk') == $dataLapangan->id_lapangan ? 'selected' : '' }}>{{$dataLapangan->nama_lapangan}}</option>
-                </select>
-            </div>
         </div>
-        <div class="row mb-5 mt-5">
-            <div class="col-md-1 col-sm-2 d-flex align-items-center">
-                <input type="checkbox" name="pengembalianCheckbox2" id="pengembalianCheckbox2" onchange="toggleInput2()">
-            </div>
-            <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel2">
-                <h6>Penonaktifkan akun</h6>
-            </div>
-            @php
-                if ($komplain->first()->jenis_request == "Permintaan") {
-                    $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
-                    $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+    </a>
 
-                    $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-                    $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-                }
-                else if ($komplain->first()->jenis_request == "Penawaran") {
-                    $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
-                    $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
-
-                    $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-                    $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-                }
-            @endphp
-            <div class="col-md-7 col-sm-12" id="pengembalianInput2">
-                <select class="form-control" name="akun">
-                    <option value="" disabled selected>Masukkan akun yang akan dinonaktifkan</option>
-                    <option value="{{$id_tempat}}-tempat" {{ old('akun') == $id_tempat ? 'selected' : '' }}>{{$nama_tempat}}</option>
-                    <option value="{{$id_pemilik}}-pemilik" {{ old('akun') == $id_pemilik ? 'selected' : '' }}>{{$nama_pemilik}}</option>
-                </select>
+    @if ($komplain->first()->status_komplain == "Menunggu")
+        <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
+        <form action="/admin/komplain/request/terimaKomplain" method="POST">
+            @csrf
+            <div class="row mb-5 mt-5">
+                <div class="col-md-1 col-sm-2 d-flex align-items-center">
+                    <input type="checkbox" name="pengembalianCheckbox" id="pengembalianCheckbox" onchange="toggleInput()">
+                </div>
+                <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
+                    <h6>Penghapusan Produk</h6>
+                </div>
+                <div class="col-md-7 col-sm-12" id="pengembalianInput">
+                    <select class="form-control" name="produk">
+                        <option value="" disabled selected>Masukkan produk yang akan dihapus</option>
+                        <option value="{{$dataAlat->id_alat}}-alat" {{ old('produk') == $dataAlat->id_alat ? 'selected' : '' }}>{{$dataAlat->nama_alat}}</option>
+                        <option value="{{$dataLapangan->id_lapangan}}-lapangan" {{ old('produk') == $dataLapangan->id_lapangan ? 'selected' : '' }}>{{$dataLapangan->nama_lapangan}}</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="d-flex justify-content-end">
-            <button type="submit" class="btn btn-success me-3">Terima</button>
-            <button class="btn btn-danger" onclick="event.preventDefault(); confirmTolak();">Tolak</button>
-        </div>
-    </form>
+            <div class="row mb-5 mt-5">
+                <div class="col-md-1 col-sm-2 d-flex align-items-center">
+                    <input type="checkbox" name="pengembalianCheckbox2" id="pengembalianCheckbox2" onchange="toggleInput2()">
+                </div>
+                <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel2">
+                    <h6>Penonaktifkan akun</h6>
+                </div>
+                @php
+                    if ($komplain->first()->jenis_request == "Permintaan") {
+                        $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
+                        $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+
+                        $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+                        $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
+                    }
+                    else if ($komplain->first()->jenis_request == "Penawaran") {
+                        $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
+                        $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+
+                        $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+                        $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
+                    }
+                @endphp
+                <div class="col-md-7 col-sm-12" id="pengembalianInput2">
+                    <select class="form-control" name="akun">
+                        <option value="" disabled selected>Masukkan akun yang akan dinonaktifkan</option>
+                        <option value="{{$id_tempat}}-tempat" {{ old('akun') == $id_tempat ? 'selected' : '' }}>{{$nama_tempat}}</option>
+                        <option value="{{$id_pemilik}}-pemilik" {{ old('akun') == $id_pemilik ? 'selected' : '' }}>{{$nama_pemilik}}</option>
+                    </select>
+                </div>
+            </div>
+            <input type="hidden" name="jenis_request" value="{{$komplain->first()->jenis_request}}">
+            <input type="hidden" name="id_request" value="{{$komplain->first()->fk_id_request}}">
+            <input type="hidden" name="id_komplain" value="{{$komplain->first()->id_komplain_req}}">
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-success me-3">Terima</button>
+                <button class="btn btn-danger" onclick="event.preventDefault(); confirmTolak();">Tolak</button>
+            </div>
+        </form>
+    @endif
 </div>
 <script>
     function showImage(imgPath) {
