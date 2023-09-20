@@ -232,6 +232,7 @@
         </form>
     @elseif ($komplain->first()->status_komplain == "Diterima" || $komplain->first()->status_komplain == "Ditolak")
         {{-- tampilkan detail penanganan komplain --}}
+        
     @endif
 </div>
 <script>

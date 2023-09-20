@@ -173,6 +173,13 @@ class KomplainRequest extends Controller
     }
 
     public function tolakKomplain(Request $request) {
-        
+        $data = [
+            "id" => $request->id,
+            "status" => "Ditolak"
+        ];
+        $komp = new ModelsKomplainRequest();
+        $komp->updateStatus($data);
+
+        return redirect()->back()->with("success", "Berhasil menolak komplain!");
     }
 }
