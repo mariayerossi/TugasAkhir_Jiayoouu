@@ -42,6 +42,7 @@
     }
 }
 </style>
+@if (!$dataLapangan->isEmpty())
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <!-- Carousel Gambar Lapangan -->
     <div class="row mb-4">
@@ -235,4 +236,7 @@
         </div>
     </div>
 </div>
+@else
+<h1>Lapangan Olahraga tidak tersedia</h1>
+@endif
 @endsection
