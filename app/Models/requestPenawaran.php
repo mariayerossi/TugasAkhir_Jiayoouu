@@ -133,6 +133,13 @@ class requestPenawaran extends Model
         $pen->save();
     }
 
+    public function updateStatusAlat($data)
+    {
+        $per = requestPenawaran::find($data["id"]);
+        $per->status_alat = $data["status"];
+        $per->save();
+    }
+
     public function updateTanggal($data)
     {
         $per = requestPenawaran::find($data["id"]);
@@ -149,6 +156,13 @@ class requestPenawaran extends Model
     {
         $per = requestPenawaran::find($data["id"]);
         $per->kode_mulai = $data["kode"];
+        $per->save();
+    }
+
+    public function updateKodeSelesai($data)
+    {
+        $per = requestPenawaran::find($data["id"]);
+        $per->kode_selesai = $data["kode"];
         $per->save();
     }
 }

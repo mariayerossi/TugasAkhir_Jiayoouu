@@ -222,6 +222,30 @@
         </div>
     @endif
 
+    @if ($permintaan->first()->status_permintaan == "Selesai")
+        <form action="/pemilik/permintaan/confirmKodeSelesai" method="post">
+            @csrf
+            <div class="row mb-5 mt-5">
+                <!-- Nama Pengirim -->
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk konfirmasi pengambilan alat olahraga</p>
+                    <div class="input-group">
+                        <input type="hidden" name="id" value="{{$permintaan->first()->id_permintaan}}">
+                        <input type="hidden" name="kode" value="{{$permintaan->first()->kode_selesai}}">
+                        <input type="text" name="isi" class="form-control" placeholder="Masukkan kode konfirmasi">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary"id="submitBtn">Konfirmasi</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12 mb-3">
+                    
+                </div>
+            </div>
+        </form>
+    @endif
+
     @if ($permintaan->first()->status_permintaan == "Diterima")
         <form action="/pemilik/permintaan/confirmKodeMulai" method="post">
             @csrf

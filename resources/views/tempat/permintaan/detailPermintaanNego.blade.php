@@ -234,6 +234,23 @@
         </div>
     @endif
 
+    @if ($permintaan->first()->status_permintaan == "Selesai")
+        {{-- konfirmasi alat telah selesai disewakan oleh pemilik ke pihak tempat --}}
+        <p>Konfirmasi pengembalian alat olahraga</p>
+        @if ($permintaan->first()->kode_selesai != null)
+            <button class="btn btn-primary" onclick="generateCodeSelesai()" disabled>Konfirmasi</button>
+            <div class="kode mt-3 mb-4">
+                <h5><b>{{$permintaan->first()->kode_selesai}}</b></h5>
+                <p>Berikan kode ini kepada pemiliki alat olahraga untuk mengkonfirmasi</p>
+            </div>
+        @else
+            <button class="btn btn-primary" onclick="generateCodeSelesai()">Konfirmasi</button>
+            <div class="kode mt-3 mb-4">
+
+            </div>
+        @endif 
+    @endif
+
     @if ($permintaan->first()->status_permintaan == "Diterima")
         {{-- konfirmasi alat telah diantar oleh pemilik ke pihak tempat --}}
         <p>Sudah menerima alat olahraga? Silahkan Konfirmasi penerimaan alat</p>
@@ -349,13 +366,47 @@
         // Nomor urut (misalnya Anda bisa gunakan timestamp atau counter untuk ini)
         const sequenceNumber = currentDate.getTime(); // Contoh ini menggunakan timestamp, Anda bisa menggantinya dengan sistem nomor urut yang Anda inginkan.
 
-        const code = `REQM${formattedDate}<?=$permintaan->first()->id_permintaan;?>`;
+        const code = `REQMM${formattedDate}<?=$permintaan->first()->id_permintaan;?>`;
         const kodeElement = document.querySelector('.kode');
         kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan Kode Konfirmasi ini kepada pemilik alat olahraga untuk mengkonfirmasi</p>`;
         // kodeElement.style.fontWeight = 'bold';
 
         // Kirim kode ke server:
         fetch('/tempat/permintaan/simpanKodeMulai', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ kode: code, id: <?= $permintaan->first()->id_permintaan ?> })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        const buttonElement = document.querySelector('.btn.btn-primary');
+        buttonElement.disabled = true;
+    }
+
+    function generateCodeSelesai() {
+        const currentDate = new Date();
+        const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
+        const day = ("0" + currentDate.getDate()).slice(-2);
+        const formattedDate = `${currentDate.getFullYear()}${month}${day}`;
+        // Nomor urut (misalnya Anda bisa gunakan timestamp atau counter untuk ini)
+        const sequenceNumber = currentDate.getTime(); // Contoh ini menggunakan timestamp, Anda bisa menggantinya dengan sistem nomor urut yang Anda inginkan.
+
+        const code = `REQMS${formattedDate}<?=$permintaan->first()->id_permintaan;?>`;
+        const kodeElement = document.querySelector('.kode');
+        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan Kode Konfirmasi ini kepada pemilik alat olahraga untuk mengkonfirmasi</p>`;
+        // kodeElement.style.fontWeight = 'bold';
+
+        // Kirim kode ke server:
+        fetch('/tempat/permintaan/simpanKodeSelesai', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

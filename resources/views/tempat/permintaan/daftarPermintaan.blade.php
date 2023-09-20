@@ -232,6 +232,7 @@
                         <th>Keterangan</th>
                         <th>Waktu</th>
                         <th>Status</th>
+                        <th>Status Alat</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -255,6 +256,11 @@
                                 <td>Permintaan {{$dataAlat->nama_alat}}</td>
                                 <td>{{$tanggalBaru}}</td>
                                 <td><span style="color:blue">Selesai</span></td>
+                                @if ($item->status_alat == null)
+                                    <td><span>Belum dikembalikan</span></td>
+                                @else
+                                    <td><span>Sudah dikembalikan</span></td>
+                                @endif
                                 <td><a href="/tempat/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach

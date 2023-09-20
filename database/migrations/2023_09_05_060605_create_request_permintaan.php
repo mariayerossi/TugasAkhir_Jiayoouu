@@ -23,6 +23,8 @@ return new class extends Migration
             $table->timestamp('tanggal_minta');
             $table->string('status_permintaan');
             $table->string('kode_mulai')->nullable();
+            $table->string('kode_selesai')->nullable();
+            $table->string("status_alat")->nullable();//null/dikembalikan
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('req_lapangan')

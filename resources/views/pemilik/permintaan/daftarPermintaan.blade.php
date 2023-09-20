@@ -242,6 +242,7 @@
                         <th>Keterangan</th>
                         <th>Pengaju</th>
                         <th>Waktu</th>
+                        <th>Status Alat</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -267,6 +268,11 @@
                                 @endphp
                                 <td>Diajukan oleh {{$dataTempat->nama_tempat}}</td>
                                 <td>{{$tanggalBaru}}</td>
+                                @if ($item->status_alat == null)
+                                    <td><span>Belum dikembalikan</span></td>
+                                @else
+                                    <td><span>Sudah Dikembalikan</span></td>
+                                @endif
                                 <td><a href="/pemilik/permintaan/detailPermintaanNego/{{$item->id_permintaan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach

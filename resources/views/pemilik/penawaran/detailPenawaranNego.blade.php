@@ -249,6 +249,30 @@ display: block;
         </div>
     @endif
 
+    @if ($penawaran->first()->status_penawaran == "Selesai" && $penawaran->first()->status_alat == null)
+        <form action="/pemilik/penawaran/confirmKodeSelesai" method="post">
+            @csrf
+            <div class="row mb-5 mt-5">
+                <!-- Nama Pengirim -->
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk konfirmasi pengambilan alat olahraga</p>
+                    <div class="input-group">
+                        <input type="hidden" name="id" value="{{$penawaran->first()->id_penawaran}}">
+                        <input type="hidden" name="kode" value="{{$penawaran->first()->kode_selesai}}">
+                        <input type="text" name="isi" class="form-control" placeholder="Masukkan kode konfirmasi">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary"id="submitBtn">Konfirmasi</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-sm-12 mb-3">
+                    
+                </div>
+            </div>
+        </form>
+    @endif
+
     @if ($penawaran->first()->status_penawaran == "Diterima")
         <form action="/pemilik/penawaran/confirmKodeMulai" method="post">
             @csrf

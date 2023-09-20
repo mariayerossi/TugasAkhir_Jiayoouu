@@ -167,6 +167,21 @@ class RequestPermintaan extends Controller
         return response()->json(['success' => true, 'message' => 'Kode berhasil disimpan']);
     }
 
+    public function simpanKodeSelesai(Request $request){
+        $kode = $request->input('kode');
+        $id = $request->input('id');
+    
+        // Contoh simpel untuk menyimpan kode:
+        $data = [
+            "id" => $id,
+            "kode" => $kode
+        ];
+        $per = new ModelsRequestPermintaan();
+        $per->updateKodeSelesai($data);
+
+        return response()->json(['success' => true, 'message' => 'Kode berhasil disimpan']);
+    }
+
     public function confirmKodeMulai(Request $request){
         $request->validate([
             "isi" => "required"
@@ -181,6 +196,27 @@ class RequestPermintaan extends Controller
             ];
             $per = new ModelsRequestPermintaan();
             $per->updateStatus($data);
+            return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
+        }
+        else {
+            return redirect()->back()->with("error", "Kode Konfirmasi salah!");
+        }
+    }
+
+    public function confirmKodeSelesai(Request $request){
+        $request->validate([
+            "isi" => "required"
+        ],[
+            "required" => "kode konfirmasi tidak boleh kosong!"
+        ]);
+
+        if ($request->isi == $request->kode) {
+            $data = [
+                "id" => $request->id,
+                "status" => "Dikembalikan"
+            ];
+            $per = new ModelsRequestPermintaan();
+            $per->updateStatusAlat($data);
             return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
         }
         else {

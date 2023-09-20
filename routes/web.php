@@ -317,6 +317,7 @@ Route::prefix("/pemilik")->group(function(){
         Route::post("/terimaPermintaan", [RequestPermintaan::class, "terimaPermintaan"]);
         Route::post("/tolakPermintaan", [RequestPermintaan::class, "tolakPermintaan"]);
         Route::post("/confirmKodeMulai", [RequestPermintaan::class, "confirmKodeMulai"]);
+        Route::post("/confirmKodeSelesai", [RequestPermintaan::class, "confirmKodeSelesai"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
@@ -352,6 +353,7 @@ Route::prefix("/pemilik")->group(function(){
         Route::post("/batalPenawaran", [RequestPenawaran::class, "batalPenawaran"]);
         Route::post("/konfirmasiPenawaran", [RequestPenawaran::class, "konfirmasiPenawaran"]);
         Route::post("/confirmKodeMulai", [RequestPenawaran::class, "confirmKodeMulai"]);
+        Route::post("/confirmKodeSelesai", [RequestPenawaran::class, "confirmKodeSelesai"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
@@ -523,6 +525,7 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/batalPermintaan", [RequestPermintaan::class, "batalPermintaan"]);
         Route::post("/editHargaSewa", [RequestPermintaan::class, "editHargaSewa"]);
         Route::post("/simpanKodeMulai", [RequestPermintaan::class, "simpanKodeMulai"]);
+        Route::post("/simpanKodeSelesai", [RequestPermintaan::class, "simpanKodeSelesai"]);
 
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
@@ -560,6 +563,7 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/editTanggalMulai", [RequestPenawaran::class, "editTanggalMulai"]);
         Route::post("/editTanggalSelesai", [RequestPenawaran::class, "editTanggalSelesai"]);
         Route::post("/simpanKodeMulai", [RequestPenawaran::class, "simpanKodeMulai"]);
+        Route::post("/simpanKodeSelesai", [RequestPenawaran::class, "simpanKodeSelesai"]);
 
         Route::prefix("/negosiasi")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPenawaran"]);

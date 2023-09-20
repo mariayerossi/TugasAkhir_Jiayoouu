@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('status_tempat')->nullable();//null/Setuju
             $table->string('status_pemilik')->nullable();//null/Setuju
             $table->string('kode_mulai')->nullable();
+            $table->string('kode_selesai')->nullable();
+            $table->string("status_alat")->nullable();//null/dikembalikan
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('req_lapangan')
