@@ -376,6 +376,12 @@ Route::prefix("/pemilik")->group(function(){
             return view("pemilik.disewakan.daftarDisewakan")->with($param);
         })->middleware([CekPemilik::class]);
     });
+
+    Route::prefix("/laporan")->group(function(){
+        Route::get("/pendapatan", function () {
+            
+        })->middleware([CekPemilik::class]);
+    });
 });
 
 // -------------------------------
