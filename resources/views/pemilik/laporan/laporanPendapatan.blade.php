@@ -35,7 +35,7 @@
         <h2><b>Rp {{ number_format($disewakan->sum('total_komisi_pemilik'), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
-        <button class="btn btn-primary">Print Laporan</button>
+        <a href="/pemilik/laporan/cetak_pdf" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
     
     {{-- grafik --}}

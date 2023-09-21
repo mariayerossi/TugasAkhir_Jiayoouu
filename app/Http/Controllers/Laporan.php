@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\File;
+
 use PDF;
 
 class Laporan extends Controller
@@ -122,9 +124,10 @@ class Laporan extends Controller
         return view("pemilik.laporan.laporanPendapatan")->with($param);
     }
 
-    public function downloadPdf()
-    {
-        // $pdf = PDF::loadView('laporan');
-        // return $pdf->download('laporan.pdf');
+    public function cetakPDF(){
+    	$data = dtrans::all();
+ 
+    	$pdf = PDF::loadview('laporan_pdf',['data'=>$data]);
+    	return $pdf->download('laporan-pendapatan-pdf');
     }
 }
