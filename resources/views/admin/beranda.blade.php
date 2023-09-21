@@ -67,6 +67,4 @@
        options: options
     });
     </script>
-    
-    
 @endsection

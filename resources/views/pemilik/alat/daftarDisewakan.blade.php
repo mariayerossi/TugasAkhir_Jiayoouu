@@ -1,5 +1,6 @@
 @extends('layouts.sidebarNavbar_pemilik')
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
 @section('content')
 <style>
     .square-image-container {
@@ -24,8 +25,10 @@
         <thead>
             <tr>
                 <th>Foto</th>
-                <th>Keterangan</th>
-                <th>Pendapatan</th>
+                <th>Produk</th>
+                <th>Waktu</th>
+                <th>Durasi</th>
+                <th>Subtotal</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +45,7 @@
                                 <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
                             </div>
                         </td>
+                        <td>{{$dataAlat->nama_alat}}</td>
                         @php
                             function getBulan($bulan) {
                                 $namaBulan = array(
@@ -71,8 +75,9 @@
                             $pecahTanggal[1] = getBulan($pecahTanggal[1]);
                             $tanggalDenganNamaBulan = implode(' ', $pecahTanggal); 
                         @endphp
-                        <td>{{$dataAlat->nama_alat}} disewa pada {{$tanggalDenganNamaBulan}} dengan durasi sewa {{$dataHtrans->durasi_sewa}} jam</td>
-                        <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
+                        <td>{{$tanggalDenganNamaBulan}}</td>
+                        <td>{{$dataHtrans->durasi_sewa}} jam</td>
+                        <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else
@@ -83,4 +88,13 @@
         </tbody>
     </table>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    });
+
+</script>
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 @endsection

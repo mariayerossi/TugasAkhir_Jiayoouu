@@ -4,6 +4,7 @@ use App\Http\Controllers\AlatOlahraga;
 use App\Http\Controllers\KategoriOlahraga;
 use App\Http\Controllers\KomplainRequest;
 use App\Http\Controllers\LapanganOlahraga;
+use App\Http\Controllers\Laporan;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Controllers\Negosiasi;
 use App\Http\Controllers\RequestPenawaran;
@@ -373,14 +374,12 @@ Route::prefix("/pemilik")->group(function(){
             $role = Session::get("dataRole")->id_pemilik;
             $trans = new ModelsDtrans();
             $param["disewakan"] = $trans->get_all_data_by_pemilik($role);
-            return view("pemilik.disewakan.daftarDisewakan")->with($param);
+            return view("pemilik.alat.daftarDisewakan")->with($param);
         })->middleware([CekPemilik::class]);
     });
 
     Route::prefix("/laporan")->group(function(){
-        Route::get("/pendapatan", function () {
-            
-        })->middleware([CekPemilik::class]);
+        Route::get("/pendapatan", [Laporan::class, "laporanPendapatanPemilik"])->middleware([CekPemilik::class]);
     });
 });
 
