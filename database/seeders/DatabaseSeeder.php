@@ -328,5 +328,33 @@ class DatabaseSeeder extends Seeder
             'fk_id_komplain_req' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0002",
+            'fk_id_lapangan' => 1,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 150000,
+            'tanggal_trans' => date("Y-m-d H:i:s"),
+            'tanggal_sewa'=> '2023-10-20',
+            'jam_sewa' => '16:00',
+            'durasi_sewa' => 2,
+            'total_trans' => 350000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'status_trans' => "Menunggu",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 2,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'fk_role_pemilik' => "Pemilik",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
     }
 }

@@ -42,6 +42,31 @@
         </div>
     </div>
 
+    <div class="d-flex justify-content-between mb-5">
+        <form action="/pemilik/laporan/fiturPendapatan" method="get">
+            @csrf
+            <div>
+                <select id="monthFilter" class="form-control" name="monthFilter">
+                    <option value="">Pilih Bulan</option>
+                    @for ($i = 1; $i <= 12; $i++)
+                        <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 10)) }}</option>
+                    @endfor
+                </select>
+            </div>
+            <div>
+                <select id="yearFilter" class="form-control" name="yearFilter">
+                    <option value="">Pilih Tahun</option>
+                    @for ($i = date('Y'); $i >= date('Y') - 10; $i--)
+                        <option value="{{ $i }}">{{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </form>
+    </div>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -71,37 +96,11 @@
                         <td>Rp {{ number_format($dataAlat->komisi_alat, 0, ',', '.') }}</td>
                         <td>{{$dataHtrans->durasi_sewa}} jam</td>
                         @php
-                            if (!function_exists('getBulan')) {
-                                function getBulan($bulan) {
-                                    $namaBulan = array(
-                                        '01' => 'Januari',
-                                        '02' => 'Februari',
-                                        '03' => 'Maret',
-                                        '04' => 'April',
-                                        '05' => 'Mei',
-                                        '06' => 'Juni',
-                                        '07' => 'Juli',
-                                        '08' => 'Agustus',
-                                        '09' => 'September',
-                                        '10' => 'Oktober',
-                                        '11' => 'November',
-                                        '12' => 'Desember',
-                                    );
-
-                                    return $namaBulan[$bulan];
-                                }
-                            }
-
                             $tanggalAwal2 = $dataHtrans->tanggal_sewa;
                             $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
                             $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
-                            
-                            // Pecah tanggal dan ganti bagian bulannya
-                            $pecahTanggal = explode('-', $tanggalBaru2);
-                            $pecahTanggal[1] = getBulan($pecahTanggal[1]);
-                            $tanggalDenganNamaBulan = implode(' ', $pecahTanggal); 
                         @endphp
-                        <td>{{$tanggalDenganNamaBulan}}</td>
+                        <td>{{$tanggalBaru2}}</td>
                         <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
@@ -115,7 +114,7 @@
 </div>
 <script>
     $(document).ready(function() {
-        $('.table').DataTable();
+    var table = $('.table').DataTable();
     });
     var ctx = document.getElementById('incomeChart').getContext('2d');
     var incomeChart = new Chart(ctx, {
