@@ -31,9 +31,13 @@
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Pendapatan</h3>
-    <div class="d-flex justify-content-end mb-5">
+    <div class="d-flex justify-content-end mb-2">
         <h2><b>Rp {{ number_format($disewakan->sum('total_komisi_pemilik'), 0, ',', '.') }}</b></h2>
     </div>
+    <div class="d-flex justify-content-end mb-5">
+        <button class="btn btn-primary">Print Laporan</button>
+    </div>
+    
     {{-- grafik --}}
     <div class="mt-5 mb-5">
         <h4>Grafik Pendapatan per Bulan</h4>
@@ -42,29 +46,36 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between mb-5">
-        <form action="/pemilik/laporan/fiturPendapatan" method="get">
-            @csrf
-            <div>
-                <select id="monthFilter" class="form-control" name="monthFilter">
-                    <option value="">Pilih Bulan</option>
-                    @for ($i = 1; $i <= 12; $i++)
-                        <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 10)) }}</option>
-                    @endfor
-                </select>
-            </div>
-            <div>
-                <select id="yearFilter" class="form-control" name="yearFilter">
-                    <option value="">Pilih Tahun</option>
-                    @for ($i = date('Y'); $i >= date('Y') - 10; $i--)
-                        <option value="{{ $i }}">{{ $i }}</option>
-                    @endfor
-                </select>
-            </div>
-            <div>
-                <button type="submit" class="btn btn-primary">Filter</button>
-            </div>
-        </form>
+    <div class="mb-5 flex-column flex-md-row">
+        <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
+            <span class="mr-2">Tampilkan berdasarkan:</span>
+            
+            <form action="/pemilik/laporan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-center">
+                @csrf
+                
+                <div class="mb-2 mb-md-0 mr-md-2">
+                    <select id="monthFilter" class="form-control" name="monthFilter">
+                        <option value="">Pilih Bulan</option>
+                        @for ($i = 1; $i <= 12; $i++)
+                            <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 10)) }}</option>
+                        @endfor
+                    </select>
+                </div>
+                
+                <div class="mb-2 mb-md-0 mr-md-2">
+                    <select id="yearFilter" class="form-control" name="yearFilter">
+                        <option value="">Pilih Tahun</option>
+                        @for ($i = date('Y'); $i >= date('Y') - 10; $i--)
+                            <option value="{{ $i }}">{{ $i }}</option>
+                        @endfor
+                    </select>
+                </div>
+                
+                <div class="mt-2 mt-md-0">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <table class="table table-striped">
