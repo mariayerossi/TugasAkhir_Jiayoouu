@@ -124,10 +124,13 @@ class Laporan extends Controller
         return view("pemilik.laporan.laporanPendapatan")->with($param);
     }
 
-    public function cetakPDF(){
-    	$data = dtrans::all();
+    public function pendapatanCetakPDF(){
+    	$role = Session::get("dataRole")->id_pemilik;
+        $trans = new dtrans();
+        $data = $trans->get_all_data_by_pemilik($role);
  
-    	$pdf = PDF::loadview('laporan_pdf',['data'=>$data]);
-    	return $pdf->download('laporan-pendapatan-pdf');
+    	$pdf = PDF::loadview('pemilik.laporan.laporanPendapatan_pdf',['data'=>$data, 'jenis' => "Pendapatan"]);
+    	// return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
     }
 }

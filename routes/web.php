@@ -381,7 +381,7 @@ Route::prefix("/pemilik")->group(function(){
     Route::prefix("/laporan")->group(function(){
         Route::get("/pendapatan", [Laporan::class, "laporanPendapatanPemilik"])->middleware([CekPemilik::class]);
         Route::get("/fiturPendapatan", [Laporan::class, "fiturPendapatan"]);
-        Route::get('/cetak_pdf', [Laporan::class, "cetakPDF"]);
+        Route::get('/PendapatanCetakPDF', [Laporan::class, "pendapatanCetakPDF"]);
     });
 });
 
