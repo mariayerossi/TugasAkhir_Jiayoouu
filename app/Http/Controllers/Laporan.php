@@ -125,6 +125,6 @@ class Laporan extends Controller
     public function downloadPdf()
     {
         // $pdf = PDF::loadView('laporan');
-        return $pdf->download('laporan.pdf');
+        // return $pdf->download('laporan.pdf');
     }
 }
