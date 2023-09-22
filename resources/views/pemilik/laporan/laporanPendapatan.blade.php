@@ -35,7 +35,7 @@
         <h2><b>Rp {{ number_format($disewakan->sum('total_komisi_pemilik'), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
-        <a href="/pemilik/laporan/PendapatanCetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
+        <a href="/pemilik/laporan/pendapatan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
     
     {{-- grafik --}}
@@ -51,7 +51,7 @@
         <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
             <span class="mr-2">Tampilkan berdasarkan:</span>
             
-            <form action="/pemilik/laporan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-center">
+            <form action="/pemilik/laporan/pendapatan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-center">
                 @csrf
                 
                 {{-- <div class="mb-2 mb-md-0 mr-md-2">
@@ -132,7 +132,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                    <td colspan="6" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
         </tbody>

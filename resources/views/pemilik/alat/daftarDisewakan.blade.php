@@ -47,35 +47,12 @@
                         </td>
                         <td>{{$dataAlat->nama_alat}}</td>
                         @php
-                            function getBulan($bulan) {
-                                $namaBulan = array(
-                                    '01' => 'Januari',
-                                    '02' => 'Februari',
-                                    '03' => 'Maret',
-                                    '04' => 'April',
-                                    '05' => 'Mei',
-                                    '06' => 'Juni',
-                                    '07' => 'Juli',
-                                    '08' => 'Agustus',
-                                    '09' => 'September',
-                                    '10' => 'Oktober',
-                                    '11' => 'November',
-                                    '12' => 'Desember',
-                                );
-
-                                return $namaBulan[$bulan];
-                            }
 
                             $tanggalAwal2 = $dataHtrans->tanggal_sewa;
                             $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
                             $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
-                            
-                            // Pecah tanggal dan ganti bagian bulannya
-                            $pecahTanggal = explode('-', $tanggalBaru2);
-                            $pecahTanggal[1] = getBulan($pecahTanggal[1]);
-                            $tanggalDenganNamaBulan = implode(' ', $pecahTanggal); 
                         @endphp
-                        <td>{{$tanggalDenganNamaBulan}}</td>
+                        <td>{{$tanggalBaru2}}</td>
                         <td>{{$dataHtrans->durasi_sewa}} jam</td>
                         <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
                     </tr>

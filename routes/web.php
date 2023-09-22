@@ -379,9 +379,16 @@ Route::prefix("/pemilik")->group(function(){
     });
 
     Route::prefix("/laporan")->group(function(){
-        Route::get("/pendapatan", [Laporan::class, "laporanPendapatanPemilik"])->middleware([CekPemilik::class]);
-        Route::get("/fiturPendapatan", [Laporan::class, "fiturPendapatan"]);
-        Route::get('/PendapatanCetakPDF', [Laporan::class, "pendapatanCetakPDF"]);
+        Route::prefix("/pendapatan")->group(function(){
+            Route::get("/laporanPendapatan", [Laporan::class, "laporanPendapatanPemilik"])->middleware([CekPemilik::class]);
+            Route::get("/fiturPendapatan", [Laporan::class, "fiturPendapatanPemilik"]);
+            Route::get('/CetakPDF', [Laporan::class, "pendapatanPemilikCetakPDF"]);
+        });
+
+        Route::prefix("/stok")->group(function(){
+            Route::get("/laporanStok", [Laporan::class, "laporanStokPemilik"])->middleware([CekPemilik::class]);
+            Route::get('/CetakPDF', [Laporan::class, "stokPemilikCetakPDF"]);
+        });
     });
 });
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Membuat Laporan PDF Dengan DOMPDF Laravel</title>
+	<title>Laporan Pendapatan</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
@@ -12,7 +12,7 @@
 		}
 	</style>
 	<center>
-		<h2>Laporan {{$jenis}}</h2>
+		<h2>Laporan Pendapatan</h2>
 	</center>
 
 	<h3><b>Total: Rp {{ number_format($data->sum('total_komisi_pemilik'), 0, ',', '.') }}</b></h3>

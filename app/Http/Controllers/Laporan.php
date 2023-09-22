@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\alatOlahraga;
 use App\Models\dtrans;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,7 @@ use PDF;
 
 class Laporan extends Controller
 {
+    //PEMILIK ALAT
     public function laporanPendapatanPemilik(Request $request){
         $role = Session::get("dataRole")->id_pemilik;
         $trans = new dtrans();
@@ -41,7 +43,7 @@ class Laporan extends Controller
         return view("pemilik.laporan.laporanPendapatan")->with($param);
     }
 
-    public function fiturPendapatan(Request $request){
+    public function fiturPendapatanPemilik(Request $request){
         $request->validate([
             "tanggal_mulai" => 'required',
             "tanggal_selesai" => 'required'
@@ -148,12 +150,31 @@ class Laporan extends Controller
         return view("pemilik.laporan.laporanPendapatan")->with($param);
     }
 
-    public function pendapatanCetakPDF(){
+    public function pendapatanPemilikCetakPDF(){
     	$role = Session::get("dataRole")->id_pemilik;
         $trans = new dtrans();
         $data = $trans->get_all_data_by_pemilik($role);
  
-    	$pdf = PDF::loadview('pemilik.laporan.laporanPendapatan_pdf',['data'=>$data, 'jenis' => "Pendapatan"]);
+    	$pdf = PDF::loadview('pemilik.laporan.laporanPendapatan_pdf',['data'=>$data]);
+    	// return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
+    }
+
+    public function laporanStokPemilik() {
+        $role = Session::get("dataRole")->id_pemilik;
+        $alat = new alatOlahraga();
+        $allData = $alat->get_all_data($role, "Pemilik");
+
+        $param["alat"] = $allData;
+        return view("pemilik.laporan.laporanStok")->with($param);
+    }
+
+    public function stokPemilikCetakPDF(){
+    	$role = Session::get("dataRole")->id_pemilik;
+        $alat = new alatOlahraga();
+        $data = $alat->get_all_data($role, "Pemilik");
+ 
+    	$pdf = PDF::loadview('pemilik.laporan.laporanStok_pdf',['data'=>$data]);
     	// return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
     }
