@@ -15,7 +15,7 @@
 		<h2>Laporan Stok Alat Olahraga</h2>
 	</center>
 
-	<h3><b>Total Alat: {{$data->count()}}</b></h3>
+	<h4><b>Total Alat: {{$data->count()}}</b></h4>
  
 	<table class='table table-bordered'>
 		<thead>

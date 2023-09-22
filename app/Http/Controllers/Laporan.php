@@ -217,9 +217,9 @@ class Laporan extends Controller
         // }
 
         foreach ($allData as $data) {
-            $dataHtrans = DB::table('htrans')->where("id_htrans","=",$data->fk_id_htrans)->get()->first();
-            $year = date('Y', strtotime($dataHtrans->tanggal_sewa));
-            $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
+            $dataHtrans = DB::table('htrans')->where("id_htrans","=",$data->fk_id_htrans)->get();
+            $year = date('Y', strtotime($dataHtrans->first()->tanggal_sewa));
+            $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
     
             if ($year == date('Y')) {
                 $monthlyIncome[(int)$bulan] += $dataHtrans->count();
@@ -239,5 +239,15 @@ class Laporan extends Controller
         $param["monthlyIncome"] = $monthlyIncomeData;
         // $param["yearlyMonthlyIncome"] = $yearlyMonthlyIncome;
         return view("pemilik.laporan.laporanDisewakan")->with($param);
+    }
+
+    public function disewakanPemilikCetakPDF(){
+    	$role = Session::get("dataRole")->id_pemilik;
+        $dtrans = new dtrans();
+        $data = $dtrans->get_all_data_by_pemilik($role);
+ 
+    	$pdf = PDF::loadview('pemilik.laporan.laporanDisewakan_pdf',['data'=>$data]);
+    	// return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
     }
 }

@@ -15,7 +15,7 @@
 		<h2>Laporan Pendapatan</h2>
 	</center>
 
-	<h3><b>Total: Rp {{ number_format($data->sum('total_komisi_pemilik'), 0, ',', '.') }}</b></h3>
+	<h4><b>Total: Rp {{ number_format($data->sum('total_komisi_pemilik'), 0, ',', '.') }}</b></h4>
  
 	<table class='table table-bordered'>
 		<thead>
@@ -24,7 +24,7 @@
 				<th>Nama</th>
 				<th>Komisi</th>
 				<th>Durasi</th>
-				<th>Waktu</th>
+				<th>Tanggal Transaksi</th>
                 <th>Pendapatan</th>
 			</tr>
 		</thead>
@@ -40,9 +40,9 @@
                     <td>Rp {{ number_format($dataAlat->komisi_alat, 0, ',', '.') }}</td>
                     <td>{{$dataHtrans->durasi_sewa}} jam</td>
                     @php
-                        $tanggalAwal2 = $dataHtrans->tanggal_sewa;
-                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                        $tanggalAwal2 = $dataHtrans->tanggal_trans;
+                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
                     @endphp
                     <td>{{$tanggalBaru2}}</td>
                     <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
