@@ -389,6 +389,11 @@ Route::prefix("/pemilik")->group(function(){
             Route::get("/laporanStok", [Laporan::class, "laporanStokPemilik"])->middleware([CekPemilik::class]);
             Route::get('/CetakPDF', [Laporan::class, "stokPemilikCetakPDF"]);
         });
+
+        Route::prefix("/disewakan")->group(function(){
+            Route::get("/laporanDisewakan", [Laporan::class, "laporanDisewakanPemilik"])->middleware([CekPemilik::class]);
+            Route::get('/CetakPDF', [Laporan::class, "disewakanPemilikCetakPDF"]);
+        });
     });
 });
 

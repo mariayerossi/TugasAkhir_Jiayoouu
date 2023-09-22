@@ -29,7 +29,10 @@ class Laporan extends Controller
             $dataHtrans = DB::table('htrans')->where("id_htrans","=",$data->fk_id_htrans)->get()->first();
 
             $bulan = date('m', strtotime($dataHtrans->tanggal_trans));
-            $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
+            $year = date('Y', strtotime($dataHtrans->tanggal_trans));
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
+            }
         }
 
         // Mengkonversi $monthlyIncome ke array biasa
@@ -177,5 +180,64 @@ class Laporan extends Controller
     	$pdf = PDF::loadview('pemilik.laporan.laporanStok_pdf',['data'=>$data]);
     	// return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
+    }
+
+    public function laporanDisewakanPemilik() {
+        $role = Session::get("dataRole")->id_pemilik;
+        $dtrans = new dtrans();
+        $allData = $dtrans->get_all_data_by_pemilik($role);
+
+        $monthlyIncome = [];
+        // $yearlyMonthlyIncome = [];
+        // $currentYear = date('Y'); // Ambil tahun saat ini
+
+        // for ($year = $currentYear -1; $year <= $currentYear; $year++) {
+        //     for ($i = 1; $i <= 12; $i++) {
+        //         $yearlyMonthlyIncome[$year][$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        //     }
+        // }
+
+        // foreach ($allData as $data) {
+        //     $dataHtrans = DB::table('htrans')->where("id_htrans", "=", $data->fk_id_htrans)->get();
+        //     $year = date('Y', strtotime($dataHtrans->first()->tanggal_sewa));
+        //     $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
+        
+        //     $yearlyMonthlyIncome[$year][(int)$bulan] += $dataHtrans->count();
+        // }
+
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        // foreach ($allData as $data) {
+        //     $dataHtrans = DB::table('htrans')->where("id_htrans","=",$data->fk_id_htrans)->get();
+
+        //     $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
+        //     $monthlyIncome[(int)$bulan] += $dataHtrans->count();
+        // }
+
+        foreach ($allData as $data) {
+            $dataHtrans = DB::table('htrans')->where("id_htrans","=",$data->fk_id_htrans)->get()->first();
+            $year = date('Y', strtotime($dataHtrans->tanggal_sewa));
+            $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
+    
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += $dataHtrans->count();
+            }
+            
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+
+        // $monthlyIncomeData = array_values($monthlyIncome);
+
+        $param["disewakan"] = $allData;
+        $param["monthlyIncome"] = $monthlyIncomeData;
+        // $param["yearlyMonthlyIncome"] = $yearlyMonthlyIncome;
+        return view("pemilik.laporan.laporanDisewakan")->with($param);
     }
 }

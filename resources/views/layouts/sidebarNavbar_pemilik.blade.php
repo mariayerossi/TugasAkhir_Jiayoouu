@@ -172,7 +172,7 @@ Sportiva
             <div class="sidebar-dropdown-content">
                 <a href="/pemilik/laporan/pendapatan/laporanPendapatan">Pendapatan</a>
                 <a href="/pemilik/laporan/stok/laporanStok">Stok Alat Olahraga</a>
-                <a href="">Persewaan Alat Olahraga</a>
+                <a href="/pemilik/laporan/disewakan/laporanDisewakan">Persewaan Alat Olahraga</a>
                 <a href="">PersewaanTempat Olahraga</a>
                 <!-- Add other sports or categories here -->
             </div>
