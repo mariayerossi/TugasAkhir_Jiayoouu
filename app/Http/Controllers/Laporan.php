@@ -42,6 +42,13 @@ class Laporan extends Controller
     }
 
     public function fiturPendapatan(Request $request){
+        $request->validate([
+            "tanggal_mulai" => 'required',
+            "tanggal_selesai" => 'required'
+        ],[
+            "tanggal_mulai.required" => "tanggal mulai tidak boleh kosong!",
+            "tanggal_selesai.required" => "tanggal selesai tidak boleh kosong!"
+        ]);
         $role = Session::get("dataRole")->id_pemilik;
         $trans = new dtrans();
 
@@ -50,67 +57,84 @@ class Laporan extends Controller
             $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
         }
 
-        if ($request->has('monthFilter') && $request->monthFilter != "" && $request->has('yearFilter') && $request->yearFilter != "") {
-            $month = $request->input('monthFilter');
-            $year = $request->input('yearFilter');
+        // if ($request->has('monthFilter') && $request->monthFilter != "" && $request->has('yearFilter') && $request->yearFilter != "") {
+        //     $month = $request->input('monthFilter');
+        //     $year = $request->input('yearFilter');
 
-            // Query berdasarkan bulan dan tahun yang dipilih
-            $allData = DB::table('dtrans')
-                ->join('htrans', 'dtrans.fk_id_htrans', '=', 'htrans.id_htrans')
-                ->whereMonth('htrans.tanggal_sewa', '=', $month)
-                ->whereYear('htrans.tanggal_sewa', '=', $year)
-                ->where('dtrans.fk_id_pemilik', '=', $role)
-                ->where('dtrans.fk_role_pemilik', '=', "Pemilik")
-                ->get();
+        //     // Query berdasarkan bulan dan tahun yang dipilih
+        //     $allData = DB::table('dtrans')
+        //         ->join('htrans', 'dtrans.fk_id_htrans', '=', 'htrans.id_htrans')
+        //         ->whereMonth('htrans.tanggal_sewa', '=', $month)
+        //         ->whereYear('htrans.tanggal_sewa', '=', $year)
+        //         ->where('dtrans.fk_id_pemilik', '=', $role)
+        //         ->where('dtrans.fk_role_pemilik', '=', "Pemilik")
+        //         ->get();
             
-            foreach ($allData as $data) {
-                $dataHtrans = DB::table('htrans')->where("id_htrans", "=", $data->fk_id_htrans)->get()->first();
+        //     foreach ($allData as $data) {
+        //         $dataHtrans = DB::table('htrans')->where("id_htrans", "=", $data->fk_id_htrans)->get()->first();
 
-                $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
-                $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
-            }
+        //         $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
+        //         $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
+        //     }
 
-        }
-        else if ($request->has('monthFilter') && $request->monthFilter != "") {
-            $month = $request->input('monthFilter');
+        // }
+        // else if ($request->has('monthFilter') && $request->monthFilter != "") {
+        //     $month = $request->input('monthFilter');
 
-            // Query berdasarkan bulan dan tahun yang dipilih
-            $allData = DB::table('dtrans')
-                ->join('htrans', 'dtrans.fk_id_htrans', '=', 'htrans.id_htrans')
-                ->whereMonth('htrans.tanggal_sewa', '=', $month)
-                ->where('dtrans.fk_id_pemilik', '=', $role)
-                ->where('dtrans.fk_role_pemilik', '=', "Pemilik")
-                ->get();
+        //     // Query berdasarkan bulan dan tahun yang dipilih
+        //     $allData = DB::table('dtrans')
+        //         ->join('htrans', 'dtrans.fk_id_htrans', '=', 'htrans.id_htrans')
+        //         ->whereMonth('htrans.tanggal_sewa', '=', $month)
+        //         ->where('dtrans.fk_id_pemilik', '=', $role)
+        //         ->where('dtrans.fk_role_pemilik', '=', "Pemilik")
+        //         ->get();
             
-            foreach ($allData as $data) {
-                $dataHtrans = DB::table('htrans')->where("id_htrans", "=", $data->fk_id_htrans)->get()->first();
+        //     foreach ($allData as $data) {
+        //         $dataHtrans = DB::table('htrans')->where("id_htrans", "=", $data->fk_id_htrans)->get()->first();
 
-                $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
-                $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
-            }
+        //         $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
+        //         $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
+        //     }
 
-        }
-        else if ($request->has('yearFilter') && $request->yearFilter != "") {
-            $year = $request->input('yearFilter');
+        // }
+        // else if ($request->has('yearFilter') && $request->yearFilter != "") {
+        //     $year = $request->input('yearFilter');
 
-            // Query berdasarkan bulan dan tahun yang dipilih
-            $allData = DB::table('dtrans')
-                ->join('htrans', 'dtrans.fk_id_htrans', '=', 'htrans.id_htrans')
-                ->whereYear('htrans.tanggal_sewa', '=', $year)
-                ->where('dtrans.fk_id_pemilik', '=', $role)
-                ->where('dtrans.fk_role_pemilik', '=', "Pemilik")
-                ->get();
+        //     // Query berdasarkan bulan dan tahun yang dipilih
+        //     $allData = DB::table('dtrans')
+        //         ->join('htrans', 'dtrans.fk_id_htrans', '=', 'htrans.id_htrans')
+        //         ->whereYear('htrans.tanggal_sewa', '=', $year)
+        //         ->where('dtrans.fk_id_pemilik', '=', $role)
+        //         ->where('dtrans.fk_role_pemilik', '=', "Pemilik")
+        //         ->get();
             
-            foreach ($allData as $data) {
-                $dataHtrans = DB::table('htrans')->where("id_htrans", "=", $data->fk_id_htrans)->get()->first();
+        //     foreach ($allData as $data) {
+        //         $dataHtrans = DB::table('htrans')->where("id_htrans", "=", $data->fk_id_htrans)->get()->first();
 
-                $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
-                $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
-            }
+        //         $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
+        //         $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
+        //     }
 
-        } 
-        else {
-            $allData = $trans->get_all_data_by_pemilik($role);
+        // } 
+        // else {
+        //     $allData = $trans->get_all_data_by_pemilik($role);
+        // }
+
+        $startDate = $request->input('tanggal_mulai');
+        $endDate = $request->input('tanggal_selesai');
+
+        // Query berdasarkan rentang tanggal yang dipilih
+        $allData = DB::table('dtrans')
+            ->join('htrans', 'dtrans.fk_id_htrans', '=', 'htrans.id_htrans')
+            ->whereBetween('htrans.tanggal_sewa', [$startDate, $endDate])
+            ->where('dtrans.fk_id_pemilik', '=', $role)
+            ->where('dtrans.fk_role_pemilik', '=', "Pemilik")
+            ->get();
+        
+        foreach ($allData as $data) {
+            $dataHtrans = DB::table('htrans')->where("id_htrans", "=", $data->fk_id_htrans)->get()->first();
+            $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
+            $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
         }
 
         // Mengkonversi $monthlyIncome ke array biasa

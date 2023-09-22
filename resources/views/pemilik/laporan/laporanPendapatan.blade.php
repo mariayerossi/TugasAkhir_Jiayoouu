@@ -47,13 +47,14 @@
     </div>
 
     <div class="mb-5 flex-column flex-md-row">
+        @include("layouts.message")
         <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
             <span class="mr-2">Tampilkan berdasarkan:</span>
             
             <form action="/pemilik/laporan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-center">
                 @csrf
                 
-                <div class="mb-2 mb-md-0 mr-md-2">
+                {{-- <div class="mb-2 mb-md-0 mr-md-2">
                     <select id="monthFilter" class="form-control" name="monthFilter">
                         <option value="">Pilih Bulan</option>
                         @for ($i = 1; $i <= 12; $i++)
@@ -69,6 +70,18 @@
                             <option value="{{ $i }}">{{ $i }}</option>
                         @endfor
                     </select>
+                </div> --}}
+
+                <!-- Input date untuk tanggal mulai -->
+                <div class="form-group mr-2 mb-2 mb-md-0">
+                    <label for="tanggal_mulai" class="mb-0">Mulai:</label>
+                    <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control form-control-sm">
+                </div>
+
+                <!-- Input date untuk tanggal selesai -->
+                <div class="form-group mr-2 mb-5 mb-md-0">
+                    <label for="tanggal_selesai" class="mb-0">Selesai:</label>
+                    <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control form-control-sm">
                 </div>
                 
                 <div class="mt-2 mt-md-0">
@@ -81,7 +94,8 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Foto</th>
+                <th>No</th>
+                {{-- <th>Foto</th> --}}
                 <th>Nama</th>
                 <th>Komisi</th>
                 <th>Durasi</th>
@@ -94,15 +108,16 @@
                 @foreach ($disewakan as $item)
                     @php
                         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
-                        $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
+                        // $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
                         $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
                     @endphp
                     <tr>
-                        <td>
+                        <td>{{$loop->iteration}}</td>
+                        {{-- <td>
                             <div class="square-image-container">
                                 <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
                             </div>
-                        </td>
+                        </td> --}}
                         <td>{{$dataAlat->nama_alat}}</td>
                         <td>Rp {{ number_format($dataAlat->komisi_alat, 0, ',', '.') }}</td>
                         <td>{{$dataHtrans->durasi_sewa}} jam</td>
