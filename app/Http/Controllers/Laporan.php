@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\alatOlahraga;
 use App\Models\dtrans;
+use App\Models\htrans;
+use App\Models\lapanganOlahraga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -249,5 +251,13 @@ class Laporan extends Controller
     	$pdf = PDF::loadview('pemilik.laporan.laporanDisewakan_pdf',['data'=>$data]);
     	// return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
+    }
+
+    public function laporanTempatPemilik() {
+        $trans = new htrans();
+        $allData = $trans->get_all_data();
+
+        $param["htrans"] = $allData;
+        return view("pemilik.laporan.laporanLapangan")->with($param);
     }
 }

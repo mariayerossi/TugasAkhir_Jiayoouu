@@ -232,6 +232,14 @@ class LapanganOlahraga extends Controller
         if ($request->filled('cari')) {
             $query->where('nama_lapangan', 'like', '%' . $request->cari . '%');
         }
+
+        if ($request->filled('cariPemilik')) {
+            $query = DB::table('lapangan_olahraga')
+            ->where('lapangan_olahraga.deleted_at',"=",null)
+            ->join('pihak_tempat', 'lapangan_olahraga.pemilik_lapangan', '=', 'pihak_tempat.id_tempat')
+            ->where('pihak_tempat.nama_tempat', 'like', '%' . $request->cariPemilik . '%');
+            // dd($query->get());
+        }
         
         $hasil = $query->get();
         $kat = new kategori();
