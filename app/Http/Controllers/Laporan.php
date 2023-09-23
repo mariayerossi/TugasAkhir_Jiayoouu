@@ -254,10 +254,34 @@ class Laporan extends Controller
     }
 
     public function laporanTempatPemilik() {
-        $trans = new htrans();
-        $allData = $trans->get_all_data();
+        //tampilkan tempat olahraga yang kerjasama sm pemilik dan total komisinya
+        $role = Session::get("dataRole")->id_pemilik;
+        $allData = DB::table('pihak_tempat')
+            ->select('pihak_tempat.nama_tempat', DB::raw('SUM(dtrans.total_komisi_pemilik) as total_komisi'), DB::raw('COUNT(dtrans.fk_id_alat) as jumlah'))
+            ->join('htrans', 'pihak_tempat.id_tempat', '=', 'htrans.fk_id_tempat')
+            ->join('dtrans', 'htrans.id_htrans', '=', 'dtrans.fk_id_htrans')
+            ->where('dtrans.fk_id_pemilik', '=', $role)
+            ->where('dtrans.fk_role_pemilik', '=', 'Pemilik')
+            ->groupBy('pihak_tempat.id_tempat', 'pihak_tempat.nama_tempat')  // tambahkan 'pihak_tempat.nama_tempat' ke GROUP BY
+            ->get();
 
-        $param["htrans"] = $allData;
-        return view("pemilik.laporan.laporanLapangan")->with($param);
+        $param["tempat"] = $allData;
+        return view("pemilik.laporan.laporanTempat")->with($param);
+    }
+
+    public function tempatPemilikCetakPDF() {
+        $role = Session::get("dataRole")->id_pemilik;
+        $data = DB::table('pihak_tempat')
+            ->select('pihak_tempat.nama_tempat', DB::raw('SUM(dtrans.total_komisi_pemilik) as total_komisi'), DB::raw('COUNT(dtrans.fk_id_alat) as jumlah'))
+            ->join('htrans', 'pihak_tempat.id_tempat', '=', 'htrans.fk_id_tempat')
+            ->join('dtrans', 'htrans.id_htrans', '=', 'dtrans.fk_id_htrans')
+            ->where('dtrans.fk_id_pemilik', '=', $role)
+            ->where('dtrans.fk_role_pemilik', '=', 'Pemilik')
+            ->groupBy('pihak_tempat.id_tempat', 'pihak_tempat.nama_tempat')  // tambahkan 'pihak_tempat.nama_tempat' ke GROUP BY
+            ->get();
+ 
+    	$pdf = PDF::loadview('pemilik.laporan.laporanTempat_pdf',['data'=>$data]);
+    	// return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
     }
 }

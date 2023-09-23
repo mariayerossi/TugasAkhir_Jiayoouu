@@ -397,7 +397,7 @@ Route::prefix("/pemilik")->group(function(){
 
         Route::prefix("/tempat")->group(function(){
             Route::get("/laporanTempat", [Laporan::class, "laporanTempatPemilik"])->middleware([CekPemilik::class]);
-            Route::get('/CetakPDF', [Laporan::class, "TempatPemilikCetakPDF"]);
+            Route::get('/CetakPDF', [Laporan::class, "tempatPemilikCetakPDF"]);
         });
     });
 });

@@ -32,11 +32,34 @@
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Tempat Olahraga</h3>
     <div class="d-flex justify-content-end mb-2">
-        <h2><b>Total Tempat: </b></h2>
+        <h2><b>Total Tempat: {{$tempat->count()}}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
         <a href="/pemilik/laporan/tempat/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama Tempat</th>
+                <th>Total Alat Disewakan</th>
+                <th>Total Komisi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!$tempat->isEmpty())
+                @foreach ($tempat as $item)
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$item->nama_tempat}}</td>
+                        <td>{{$item->jumlah}}</td>
+                        <td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+            @endif
+        </tbody>
+    </table>
 </div>
 <script>
     $(document).ready(function() {
