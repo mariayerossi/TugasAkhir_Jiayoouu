@@ -119,6 +119,10 @@
                             $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
                         @endphp
                         <td>{{$tanggalBaru2}}</td>
+                        <td>{{$item->nama_lapangan}}</td>
+                        <td>Rp {{ number_format($item->subtotal_lapangan, 0, ',', '.') }}</td>
+                        <td>{{$item->alat}}</td>
+                        <td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else
