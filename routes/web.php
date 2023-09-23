@@ -629,6 +629,15 @@ Route::prefix("/tempat")->group(function(){
             return view("tempat.transaksi.detailTransaksi")->with($param);
         })->middleware([CekTempat::class]);
     });
+
+    //bagian laporan
+    Route::prefix("/laporan")->group(function(){
+        Route::prefix("/pendapatan")->group(function(){
+            Route::get("/laporanPendapatan", [Laporan::class, "laporanPendapatanTempat"])->middleware([CekTempat::class]);
+            Route::get("/fiturPendapatan", [Laporan::class, "fiturPendapatanTempat"]);
+            Route::get('/CetakPDF', [Laporan::class, "pendapatanTempatCetakPDF"]);
+        });
+    });
 });
 
 // -------------------------------
