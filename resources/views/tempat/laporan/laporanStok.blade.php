@@ -59,11 +59,11 @@
                         </td>
                         <td>{{$item->nama_alat}}</td>
                         @if ($item->harga_permintaan != null)
-                            <td>{{$item->harga_permintaan}}</td>
+                            <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td>
                         @elseif ($item->harga_penawaran != null)
-                            <td>{{$item->harga_penawaran}}</td>
-                        {{-- @elseif ($item->harga_komisi != null)
-                        <td>{{$item->harga_komisi}}</td> --}}
+                            <td>Rp {{ number_format($item->harga_penawaran, 0, ',', '.') }}</td>
+                        @else
+                            <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
                         @endif
                     </tr>
                 @endforeach
