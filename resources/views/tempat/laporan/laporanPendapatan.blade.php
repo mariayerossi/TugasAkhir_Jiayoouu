@@ -35,7 +35,7 @@
         <h2><b>Rp {{ number_format($trans->sum('subtotal_lapangan') + $trans->sum('total_komisi'), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
-        <a href="/pemilik/laporan/pendapatan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
+        <a href="/tempat/laporan/pendapatan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
     
     {{-- grafik --}}
@@ -101,6 +101,7 @@
                 <th>Subtotal Lapangan</th>
                 <th>Jumlah Alat Disewakan</th>
                 <th>Total Komisi Alat</th>
+                <th>Total Pendapatan</th>
             </tr>
         </thead>
         <tbody>
@@ -123,6 +124,7 @@
                         <td>Rp {{ number_format($item->subtotal_lapangan, 0, ',', '.') }}</td>
                         <td>{{$item->alat}}</td>
                         <td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else
