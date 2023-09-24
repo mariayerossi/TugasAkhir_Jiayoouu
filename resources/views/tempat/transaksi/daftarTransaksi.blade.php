@@ -69,24 +69,24 @@
                 <tbody>
                     @if (!$baru->isEmpty())
                         @foreach ($baru as $item)
-                            @php
+                            {{-- @php
                                 $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
                                 $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
                                 $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                            @endphp
+                            @endphp --}}
                             <tr>
                                 <td style="display: flex; align-items: center;">
                                     <div class="square-image-container" style="margin-right: 10px;">
-                                        <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
+                                        <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
                                     </div>
-                                    {{$dataLapangan->nama_lapangan}}
+                                    {{$item->nama_lapangan}}
                                 </td>
                                 @php
                                     $tanggalAwal = $item->tanggal_trans;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Dipesan oleh {{$dataUser->nama_user}} ({{$dataUser->telepon_user}}) pada {{$tanggalBaru}}</td>
+                                <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                 <td><span style="color:rgb(239, 203, 0)">Menunggu</span></td>
                                 <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -112,67 +112,24 @@
                 <tbody>
                     @if (!$berlangsung->isEmpty())
                         @foreach ($berlangsung as $item)
-                            @php
+                            {{-- @php
                                 $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
                                 $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
                                 $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                            @endphp
+                            @endphp --}}
                             <tr>
                                 <td style="display: flex; align-items: center;">
                                     <div class="square-image-container" style="margin-right: 10px;">
-                                        <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
+                                        <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
                                     </div>
-                                    {{$dataLapangan->nama_lapangan}}
+                                    {{$item->nama_lapangan}}
                                 </td>
                                 @php
                                     $tanggalAwal = $item->tanggal_trans;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Dipesan oleh {{$dataUser->nama_user}} ({{$dataUser->telepon_user}}) pada {{$tanggalBaru}}</td>
-                                <td><span style="color:rgb(255, 145, 0)">Berlangsung</span></td>
-                                <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
-                            </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="4" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-        </div>
-        <div class="tab-pane fade" id="berlangsung" role="tabpanel" aria-labelledby="berlangsung-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Item</th>
-                        <th>Keterangan</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$berlangsung->isEmpty())
-                        @foreach ($berlangsung as $item)
-                            @php
-                                $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
-                                $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
-                                $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                            @endphp
-                            <tr>
-                                <td style="display: flex; align-items: center;">
-                                    <div class="square-image-container" style="margin-right: 10px;">
-                                        <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
-                                    </div>
-                                    {{$dataLapangan->nama_lapangan}}
-                                </td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_trans;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
-                                <td>Dipesan oleh {{$dataUser->nama_user}} ({{$dataUser->telepon_user}}) pada {{$tanggalBaru}}</td>
+                                <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                 <td><span style="color:rgb(255, 145, 0)">Berlangsung</span></td>
                                 <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -198,24 +155,24 @@
                 <tbody>
                     @if (!$diterima->isEmpty())
                         @foreach ($diterima as $item)
-                            @php
+                            {{-- @php
                                 $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
                                 $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
                                 $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                            @endphp
+                            @endphp --}}
                             <tr>
                                 <td style="display: flex; align-items: center;">
                                     <div class="square-image-container" style="margin-right: 10px;">
-                                        <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
+                                        <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
                                     </div>
-                                    {{$dataLapangan->nama_lapangan}}
+                                    {{$item->nama_lapangan}}
                                 </td>
                                 @php
                                     $tanggalAwal = $item->tanggal_trans;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Dipesan oleh {{$dataUser->nama_user}} ({{$dataUser->telepon_user}}) pada {{$tanggalBaru}}</td>
+                                <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                 <td><span style="color:rgb(0, 145, 0)">Diterima</span></td>
                                 <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -241,24 +198,24 @@
                 <tbody>
                     @if (!$ditolak->isEmpty())
                         @foreach ($ditolak as $item)
-                            @php
+                            {{-- @php
                                 $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
                                 $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
                                 $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                            @endphp
+                            @endphp --}}
                             <tr>
                                 <td style="display: flex; align-items: center;">
                                     <div class="square-image-container" style="margin-right: 10px;">
-                                        <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
+                                        <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
                                     </div>
-                                    {{$dataLapangan->nama_lapangan}}
+                                    {{$item->nama_lapangan}}
                                 </td>
                                 @php
                                     $tanggalAwal = $item->tanggal_trans;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Dipesan oleh {{$dataUser->nama_user}} ({{$dataUser->telepon_user}}) pada {{$tanggalBaru}}</td>
+                                <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                 <td><span style="color:red">Ditolak</span></td>
                                 <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -284,24 +241,24 @@
                 <tbody>
                     @if (!$selesai->isEmpty())
                         @foreach ($selesai as $item)
-                            @php
+                            {{-- @php
                                 $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
                                 $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
                                 $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                            @endphp
+                            @endphp --}}
                             <tr>
                                 <td style="display: flex; align-items: center;">
                                     <div class="square-image-container" style="margin-right: 10px;">
-                                        <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
+                                        <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
                                     </div>
-                                    {{$dataLapangan->nama_lapangan}}
+                                    {{$item->nama_lapangan}}
                                 </td>
                                 @php
                                     $tanggalAwal = $item->tanggal_trans;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Dipesan oleh {{$dataUser->nama_user}} ({{$dataUser->telepon_user}}) pada {{$tanggalBaru}}</td>
+                                <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                 <td><span style="color:blue">Selesai</span></td>
                                 <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -327,24 +284,24 @@
                 <tbody>
                     @if (!$dibatalkan->isEmpty())
                         @foreach ($dibatalkan as $item)
-                            @php
+                            {{-- @php
                                 $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
                                 $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
                                 $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                            @endphp
+                            @endphp --}}
                             <tr>
                                 <td style="display: flex; align-items: center;">
                                     <div class="square-image-container" style="margin-right: 10px;">
-                                        <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
+                                        <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
                                     </div>
-                                    {{$dataLapangan->nama_lapangan}}
+                                    {{$item->nama_lapangan}}
                                 </td>
                                 @php
                                     $tanggalAwal = $item->tanggal_trans;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Dipesan oleh {{$dataUser->nama_user}} ({{$dataUser->telepon_user}}) pada {{$tanggalBaru}}</td>
+                                <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                 <td><span style="color:red">Dibatalkan</span></td>
                                 <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
@@ -370,24 +327,24 @@
                 <tbody>
                     @if (!$dikomplain->isEmpty())
                         @foreach ($dikomplain as $item)
-                            @php
+                            {{-- @php
                                 $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
                                 $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
                                 $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                            @endphp
+                            @endphp --}}
                             <tr>
                                 <td style="display: flex; align-items: center;">
                                     <div class="square-image-container" style="margin-right: 10px;">
-                                        <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
+                                        <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
                                     </div>
-                                    {{$dataLapangan->nama_lapangan}}
+                                    {{$item->nama_lapangan}}
                                 </td>
                                 @php
                                     $tanggalAwal = $item->tanggal_trans;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
-                                <td>Dipesan oleh {{$dataUser->nama_user}} ({{$dataUser->telepon_user}}) pada {{$tanggalBaru}}</td>
+                                <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                 <td><span style="color:red">Dikomplain</span></td>
                                 <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>

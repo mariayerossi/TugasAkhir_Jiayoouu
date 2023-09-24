@@ -10,6 +10,7 @@ use App\Http\Controllers\Negosiasi;
 use App\Http\Controllers\RequestPenawaran;
 use App\Http\Controllers\RequestPermintaan;
 use App\Http\Controllers\SewaSendiri;
+use App\Http\Controllers\Transaksi;
 use App\Http\Middleware\CekAdmin;
 use App\Http\Middleware\CekPemilik;
 use App\Http\Middleware\CekTempat;
@@ -609,18 +610,19 @@ Route::prefix("/tempat")->group(function(){
 
     //Bagian transaksi
     Route::prefix("/transaksi")->group(function(){
-        Route::get("/daftarTransaksi", function () {
-            $role = Session::get("dataRole")->id_tempat;
-            $trans = new ModelsHtrans();
-            $param["baru"] = $trans->get_all_data_by_tempat_baru($role);
-            $param["diterima"] = $trans->get_all_data_by_tempat_diterima($role);
-            $param["berlangsung"] = $trans->get_all_data_by_tempat_berlangsung($role);
-            $param["ditolak"] = $trans->get_all_data_by_tempat_ditolak($role);
-            $param["selesai"] = $trans->get_all_data_by_tempat_selesai($role);
-            $param["dikomplain"] = $trans->get_all_data_by_tempat_dikomplain($role);
-            $param["dibatalkan"] = $trans->get_all_data_by_tempat_dibatalkan($role);
-            return view("tempat.transaksi.daftarTransaksi")->with($param);
-        })->middleware([CekTempat::class]);
+        // Route::get("/daftarTransaksi", function () {
+        //     $role = Session::get("dataRole")->id_tempat;
+        //     $trans = new ModelsHtrans();
+        //     $param["baru"] = $trans->get_all_data_by_tempat_baru($role);
+        //     $param["diterima"] = $trans->get_all_data_by_tempat_diterima($role);
+        //     $param["berlangsung"] = $trans->get_all_data_by_tempat_berlangsung($role);
+        //     $param["ditolak"] = $trans->get_all_data_by_tempat_ditolak($role);
+        //     $param["selesai"] = $trans->get_all_data_by_tempat_selesai($role);
+        //     $param["dikomplain"] = $trans->get_all_data_by_tempat_dikomplain($role);
+        //     $param["dibatalkan"] = $trans->get_all_data_by_tempat_dibatalkan($role);
+        //     return view("tempat.transaksi.daftarTransaksi")->with($param);
+        // })->middleware([CekTempat::class]);
+        Route::get("/daftarTransaksi", [Transaksi::class, "daftarTransaksiTempat"])->middleware([CekTempat::class]);
         Route::get("/detailTransaksi/{id}", function ($id) {
             $htrans = new ModelsHtrans();
             $param["htrans"] = $htrans->get_all_data_by_id($id);
