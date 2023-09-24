@@ -35,7 +35,7 @@
         <h2><b>Total Alat: {{$stok->count()}}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
-        <a href="/pemilik/laporan/stok/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
+        <a href="/tempat/laporan/stok/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
     <table class="table table-striped">

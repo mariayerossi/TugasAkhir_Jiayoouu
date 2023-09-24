@@ -55,8 +55,8 @@
             @if (!$alat->isEmpty())
                 @foreach ($alat as $item)
                     @php
-                        $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->id_alat)->get()->first();
-                        $totalRequest = DB::table('dtrans')->where("fk_id_alat","=",$item->id_alat)->count();
+                        // $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->id_alat)->get()->first();
+                        // $totalRequest = DB::table('dtrans')->where("fk_id_alat","=",$item->id_alat)->count();
 
                         $tanggalAwal2 = $item->created_at;
                         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
@@ -66,13 +66,13 @@
                         <td>{{$loop->iteration}}</td>
                         <td>
                             <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
+                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
                             </div>
                         </td>
                         <td>{{$item->nama_alat}}</td>
                         <td>{{$item->kategori_alat}}</td>
                         <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                        <td>{{$totalRequest}} Kali</td>
+                        <td>{{$item->totalRequest}} Kali</td>
                         @if ($item->status_alat == "Aktif")
                             <td style="color: green">{{$item->status_alat}}</td>
                         @else

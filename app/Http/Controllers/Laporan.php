@@ -23,6 +23,14 @@ class Laporan extends Controller
         $role = Session::get("dataRole")->id_pemilik;
         $trans = new dtrans();
         $allData = $trans->get_all_data_by_pemilik($role);
+        $coba = DB::table('htrans')
+                ->select("alat_olahraga.nama_alat","alat_olahraga.komisi_alat","htrans.durasi_sewa","htrans.tanggal_trans","dtrans.total_komisi_pemilik")
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                ->where("dtrans.fk_id_pemilik","=",$role)
+                ->where("dtrans.fk_role_pemilik","=","Pemilik")
+                ->get();
+        // dd($coba);
 
         $monthlyIncome = [];
         for ($i=1; $i <= 12; $i++) {
@@ -45,7 +53,7 @@ class Laporan extends Controller
             $monthlyIncomeData[] = $income;
         }
 
-        $param["disewakan"] = $allData;
+        $param["disewakan"] = $coba;
         $param["monthlyIncome"] = $monthlyIncomeData;
         return view("pemilik.laporan.laporanPendapatan")->with($param);
     }
@@ -176,8 +184,22 @@ class Laporan extends Controller
 
     public function laporanStokPemilik() {
         $role = Session::get("dataRole")->id_pemilik;
-        $alat = new alatOlahraga();
-        $allData = $alat->get_all_data($role, "Pemilik");
+        // $alat = new alatOlahraga();
+        // $allData = $alat->get_all_data($role, "Pemilik");
+        $allData = DB::table('alat_olahraga')
+                    ->select("files_alat.nama_file_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'),"alat_olahraga.kategori_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat","alat_olahraga.created_at")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_alat", "nama_file_alat")
+                            ->from('files_alat')
+                            ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                    }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                    ->join("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
+                    ->where("alat_olahraga.pemilik_alat","=",$role)
+                    ->where("alat_olahraga.role_pemilik_alat","=","Pemilik")
+                    ->groupBy("alat_olahraga.nama_alat", "alat_olahraga.kategori_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat","alat_olahraga.created_at")
+                    ->get();
+
+        dd($allData);
 
         $param["alat"] = $allData;
         return view("pemilik.laporan.laporanStok")->with($param);
@@ -466,5 +488,9 @@ class Laporan extends Controller
         // dd($allData);
         $param["stok"] = $allData;
         return view("tempat.laporan.laporanStok")->with($param);
+    }
+
+    public function stokTempatCetakPDF() {
+        $role = Session::get("dataRole")->id_tempat;
     }
 }
