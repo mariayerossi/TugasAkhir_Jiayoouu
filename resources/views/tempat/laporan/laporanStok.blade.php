@@ -44,6 +44,7 @@
                 <th>No</th>
                 <th>Foto</th>
                 <th>Nama</th>
+                <th>Harga Sewa</th>
             </tr>
         </thead>
         <tbody>
@@ -57,6 +58,13 @@
                             </div>
                         </td>
                         <td>{{$item->nama_alat}}</td>
+                        @if ($item->harga_permintaan != null)
+                            <td>{{$item->harga_permintaan}}</td>
+                        @elseif ($item->harga_penawaran != null)
+                            <td>{{$item->harga_penawaran}}</td>
+                        {{-- @elseif ($item->harga_komisi != null)
+                        <td>{{$item->harga_komisi}}</td> --}}
+                        @endif
                     </tr>
                 @endforeach
             @endif
