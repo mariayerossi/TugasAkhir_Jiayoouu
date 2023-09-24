@@ -7,6 +7,8 @@ use App\Models\requestPenawaran as ModelsRequestPenawaran;
 use DateInterval;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class RequestPenawaran extends Controller
 {
@@ -274,5 +276,227 @@ class RequestPenawaran extends Controller
         else {
             return redirect()->back()->with("error", "Kode Konfirmasi salah!");
         }
+    }
+
+    public function daftarPenawaranPemilik(){
+        $role = Session::get("dataRole")->id_pemilik;
+
+        //baru
+        $baru = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
+                ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_pemilik", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Menunggu")
+                ->get();
+        $param["baru"] = $baru;
+
+        //diterima
+        $diterima = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
+                ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_pemilik", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Diterima")
+                ->get();
+        $param["diterima"] = $diterima;
+
+        //disewakan
+        $disewakan = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
+                ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_pemilik", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Disewakan")
+                ->get();
+        $param["disewakan"] = $disewakan;
+
+        //ditolak
+        $ditolak = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
+                ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_pemilik", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Ditolak")
+                ->get();
+        $param["ditolak"] = $ditolak;
+
+        //selesai
+        $selesai = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat", "request_penawaran.status_alat")
+                ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_pemilik", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Selesai")
+                ->get();
+        $param["selesai"] = $selesai;
+
+        //dibatalkan
+        $dibatalkan = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
+                ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_pemilik", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Dibatalkan")
+                ->get();
+        $param["dibatalkan"] = $dibatalkan;
+
+        //dikomplain
+        $dikomplain = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
+                ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_pemilik", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Dikomplain")
+                ->get();
+        $param["dikomplain"] = $dikomplain;
+
+        return view("pemilik.penawaran.daftarPenawaran")->with($param);
+    }
+
+    public function daftarPenawaranTempat(){
+        $role = Session::get("dataRole")->id_tempat;
+
+        //baru
+        $baru = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
+                ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_tempat", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Menunggu")
+                ->get();
+        $param["baru"] = $baru;
+
+        //diterima
+        $diterima = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
+                ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_tempat", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Diterima")
+                ->get();
+        $param["diterima"] = $diterima;
+
+        //disewakan
+        $disewakan = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
+                ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_tempat", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Disewakan")
+                ->get();
+        $param["disewakan"] = $disewakan;
+
+        //ditolak
+        $ditolak = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
+                ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_tempat", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Ditolak")
+                ->get();
+        $param["ditolak"] = $ditolak;
+
+        //selesai
+        $selesai = DB::table('request_penawaran')
+            ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik", "request_penawaran.status_alat")
+            ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_tempat", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Selesai")
+                ->get();
+        $param["selesai"] = $selesai;
+
+        //dibatalkan
+        $dibatalkan = DB::table('request_penawaran')
+            ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
+            ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_tempat", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Dibatalkan")
+                ->get();
+        $param["dibatalkan"] = $dibatalkan;
+
+        //dikomplain
+        $dikomplain = DB::table('request_penawaran')
+                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
+                ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("request_penawaran.fk_id_tempat", "=", $role)
+                ->where("request_penawaran.status_penawaran","=","Dikomplain")
+                ->get();
+        $param["dikomplain"] = $dikomplain;
+
+        return view("tempat.penawaran.daftarPenawaran")->with($param);
     }
 }

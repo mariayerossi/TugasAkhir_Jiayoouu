@@ -334,18 +334,19 @@ Route::prefix("/pemilik")->group(function(){
     //Request penawaran
     Route::prefix("/penawaran")->group(function(){
         Route::post("/requestPenawaranAlat", [RequestPenawaran::class, "ajukanPenawaran"]);
-        Route::get("/daftarPenawaran", function () {
-            $role = Session::get("dataRole")->id_pemilik;
-            $req = new ModelsRequestPenawaran();
-            $param["baru"] = $req->get_all_data_by_pemilik_baru($role);
-            $param["diterima"] = $req->get_all_data_by_pemilik_diterima($role);
-            $param["ditolak"] = $req->get_all_data_by_pemilik_ditolak($role);
-            $param["disewakan"] = $req->get_all_data_by_pemilik_disewakan($role);
-            $param["selesai"] = $req->get_all_data_by_pemilik_selesai($role);
-            $param["dibatalkan"] = $req->get_all_data_by_pemilik_dibatalkan($role);
-            $param["dikomplain"] = $req->get_all_data_by_pemilik_dikomplain($role);
-            return view("pemilik.penawaran.daftarPenawaran")->with($param);
-        })->middleware([CekPemilik::class]);
+        // Route::get("/daftarPenawaran", function () {
+        //     $role = Session::get("dataRole")->id_pemilik;
+        //     $req = new ModelsRequestPenawaran();
+        //     $param["baru"] = $req->get_all_data_by_pemilik_baru($role);
+        //     $param["diterima"] = $req->get_all_data_by_pemilik_diterima($role);
+        //     $param["ditolak"] = $req->get_all_data_by_pemilik_ditolak($role);
+        //     $param["disewakan"] = $req->get_all_data_by_pemilik_disewakan($role);
+        //     $param["selesai"] = $req->get_all_data_by_pemilik_selesai($role);
+        //     $param["dibatalkan"] = $req->get_all_data_by_pemilik_dibatalkan($role);
+        //     $param["dikomplain"] = $req->get_all_data_by_pemilik_dikomplain($role);
+        //     return view("pemilik.penawaran.daftarPenawaran")->with($param);
+        // })->middleware([CekPemilik::class]);
+        Route::get("/daftarPenawaran", [RequestPenawaran::class, "daftarPenawaranPemilik"])->middleware([CekPemilik::class]);
         Route::get("/detailPenawaranNego/{id}", function ($id) {
             $role = Session::get("dataRole")->id_pemilik;
             $req = new ModelsRequestPenawaran();
@@ -565,18 +566,19 @@ Route::prefix("/tempat")->group(function(){
 
     //Request penawaran
     Route::prefix("/penawaran")->group(function(){
-        Route::get("/daftarPenawaran", function () {
-            $role = Session::get("dataRole")->id_tempat;
-            $req = new ModelsRequestPenawaran();
-            $param["baru"] = $req->get_all_data_by_tempat_baru($role);
-            $param["diterima"] = $req->get_all_data_by_tempat_diterima($role);
-            $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
-            $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
-            $param["disewakan"] = $req->get_all_data_by_tempat_disewakan($role);
-            $param["dibatalkan"] = $req->get_all_data_by_tempat_dibatalkan($role);
-            $param["dikomplain"] = $req->get_all_data_by_tempat_dikomplain($role);
-            return view("tempat.penawaran.daftarPenawaran")->with($param);
-        })->middleware([CekTempat::class]);
+        // Route::get("/daftarPenawaran", function () {
+        //     $role = Session::get("dataRole")->id_tempat;
+        //     $req = new ModelsRequestPenawaran();
+        //     $param["baru"] = $req->get_all_data_by_tempat_baru($role);
+        //     $param["diterima"] = $req->get_all_data_by_tempat_diterima($role);
+        //     $param["ditolak"] = $req->get_all_data_by_tempat_ditolak($role);
+        //     $param["selesai"] = $req->get_all_data_by_tempat_selesai($role);
+        //     $param["disewakan"] = $req->get_all_data_by_tempat_disewakan($role);
+        //     $param["dibatalkan"] = $req->get_all_data_by_tempat_dibatalkan($role);
+        //     $param["dikomplain"] = $req->get_all_data_by_tempat_dikomplain($role);
+        //     return view("tempat.penawaran.daftarPenawaran")->with($param);
+        // })->middleware([CekTempat::class]);
+        Route::get("/daftarPenawaran", [RequestPenawaran::class, "daftarPenawaranTempat"])->middleware([CekTempat::class]);
         Route::get("/detailPenawaranNego/{id}", function ($id) {
             $role = Session::get("dataRole")->id_tempat;
             $req = new ModelsRequestPenawaran();
