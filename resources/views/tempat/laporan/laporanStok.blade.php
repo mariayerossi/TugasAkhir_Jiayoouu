@@ -32,11 +32,36 @@
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Stok Alat Olahraga</h3>
     <div class="d-flex justify-content-end mb-2">
-        <h2><b>Total Alat: {{$alat->count()}}</b></h2>
+        <h2><b>Total Alat: {{$stok->count()}}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
         <a href="/pemilik/laporan/stok/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Foto</th>
+                <th>Nama</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (!$stok->isEmpty())
+                @foreach ($stok as $item)
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>
+                            <div class="square-image-container">
+                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                            </div>
+                        </td>
+                        <td>{{$item->nama_alat}}</td>
+                    </tr>
+                @endforeach
+            @endif
+        </tbody>
+    </table>
 </div>
 <script>
     $(document).ready(function() {
