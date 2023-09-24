@@ -446,10 +446,20 @@ class Laporan extends Controller
 
     public function laporanStokTempat() {
         $role = Session::get("dataRole")->id_tempat;
-        $permintaan = DB::table('request_permintaan')
-                        ->select();
+        $stok = DB::table('alat_olahraga')
+                ->select("alat_olahraga.nama_alat")
+                ->leftJoin("request_permintaan", "alat_olahraga.id_alat", "=", "request_permintaan.req_id_alat")
+                ->leftJoin("request_penawaran", "alat_olahraga.id_alat", "=", "request_penawaran.req_id_alat")
+                ->leftJoin("sewa_sendiri", "alat_olahraga.id_alat", "=", "sewa_sendiri.req_id_alat")
+                ->where(function ($query) use ($role) {
+                    $query->where("request_permintaan.fk_id_tempat", "=", $role)
+                        ->orWhere("request_penawaran.fk_id_tempat", "=", $role)
+                        ->orWhere("sewa_sendiri.fk_id_tempat", "=", $role);
+                })
+                ->get();
 
-        // $param["alat"] = $allData;
+        dd($stok);
+        // $param["stok"] = $allData;
         // return view("pemilik.laporan.laporanStok")->with($param);
     }
 }
