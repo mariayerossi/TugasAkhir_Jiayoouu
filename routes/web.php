@@ -171,6 +171,7 @@ Route::prefix("/admin")->group(function(){
             $param["trans"] = $trans->get_all_data_by_admin();
             return view("admin.transaksi.daftarTransaksi")->with($param);
         })->middleware([CekAdmin::class]);
+        Route::get("/daftarTransaksi", [Transaksi::class, "daftarTransaksiAdmin"])->middleware([CekAdmin::class]);
         Route::get("/detailTransaksi/{id}", function ($id) {
             $htrans = new ModelsHtrans();
             $param["htrans"] = $htrans->get_all_data_by_id($id);
@@ -539,6 +540,7 @@ Route::prefix("/tempat")->group(function(){
             $param["dikomplain"] = $req->get_all_data_by_tempat_dikomplain($role);
             return view("tempat.permintaan.daftarPermintaan")->with($param);
         })->middleware([CekTempat::class]);
+        // Route::get("/daftarPermintaan", [RequestPermintaan::class, "daftarPermintaanTempat"])->middleware([CekTempat::class]);
         Route::get("/detailPermintaanNego/{id}", function ($id) {
             $role = Session::get("dataRole")->id_tempat;
             $req = new ModelsRequestPermintaan();

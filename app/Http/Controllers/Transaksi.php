@@ -139,4 +139,20 @@ class Transaksi extends Controller
         $param["dikomplain"] = $dikomplain;
         return view("tempat.transaksi.daftarTransaksi")->with($param);
     }
+
+    public function daftarTransaksiAdmin(){
+        $trans = DB::table('htrans')
+                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","user.nama_user","htrans.kode_trans","htrans.total_trans","htrans.tanggal_trans")
+                ->join("user", "htrans.fk_id_user", "=", "user.id_user")
+                ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->whereNull("htrans.deleted_at")
+                ->get();
+        $param["trans"] = $trans;
+        return view("admin.transaksi.daftarTransaksi")->with($param);
+    }
 }

@@ -7,6 +7,8 @@ use App\Models\requestPermintaan as ModelsRequestPermintaan;
 use DateInterval;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class RequestPermintaan extends Controller
 {
@@ -223,4 +225,12 @@ class RequestPermintaan extends Controller
             return redirect()->back()->with("error", "Kode Konfirmasi salah!");
         }
     }
+
+    // public function daftarPermintaanTempat() {
+    //     $role = Session::get("dataRole")->id_tempat;
+
+    //     //baru
+    //     $baru = DB::table('request_permintaan')
+    //             ->join("alat_olahraga","request_permintaan.id_permintaan","=","alat_olahraga.id_alat");
+    // }
 }

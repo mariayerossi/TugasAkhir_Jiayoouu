@@ -32,26 +32,28 @@
                 <th>Foto</th>
                 <th>Nama</th>
                 <th>Total</th>
+                <th>Penyewa</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @if (!$trans->isEmpty())
                 @foreach ($trans as $item)
-                    @php
+                    {{-- @php
                         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
                         $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
                         $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                    @endphp
+                    @endphp --}}
                     <tr>
                         <td>{{$item->kode_trans}}</td>
                         <td>
                             <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="">
+                                <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
                             </div>
                         </td>
-                        <td>{{$dataLapangan->nama_lapangan}}</td>
+                        <td>{{$item->nama_lapangan}}</td>
                         <td>Rp {{ number_format($item->total_trans, 0, ',', '.') }}</td>
+                        <td>{{$item->nama_user}}</td>
                         <td><a class="btn btn-outline-success" href="/admin/transaksi/detailTransaksi/{{$item->id_htrans}}">Lihat Detail</a></td>
                     </tr>
                 @endforeach
