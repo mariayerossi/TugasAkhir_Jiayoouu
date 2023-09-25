@@ -52,7 +52,7 @@
                 <th>No</th>
                 {{-- <th>Foto</th> --}}
                 <th>Nama</th>
-                <th>Komisi</th>
+                <th>Harga Sewa</th>
                 <th>Durasi</th>
                 <th>Tanggal Sewa</th>
                 <th>Subtotal</th>
@@ -63,10 +63,10 @@
                 @foreach ($disewakan as $item)
                     @php
                         // $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->id_alat)->get()->first();
-                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
-                        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
+                        // $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
+                        // $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
 
-                        $tanggalAwal2 = $dataHtrans->tanggal_sewa;
+                        $tanggalAwal2 = $item->tanggal_sewa;
                         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
                         $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
                     @endphp
@@ -77,9 +77,9 @@
                                 <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
                             </div>
                         </td> --}}
-                        <td>{{$dataAlat->nama_alat}}</td>
-                        <td>Rp {{ number_format($dataAlat->komisi_alat, 0, ',', '.') }}</td>
-                        <td>{{$dataHtrans->durasi_sewa}} jam</td>
+                        <td>{{$item->nama_alat}}</td>
+                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
+                        <td>{{$item->durasi_sewa}} jam</td>
                         <td>{{$tanggalBaru2}}</td>
                         <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
                     </tr>

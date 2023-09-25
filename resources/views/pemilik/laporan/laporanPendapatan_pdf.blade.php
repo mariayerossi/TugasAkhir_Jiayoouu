@@ -30,17 +30,17 @@
 		</thead>
 		<tbody>
 			@foreach($data as $item)
-                @php
+                {{-- @php
                     $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
                     $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
-                @endphp
+                @endphp --}}
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$dataAlat->nama_alat}}</td>
-                    <td>Rp {{ number_format($dataAlat->komisi_alat, 0, ',', '.') }}</td>
-                    <td>{{$dataHtrans->durasi_sewa}} jam</td>
+                    <td>{{$item->nama_alat}}</td>
+                    <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                    <td>{{$item->durasi_sewa}} jam</td>
                     @php
-                        $tanggalAwal2 = $dataHtrans->tanggal_trans;
+                        $tanggalAwal2 = $item->tanggal_trans;
                         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
                         $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
                     @endphp

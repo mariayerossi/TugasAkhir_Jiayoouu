@@ -33,7 +33,7 @@
 			@foreach ($data as $item)
                     @php
                         // $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->id_alat)->get()->first();
-                        $totalRequest = DB::table('dtrans')->where("fk_id_alat","=",$item->id_alat)->count();
+                        // $totalRequest = DB::table('dtrans')->where("fk_id_alat","=",$item->id_alat)->count();
 
                         $tanggalAwal2 = $item->created_at;
                         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
@@ -49,7 +49,7 @@
                         <td>{{$item->nama_alat}}</td>
                         <td>{{$item->kategori_alat}}</td>
                         <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                        <td>{{$totalRequest}} Kali</td>
+                        <td>{{$item->totalRequest}} Kali</td>
                         @if ($item->status_alat == "Aktif")
                             <td style="color: green">{{$item->status_alat}}</td>
                         @else
