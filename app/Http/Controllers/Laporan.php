@@ -591,5 +591,15 @@ class Laporan extends Controller
 
     public function disewakanTempatCetakPDF() {
         $role = Session::get("dataRole")->id_tempat;
+        $data = DB::table('dtrans')
+                ->select("htrans.tanggal_sewa","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
+                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
+                ->where("htrans.fk_id_tempat","=",$role)
+                ->get();
+                
+        $pdf = PDF::loadview('tempat.laporan.laporanDisewakan_pdf',['data'=>$data]);
+        // return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
     }
 }

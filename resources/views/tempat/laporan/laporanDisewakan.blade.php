@@ -32,10 +32,10 @@
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Alat Olahraga yang Disewakan</h3>
     <div class="d-flex justify-content-end mb-2">
-        <h2><b>Total </b></h2>
+        <h2><b>Total Alat: {{$disewakan->count()}}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
-        <a href="/tempat/laporan/stok/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
+        <a href="/tempat/laporan/disewakan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
     {{-- grafik --}}
@@ -59,9 +59,21 @@
             </tr>
         </thead>
         <tbody>
-            @if (!$coba->isEmpty())
-                @foreach ($coba as $item)
-                    
+            @if (!$disewakan->isEmpty())
+                @foreach ($disewakan as $item)
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$item->nama_alat}}</td>
+                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
+                        <td>{{$item->durasi_sewa}} jam</td>
+                        @php
+                            $tanggalAwal2 = $item->tanggal_sewa;
+                            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                        @endphp
+                        <td>{{$tanggalBaru2}}</td>
+                        <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
+                    </tr>
                 @endforeach
             @endif
         </tbody>
