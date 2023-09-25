@@ -696,4 +696,63 @@ class Laporan extends Controller
         // return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
     }
+
+    public function laporanAlatAdmin() {
+        // $dtrans = new dtrans();
+        // $allData = $dtrans->get_all_data_by_pemilik($role);
+        $coba = DB::table('alat_olahraga')
+                ->select(
+                    "alat_olahraga.id_alat",
+                    "files_alat.nama_file_alat",
+                    "alat_olahraga.nama_alat",
+                    DB::raw('COUNT(htrans.id_htrans) as total_sewa'),
+                    "lapangan_olahraga.harga_sewa_lapangan",
+                    "lapangan_olahraga.status_lapangan",
+                    DB::raw('SUM(htrans.subtotal_lapangan) as total_pendapatan')
+                )
+                ->leftJoin("htrans", "lapangan_olahraga.id_lapangan", "=", "htrans.fk_id_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->groupBy(
+                    "lapangan_olahraga.id_lapangan",
+                    "lapangan_olahraga.nama_lapangan",
+                    "lapangan_olahraga.harga_sewa_lapangan",
+                    "lapangan_olahraga.status_lapangan"
+                )
+                ->get();
+        dd($coba);
+
+        $monthlyIncome = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        foreach ($coba as $data) {
+            $dataHtrans = DB::table('htrans')->where("id_htrans","=",$data->fk_id_htrans)->get();
+            $year = date('Y', strtotime($dataHtrans->first()->tanggal_sewa));
+            $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
+    
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += $dataHtrans->count();
+            }
+            
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+
+        // $monthlyIncomeData = array_values($monthlyIncome);
+
+        $param["alat"] = $coba;
+        $param["monthlyIncome"] = $monthlyIncomeData;
+        // $param["yearlyMonthlyIncome"] = $yearlyMonthlyIncome;
+        return view("admin.laporan.laporanAlat")->with($param);
+    }
 }

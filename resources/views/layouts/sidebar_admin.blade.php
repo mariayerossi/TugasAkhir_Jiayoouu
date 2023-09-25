@@ -122,7 +122,15 @@ Sportiva
                 </div>
             </div>
             <a href="/admin/transaksi/daftarTransaksi"><i class="bi bi-journal-text me-3"></i></i>Transaksi</a>
-            <a href=""><i class="bi bi-clipboard-data me-3"></i>Laporan</a>
+            <div class="sidebar-dropdown">
+                <a href="#"><i class="bi bi-clipboard-data me-3"></i>Laporan <i class="bi bi-caret-down-fill"></i></a>
+                <div class="sidebar-dropdown-content">
+                    <a href="">Pendapatan</a>
+                    <a href="/admin/laporan/alat/laporanAlat">Persewaan Alat Olahraga</a>
+                    <a href="">Persewaan Tempat Olahraga</a>
+                    <!-- Add other sports or categories here -->
+                </div>
+            </div>
             <a href="/logout"><i class="bi bi-box-arrow-right me-3"></i>Logout</a>
         </div>
     </div>

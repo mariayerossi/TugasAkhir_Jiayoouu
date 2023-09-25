@@ -215,6 +215,12 @@ Route::prefix("/admin")->group(function(){
             return view("admin.request.detailRequest")->with($param);
         })->middleware([CekAdmin::class]);
     });
+
+    Route::prefix("/laporan")->group(function(){
+        Route::prefix("/alat")->group(function(){
+            Route::get("/laporanAlat", [Laporan::class, "laporanAlatAdmin"])->middleware([CekAdmin::class]);
+        });
+    });
 });
 
 // -------------------------------
