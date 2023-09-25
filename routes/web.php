@@ -654,6 +654,11 @@ Route::prefix("/tempat")->group(function(){
             Route::get("/laporanDisewakan", [Laporan::class, "laporanDisewakanTempat"])->middleware([CekTempat::class]);
             Route::get('/CetakPDF', [Laporan::class, "disewakanTempatCetakPDF"]);
         });
+
+        Route::prefix("/lapangan")->group(function(){
+            Route::get("/laporanLapangan", [Laporan::class, "laporanLapangan"])->middleware([CekTempat::class]);
+            Route::get('/CetakPDF', [Laporan::class, "LapanganCetakPDF"]);
+        });
     });
 });
 
