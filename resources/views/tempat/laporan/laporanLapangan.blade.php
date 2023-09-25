@@ -32,10 +32,10 @@
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Lapangan Olahraga</h3>
     <div class="d-flex justify-content-end mb-2">
-        <h2><b>Total Lapangan:</b></h2>
+        <h2><b>Total Lapangan: {{$lapangan->count()}}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
-        <a href="/tempat/laporan/disewakan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
+        <a href="/tempat/laporan/lapangan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
     {{-- grafik --}}
@@ -63,7 +63,20 @@
                 @foreach ($lapangan as $item)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td></td>
+                        <td>
+                            <div class="square-image-container">
+                                <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
+                            </div>
+                        </td>
+                        <td>{{$item->nama_lapangan}}</td>
+                        <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
+                        @if ($item->status_lapangan == "Aktif")
+                            <td style="color: green">{{$item->status_lapangan}}</td>
+                        @else
+                            <td style="color:red">{{$item->status_lapangan}}</td>
+                        @endif
+                        <td>{{$item->total_sewa}} kali</td>
+                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @endif

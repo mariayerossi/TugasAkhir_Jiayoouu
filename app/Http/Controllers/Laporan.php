@@ -552,7 +552,7 @@ class Laporan extends Controller
         // $dtrans = new dtrans();
         // $allData = $dtrans->get_all_data_by_pemilik($role);
         $coba = DB::table('dtrans')
-                ->select("htrans.tanggal_sewa","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
+                ->select("dtrans.fk_id_htrans","htrans.tanggal_sewa","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                 ->where("htrans.fk_id_tempat","=",$role)
@@ -566,12 +566,12 @@ class Laporan extends Controller
         }
 
         foreach ($coba as $data) {
-            $dataHtrans = DB::table('htrans')->where("fk_id_tempat","=",$role)->get();
+            $dataHtrans = DB::table('htrans')->where("id_htrans","=",$data->fk_id_htrans)->get();
             $year = date('Y', strtotime($dataHtrans->first()->tanggal_sewa));
             $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
     
             if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] = $coba->count();
+                $monthlyIncome[(int)$bulan] += $dataHtrans->count();
             }
             
         }
@@ -607,16 +607,30 @@ class Laporan extends Controller
         $role = Session::get("dataRole")->id_tempat;
 
         $allData = DB::table('lapangan_olahraga')
-                    ->select("lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan",DB::raw('COUNT(htrans.id_htrans) as total_htrans'))
-                    ->leftJoin("htrans","lapangan_olahraga.id_lapangan","=","htrans.fk_id_lapangan")
+                    ->select(
+                        "lapangan_olahraga.id_lapangan",
+                        "files_lapangan.nama_file_lapangan",
+                        "lapangan_olahraga.nama_lapangan",
+                        DB::raw('COUNT(htrans.id_htrans) as total_sewa'),
+                        "lapangan_olahraga.harga_sewa_lapangan",
+                        "lapangan_olahraga.status_lapangan",
+                        DB::raw('SUM(htrans.subtotal_lapangan) as total_pendapatan')
+                    )
+                    ->leftJoin("htrans", "lapangan_olahraga.id_lapangan", "=", "htrans.fk_id_lapangan")
                     ->joinSub(function($query) {
                         $query->select("fk_id_lapangan", "nama_file_lapangan")
                             ->from('files_lapangan')
                             ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
                     }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
-                    ->where("lapangan_olahraga.pemilik_lapangan","=",$role)
-                    ->groupBy("lapangan_olahraga.nama_lapangan")
+                    ->where("lapangan_olahraga.pemilik_lapangan", "=", $role)
+                    ->groupBy(
+                        "lapangan_olahraga.id_lapangan",
+                        "lapangan_olahraga.nama_lapangan",
+                        "lapangan_olahraga.harga_sewa_lapangan",
+                        "lapangan_olahraga.status_lapangan"
+                    )
                     ->get();
+
         // dd($allData);
 
         $monthlyIncome = [];
@@ -625,15 +639,17 @@ class Laporan extends Controller
             $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
         }
 
-        foreach ($allData as $data) {
-            $dataHtrans = DB::table('htrans')->where("fk_id_tempat","=",$role)->get();
-            $year = date('Y', strtotime($dataHtrans->first()->tanggal_sewa));
-            $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
-    
-            if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] = $allData->count();
+        $dataHtrans = DB::table('htrans')->where("fk_id_tempat","=",$role)->get();
+
+        foreach ($dataHtrans as $data) {
+            if ($data->id_htrans != null) {
+                $year = date('Y', strtotime($data->tanggal_sewa));
+                $bulan = date('m', strtotime($data->tanggal_sewa));
+        
+                if ($year == date('Y')) {
+                    $monthlyIncome[(int)$bulan] = $dataHtrans->count();
+                }
             }
-            
         }
 
         // Mengkonversi $monthlyIncome ke array biasa
@@ -647,5 +663,37 @@ class Laporan extends Controller
         $param["lapangan"] = $allData;
         $param["monthlyIncome"] = $monthlyIncomeData;
         return view("tempat.laporan.laporanLapangan")->with($param);
+    }
+
+    public function LapanganCetakPDF() {
+        $role = Session::get("dataRole")->id_tempat;
+
+        $data = DB::table('lapangan_olahraga')
+                    ->select(
+                        "lapangan_olahraga.id_lapangan",
+                        "files_lapangan.nama_file_lapangan",
+                        "lapangan_olahraga.nama_lapangan",
+                        DB::raw('COUNT(htrans.id_htrans) as total_sewa'),
+                        "lapangan_olahraga.harga_sewa_lapangan",
+                        "lapangan_olahraga.status_lapangan",
+                        DB::raw('SUM(htrans.subtotal_lapangan) as total_pendapatan')
+                    )
+                    ->leftJoin("htrans", "lapangan_olahraga.id_lapangan", "=", "htrans.fk_id_lapangan")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_lapangan", "nama_file_lapangan")
+                            ->from('files_lapangan')
+                            ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                    }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                    ->where("lapangan_olahraga.pemilik_lapangan", "=", $role)
+                    ->groupBy(
+                        "lapangan_olahraga.id_lapangan",
+                        "lapangan_olahraga.nama_lapangan",
+                        "lapangan_olahraga.harga_sewa_lapangan",
+                        "lapangan_olahraga.status_lapangan"
+                    )
+                    ->get();
+        $pdf = PDF::loadview('tempat.laporan.laporanLapangan_pdf',['data'=>$data]);
+        // return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
     }
 }
