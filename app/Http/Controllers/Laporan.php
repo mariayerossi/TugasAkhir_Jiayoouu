@@ -571,7 +571,7 @@ class Laporan extends Controller
             $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
     
             if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] += $dataHtrans->count();
+                $monthlyIncome[(int)$bulan] = $coba->count();
             }
             
         }
@@ -601,5 +601,51 @@ class Laporan extends Controller
         $pdf = PDF::loadview('tempat.laporan.laporanDisewakan_pdf',['data'=>$data]);
         // return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
+    }
+
+    public function laporanLapangan() {
+        $role = Session::get("dataRole")->id_tempat;
+
+        $allData = DB::table('lapangan_olahraga')
+                    ->select("lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan",DB::raw('COUNT(htrans.id_htrans) as total_htrans'))
+                    ->leftJoin("htrans","lapangan_olahraga.id_lapangan","=","htrans.fk_id_lapangan")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_lapangan", "nama_file_lapangan")
+                            ->from('files_lapangan')
+                            ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                    }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                    ->where("lapangan_olahraga.pemilik_lapangan","=",$role)
+                    ->groupBy("lapangan_olahraga.nama_lapangan")
+                    ->get();
+        // dd($allData);
+
+        $monthlyIncome = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        foreach ($allData as $data) {
+            $dataHtrans = DB::table('htrans')->where("fk_id_tempat","=",$role)->get();
+            $year = date('Y', strtotime($dataHtrans->first()->tanggal_sewa));
+            $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
+    
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] = $allData->count();
+            }
+            
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+
+        // $monthlyIncomeData = array_values($monthlyIncome);
+
+        $param["lapangan"] = $allData;
+        $param["monthlyIncome"] = $monthlyIncomeData;
+        return view("tempat.laporan.laporanLapangan")->with($param);
     }
 }
