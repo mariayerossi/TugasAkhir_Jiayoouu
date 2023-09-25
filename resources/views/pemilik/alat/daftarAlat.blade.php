@@ -33,13 +33,13 @@
         <tbody>
             @if (!$alat->isEmpty())
                 @foreach ($alat as $item)
-                    @php
+                    {{-- @php
                         $dataFiles = $files->get_all_data($item->id_alat)->first();
-                    @endphp
+                    @endphp --}}
                     <tr>
                         <td>
                             <div class="square-image-container">
-                                <a href="/pemilik/lihatDetail/{{$item->id_alat}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt=""></a>
+                                <a href="/pemilik/lihatDetail/{{$item->id_alat}}"><img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt=""></a>
                             </div>
                         </td>
                         <td><a href="/pemilik/lihatDetail/{{$item->id_alat}}">{{$item->nama_alat}}</a></td>

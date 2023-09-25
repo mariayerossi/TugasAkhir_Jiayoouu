@@ -257,4 +257,22 @@ class LapanganOlahraga extends Controller
             return view('admin.produk.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'files' => $files]);
         }
     }
+
+    public function daftarLapangan() {
+        $role = Session::get("dataRole")->id_tempat;
+
+        $data = DB::table('lapangan_olahraga')
+                ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.status_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->where("lapangan_olahraga.pemilik_lapangan", "=", $role)
+                ->get();
+        // dd($data);
+
+        $param["lapangan"] = $data;
+        return view("tempat.lapangan.daftarLapangan")->with($param);
+    }
 }

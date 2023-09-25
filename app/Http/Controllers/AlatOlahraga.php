@@ -207,4 +207,63 @@ class AlatOlahraga extends Controller
         
         return redirect()->back()->with("success", "Berhasil Mengubah Komisi Alat Olahraga!");
     }
+
+    public function daftarAlatTempat() {
+        $role = Session::get("dataRole")->id_tempat;
+
+        $data = DB::table('alat_olahraga')
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("alat_olahraga.pemilik_alat", "=", $role)
+                ->where("alat_olahraga.role_pemilik_alat","=","Tempat")
+                ->get();
+        // dd($data);
+
+        $param["alat"] = $data;
+        return view("tempat.alat.daftarAlat")->with($param);
+    }
+
+    public function daftarAlatPemilik() {
+        $role = Session::get("dataRole")->id_pemilik;
+
+        $data = DB::table('alat_olahraga')
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("alat_olahraga.pemilik_alat", "=", $role)
+                ->where("alat_olahraga.role_pemilik_alat","=","Pemilik")
+                ->get();
+        // dd($data);
+
+        $param["alat"] = $data;
+        return view("pemilik.alat.daftarAlat")->with($param);
+    }
+
+    public function daftarDisewakan() {
+        $role = Session::get("dataRole")->id_pemilik;
+
+        $data = DB::table('dtrans')
+                ->select("htrans.tanggal_sewa","files_alat.nama_file_alat","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
+                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
+                ->where("dtrans.fk_id_pemilik","=",$role)
+                ->where("dtrans.fk_role_pemilik","=","Pemilik")
+                ->get();
+        // dd($data);
+
+        $param["disewakan"] = $data;
+        return view("pemilik.alat.daftarDisewakan")->with($param);
+    }
 }

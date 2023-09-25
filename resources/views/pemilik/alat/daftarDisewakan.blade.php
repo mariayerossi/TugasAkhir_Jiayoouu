@@ -25,8 +25,9 @@
         <thead>
             <tr>
                 <th>Foto</th>
-                <th>Produk</th>
-                <th>Waktu</th>
+                <th>Nama</th>
+                <th>Waktu Sewa</th>
+                <th>Harga Sewa</th>
                 <th>Durasi</th>
                 <th>Subtotal</th>
             </tr>
@@ -34,26 +35,27 @@
         <tbody>
             @if (!$disewakan->isEmpty())
                 @foreach ($disewakan as $item)
-                    @php
+                    {{-- @php
                         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
                         $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
                         $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
-                    @endphp
+                    @endphp --}}
                     <tr>
                         <td>
                             <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
+                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
                             </div>
                         </td>
-                        <td>{{$dataAlat->nama_alat}}</td>
+                        <td>{{$item->nama_alat}}</td>
                         @php
 
-                            $tanggalAwal2 = $dataHtrans->tanggal_sewa;
+                            $tanggalAwal2 = $item->tanggal_sewa;
                             $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
                             $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
                         @endphp
                         <td>{{$tanggalBaru2}}</td>
-                        <td>{{$dataHtrans->durasi_sewa}} jam</td>
+                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
+                        <td>{{$item->durasi_sewa}} jam</td>
                         <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach

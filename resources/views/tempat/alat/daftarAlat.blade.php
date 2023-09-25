@@ -27,23 +27,29 @@
                 <th>Foto</th>
                 <th>Nama</th>
                 <th>Komisi</th>
+                <th>Status</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
             @if (!$alat->isEmpty())
                 @foreach ($alat as $item)
-                    @php
+                    {{-- @php
                         $dataFiles = $files->get_all_data($item->id_alat)->first();
-                    @endphp
+                    @endphp --}}
                     <tr>
                         <td>
                             <div class="square-image-container">
-                                <a href="/tempat/alat/lihatDetail/{{$item->id_alat}}"><img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt=""></a>
+                                <a href="/tempat/alat/lihatDetail/{{$item->id_alat}}"><img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt=""></a>
                             </div>
                         </td>
                         <td><a href="/tempat/alat/lihatDetail/{{$item->id_alat}}">{{$item->nama_alat}}</a></td>
                         <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                        @if ($item->status_alat == "Aktif")
+                            <td style="color: green">{{$item->status_alat}}</td>
+                        @else
+                            <td style="color:red">{{$item->status_alat}}</td>
+                        @endif
                         <td><a class="btn btn-outline-success" href="/tempat/alat/editAlat/{{$item->id_alat}}">Edit</a></td>
                     </tr>
                 @endforeach
