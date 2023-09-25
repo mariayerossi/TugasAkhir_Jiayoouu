@@ -545,4 +545,51 @@ class Laporan extends Controller
         // return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
     }
+
+    public function laporanDisewakanTempat() {
+        $role = Session::get("dataRole")->id_tempat;
+
+        // $dtrans = new dtrans();
+        // $allData = $dtrans->get_all_data_by_pemilik($role);
+        $coba = DB::table('dtrans')
+                ->select("htrans.tanggal_sewa","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
+                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
+                ->where("htrans.fk_id_tempat","=",$role)
+                ->get();
+        // dd($coba);
+
+        $monthlyIncome = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        foreach ($coba as $data) {
+            $dataHtrans = DB::table('htrans')->where("fk_id_tempat","=",$role)->get();
+            $year = date('Y', strtotime($dataHtrans->first()->tanggal_sewa));
+            $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
+    
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += $dataHtrans->count();
+            }
+            
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+
+        // $monthlyIncomeData = array_values($monthlyIncome);
+
+        $param["disewakan"] = $coba;
+        $param["monthlyIncome"] = $monthlyIncomeData;
+        return view("tempat.laporan.laporanDisewakan")->with($param);
+    }
+
+    public function disewakanTempatCetakPDF() {
+        $role = Session::get("dataRole")->id_tempat;
+    }
 }

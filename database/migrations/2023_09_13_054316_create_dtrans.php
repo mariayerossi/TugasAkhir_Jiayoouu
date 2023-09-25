@@ -29,9 +29,6 @@ return new class extends Migration
             $table->foreign('fk_id_alat')
                   ->references('id_alat')
                   ->on('alat_olahraga');
-            $table->foreign('fk_id_pemilik')
-                  ->references('id_pemilik')
-                  ->on('pemilik_alat');
         });
     }
 
