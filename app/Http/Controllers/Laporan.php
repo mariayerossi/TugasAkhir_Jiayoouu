@@ -501,7 +501,7 @@ class Laporan extends Controller
     public function laporanStokTempat() {
         $role = Session::get("dataRole")->id_tempat;
         $allData = DB::table('alat_olahraga')
-                ->select("alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat")
+                ->select("alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "alat_olahraga.kategori_alat")
                 ->leftJoin("request_permintaan", "alat_olahraga.id_alat", "=", "request_permintaan.req_id_alat")
                 ->leftJoin("request_penawaran", "alat_olahraga.id_alat", "=", "request_penawaran.req_id_alat")
                 ->leftJoin("sewa_sendiri", "alat_olahraga.id_alat", "=", "sewa_sendiri.req_id_alat")
@@ -524,5 +524,25 @@ class Laporan extends Controller
 
     public function stokTempatCetakPDF() {
         $role = Session::get("dataRole")->id_tempat;
+        $data = DB::table('alat_olahraga')
+                ->select("alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "alat_olahraga.kategori_alat")
+                ->leftJoin("request_permintaan", "alat_olahraga.id_alat", "=", "request_permintaan.req_id_alat")
+                ->leftJoin("request_penawaran", "alat_olahraga.id_alat", "=", "request_penawaran.req_id_alat")
+                ->leftJoin("sewa_sendiri", "alat_olahraga.id_alat", "=", "sewa_sendiri.req_id_alat")
+                ->where(function ($query) use ($role) {
+                    $query->where("request_permintaan.fk_id_tempat", "=", $role)
+                        ->orWhere("request_penawaran.fk_id_tempat", "=", $role)
+                        ->orWhere("sewa_sendiri.fk_id_tempat", "=", $role);
+                })
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->get();
+
+        $pdf = PDF::loadview('tempat.laporan.laporanStok_pdf',['data'=>$data]);
+        // return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
     }
 }

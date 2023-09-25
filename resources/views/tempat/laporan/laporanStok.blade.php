@@ -44,6 +44,7 @@
                 <th>No</th>
                 <th>Foto</th>
                 <th>Nama</th>
+                <th>Kategori</th>
                 <th>Harga Sewa</th>
             </tr>
         </thead>
@@ -58,6 +59,7 @@
                             </div>
                         </td>
                         <td>{{$item->nama_alat}}</td>
+                        <td>{{$item->kategori_alat}}</td>
                         @if ($item->harga_permintaan != null)
                             <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td>
                         @elseif ($item->harga_penawaran != null)
