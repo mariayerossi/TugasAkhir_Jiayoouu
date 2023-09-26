@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer("total_komisi_tempat");
             $table->unsignedInteger("fk_id_pemilik");
             $table->string("fk_role_pemilik");
-            $table->integer("pendapatan_website_alat");//11% dari total_komisi_pemilik
+            $table->integer("pendapatan_website_alat")->nullable();//11% dari total_komisi_pemilik
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fk_id_htrans')

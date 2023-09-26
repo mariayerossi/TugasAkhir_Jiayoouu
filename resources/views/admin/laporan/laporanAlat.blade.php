@@ -54,6 +54,7 @@
                 <th>Foto</th>
                 <th>Nama</th>
                 <th>Harga Sewa</th>
+                <th>Status</th>
                 <th>Disewakan</th>
                 <th>Total Pendapatan</th>
             </tr>
@@ -61,14 +62,6 @@
         <tbody>
             @if (!$alat->isEmpty())
                 @foreach ($alat as $item)
-                    @php
-                        // $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->id_alat)->get()->first();
-                        // $totalRequest = DB::table('dtrans')->where("fk_id_alat","=",$item->id_alat)->count();
-
-                        $tanggalAwal2 = $item->created_at;
-                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
-                    @endphp
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>
@@ -77,8 +70,14 @@
                             </div>
                         </td>
                         <td>{{$item->nama_alat}}</td>
-                        <td>{{$item->kategori_alat}}</td>
-                        <td>{{$item->totalRequest}} Kali</td>
+                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
+                        @if ($item->status_alat == "Aktif")
+                            <td style="color: green">{{$item->status_alat}}</td>
+                        @else
+                            <td style="color:red">{{$item->status_alat}}</td>
+                        @endif
+                        <td>{{$item->total_sewa}} Kali</td>
+                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else

@@ -219,6 +219,7 @@ Route::prefix("/admin")->group(function(){
     Route::prefix("/laporan")->group(function(){
         Route::prefix("/alat")->group(function(){
             Route::get("/laporanAlat", [Laporan::class, "laporanAlatAdmin"])->middleware([CekAdmin::class]);
+            Route::get("/CetakPDF", [Laporan::class, "AlatAdminCetakPDF"]);
         });
     });
 });

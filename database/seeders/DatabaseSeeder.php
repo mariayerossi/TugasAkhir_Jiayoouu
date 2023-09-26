@@ -282,6 +282,7 @@ class DatabaseSeeder extends Seeder
             'total_trans' => 350000,
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
             'status_trans' => "Menunggu",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -295,6 +296,7 @@ class DatabaseSeeder extends Seeder
             'total_komisi_tempat' => 60000,
             'fk_id_pemilik' => 1,
             'fk_role_pemilik' => "Pemilik",
+            'pendapatan_website_alat' => 4400,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -341,6 +343,7 @@ class DatabaseSeeder extends Seeder
             'total_trans' => 350000,
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
             'status_trans' => "Menunggu",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -354,6 +357,7 @@ class DatabaseSeeder extends Seeder
             'total_komisi_tempat' => 60000,
             'fk_id_pemilik' => 1,
             'fk_role_pemilik' => "Pemilik",
+            'pendapatan_website_alat' => 4400,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
     }
