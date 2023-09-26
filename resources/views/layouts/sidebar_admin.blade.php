@@ -125,9 +125,9 @@ Sportiva
             <div class="sidebar-dropdown">
                 <a href="#"><i class="bi bi-clipboard-data me-3"></i>Laporan <i class="bi bi-caret-down-fill"></i></a>
                 <div class="sidebar-dropdown-content">
-                    <a href="">Pendapatan</a>
+                    <a href="/admin/laporan/pendapatan/laporanPendapatan">Pendapatan</a>
                     <a href="/admin/laporan/alat/laporanAlat">Persewaan Alat Olahraga</a>
-                    <a href="">Persewaan Tempat Olahraga</a>
+                    <a href="/admin/laporan/tempat/laporanTempat">Persewaan Tempat Olahraga</a>
                     <!-- Add other sports or categories here -->
                 </div>
             </div>

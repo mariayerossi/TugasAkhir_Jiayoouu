@@ -21,10 +21,10 @@ class Laporan extends Controller
     //PEMILIK ALAT
     public function laporanPendapatanPemilik(){
         $role = Session::get("dataRole")->id_pemilik;
-        $trans = new dtrans();
-        $allData = $trans->get_all_data_by_pemilik($role);
+        // $trans = new dtrans();
+        // $allData = $trans->get_all_data_by_pemilik($role);
         $coba = DB::table('htrans')
-                ->select("alat_olahraga.nama_alat","alat_olahraga.komisi_alat","htrans.durasi_sewa","htrans.tanggal_trans","dtrans.total_komisi_pemilik")
+                ->select("alat_olahraga.nama_alat","alat_olahraga.komisi_alat","htrans.durasi_sewa","htrans.tanggal_trans","dtrans.total_komisi_pemilik", "dtrans.pendapatan_website_alat")
                 ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
@@ -37,13 +37,11 @@ class Laporan extends Controller
             $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
         }
 
-        foreach ($allData as $data) {
-            $dataHtrans = DB::table('htrans')->where("id_htrans","=",$data->fk_id_htrans)->get()->first();
-
-            $bulan = date('m', strtotime($dataHtrans->tanggal_trans));
-            $year = date('Y', strtotime($dataHtrans->tanggal_trans));
+        foreach ($coba as $data) {
+            $bulan = date('m', strtotime($data->tanggal_trans));
+            $year = date('Y', strtotime($data->tanggal_trans));
             if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
+                $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik-$data->pendapatan_website_alat;
             }
         }
 
@@ -148,10 +146,10 @@ class Laporan extends Controller
         }
 
         // Query berdasarkan rentang tanggal yang dipilih
-        $trans = new dtrans();
-        $allData = $trans->get_all_data_by_pemilik($role);
+        // $trans = new dtrans();
+        // $allData = $trans->get_all_data_by_pemilik($role);
         $coba = DB::table('htrans')
-            ->select("alat_olahraga.nama_alat","alat_olahraga.komisi_alat","htrans.durasi_sewa","htrans.tanggal_trans","dtrans.total_komisi_pemilik")
+            ->select("htrans.tanggal_trans","alat_olahraga.nama_alat","alat_olahraga.komisi_alat","htrans.durasi_sewa","htrans.tanggal_trans","dtrans.total_komisi_pemilik","dtrans.total_komisi_pemilik", "dtrans.pendapatan_website_alat")
             ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
             ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
             ->where("dtrans.fk_id_pemilik","=",$role)
@@ -159,10 +157,12 @@ class Laporan extends Controller
             ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
             ->get();
         
-        foreach ($allData as $data) {
-            $dataHtrans = DB::table('htrans')->where("id_htrans", "=", $data->fk_id_htrans)->get()->first();
-            $bulan = date('m', strtotime($dataHtrans->tanggal_sewa));
-            $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik;
+        foreach ($coba as $data) {
+            $bulan = date('m', strtotime($data->tanggal_trans));
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += $data->total_komisi_pemilik-$data->pendapatan_website_alat;
+            }
         }
 
         // Mengkonversi $monthlyIncome ke array biasa
@@ -179,7 +179,7 @@ class Laporan extends Controller
     public function pendapatanPemilikCetakPDF(){
     	$role = Session::get("dataRole")->id_pemilik;
         $data = DB::table('htrans')
-                ->select("alat_olahraga.nama_alat","alat_olahraga.komisi_alat","htrans.durasi_sewa","htrans.tanggal_trans","dtrans.total_komisi_pemilik")
+                ->select("alat_olahraga.nama_alat","alat_olahraga.komisi_alat","htrans.durasi_sewa","htrans.tanggal_trans","dtrans.total_komisi_pemilik","dtrans.total_komisi_pemilik", "dtrans.pendapatan_website_alat")
                 ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
@@ -348,6 +348,8 @@ class Laporan extends Controller
         return $pdf->stream();
     }
 
+    //----------------------------------------------------------------------------------------------------
+
     //PIHAK TEMPAT OLAHRAGA
     public function laporanPendapatanTempat(){
         $role = Session::get("dataRole")->id_tempat;
@@ -361,7 +363,8 @@ class Laporan extends Controller
                 'htrans.subtotal_lapangan',
                 'htrans.tanggal_trans',
                 DB::raw('COUNT(dtrans.id_dtrans) as alat'),
-                "lapangan_olahraga.nama_lapangan"
+                "lapangan_olahraga.nama_lapangan",
+                "htrans.pendapatan_website_lapangan"
             )
             ->leftJoin("dtrans", "htrans.id_htrans", "=", "dtrans.fk_id_htrans")
             ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
@@ -371,10 +374,10 @@ class Laporan extends Controller
                 'htrans.kode_trans',
                 'htrans.subtotal_lapangan',
                 'htrans.tanggal_trans',
-                "lapangan_olahraga.nama_lapangan"
+                "lapangan_olahraga.nama_lapangan",
+                "htrans.pendapatan_website_lapangan"
             )
             ->get();
-
         $monthlyIncome = [];
         for ($i=1; $i <= 12; $i++) {
             $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
@@ -386,7 +389,7 @@ class Laporan extends Controller
             $bulan = date('m', strtotime($data->tanggal_trans));
             $year = date('Y', strtotime($data->tanggal_trans));
             if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] += $data->subtotal_lapangan+$dataDtrans;
+                $monthlyIncome[(int)$bulan] += $data->subtotal_lapangan+$dataDtrans-$data->pendapatan_website_lapangan;
             }
         }
 
@@ -434,7 +437,8 @@ class Laporan extends Controller
                         'htrans.subtotal_lapangan',
                         'htrans.tanggal_trans',
                         DB::raw('COUNT(dtrans.id_dtrans) as alat'),
-                        "lapangan_olahraga.nama_lapangan"
+                        "lapangan_olahraga.nama_lapangan",
+                        "htrans.pendapatan_website_lapangan"
                     )
                     ->leftJoin("dtrans", "htrans.id_htrans", "=", "dtrans.fk_id_htrans")
                     ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
@@ -445,7 +449,8 @@ class Laporan extends Controller
                         'htrans.kode_trans',
                         'htrans.subtotal_lapangan',
                         'htrans.tanggal_trans',
-                        "lapangan_olahraga.nama_lapangan"
+                        "lapangan_olahraga.nama_lapangan",
+                        "htrans.pendapatan_website_lapangan"
                     )
                     ->get();
         
@@ -455,7 +460,7 @@ class Laporan extends Controller
             $bulan = date('m', strtotime($data->tanggal_trans));
             $year = date('Y', strtotime($data->tanggal_trans));
             if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] += $data->subtotal_lapangan+$dataDtrans;
+                $monthlyIncome[(int)$bulan] += $data->subtotal_lapangan+$dataDtrans-$data->pendapatan_website_lapangan;
             }
         }
 
@@ -479,7 +484,8 @@ class Laporan extends Controller
                 'htrans.subtotal_lapangan',
                 'htrans.tanggal_trans',
                 DB::raw('COUNT(dtrans.id_dtrans) as alat'),
-                "lapangan_olahraga.nama_lapangan"
+                "lapangan_olahraga.nama_lapangan",
+                "htrans.pendapatan_website_lapangan"
             )
             ->leftJoin("dtrans", "htrans.id_htrans", "=", "dtrans.fk_id_htrans")
             ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
@@ -489,7 +495,8 @@ class Laporan extends Controller
                 'htrans.kode_trans',
                 'htrans.subtotal_lapangan',
                 'htrans.tanggal_trans',
-                "lapangan_olahraga.nama_lapangan"
+                "lapangan_olahraga.nama_lapangan",
+                "htrans.pendapatan_website_lapangan"
             )
             ->get();
  
@@ -665,7 +672,7 @@ class Laporan extends Controller
         return view("tempat.laporan.laporanLapangan")->with($param);
     }
 
-    public function LapanganCetakPDF() {
+    public function lapanganCetakPDF() {
         $role = Session::get("dataRole")->id_tempat;
 
         $data = DB::table('lapangan_olahraga')
@@ -695,6 +702,54 @@ class Laporan extends Controller
         $pdf = PDF::loadview('tempat.laporan.laporanLapangan_pdf',['data'=>$data]);
         // return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
+    }
+
+    //-------------------------------------------------------------------------------------------
+
+    //LAPORAN ADMIN
+    public function laporanPendapatanAdmin() {
+        $coba = DB::table('htrans')
+                ->select(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan as pendapatan_lapangan",
+                    DB::raw('SUM(dtrans.pendapatan_website_alat) as pendapatan_alat'),
+                    DB::raw('COUNT(dtrans.id_dtrans) as jumlah_alat'),
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan"
+                )
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->groupBy(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan",
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan"
+                )
+                ->get();
+        // dd($coba);
+
+        $monthlyIncome = [];
+        for ($i=1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        foreach ($coba as $data) {
+            $bulan = date('m', strtotime($data->tanggal_trans));
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += $data->pendapatan_lapangan + $data->pendapatan_alat;
+            }
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+
+        $param["trans"] = $coba;
+        $param["monthlyIncome"] = $monthlyIncomeData;
+        return view("admin.laporan.laporanPendapatan")->with($param);
     }
 
     public function laporanAlatAdmin() {
@@ -757,7 +812,7 @@ class Laporan extends Controller
         return view("admin.laporan.laporanAlat")->with($param);
     }
 
-    public function AlatAdminCetakPDF() {
+    public function alatAdminCetakPDF() {
         $data = DB::table('alat_olahraga')
                 ->select(
                     "alat_olahraga.id_alat",
@@ -783,6 +838,81 @@ class Laporan extends Controller
                 )
                 ->get();
         $pdf = PDF::loadview('admin.laporan.laporanAlat_pdf',['data'=>$data]);
+        // return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
+    }
+
+    public function laporanTempatAdmin() {
+        $coba = DB::table('pihak_tempat')
+                ->select(
+                    "pihak_tempat.id_tempat",
+                    "pihak_tempat.nama_tempat",
+                    DB::raw('COUNT(htrans.id_htrans) as jumlah_trans'),
+                    DB::raw('SUM(htrans.subtotal_lapangan) as total_lapangan'),
+                    DB::raw('SUM(dtrans.total_komisi_tempat) as total_alat'),
+                    DB::raw('COUNT(lapangan_olahraga.id_lapangan) as jumlah_lapangan')
+                )
+                ->leftJoin("lapangan_olahraga","pihak_tempat.id_tempat","=","lapangan_olahraga.pemilik_lapangan")
+                ->leftJoin("htrans", "pihak_tempat.id_tempat", "=", "htrans.fk_id_tempat")
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->groupBy(
+                    "pihak_tempat.id_tempat",
+                    "pihak_tempat.nama_tempat"
+                )
+                ->get();
+        // dd($coba);
+
+        $monthlyIncome = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        foreach ($coba as $data) {
+            $dataHtrans = DB::table('htrans')->where("fk_id_tempat","=",$data->id_tempat)->get();
+            if (!$dataHtrans->isEmpty()) {
+                $year = date('Y', strtotime($dataHtrans->first()->tanggal_sewa));
+                $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
+        
+                if ($year == date('Y')) {
+                    $monthlyIncome[(int)$bulan] += $coba->count();
+                }
+            }
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+
+        // $monthlyIncomeData = array_values($monthlyIncome);
+
+        $param["tempat"] = $coba;
+        $param["monthlyIncome"] = $monthlyIncomeData;
+        // $param["yearlyMonthlyIncome"] = $yearlyMonthlyIncome;
+        return view("admin.laporan.laporanTempat")->with($param);
+    }
+
+    public function tempatAdminCetakPDF() {
+        $data = DB::table('pihak_tempat')
+                ->select(
+                    "pihak_tempat.id_tempat",
+                    "pihak_tempat.nama_tempat",
+                    DB::raw('COUNT(htrans.id_htrans) as jumlah_trans'),
+                    DB::raw('SUM(htrans.subtotal_lapangan) as total_lapangan'),
+                    DB::raw('SUM(dtrans.total_komisi_tempat) as total_alat'),
+                    DB::raw('COUNT(lapangan_olahraga.id_lapangan) as jumlah_lapangan')
+                )
+                ->leftJoin("lapangan_olahraga","pihak_tempat.id_tempat","=","lapangan_olahraga.pemilik_lapangan")
+                ->leftJoin("htrans", "pihak_tempat.id_tempat", "=", "htrans.fk_id_tempat")
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->groupBy(
+                    "pihak_tempat.id_tempat",
+                    "pihak_tempat.nama_tempat"
+                )
+                ->get();
+        $pdf = PDF::loadview('admin.laporan.laporanTempat_pdf',['data'=>$data]);
         // return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
     }

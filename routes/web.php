@@ -217,9 +217,20 @@ Route::prefix("/admin")->group(function(){
     });
 
     Route::prefix("/laporan")->group(function(){
+        Route::prefix("/pendapatan")->group(function(){
+            Route::get("/laporanPendapatan", [Laporan::class, "laporanPendapatanAdmin"])->middleware([CekAdmin::class]);
+            Route::get("/fiturPendapatan", [Laporan::class, "fiturPendapatanAdmin"]);
+            Route::get("/CetakPDF", [Laporan::class, "pendapatanAdminCetakPDF"]);
+        });
+
         Route::prefix("/alat")->group(function(){
             Route::get("/laporanAlat", [Laporan::class, "laporanAlatAdmin"])->middleware([CekAdmin::class]);
-            Route::get("/CetakPDF", [Laporan::class, "AlatAdminCetakPDF"]);
+            Route::get("/CetakPDF", [Laporan::class, "alatAdminCetakPDF"]);
+        });
+
+        Route::prefix("/tempat")->group(function(){
+            Route::get("/laporanTempat", [Laporan::class, "laporanTempatAdmin"])->middleware([CekAdmin::class]);
+            Route::get("/CetakPDF", [Laporan::class, "tempatAdminCetakPDF"]);
         });
     });
 });
@@ -668,7 +679,7 @@ Route::prefix("/tempat")->group(function(){
 
         Route::prefix("/lapangan")->group(function(){
             Route::get("/laporanLapangan", [Laporan::class, "laporanLapangan"])->middleware([CekTempat::class]);
-            Route::get('/CetakPDF', [Laporan::class, "LapanganCetakPDF"]);
+            Route::get('/CetakPDF', [Laporan::class, "lapanganCetakPDF"]);
         });
     });
 });

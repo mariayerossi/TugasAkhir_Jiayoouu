@@ -32,7 +32,7 @@
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Pendapatan</h3>
     <div class="d-flex justify-content-end mb-2">
-        <h2><b>Rp {{ number_format($disewakan->sum('total_komisi_pemilik'), 0, ',', '.') }}</b></h2>
+        <h2><b>Rp {{ number_format($disewakan->sum('total_komisi_pemilik') - $disewakan->sum("pendapatan_website_alat"), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
         <a href="/pemilik/laporan/pendapatan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
@@ -100,7 +100,8 @@
                 <th>Komisi</th>
                 <th>Durasi</th>
                 <th>Tanggal Transaksi</th>
-                <th>Pendapatan</th>
+                <th>Pendapatan Kotor</th>
+                <th>Pendapatan Bersih</th>
             </tr>
         </thead>
         <tbody>
@@ -128,6 +129,7 @@
                         @endphp
                         <td>{{$tanggalBaru2}}</td>
                         <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->total_komisi_pemilik-$item->pendapatan_website_alat, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else

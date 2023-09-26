@@ -15,7 +15,7 @@
 		<h2>Laporan Pendapatan</h2>
 	</center>
 
-	<h4><b>Total: Rp {{ number_format($data->sum('subtotal_lapangan') + $data->sum('total_komisi'), 0, ',', '.') }}</b></h4>
+	<h4><b>Total: Rp {{ number_format($data->sum('subtotal_lapangan') + $data->sum('total_komisi') - $data->sum("pendapatan_website_lapangan"), 0, ',', '.') }}</b></h4>
  
 	<table class='table table-bordered'>
 		<thead>
@@ -27,7 +27,8 @@
                 <th>Subtotal Lapangan</th>
                 <th>Jumlah Alat Disewakan</th>
                 <th>Total Komisi Alat</th>
-                <th>Total Pendapatan</th>
+                <th>Total Pendapatan Kotor</th>
+                <th>Total Pendapatan Bersih</th>
             </tr>
 		</thead>
 		<tbody>
@@ -50,6 +51,7 @@
                     <td>{{$item->alat}}</td>
                     <td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
                     <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan, 0, ',', '.') }}</td>
+                    <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan-$item->pendapatan_website_lapangan, 0, ',', '.') }}</td>
                 </tr>
 			@endforeach
 		</tbody>

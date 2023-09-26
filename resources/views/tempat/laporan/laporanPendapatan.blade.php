@@ -32,7 +32,7 @@
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Pendapatan</h3>
     <div class="d-flex justify-content-end mb-2">
-        <h2><b>Rp {{ number_format($trans->sum('subtotal_lapangan') + $trans->sum('total_komisi'), 0, ',', '.') }}</b></h2>
+        <h2><b>Rp {{ number_format($trans->sum('subtotal_lapangan') + $trans->sum('total_komisi') - $trans->sum("pendapatan_website_lapangan"), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
         <a href="/tempat/laporan/pendapatan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
@@ -101,7 +101,8 @@
                 <th>Subtotal Lapangan</th>
                 <th>Jumlah Alat Disewakan</th>
                 <th>Total Komisi Alat</th>
-                <th>Total Pendapatan</th>
+                <th>Total Pendapatan Kotor</th>
+                <th>Total Pendapatan Bersih</th>
             </tr>
         </thead>
         <tbody>
@@ -125,6 +126,7 @@
                         <td>{{$item->alat}}</td>
                         <td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
                         <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan-$item->pendapatan_website_lapangan, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else

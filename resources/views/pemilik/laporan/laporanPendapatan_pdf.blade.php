@@ -15,7 +15,7 @@
 		<h2>Laporan Pendapatan</h2>
 	</center>
 
-	<h4><b>Total: Rp {{ number_format($data->sum('total_komisi_pemilik'), 0, ',', '.') }}</b></h4>
+	<h4><b>Total: Rp {{ number_format($data->sum('total_komisi_pemilik') - $data->sum("pendapatan_website_alat"), 0, ',', '.') }}</b></h4>
  
 	<table class='table table-bordered'>
 		<thead>
@@ -25,7 +25,8 @@
 				<th>Komisi</th>
 				<th>Durasi</th>
 				<th>Tanggal Transaksi</th>
-                <th>Pendapatan</th>
+                <th>Pendapatan Kotor</th>
+				<th>Pendapatan Bersih</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,6 +47,7 @@
                     @endphp
                     <td>{{$tanggalBaru2}}</td>
                     <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
+					<td>Rp {{ number_format($item->total_komisi_pemilik-$item->pendapatan_website_alat, 0, ',', '.') }}</td>
                 </tr>
 			@endforeach
 		</tbody>
