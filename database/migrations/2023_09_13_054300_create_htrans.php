@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer("total_trans");
             $table->unsignedInteger("fk_id_user");
             $table->unsignedInteger("fk_id_tempat");
+            $table->integer("pendapatan_website_lapangan");//9% dari subtotal_lapangan
             $table->string("status_trans");
             $table->timestamps();
             $table->softDeletes();
