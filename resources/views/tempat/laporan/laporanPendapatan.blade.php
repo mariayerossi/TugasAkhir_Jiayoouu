@@ -131,7 +131,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="6" class="text-center">Tidak Ada Data</td>
+                    <td colspan="8" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
         </tbody>

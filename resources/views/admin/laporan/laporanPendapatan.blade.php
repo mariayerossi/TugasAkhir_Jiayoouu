@@ -46,6 +46,32 @@
         </div>
     </div>
 
+    <div class="mb-5 flex-column flex-md-row">
+        @include("layouts.message")
+        <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
+            <span class="mr-2">Tampilkan berdasarkan:</span>
+            
+            <form action="/admin/laporan/pendapatan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-center">
+                @csrf
+                <!-- Input date untuk tanggal mulai -->
+                <div class="form-group mr-2 mb-2 mb-md-0">
+                    <label for="tanggal_mulai" class="mb-0">Mulai:</label>
+                    <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control form-control-sm">
+                </div>
+
+                <!-- Input date untuk tanggal selesai -->
+                <div class="form-group mr-2 mb-5 mb-md-0">
+                    <label for="tanggal_selesai" class="mb-0">Selesai:</label>
+                    <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control form-control-sm">
+                </div>
+                
+                <div class="mt-2 mt-md-0">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     {{-- laporan pendapatan per alat olahraga --}}
     <table class="table table-striped">
         <thead>
@@ -77,7 +103,7 @@
                 @endforeach
             @else
                 <tr>
-                    <td colspan="8" class="text-center">Tidak Ada Data</td>
+                    <td colspan="6" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
         </tbody>

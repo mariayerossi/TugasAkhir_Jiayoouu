@@ -752,6 +752,70 @@ class Laporan extends Controller
         return view("admin.laporan.laporanPendapatan")->with($param);
     }
 
+    public function fiturPendapatanAdmin(Request $request) {
+        $request->validate([
+            "tanggal_mulai" => 'required',
+            "tanggal_selesai" => 'required'
+        ],[
+            "tanggal_mulai.required" => "tanggal mulai tidak boleh kosong!",
+            "tanggal_selesai.required" => "tanggal selesai tidak boleh kosong!"
+        ]);
+
+        $startDate = $request->input('tanggal_mulai');
+        $endDate = $request->input('tanggal_selesai');
+
+        $date_mulai = new DateTime($startDate);
+        $date_selesai = new DateTime($endDate);
+        
+        if ($date_selesai <= $date_mulai) {
+            return redirect()->back()->with("error", "Tanggal selesai tidak sesuai!");
+        }
+
+        $coba = DB::table('htrans')
+                ->select(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan as pendapatan_lapangan",
+                    DB::raw('SUM(dtrans.pendapatan_website_alat) as pendapatan_alat'),
+                    DB::raw('COUNT(dtrans.id_dtrans) as jumlah_alat'),
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan"
+                )
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
+                ->groupBy(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan",
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan"
+                )
+                ->get();
+        // dd($coba);
+
+        $monthlyIncome = [];
+        for ($i=1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        foreach ($coba as $data) {
+            $bulan = date('m', strtotime($data->tanggal_trans));
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += $data->pendapatan_lapangan + $data->pendapatan_alat;
+            }
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+
+        $param["trans"] = $coba;
+        $param["monthlyIncome"] = $monthlyIncomeData;
+        return view("admin.laporan.laporanPendapatan")->with($param);
+    }
+
     public function laporanAlatAdmin() {
         $dtrans = DB::table('dtrans')->where("deleted_at","=",null)->get();
 

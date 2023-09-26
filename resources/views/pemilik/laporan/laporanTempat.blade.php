@@ -57,6 +57,10 @@
                         <td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
+            @else
+                <tr>
+                    <td colspan="4" class="text-center">Tidak Ada Data</td>
+                </tr>
             @endif
         </tbody>
     </table>

@@ -75,6 +75,10 @@
                         <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
+            @else
+                <tr>
+                    <td colspan="6" class="text-center">Tidak Ada Data</td>
+                </tr>
             @endif
         </tbody>
     </table>
