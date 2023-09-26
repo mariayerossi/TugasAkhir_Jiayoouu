@@ -816,6 +816,31 @@ class Laporan extends Controller
         return view("admin.laporan.laporanPendapatan")->with($param);
     }
 
+    public function pendapatanAdminCetakPDF() {
+        $data = DB::table('htrans')
+                ->select(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan as pendapatan_lapangan",
+                    DB::raw('SUM(dtrans.pendapatan_website_alat) as pendapatan_alat'),
+                    DB::raw('COUNT(dtrans.id_dtrans) as jumlah_alat'),
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan"
+                )
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->groupBy(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan",
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan"
+                )
+                ->get();
+        
+        $pdf = PDF::loadview('admin.laporan.laporanPendapatan_pdf',['data'=>$data]);
+        // return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
+    }
+
     public function laporanAlatAdmin() {
         $dtrans = DB::table('dtrans')->where("deleted_at","=",null)->get();
 

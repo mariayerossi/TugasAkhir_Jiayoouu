@@ -30,25 +30,31 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($data as $item)
+            @if (!$data->isEmpty())
+                @foreach($data as $item)
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        {{-- <td>
+                            <div class="square-image-container">
+                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                            </div>
+                        </td> --}}
+                        <td>{{$item->nama_alat}}</td>
+                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
+                        @if ($item->status_alat == "Aktif")
+                            <td style="color: green">{{$item->status_alat}}</td>
+                        @else
+                            <td style="color:red">{{$item->status_alat}}</td>
+                        @endif
+                        <td>{{$item->total_sewa}} Kali</td>
+                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    <td>{{$loop->iteration}}</td>
-                    {{-- <td>
-                        <div class="square-image-container">
-                            <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                        </div>
-                    </td> --}}
-                    <td>{{$item->nama_alat}}</td>
-                    <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
-                    @if ($item->status_alat == "Aktif")
-                        <td style="color: green">{{$item->status_alat}}</td>
-                    @else
-                        <td style="color:red">{{$item->status_alat}}</td>
-                    @endif
-                    <td>{{$item->total_sewa}} Kali</td>
-                    <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                    <td colspan="6" class="text-center">Tidak Ada Data</td>
                 </tr>
-			@endforeach
+            @endif
 		</tbody>
 	</table>
  

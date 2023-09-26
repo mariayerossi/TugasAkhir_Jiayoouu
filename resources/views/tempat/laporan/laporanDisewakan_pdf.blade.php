@@ -30,21 +30,27 @@
             </tr>
         </thead>
 		<tbody>
-			@foreach ($data as $item)
+            @if (!$data->isEmpty())
+                @foreach ($data as $item)
+                    <tr>
+                        <td>{{$loop->iteration}}</td>
+                        <td>{{$item->nama_alat}}</td>
+                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
+                        <td>{{$item->durasi_sewa}} jam</td>
+                        @php
+                            $tanggalAwal2 = $item->tanggal_sewa;
+                            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                        @endphp
+                        <td>{{$tanggalBaru2}}</td>
+                        <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td>{{$item->nama_alat}}</td>
-                    <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
-                    <td>{{$item->durasi_sewa}} jam</td>
-                    @php
-                        $tanggalAwal2 = $item->tanggal_sewa;
-                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
-                    @endphp
-                    <td>{{$tanggalBaru2}}</td>
-                    <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
+                    <td colspan="6" class="text-center">Tidak Ada Data</td>
                 </tr>
-            @endforeach
+            @endif
 		</tbody>
 	</table>
  

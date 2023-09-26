@@ -30,25 +30,31 @@
             </tr>
 		</thead>
 		<tbody>
-			@foreach($data as $item)
-            <tr>
-                <td>{{$loop->iteration}}</td>
-                {{-- <td>
-                    <div class="square-image-container">
-                        <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
-                    </div>
-                </td> --}}
-                <td>{{$item->nama_lapangan}}</td>
-                <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
-                @if ($item->status_lapangan == "Aktif")
-                    <td style="color: green">{{$item->status_lapangan}}</td>
-                @else
-                    <td style="color:red">{{$item->status_lapangan}}</td>
-                @endif
-                <td>{{$item->total_sewa}} kali</td>
-                <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
-            </tr>
-			@endforeach
+            @if (!$data->isEmpty())
+                @foreach($data as $item)
+                <tr>
+                    <td>{{$loop->iteration}}</td>
+                    {{-- <td>
+                        <div class="square-image-container">
+                            <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
+                        </div>
+                    </td> --}}
+                    <td>{{$item->nama_lapangan}}</td>
+                    <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
+                    @if ($item->status_lapangan == "Aktif")
+                        <td style="color: green">{{$item->status_lapangan}}</td>
+                    @else
+                        <td style="color:red">{{$item->status_lapangan}}</td>
+                    @endif
+                    <td>{{$item->total_sewa}} kali</td>
+                    <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="6" class="text-center">Tidak Ada Data</td>
+                </tr>
+            @endif
 		</tbody>
 	</table>
  

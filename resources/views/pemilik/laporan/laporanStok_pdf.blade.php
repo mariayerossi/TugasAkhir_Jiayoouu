@@ -30,7 +30,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach ($data as $item)
+            @if (!$data->isEmpty())
+			    @foreach ($data as $item)
                     @php
                         // $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->id_alat)->get()->first();
                         // $totalRequest = DB::table('dtrans')->where("fk_id_alat","=",$item->id_alat)->count();
@@ -58,6 +59,11 @@
                         <td>{{$tanggalBaru2}}</td>
                     </tr>
                 @endforeach
+            @else
+                <tr>
+                    <td colspan="7" class="text-center">Tidak Ada Data</td>
+                </tr>
+            @endif
 		</tbody>
 	</table>
  

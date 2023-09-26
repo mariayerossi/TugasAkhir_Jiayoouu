@@ -30,26 +30,32 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($data as $item)
-                {{-- @php
-                    $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
-                    $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
-                @endphp --}}
+			@if (!$data->isEmpty())
+				@foreach($data as $item)
+					{{-- @php
+						$dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
+						$dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
+					@endphp --}}
+					<tr>
+						<td>{{$loop->iteration}}</td>
+						<td>{{$item->nama_alat}}</td>
+						<td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+						<td>{{$item->durasi_sewa}} jam</td>
+						@php
+							$tanggalAwal2 = $item->tanggal_trans;
+							$tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+							$tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
+						@endphp
+						<td>{{$tanggalBaru2}}</td>
+						<td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
+						<td>Rp {{ number_format($item->total_komisi_pemilik-$item->pendapatan_website_alat, 0, ',', '.') }}</td>
+					</tr>
+				@endforeach
+			@else
                 <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td>{{$item->nama_alat}}</td>
-                    <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                    <td>{{$item->durasi_sewa}} jam</td>
-                    @php
-                        $tanggalAwal2 = $item->tanggal_trans;
-                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
-                    @endphp
-                    <td>{{$tanggalBaru2}}</td>
-                    <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
-					<td>Rp {{ number_format($item->total_komisi_pemilik-$item->pendapatan_website_alat, 0, ',', '.') }}</td>
+                    <td colspan="7" class="text-center">Tidak Ada Data</td>
                 </tr>
-			@endforeach
+			@endif
 		</tbody>
 	</table>
  

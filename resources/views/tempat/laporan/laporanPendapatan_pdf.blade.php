@@ -32,28 +32,34 @@
             </tr>
 		</thead>
 		<tbody>
-			@foreach($data as $item)
+            @if (!$data->isEmpty())
+                @foreach($data as $item)
+                    <tr>
+                        {{-- <td>
+                            <div class="square-image-container">
+                                <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
+                            </div>
+                        </td> --}}
+                        <td>{{$item->kode_trans}}</td>
+                        @php
+                            $tanggalAwal2 = $item->tanggal_trans;
+                            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+                            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
+                        @endphp
+                        <td>{{$tanggalBaru2}}</td>
+                        <td>{{$item->nama_lapangan}}</td>
+                        <td>Rp {{ number_format($item->subtotal_lapangan, 0, ',', '.') }}</td>
+                        <td>{{$item->alat}}</td>
+                        <td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan-$item->pendapatan_website_lapangan, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+            @else
                 <tr>
-                    {{-- <td>
-                        <div class="square-image-container">
-                            <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
-                        </div>
-                    </td> --}}
-                    <td>{{$item->kode_trans}}</td>
-                    @php
-                        $tanggalAwal2 = $item->tanggal_trans;
-                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
-                    @endphp
-                    <td>{{$tanggalBaru2}}</td>
-                    <td>{{$item->nama_lapangan}}</td>
-                    <td>Rp {{ number_format($item->subtotal_lapangan, 0, ',', '.') }}</td>
-                    <td>{{$item->alat}}</td>
-                    <td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan, 0, ',', '.') }}</td>
-                    <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan-$item->pendapatan_website_lapangan, 0, ',', '.') }}</td>
+                    <td colspan="8" class="text-center">Tidak Ada Data</td>
                 </tr>
-			@endforeach
+            @endif
 		</tbody>
 	</table>
  

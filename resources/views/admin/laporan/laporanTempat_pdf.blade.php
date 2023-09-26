@@ -28,15 +28,21 @@
             </tr>
 		</thead>
 		<tbody>
-			@foreach($data as $item)
+			@if (!$data->isEmpty())
+				@foreach($data as $item)
+					<tr>
+						<td>{{$loop->iteration}}</td>
+						<td>{{$item->nama_tempat}}</td>
+						<td>{{$item->jumlah_lapangan}}</td>
+						<td>{{$item->jumlah_trans}}</td>
+						<td>Rp {{ number_format($item->total_lapangan+$item->total_alat, 0, ',', '.') }}</td>
+					</tr>
+				@endforeach
+			@else
                 <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td>{{$item->nama_tempat}}</td>
-                    <td>{{$item->jumlah_lapangan}}</td>
-                    <td>{{$item->jumlah_trans}}</td>
-                    <td>Rp {{ number_format($item->total_lapangan+$item->total_alat, 0, ',', '.') }}</td>
+                    <td colspan="5" class="text-center">Tidak Ada Data</td>
                 </tr>
-			@endforeach
+			@endif
 		</tbody>
 	</table>
  
