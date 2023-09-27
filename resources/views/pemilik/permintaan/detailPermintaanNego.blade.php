@@ -124,7 +124,7 @@
 
     <div class="row mb-3 mt-3">
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Tanggal Mulai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga akan mulai disewakan saat anda menyetujui permintaan"></i></h6>
+            <h6>Tanggal Mulai Dipinjam:</h6>
             @if ($permintaan->first()->req_tanggal_mulai == null)
                 @if ($permintaan->first()->status_permintaan == "Menunggu")
                     <p>(Menunggu Persetujuan Anda)</p>
@@ -142,7 +142,7 @@
         </div>
 
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Tanggal Selesai Dipinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Waktu berakhirnya peminjaman ditentukan berdasarkan waktu dimulainya peminjaman"></i></h6>
+            <h6>Tanggal Selesai Dipinjam:</h6>
             @if ($permintaan->first()->req_tanggal_selesai == null)
                 @if ($permintaan->first()->status_permintaan == "Menunggu")
                     <p>(Menunggu Persetujuan Anda)</p>

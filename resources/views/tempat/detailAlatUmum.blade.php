@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <input type="hidden" name="id_alat" value="{{$alat->first()->id_alat}}">
-                <input type="hidden" name="id_pemilik" value="{{$alat->first()->pemilik_alat}}">
+                <input type="hidden" name="id_pemilik" value="{{$alat->first()->fk_id_pemilik}}">
                 <input type="hidden" name="id_tempat" value="{{Session::get("dataRole")->id_tempat}}">
                 <input type="hidden" name="kota_alat" value="{{$alat->first()->kota_alat}}">
                 <div class="d-flex justify-content-center">

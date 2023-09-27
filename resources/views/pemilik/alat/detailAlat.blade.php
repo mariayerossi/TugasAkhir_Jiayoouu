@@ -83,7 +83,7 @@
                 Status : {{$alat->first()->status_alat}}
             </p>
 
-            @if ($alat->first()->pemilik_alat == Session::get("dataRole")->id_pemilik && $alat->first()->role_pemilik_alat == "Pemilik")
+            @if ($alat->first()->fk_id_pemilik == Session::get("dataRole")->id_pemilik)
                 <a href="/pemilik/editAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Ubah Detail Alat</a>
             @endif
         </div>

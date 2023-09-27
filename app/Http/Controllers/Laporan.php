@@ -28,7 +28,6 @@ class Laporan extends Controller
                 ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
-                ->where("dtrans.fk_role_pemilik","=","Pemilik")
                 ->get();
         // dd($coba);
 
@@ -153,7 +152,6 @@ class Laporan extends Controller
             ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
             ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
             ->where("dtrans.fk_id_pemilik","=",$role)
-            ->where("dtrans.fk_role_pemilik","=","Pemilik")
             ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
             ->get();
         
@@ -183,7 +181,6 @@ class Laporan extends Controller
                 ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
-                ->where("dtrans.fk_role_pemilik","=","Pemilik")
                 ->get();
  
     	$pdf = PDF::loadview('pemilik.laporan.laporanPendapatan_pdf',['data'=>$data]);
@@ -203,8 +200,7 @@ class Laporan extends Controller
                             ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
                     }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                     ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
-                    ->where("alat_olahraga.pemilik_alat","=",$role)
-                    ->where("alat_olahraga.role_pemilik_alat","=","Pemilik")
+                    ->where("alat_olahraga.fk_id_pemilik","=",$role)
                     ->groupBy("alat_olahraga.nama_alat", "alat_olahraga.kategori_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat","alat_olahraga.created_at")
                     ->get();
 
@@ -224,8 +220,7 @@ class Laporan extends Controller
                             ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
                     }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                     ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
-                    ->where("alat_olahraga.pemilik_alat","=",$role)
-                    ->where("alat_olahraga.role_pemilik_alat","=","Pemilik")
+                    ->where("alat_olahraga.fk_id_pemilik","=",$role)
                     ->groupBy("alat_olahraga.nama_alat", "alat_olahraga.kategori_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat","alat_olahraga.created_at")
                     ->get();
  
@@ -243,7 +238,6 @@ class Laporan extends Controller
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                 ->where("dtrans.fk_id_pemilik","=",$role)
-                ->where("dtrans.fk_role_pemilik","=","Pemilik")
                 ->get();
         // dd($coba);
 
@@ -308,7 +302,6 @@ class Laporan extends Controller
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                 ->where("dtrans.fk_id_pemilik","=",$role)
-                ->where("dtrans.fk_role_pemilik","=","Pemilik")
                 ->get();
  
     	$pdf = PDF::loadview('pemilik.laporan.laporanDisewakan_pdf',['data'=>$data]);
@@ -324,7 +317,6 @@ class Laporan extends Controller
             ->join('htrans', 'pihak_tempat.id_tempat', '=', 'htrans.fk_id_tempat')
             ->join('dtrans', 'htrans.id_htrans', '=', 'dtrans.fk_id_htrans')
             ->where('dtrans.fk_id_pemilik', '=', $role)
-            ->where('dtrans.fk_role_pemilik', '=', 'Pemilik')
             ->groupBy('pihak_tempat.id_tempat', 'pihak_tempat.nama_tempat')  // tambahkan 'pihak_tempat.nama_tempat' ke GROUP BY
             ->get();
 
@@ -339,7 +331,6 @@ class Laporan extends Controller
             ->join('htrans', 'pihak_tempat.id_tempat', '=', 'htrans.fk_id_tempat')
             ->join('dtrans', 'htrans.id_htrans', '=', 'dtrans.fk_id_htrans')
             ->where('dtrans.fk_id_pemilik', '=', $role)
-            ->where('dtrans.fk_role_pemilik', '=', 'Pemilik')
             ->groupBy('pihak_tempat.id_tempat', 'pihak_tempat.nama_tempat')  // tambahkan 'pihak_tempat.nama_tempat' ke GROUP BY
             ->get();
  

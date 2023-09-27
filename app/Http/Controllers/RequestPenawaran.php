@@ -23,7 +23,7 @@ class RequestPenawaran extends Controller
 
         date_default_timezone_set("Asia/Jakarta");
         $tgl_tawar = date("Y-m-d H:i:s");
-        
+
         $data = [
             "lapangan" => $request->id_lapangan,
             "id_alat" => $array[0],
@@ -283,9 +283,9 @@ class RequestPenawaran extends Controller
 
         //baru
         $baru = DB::table('request_penawaran')
-                ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
+                // ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
                 ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -294,13 +294,14 @@ class RequestPenawaran extends Controller
                 ->where("request_penawaran.fk_id_pemilik", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Menunggu")
                 ->get();
+        // dd($baru);
         $param["baru"] = $baru;
 
         //diterima
         $diterima = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
                 ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -315,7 +316,7 @@ class RequestPenawaran extends Controller
         $disewakan = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
                 ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -330,7 +331,7 @@ class RequestPenawaran extends Controller
         $ditolak = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
                 ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -345,7 +346,7 @@ class RequestPenawaran extends Controller
         $selesai = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat", "request_penawaran.status_alat")
                 ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -360,7 +361,7 @@ class RequestPenawaran extends Controller
         $dibatalkan = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
                 ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -375,7 +376,7 @@ class RequestPenawaran extends Controller
         $dikomplain = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pihak_tempat.nama_tempat")
                 ->join("pihak_tempat","request_penawaran.fk_id_tempat","=","pihak_tempat.id_tempat")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -396,7 +397,7 @@ class RequestPenawaran extends Controller
         $baru = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
                 ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -411,7 +412,7 @@ class RequestPenawaran extends Controller
         $diterima = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
                 ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -426,7 +427,7 @@ class RequestPenawaran extends Controller
         $disewakan = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
                 ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -441,7 +442,7 @@ class RequestPenawaran extends Controller
         $ditolak = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
                 ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -456,7 +457,7 @@ class RequestPenawaran extends Controller
         $selesai = DB::table('request_penawaran')
             ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik", "request_penawaran.status_alat")
             ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -471,7 +472,7 @@ class RequestPenawaran extends Controller
         $dibatalkan = DB::table('request_penawaran')
             ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
             ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -486,7 +487,7 @@ class RequestPenawaran extends Controller
         $dikomplain = DB::table('request_penawaran')
                 ->select("request_penawaran.id_penawaran","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "request_penawaran.tanggal_tawar", "pemilik_alat.nama_pemilik")
                 ->join("pemilik_alat","request_penawaran.fk_id_pemilik","=","pemilik_alat.id_pemilik")
-                ->join("alat_olahraga","request_penawaran.id_penawaran","=","alat_olahraga.id_alat")
+                ->join("alat_olahraga","request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
