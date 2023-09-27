@@ -24,6 +24,7 @@
                 <th>Nama</th>
                 <th>Kategori</th>
                 <th>Harga Sewa</th>
+                <th>Status</th>
             </tr>
 		</thead>
 		<tbody>
@@ -35,16 +36,19 @@
                         <td>{{$item->kategori_alat}}</td>
                         @if ($item->harga_permintaan != null)
                             <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td>
+                            <td>Alat Sewaan</td>
                         @elseif ($item->harga_penawaran != null)
                             <td>Rp {{ number_format($item->harga_penawaran, 0, ',', '.') }}</td>
+                            <td>Alat Sewaan</td>
                         @else
                             <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                            <td>Alat Pribadi</td>
                         @endif
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="7" class="text-center">Tidak Ada Data</td>
+                    <td colspan="5" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
 		</tbody>

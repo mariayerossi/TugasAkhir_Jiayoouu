@@ -65,16 +65,21 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nama_alat}}</td>
-                        <td>{{$item->durasi_sewa}} jam</td>
-                        <td>Rp {{ number_format($item->harga_sewa_alat - $item->komisi_alat, 0, ',', '.') }}</td>
-                        <td>{{$total_durasi}} kali</td>
-                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
-                        @if ($item->status_alat == "Aktif")
-                            <td style="color: green">{{$item->status_alat}}</td>
+                        <td>{{$item->total_sewa}} kali</td>
+                        @if ($item->fk_id_pemilik != null)
+                            <td>Rp {{ number_format($item->harga_sewa_alat - $item->komisi_alat, 0, ',', '.') }}</td>
                         @else
-                            <td style="color:red">{{$item->status_alat}}</td>
+                            <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
                         @endif
-                        <td><a href="/tempat/lapangan/lihatDetailLapangan/{{$item->id_lapangan}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                        <td>{{$item->total_durasi}} jam</td>
+                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                        @if ($item->fk_id_pemilik != null)
+                            <td>Alat Sewaan</td>
+                            <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                        @else
+                            <td>Alat Pribadi</td>
+                            <td><a href="/tempat/alat/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                        @endif
                     </tr>
                 @endforeach
             @else

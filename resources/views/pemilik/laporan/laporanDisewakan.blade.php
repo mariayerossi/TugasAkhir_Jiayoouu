@@ -51,37 +51,29 @@
             <tr>
                 <th>No</th>
                 <th>Nama</th>
-                <th>Tanggal Sewa</th>
-                <th>Harga Sewa Alat</th>
-                <th></th>
-                <th>Durasi</th>
-                <th></th>
-                <th>Subtotal</th>
+                <th>Jumlah Disewakan</th>
+                <th>Total Komisi (/jam)</th>
+                <th>Total Durasi Sewa</th>
+                <th>Total Pendapatan</th>
+                <th>Detail</th>
             </tr>
         </thead>
         <tbody>
             @if (!$disewakan->isEmpty())
                 @foreach ($disewakan as $item)
-                    @php
-
-                        $tanggalAwal2 = $item->tanggal_sewa;
-                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
-                    @endphp
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nama_alat}}</td>
-                        <td>{{$tanggalBaru2}}</td>
-                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
-                        <td>X</td>
-                        <td>{{$item->durasi_sewa}} jam</td>
-                        <td>=</td>
-                        <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
+                        <td>{{$item->total_sewa}} kali</td>
+                        <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                        <td>{{$item->total_durasi}} jam</td>
+                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                        <td><a href="/pemilik/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="6" class="text-center">Tidak Ada Data</td>
+                    <td colspan="7" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
         </tbody>

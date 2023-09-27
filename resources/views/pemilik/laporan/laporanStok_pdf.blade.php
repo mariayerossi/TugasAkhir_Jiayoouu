@@ -23,7 +23,6 @@
 				<th>No</th>
                 <th>Nama</th>
                 <th>Kategori</th>
-                <th>Komisi</th>
                 <th>Disewakan</th>
                 <th>Status</th>
 			</tr>
@@ -35,7 +34,6 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nama_alat}}</td>
                         <td>{{$item->kategori_alat}}</td>
-                        <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
                         <td>{{$item->totalRequest}} Kali</td>
                         @if ($item->status_alat == "Aktif")
                             <td style="color: green">{{$item->status_alat}}</td>

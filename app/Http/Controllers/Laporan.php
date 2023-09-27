@@ -193,10 +193,10 @@ class Laporan extends Controller
         // $alat = new alatOlahraga();
         // $allData = $alat->get_all_data($role, "Pemilik");
         $allData = DB::table('alat_olahraga')
-                    ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'),"alat_olahraga.kategori_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat")
+                    ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'),"alat_olahraga.kategori_alat","alat_olahraga.status_alat")
                     ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
                     ->where("alat_olahraga.fk_id_pemilik","=",$role)
-                    ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "alat_olahraga.kategori_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat")
+                    ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "alat_olahraga.kategori_alat", "alat_olahraga.status_alat")
                     ->get();
 
         // dd($allData);
@@ -228,12 +228,30 @@ class Laporan extends Controller
         $role = Session::get("dataRole")->id_pemilik;
         $dtrans = new dtrans();
         $allData = $dtrans->get_all_data_by_pemilik($role);
-        $coba = DB::table('dtrans')
-                ->select("htrans.tanggal_sewa","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
-                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
-                ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
-                ->where("dtrans.fk_id_pemilik","=",$role)
-                ->get();
+        // $coba = DB::table('dtrans')
+        //         ->select("htrans.tanggal_sewa","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
+        //         ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+        //         ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
+        //         ->where("dtrans.fk_id_pemilik","=",$role)
+        //         ->get();
+        $coba = DB::table("alat_olahraga")
+                    ->select(
+                        "alat_olahraga.id_alat",
+                        "alat_olahraga.nama_alat",
+                        "alat_olahraga.komisi_alat",
+                        DB::raw('SUM(htrans.durasi_sewa) as total_durasi'),
+                        DB::raw('SUM(dtrans.total_komisi_pemilik) as total_pendapatan'),
+                        DB::raw('COUNT(dtrans.id_dtrans) as total_sewa')
+                    )
+                    ->join("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
+                    ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
+                    ->where("alat_olahraga.fk_id_pemilik","=",$role)
+                    ->groupBy(
+                        "alat_olahraga.id_alat",
+                        "alat_olahraga.nama_alat",
+                        "alat_olahraga.komisi_alat",
+                    )
+                    ->get();
         // dd($coba);
 
         $monthlyIncome = [];
@@ -292,11 +310,23 @@ class Laporan extends Controller
 
     public function disewakanPemilikCetakPDF(){
     	$role = Session::get("dataRole")->id_pemilik;
-        $data = DB::table('dtrans')
-                ->select("htrans.tanggal_sewa","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
-                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+        $data = DB::table("alat_olahraga")
+                ->select(
+                    "alat_olahraga.id_alat",
+                    "alat_olahraga.nama_alat",
+                    "alat_olahraga.komisi_alat",
+                    DB::raw('SUM(htrans.durasi_sewa) as total_durasi'),
+                    DB::raw('SUM(dtrans.total_komisi_pemilik) as total_pendapatan'),
+                    DB::raw('COUNT(dtrans.id_dtrans) as total_sewa')
+                )
+                ->join("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
-                ->where("dtrans.fk_id_pemilik","=",$role)
+                ->where("alat_olahraga.fk_id_pemilik","=",$role)
+                ->groupBy(
+                    "alat_olahraga.id_alat",
+                    "alat_olahraga.nama_alat",
+                    "alat_olahraga.komisi_alat",
+                )
                 ->get();
  
     	$pdf = PDF::loadview('pemilik.laporan.laporanDisewakan_pdf',['data'=>$data]);
@@ -494,7 +524,7 @@ class Laporan extends Controller
     public function laporanStokTempat() {
         $role = Session::get("dataRole")->id_tempat;
         $allData = DB::table('alat_olahraga')
-                ->select("alat_olahraga.nama_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "alat_olahraga.kategori_alat")
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "alat_olahraga.kategori_alat")
                 ->leftJoin("request_permintaan", "alat_olahraga.id_alat", "=", "request_permintaan.req_id_alat")
                 ->leftJoin("request_penawaran", "alat_olahraga.id_alat", "=", "request_penawaran.req_id_alat")
                 ->leftJoin("sewa_sendiri", "alat_olahraga.id_alat", "=", "sewa_sendiri.req_id_alat")
@@ -518,7 +548,7 @@ class Laporan extends Controller
     public function stokTempatCetakPDF() {
         $role = Session::get("dataRole")->id_tempat;
         $data = DB::table('alat_olahraga')
-                ->select("alat_olahraga.nama_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "alat_olahraga.kategori_alat")
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "alat_olahraga.kategori_alat")
                 ->leftJoin("request_permintaan", "alat_olahraga.id_alat", "=", "request_permintaan.req_id_alat")
                 ->leftJoin("request_penawaran", "alat_olahraga.id_alat", "=", "request_penawaran.req_id_alat")
                 ->leftJoin("sewa_sendiri", "alat_olahraga.id_alat", "=", "sewa_sendiri.req_id_alat")
@@ -559,7 +589,9 @@ class Laporan extends Controller
                     "alat_olahraga.komisi_alat",
                     DB::raw('SUM(htrans.durasi_sewa) as total_durasi'),
                     DB::raw('SUM(dtrans.total_komisi_tempat) as total_pendapatan'),
-                    "alat_olahraga.status_alat"
+                    "alat_olahraga.status_alat",
+                    "alat_olahraga.fk_id_pemilik",
+                    "alat_olahraga.fk_id_tempat"
                 )
                 ->leftJoin("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
@@ -569,7 +601,9 @@ class Laporan extends Controller
                     "alat_olahraga.nama_alat",
                     "dtrans.harga_sewa_alat",
                     "alat_olahraga.komisi_alat",
-                    "alat_olahraga.status_alat"
+                    "alat_olahraga.status_alat",
+                    "alat_olahraga.fk_id_pemilik",
+                    "alat_olahraga.fk_id_tempat"
                 )
                 ->get();
         // dd($coba);
@@ -580,18 +614,16 @@ class Laporan extends Controller
             $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
         }
 
-        // $dtrans = new dtrans();
-        // $allData = $dtrans->get_all_data_by_pemilik();
-
-        foreach ($allData as $data) {
-            $dataHtrans = DB::table('htrans')->where("id_htrans","=",$data->fk_id_htrans)->get();
-            $year = date('Y', strtotime($dataHtrans->first()->tanggal_sewa));
-            $bulan = date('m', strtotime($dataHtrans->first()->tanggal_sewa));
+        $dataHtrans = DB::table('htrans')->where("fk_id_tempat","=",$role)->get();
+        // dd($dataHtrans);
+        foreach ($dataHtrans as $data) {
+            $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$data->id_htrans)->get();
+            $year = date('Y', strtotime($data->tanggal_sewa));
+            $bulan = date('m', strtotime($data->tanggal_sewa));
     
             if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] += $dataHtrans->count();
+                $monthlyIncome[(int)$bulan] = $dataDtrans->count();
             }
-            
         }
 
         // Mengkonversi $monthlyIncome ke array biasa
@@ -609,11 +641,31 @@ class Laporan extends Controller
 
     public function disewakanTempatCetakPDF() {
         $role = Session::get("dataRole")->id_tempat;
-        $data = DB::table('dtrans')
-                ->select("htrans.tanggal_sewa","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
-                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+        $data = DB::table('alat_olahraga')
+                ->select(
+                    "alat_olahraga.id_alat",
+                    "alat_olahraga.nama_alat",
+                    DB::raw('COUNT(dtrans.id_dtrans) as total_sewa'),
+                    "dtrans.harga_sewa_alat",
+                    "alat_olahraga.komisi_alat",
+                    DB::raw('SUM(htrans.durasi_sewa) as total_durasi'),
+                    DB::raw('SUM(dtrans.total_komisi_tempat) as total_pendapatan'),
+                    "alat_olahraga.status_alat",
+                    "alat_olahraga.fk_id_pemilik",
+                    "alat_olahraga.fk_id_tempat"
+                )
+                ->leftJoin("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
-                ->where("htrans.fk_id_tempat","=",$role)
+                ->where("htrans.fk_id_tempat", "=", $role)
+                ->groupBy(
+                    "alat_olahraga.id_alat",
+                    "alat_olahraga.nama_alat",
+                    "dtrans.harga_sewa_alat",
+                    "alat_olahraga.komisi_alat",
+                    "alat_olahraga.status_alat",
+                    "alat_olahraga.fk_id_pemilik",
+                    "alat_olahraga.fk_id_tempat"
+                )
                 ->get();
                 
         $pdf = PDF::loadview('tempat.laporan.laporanDisewakan_pdf',['data'=>$data]);
@@ -653,15 +705,13 @@ class Laporan extends Controller
         }
 
         $dataHtrans = DB::table('htrans')->where("fk_id_tempat","=",$role)->get();
-
+        // dd($dataHtrans);
         foreach ($dataHtrans as $data) {
-            if ($data->id_htrans != null) {
-                $year = date('Y', strtotime($data->tanggal_sewa));
-                $bulan = date('m', strtotime($data->tanggal_sewa));
-        
-                if ($year == date('Y')) {
-                    $monthlyIncome[(int)$bulan] = $dataHtrans->count();
-                }
+            $year = date('Y', strtotime($data->tanggal_sewa));
+            $bulan = date('m', strtotime($data->tanggal_sewa));
+    
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] = $allData->count();
             }
         }
 

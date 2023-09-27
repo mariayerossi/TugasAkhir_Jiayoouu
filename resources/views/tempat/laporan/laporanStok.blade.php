@@ -45,6 +45,8 @@
                 <th>Nama</th>
                 <th>Kategori</th>
                 <th>Harga Sewa</th>
+                <th>Status</th>
+                <th>Detail</th>
             </tr>
         </thead>
         <tbody>
@@ -56,16 +58,22 @@
                         <td>{{$item->kategori_alat}}</td>
                         @if ($item->harga_permintaan != null)
                             <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td>
+                            <td>Alat Sewaan</td>
+                            <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                         @elseif ($item->harga_penawaran != null)
                             <td>Rp {{ number_format($item->harga_penawaran, 0, ',', '.') }}</td>
+                            <td>Alat Sewaan</td>
+                            <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                         @else
                             <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                            <td>Alat Pribadi</td>
+                            <td><a href="/tempat/alat/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                         @endif
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                    <td colspan="6" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
         </tbody>

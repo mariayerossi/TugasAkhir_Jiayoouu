@@ -306,7 +306,7 @@ class DatabaseSeeder extends Seeder
             'harga_sewa_alat' => 25000,
             'subtotal_alat' => 50000,
             'total_komisi_pemilik' => null,
-            'total_komisi_tempat' => 25000,
+            'total_komisi_tempat' => 50000,
             'fk_id_pemilik' => null,
             'fk_id_tempat' => 1,
             'pendapatan_website_alat' => null,

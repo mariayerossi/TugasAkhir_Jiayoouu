@@ -21,12 +21,12 @@
 		<thead>
             <tr>
                 <th>No</th>
-                {{-- <th>Foto</th> --}}
                 <th>Nama</th>
-                <th>Harga Sewa</th>
-                <th>Durasi</th>
-                <th>Tanggal Sewa</th>
-                <th>Subtotal</th>
+                <th>Jumlah Disewakan</th>
+                <th>Total Komisi (/jam)</th>
+                <th>Total Durasi Sewa</th>
+                <th>Total Pendapatan</th>
+                <th>Status</th>
             </tr>
         </thead>
 		<tbody>
@@ -35,15 +35,19 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nama_alat}}</td>
-                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
-                        <td>{{$item->durasi_sewa}} jam</td>
-                        @php
-                            $tanggalAwal2 = $item->tanggal_sewa;
-                            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
-                        @endphp
-                        <td>{{$tanggalBaru2}}</td>
-                        <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
+                        <td>{{$item->total_sewa}} kali</td>
+                        @if ($item->fk_id_pemilik != null)
+                            <td>Rp {{ number_format($item->harga_sewa_alat - $item->komisi_alat, 0, ',', '.') }}</td>
+                        @else
+                            <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
+                        @endif
+                        <td>{{$item->total_durasi}} jam</td>
+                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                        @if ($item->fk_id_pemilik != null)
+                            <td>Alat Sewaan</td>
+                        @else
+                            <td>Alat Pribadi</td>
+                        @endif
                     </tr>
                 @endforeach
             @else
