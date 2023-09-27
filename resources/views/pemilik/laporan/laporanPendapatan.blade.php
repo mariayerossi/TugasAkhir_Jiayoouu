@@ -97,7 +97,7 @@
                 <th>No</th>
                 {{-- <th>Foto</th> --}}
                 <th>Nama</th>
-                <th>Komisi</th>
+                <th>Komisi Alat</th>
                 <th>Durasi</th>
                 <th>Tanggal Transaksi</th>
                 <th>Pendapatan Kotor</th>

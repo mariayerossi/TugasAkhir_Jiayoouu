@@ -23,7 +23,7 @@
                 <th>No</th>
                 <th>Nama Tempat</th>
                 <th>Total Alat Disewakan</th>
-                <th>Total Komisi</th>
+                <th>Total Komisi yang Diperoleh</th>
             </tr>
 		</thead>
 		<tbody>

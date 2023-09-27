@@ -21,7 +21,6 @@
 		<thead>
 			<tr>
                 <th>No</th>
-                {{-- <th>Foto</th> --}}
                 <th>Nama</th>
                 <th>Kategori</th>
                 <th>Harga Sewa</th>
@@ -32,11 +31,6 @@
                 @foreach($data as $item)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        {{-- <td>
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                            </div>
-                        </td> --}}
                         <td>{{$item->nama_alat}}</td>
                         <td>{{$item->kategori_alat}}</td>
                         @if ($item->harga_permintaan != null)

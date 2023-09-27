@@ -50,12 +50,13 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Foto</th>
                 <th>Nama</th>
-                <th>Harga Sewa</th>
-                <th>Status</th>
-                <th>Disewakan</th>
+                <th>Jumlah Disewakan</th>
+                <th>Harga Sewa (/jam)</th>
+                <th>Total Durasi Sewa</th>
                 <th>Total Pendapatan</th>
+                <th>Status</th>
+                <th>Detail</th>
             </tr>
         </thead>
         <tbody>
@@ -63,25 +64,22 @@
                 @foreach ($lapangan as $item)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
-                            </div>
-                        </td>
                         <td>{{$item->nama_lapangan}}</td>
+                        <td>{{$item->total_sewa}} kali</td>
                         <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
+                        <td>{{$item->total_durasi}} jam</td>
+                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
                         @if ($item->status_lapangan == "Aktif")
                             <td style="color: green">{{$item->status_lapangan}}</td>
                         @else
                             <td style="color:red">{{$item->status_lapangan}}</td>
                         @endif
-                        <td>{{$item->total_sewa}} kali</td>
-                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                        <td><a href="/tempat/lapangan/lihatDetailLapangan/{{$item->id_lapangan}}" class="btn btn-outline-success">Lihat Detail</a></td>
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="7" class="text-center">Tidak Ada Data</td>
+                    <td colspan="8" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
         </tbody>

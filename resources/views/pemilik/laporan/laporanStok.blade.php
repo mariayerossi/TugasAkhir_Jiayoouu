@@ -42,33 +42,19 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Foto</th>
                 <th>Nama</th>
                 <th>Kategori</th>
                 <th>Komisi</th>
                 <th>Disewakan</th>
                 <th>Status</th>
-                <th>Tanggal Dibuat</th>
+                <th>Detail</th>
             </tr>
         </thead>
         <tbody>
             @if (!$alat->isEmpty())
                 @foreach ($alat as $item)
-                    @php
-                        // $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->id_alat)->get()->first();
-                        // $totalRequest = DB::table('dtrans')->where("fk_id_alat","=",$item->id_alat)->count();
-
-                        $tanggalAwal2 = $item->created_at;
-                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
-                    @endphp
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                            </div>
-                        </td>
                         <td>{{$item->nama_alat}}</td>
                         <td>{{$item->kategori_alat}}</td>
                         <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
@@ -78,7 +64,7 @@
                         @else
                             <td style="color:red">{{$item->status_alat}}</td>
                         @endif
-                        <td>{{$tanggalBaru2}}</td>
+                        <td><a href="/pemilik/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                     </tr>
                 @endforeach
             @else
