@@ -19,8 +19,8 @@ return new class extends Migration
             $table->integer("subtotal_alat");//harga * durasi
             $table->integer("total_komisi_pemilik")->nullable();// komisi * durasi = 20.000 * 2
             $table->integer("total_komisi_tempat");
-            $table->unsignedInteger("fk_id_pemilik");
-            $table->string("fk_role_pemilik");
+            $table->unsignedInteger("fk_id_pemilik")->nullable();
+            $table->unsignedInteger("fk_id_tempat")->nullable();
             $table->integer("pendapatan_website_alat")->nullable();//11% dari total_komisi_pemilik
             $table->timestamps();
             $table->softDeletes();
@@ -30,6 +30,12 @@ return new class extends Migration
             $table->foreign('fk_id_alat')
                   ->references('id_alat')
                   ->on('alat_olahraga');
+            $table->foreign('fk_id_pemilik')
+                  ->references('id_pemilik')
+                  ->on('pemilik_alat');
+            $table->foreign('fk_id_tempat')
+                  ->references('id_tempat')
+                  ->on('pihak_tempat');
         });
     }
 

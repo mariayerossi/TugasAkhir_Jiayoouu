@@ -17,10 +17,16 @@ return new class extends Migration
             $table->timestamp("waktu_negosiasi");
             $table->unsignedInteger("fk_id_request");
             $table->string("jenis_request");
-            $table->unsignedInteger("fk_id_user");
-            $table->string("role_user");
+            $table->unsignedInteger("fk_id_pemilik")->nullable();
+            $table->unsignedInteger("fk_id_tempat")->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('fk_id_pemilik')
+                  ->references('id_pemilik')
+                  ->on('pemilik_alat');
+            $table->foreign('fk_id_tempat')
+                  ->references('id_tempat')
+                  ->on('pihak_tempat');
         });
     }
 

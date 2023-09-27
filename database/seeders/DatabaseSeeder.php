@@ -232,8 +232,8 @@ class DatabaseSeeder extends Seeder
             'waktu_negosiasi' => date("Y-m-d H:i:s"),
             'fk_id_request' => 1,
             'jenis_request' => "Permintaan",
-            'fk_id_user' => 1,
-            'role_user' => "Pemilik",
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -258,8 +258,8 @@ class DatabaseSeeder extends Seeder
             'waktu_negosiasi' => date("Y-m-d H:i:s"),
             'fk_id_request' => 1,
             'jenis_request' => "Penawaran",
-            'fk_id_user' => 1,
-            'role_user' => "Pemilik",
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -295,7 +295,7 @@ class DatabaseSeeder extends Seeder
             'total_komisi_pemilik' => 40000,
             'total_komisi_tempat' => 60000,
             'fk_id_pemilik' => 1,
-            'fk_role_pemilik' => "Pemilik",
+            'fk_id_tempat' => null,
             'pendapatan_website_alat' => 4400,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -307,8 +307,9 @@ class DatabaseSeeder extends Seeder
             'subtotal_alat' => 50000,
             'total_komisi_pemilik' => null,
             'total_komisi_tempat' => 25000,
-            'fk_id_pemilik' => 1,
-            'fk_role_pemilik' => "Tempat",
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_alat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -320,8 +321,8 @@ class DatabaseSeeder extends Seeder
             'waktu_komplain' => date("Y-m-d H:i:s"),
             'status_komplain' => "Menunggu",
             'penanganan_komplain' => null,
-            'fk_id_user' => 1,
-            'jenis_role' => "Tempat",
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -356,7 +357,7 @@ class DatabaseSeeder extends Seeder
             'total_komisi_pemilik' => 40000,
             'total_komisi_tempat' => 60000,
             'fk_id_pemilik' => 1,
-            'fk_role_pemilik' => "Pemilik",
+            'fk_id_tempat' => null,
             'pendapatan_website_alat' => 4400,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
