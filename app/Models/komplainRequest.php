@@ -24,19 +24,19 @@ class komplainRequest extends Model
         $komp->jenis_request = $data["req"];
         $komp->waktu_komplain = $data["waktu"];
         $komp->status_komplain = "Menunggu";
-        $komp->fk_id_user = $data["user"];
-        $komp->jenis_role = $data["role"];
+        $komp->fk_id_pemilik = $data["pemilik"];
+        $komp->fk_id_tempat = $data["tempat"];
         $komp->save();
 
         return $komp->id_komplain_req;
     }
 
     public function get_all_data_by_id_req_tempat($id, $jenis, $role){
-        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_request","=",$id)->where("jenis_request","=",$jenis)->where("fk_id_user","=",$role)->where("jenis_role","=","Tempat")->get();
+        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_request","=",$id)->where("jenis_request","=",$jenis)->where("fk_id_tempat","=",$role)->get();
     }
 
     public function get_all_data_by_id_req_pemilik($id, $jenis, $role){
-        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_request","=",$id)->where("jenis_request","=",$jenis)->where("fk_id_user","=",$role)->where("jenis_role","=","Pemilik")->get();
+        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_request","=",$id)->where("jenis_request","=",$jenis)->where("fk_id_pemilik","=",$role)->get();
     }
 
     public function get_all_data_by_admin_baru(){

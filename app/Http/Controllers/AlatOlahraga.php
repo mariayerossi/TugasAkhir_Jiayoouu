@@ -45,19 +45,41 @@ class AlatOlahraga extends Controller
 
         $ukuran = $request->panjang . "x" . $request->lebar . "x" . $request->tinggi;
 
-        $data = [
-            "nama"=>ucwords($request->alat),
-            "kategori"=>$request->kategori,
-            "kota"=>$request->kota,
-            "deskripsi"=>$request->deskripsi,
-            "berat"=>$request->berat,
-            "ukuran"=>$ukuran,
-            "komisi"=>$komisi,
-            "ganti"=>$ganti,
-            "status"=>$request->status,
-            "pemilik"=>$request->pemilik,
-            "role" => $request->role
-        ];
+        if (Session::get("role") == "Pemilik") {
+            $pemilik = Session::get("dataRole")->id_pemilik;
+
+            $data = [
+                "nama"=>ucwords($request->alat),
+                "kategori"=>$request->kategori,
+                "kota"=>$request->kota,
+                "deskripsi"=>$request->deskripsi,
+                "berat"=>$request->berat,
+                "ukuran"=>$ukuran,
+                "komisi"=>$komisi,
+                "ganti"=>$ganti,
+                "status"=>$request->status,
+                "pemilik"=>$pemilik,
+                "tempat" => null
+            ];
+        }
+        else {
+            $pemilik = Session::get("dataRole")->id_tempat;
+
+            $data = [
+                "nama"=>ucwords($request->alat),
+                "kategori"=>$request->kategori,
+                "kota"=>$request->kota,
+                "deskripsi"=>$request->deskripsi,
+                "berat"=>$request->berat,
+                "ukuran"=>$ukuran,
+                "komisi"=>$komisi,
+                "ganti"=>$ganti,
+                "status"=>$request->status,
+                "pemilik"=>null,
+                "tempat" => $pemilik
+            ];
+        }
+
         $alat = new ModelsAlatOlahraga();
         $id = $alat->insertAlat($data);
         
@@ -108,20 +130,42 @@ class AlatOlahraga extends Controller
         $ukuran = $request->panjang . "x" . $request->lebar . "x" . $request->tinggi;
 
         //update detail alat
-        $data = [
-            "id" => $request->id,
-            "nama" => $request->alat,
-            "kategori" => $request->kategori,
-            "kota"=>$request->kota,
-            "deskripsi" => $request->deskripsi,
-            "berat" => $request->berat,
-            "ukuran" => $ukuran,
-            "komisi" => $komisi,
-            "ganti" => $ganti,
-            "status" => $request->status,
-            "pemilik" => $request->pemilik,
-            "role" => $request->role
-        ];
+        if (Session::get("role") == "Pemilik") {
+            $pemilik = Session::get("dataRole")->id_pemilik;
+
+            $data = [
+                "id" => $request->id,
+                "nama" => $request->alat,
+                "kategori" => $request->kategori,
+                "kota"=>$request->kota,
+                "deskripsi" => $request->deskripsi,
+                "berat" => $request->berat,
+                "ukuran" => $ukuran,
+                "komisi" => $komisi,
+                "ganti" => $ganti,
+                "status" => $request->status,
+                "pemilik" => $pemilik,
+                "tempat" => null
+            ];
+        }
+        else {
+            $pemilik = Session::get("dataRole")->id_tempat;
+
+            $data = [
+                "id" => $request->id,
+                "nama" => $request->alat,
+                "kategori" => $request->kategori,
+                "kota"=>$request->kota,
+                "deskripsi" => $request->deskripsi,
+                "berat" => $request->berat,
+                "ukuran" => $ukuran,
+                "komisi" => $komisi,
+                "ganti" => $ganti,
+                "status" => $request->status,
+                "pemilik"=>null,
+                "tempat" => $pemilik
+            ];
+        }
         $alat = new ModelsAlatOlahraga();
         $alat->updateAlat($data);
     
@@ -162,7 +206,7 @@ class AlatOlahraga extends Controller
             $query = DB::table('alat_olahraga')->where('deleted_at',"=",null);
         }
         else {
-            $query = DB::table('alat_olahraga')->where('deleted_at',"=",null)->where("role_pemilik_alat","=","Pemilik")->where("status_alat","=","Aktif");
+            $query = DB::table('alat_olahraga')->where('deleted_at',"=",null)->where("fk_id_pemilik","!=",null)->where("status_alat","=","Aktif");
         }
         // $search = $request->input("cari");
     
@@ -218,8 +262,7 @@ class AlatOlahraga extends Controller
                         ->from('files_alat')
                         ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
-                ->where("alat_olahraga.pemilik_alat", "=", $role)
-                ->where("alat_olahraga.role_pemilik_alat","=","Tempat")
+                ->where("alat_olahraga.fk_id_tempat", "=", $role)
                 ->get();
         // dd($data);
 
@@ -237,8 +280,7 @@ class AlatOlahraga extends Controller
                         ->from('files_alat')
                         ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
-                ->where("alat_olahraga.pemilik_alat", "=", $role)
-                ->where("alat_olahraga.role_pemilik_alat","=","Pemilik")
+                ->where("alat_olahraga.fk_id_pemilik", "=", $role)
                 ->get();
         // dd($data);
 
@@ -259,7 +301,6 @@ class AlatOlahraga extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                 ->where("dtrans.fk_id_pemilik","=",$role)
-                ->where("dtrans.fk_role_pemilik","=","Pemilik")
                 ->get();
         // dd($data);
 

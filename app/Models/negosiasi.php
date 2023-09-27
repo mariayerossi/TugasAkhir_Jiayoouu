@@ -21,8 +21,8 @@ class negosiasi extends Model
         $nego->waktu_negosiasi = $data["waktu"];
         $nego->fk_id_request = $data["request"];
         $nego->jenis_request = $data["jenis"];
-        $nego->fk_id_user = $data["id_user"];
-        $nego->role_user = $data["role"];
+        $nego->fk_id_pemilik = $data["pemilik"];
+        $nego->fk_id_tempat = $data["tempat"];
         $nego->save();
     }
 

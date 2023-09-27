@@ -242,7 +242,7 @@ Route::prefix("/pemilik")->group(function(){
     Route::get("/beranda", function () {
         $id = Session::get("dataRole")->id_pemilik;
         $alat = new ModelsAlatOlahraga();
-        $param["jumlahAlat"] = $alat->count_all_data($id, "Pemilik");
+        $param["jumlahAlat"] = $alat->count_all_data($id);
         $minta = new ModelsRequestPermintaan();
         $param["jumlahPermintaan"] = $minta->count_all_data_pemilik($id);
         $tawar = new ModelsRequestPenawaran();

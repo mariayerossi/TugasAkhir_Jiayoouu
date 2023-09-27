@@ -151,8 +151,6 @@
                 <input type="hidden" id="statusInput" name="status" value="Aktif">
             </div>
         </div>
-        <input type="hidden" name="pemilik" value="{{Session::get("dataRole")->id_tempat}}">
-        <input type="hidden" name="role" value="Tempat">
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
