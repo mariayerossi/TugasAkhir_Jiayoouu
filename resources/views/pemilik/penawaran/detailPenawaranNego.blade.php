@@ -210,8 +210,6 @@ display: block;
                     <form action="/pemilik/penawaran/negosiasi/tambahNego" method="post">
                         @csrf
                         <input type="hidden" name="penawaran" value="{{$penawaran->first()->id_penawaran}}">
-                        <input type="hidden" name="id_user" value="{{Session::get('dataRole')->id_pemilik}}">
-                        <input type="hidden" name="role" value="Pemilik">
                         <textarea class="form-control mb-3" rows="4" name="isi" placeholder="Tulis pesan Anda di sini..."></textarea>
                         <button type="submit" class="btn btn-primary w-100 mb-5">Kirim</button>
                     </form>
@@ -221,14 +219,14 @@ display: block;
                             @foreach ($nego as $item)
                                 <div class="card mb-4">
                                     <div class="card-body">
-                                        @if ($item->role_user == "Pemilik")
+                                        @if ($item->fk_id_pemilik != null)
                                             @php
-                                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
+                                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
                                             @endphp
                                             <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
-                                        @elseif ($item->role_user == "Tempat")
+                                        @elseif ($item->fk_id_tempat != null)
                                             @php
-                                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
+                                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
                                             @endphp
                                             <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
                                         @endif
@@ -341,8 +339,6 @@ display: block;
                         </div>
                         <input type="hidden" name="fk_id_request" value="{{$penawaran->first()->id_penawaran}}">
                         <input type="hidden" name="jenis_request" value="Penawaran">
-                        <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_pemilik}}">
-                        <input type="hidden" name="role_user" value="Pemilik">
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-success">Kirim</button>
                         </div>

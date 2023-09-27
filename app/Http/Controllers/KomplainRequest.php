@@ -11,6 +11,7 @@ use App\Models\pihakTempat;
 use App\Models\requestPenawaran;
 use App\Models\requestPermintaan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class KomplainRequest extends Controller
 {
@@ -28,15 +29,32 @@ class KomplainRequest extends Controller
         date_default_timezone_set("Asia/Jakarta");
         $tgl_komplain = date("Y-m-d H:i:s");
 
-        $data = [
-            "jenis" => $request->jenis,
-            "keterangan" => $request->keterangan,
-            "id_req" => $request->fk_id_request,
-            "req" => $request->jenis_request,
-            "waktu" => $tgl_komplain,
-            "user" => $request->id_user,
-            "role" => $request->role_user
-        ];
+        if (Session::get("role") == "pemilik") {
+            $pemilik = Session::get("dataRole")->id_pemilik;
+
+            $data = [
+                "jenis" => $request->jenis,
+                "keterangan" => $request->keterangan,
+                "id_req" => $request->fk_id_request,
+                "req" => $request->jenis_request,
+                "waktu" => $tgl_komplain,
+                "pemilik" => $pemilik,
+                "tempat" => null
+            ];
+        }
+        else {
+            $pemilik = Session::get("dataRole")->id_tempat;
+
+            $data = [
+                "jenis" => $request->jenis,
+                "keterangan" => $request->keterangan,
+                "id_req" => $request->fk_id_request,
+                "req" => $request->jenis_request,
+                "waktu" => $tgl_komplain,
+                "pemilik" => null,
+                "tempat" => $pemilik
+            ];
+        }
         $komp = new ModelsKomplainRequest();
         $id = $komp->insertKomplainReq($data);
         

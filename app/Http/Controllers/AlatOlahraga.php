@@ -45,7 +45,7 @@ class AlatOlahraga extends Controller
 
         $ukuran = $request->panjang . "x" . $request->lebar . "x" . $request->tinggi;
 
-        if (Session::get("role") == "Pemilik") {
+        if (Session::get("role") == "pemilik") {
             $pemilik = Session::get("dataRole")->id_pemilik;
 
             $data = [
@@ -130,7 +130,7 @@ class AlatOlahraga extends Controller
         $ukuran = $request->panjang . "x" . $request->lebar . "x" . $request->tinggi;
 
         //update detail alat
-        if (Session::get("role") == "Pemilik") {
+        if (Session::get("role") == "pemilik") {
             $pemilik = Session::get("dataRole")->id_pemilik;
 
             $data = [

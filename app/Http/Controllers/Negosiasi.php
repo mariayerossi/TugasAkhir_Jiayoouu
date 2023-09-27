@@ -6,6 +6,7 @@ use App\Models\negosiasi as ModelsNegosiasi;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class Negosiasi extends Controller
 {
@@ -18,25 +19,40 @@ class Negosiasi extends Controller
 
         date_default_timezone_set("Asia/Jakarta");
         $waktu = date("Y-m-d H:i:s");
+        // dd(Session::get("role"));
+        if (Session::get("role") == "pemilik") {
+            $pemilik = Session::get("dataRole")->id_pemilik;
 
-        $data = [
-            "isi" => $request->isi,
-            "waktu" => $waktu,
-            "request" => $request->permintaan,
-            "jenis" => "Permintaan",
-            "id_user" => $request->id_user,
-            "role" => $request->role
-        ];
+            $data = [
+                "isi" => $request->isi,
+                "waktu" => $waktu,
+                "request" => $request->permintaan,
+                "jenis" => "Permintaan",
+                "pemilik" => $pemilik,
+                "tempat" => null
+            ];
+        }
+        else {
+            $pemilik = Session::get("dataRole")->id_tempat;
 
+            $data = [
+                "isi" => $request->isi,
+                "waktu" => $waktu,
+                "request" => $request->permintaan,
+                "jenis" => "Permintaan",
+                "pemilik" => null,
+                "tempat" => $pemilik
+            ];
+        }
         $nego = new ModelsNegosiasi();
         $nego->insertNegosiasi($data);
 
-        if ($request->role == "Pemilik") {
-            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_user)->get()->first();
+        if (Session::get("role") == "pemilik") {
+            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",Session::get("dataRole")->id_pemilik)->get()->first();
             $user = $dataPemilik->nama_pemilik;
         }
-        else if ($request->role == "Tempat") {
-            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_user)->get()->first();
+        else if (Session::get("role") == "tempat") {
+            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",Session::get("dataRole")->id_tempat)->get()->first();
             $user = $dataTempat->nama_pemilik_tempat;
         }
 
@@ -57,24 +73,40 @@ class Negosiasi extends Controller
         date_default_timezone_set("Asia/Jakarta");
         $waktu = date("Y-m-d H:i:s");
 
-        $data = [
-            "isi" => $request->isi,
-            "waktu" => $waktu,
-            "request" => $request->penawaran,
-            "jenis" => "Penawaran",
-            "id_user" => $request->id_user,
-            "role" => $request->role
-        ];
+        if (Session::get("role") == "pemilik") {
+            $pemilik = Session::get("dataRole")->id_pemilik;
+
+            $data = [
+                "isi" => $request->isi,
+                "waktu" => $waktu,
+                "request" => $request->penawaran,
+                "jenis" => "Penawaran",
+                "pemilik" => $pemilik,
+                "tempat" => null
+            ];
+        }
+        else {
+            $pemilik = Session::get("dataRole")->id_tempat;
+
+            $data = [
+                "isi" => $request->isi,
+                "waktu" => $waktu,
+                "request" => $request->penawaran,
+                "jenis" => "Penawaran",
+                "pemilik" => null,
+                "tempat" => $pemilik
+            ];
+        }
 
         $nego = new ModelsNegosiasi();
         $nego->insertNegosiasi($data);
 
-        if ($request->role == "Pemilik") {
-            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_user)->get()->first();
+        if (Session::get("role") == "pemilik") {
+            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",Session::get("dataRole")->id_pemilik)->get()->first();
             $user = $dataPemilik->nama_pemilik;
         }
-        else if ($request->role == "Tempat") {
-            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_user)->get()->first();
+        else if (Session::get("role") == "tempat") {
+            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",Session::get("dataRole")->id_tempat)->get()->first();
             $user = $dataTempat->nama_pemilik_tempat;
         }
 

@@ -192,8 +192,6 @@
                     <form action="/tempat/permintaan/negosiasi/tambahNego" method="post">
                         @csrf
                         <input type="hidden" name="permintaan" value="{{$permintaan->first()->id_permintaan}}">
-                        <input type="hidden" name="id_user" value="{{Session::get('dataRole')->id_tempat}}">
-                        <input type="hidden" name="role" value="Tempat">
                         <textarea class="form-control mb-3" name="isi" rows="4" placeholder="Tulis pesan Anda di sini..."></textarea>
                         <button type="submit" class="btn btn-primary w-100 mb-5">Kirim</button>
                     </form>
@@ -204,14 +202,14 @@
                                 <div class="card mb-4">
                                     <div class="card-body">
                                         <div class="d-flex align-items-start">
-                                            @if ($item->role_user == "Pemilik")
+                                            @if ($item->fk_id_pemilik != null)
                                                 @php
-                                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik", "=", $item->fk_id_user)->get()->first();
+                                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik", "=", $item->fk_id_pemilik)->get()->first();
                                                 @endphp
                                                 <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
-                                            @elseif ($item->role_user == "Tempat")
+                                            @elseif ($item->fk_id_tempat != null)
                                                 @php
-                                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat", "=", $item->fk_id_user)->get()->first();
+                                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat", "=", $item->fk_id_tempat)->get()->first();
                                                 @endphp
                                                 <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
                                             @endif
@@ -315,8 +313,6 @@
                         </div>
                         <input type="hidden" name="fk_id_request" value="{{$permintaan->first()->id_permintaan}}">
                         <input type="hidden" name="jenis_request" value="Permintaan">
-                        <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_tempat}}">
-                        <input type="hidden" name="role_user" value="Tempat">
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-success">Kirim</button>
                         </div>
