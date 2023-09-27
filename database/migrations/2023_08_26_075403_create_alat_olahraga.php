@@ -22,10 +22,16 @@ return new class extends Migration
             $table->integer('ganti_rugi_alat');
             $table->string('kota_alat');
             $table->string('status_alat');
-            $table->unsignedInteger('pemilik_alat');
-            $table->string('role_pemilik_alat');
+            $table->unsignedInteger('fk_id_pemilik')->nullable();
+            $table->unsignedInteger('fk_id_tempat')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('fk_id_pemilik')
+                  ->references('id_pemilik')
+                  ->on('pemilik_alat');
+            $table->foreign('fk_id_tempat')
+                  ->references('id_tempat')
+                  ->on('pihak_tempat');
         });
     }
 

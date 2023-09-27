@@ -91,8 +91,8 @@ class DatabaseSeeder extends Seeder
             'ganti_rugi_alat' => 100000,
             'kota_alat' => "Jakarta",
             'status_alat' => "Aktif",
-            'pemilik_alat' => 1,
-            'role_pemilik_alat' => "Pemilik",
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -196,8 +196,8 @@ class DatabaseSeeder extends Seeder
             'ganti_rugi_alat' => 150000,
             'kota_alat' => "Surabaya",
             'status_alat' => "Aktif",
-            'pemilik_alat' => 1,
-            'role_pemilik_alat' => "Tempat",
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
