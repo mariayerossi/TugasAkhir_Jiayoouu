@@ -31,19 +31,23 @@
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Pendapatan</h3>
+    @if ($tanggal_mulai != null && $tanggal_selesai != null)
+        @php
+            $tanggalAwal = $tanggal_mulai;
+            $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+            $tanggalBaru = $tanggalObjek->format('d-m-Y');
+
+            $tanggalAwal3 = $tanggal_selesai;
+            $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+            $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+        @endphp
+        <h6 class="text-center mb-5">{{$tanggalBaru}} - {{$tanggal_selesai}}</h6>
+    @endif
     <div class="d-flex justify-content-end mb-2">
         <h2><b>Rp {{ number_format($disewakan->sum('total_komisi_pemilik') - $disewakan->sum("pendapatan_website_alat"), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
         <a href="/pemilik/laporan/pendapatan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
-    </div>
-    
-    {{-- grafik --}}
-    <div class="mt-5 mb-5">
-        <h4>Grafik Pendapatan per Bulan</h4>
-        <div class="chart-container">
-            <canvas id="incomeChart"></canvas>
-        </div>
     </div>
 
     <div class="mb-5 flex-column flex-md-row">
@@ -53,25 +57,6 @@
             
             <form action="/pemilik/laporan/pendapatan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-center">
                 @csrf
-                
-                {{-- <div class="mb-2 mb-md-0 mr-md-2">
-                    <select id="monthFilter" class="form-control" name="monthFilter">
-                        <option value="">Pilih Bulan</option>
-                        @for ($i = 1; $i <= 12; $i++)
-                            <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 10)) }}</option>
-                        @endfor
-                    </select>
-                </div>
-                
-                <div class="mb-2 mb-md-0 mr-md-2">
-                    <select id="yearFilter" class="form-control" name="yearFilter">
-                        <option value="">Pilih Tahun</option>
-                        @for ($i = date('Y'); $i >= date('Y') - 10; $i--)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
-                    </select>
-                </div> --}}
-
                 <!-- Input date untuk tanggal mulai -->
                 <div class="form-group mr-2 mb-2 mb-md-0">
                     <label for="tanggal_mulai" class="mb-0">Mulai:</label>
@@ -90,55 +75,64 @@
             </form>
         </div>
     </div>
+    
+    {{-- grafik --}}
+    <div class="mt-5 mb-5">
+        <h4>Grafik Pendapatan per Bulan</h4>
+        <div class="chart-container">
+            <canvas id="incomeChart"></canvas>
+        </div>
+    </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                {{-- <th>Foto</th> --}}
-                <th>Nama</th>
-                <th>Komisi Alat</th>
-                <th>Durasi</th>
-                <th>Tanggal Transaksi</th>
-                <th>Pendapatan Kotor</th>
-                <th>Pendapatan Bersih</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$disewakan->isEmpty())
-                @foreach ($disewakan as $item)
-                    {{-- @php
-                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
-                        // $dataFiles = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
-                        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
-                    @endphp --}}
+    @if (!$disewakan->isEmpty())
+        {{-- Pertama-tama, kelompokkan data berdasarkan nama alat --}}
+        @php
+            $grouped = $disewakan->groupBy('nama_alat');
+        @endphp
+
+        {{-- Iterasi untuk setiap grup alat olahraga --}}
+        @foreach ($grouped as $nama_alat => $items)
+            
+            {{-- Tampilkan nama alat olahraga --}}
+            <h3>{{ $nama_alat }}</h3>
+
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>{{$loop->iteration}}</td>
-                        {{-- <td>
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
-                            </div>
-                        </td> --}}
-                        <td>{{$item->nama_alat}}</td>
-                        <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                        <td>{{$item->durasi_sewa}} jam</td>
-                        @php
-                            $tanggalAwal2 = $item->tanggal_trans;
-                            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
-                        @endphp
-                        <td>{{$tanggalBaru2}}</td>
-                        <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($item->total_komisi_pemilik-$item->pendapatan_website_alat, 0, ',', '.') }}</td>
+                        <th>No</th>
+                        <th>Komisi Alat</th>
+                        <th>Durasi</th>
+                        <th>Tanggal Transaksi</th>
+                        <th>Pendapatan Kotor</th>
+                        <th>Pendapatan Bersih</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="7" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    {{-- Iterasi untuk setiap item dalam grup alat olahraga --}}
+                    @foreach ($items as $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                            <td>{{ $item->durasi_sewa }} jam</td>
+                            @php
+                                $tanggalAwal2 = $item->tanggal_trans;
+                                $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+                                $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
+                            @endphp
+                            <td>{{ $tanggalBaru2 }}</td>
+                            <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format($item->total_komisi_pemilik-$item->pendapatan_website_alat, 0, ',', '.') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+        @endforeach
+
+    @else
+        <p class="text-center">Tidak Ada Data</p>
+    @endif
+
 </div>
 <script>
     $(document).ready(function() {
