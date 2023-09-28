@@ -794,6 +794,8 @@ class Laporan extends Controller
         }
 
         $param["trans"] = $coba;
+        $param["tanggal_mulai"] = null;
+        $param["tanggal_selesai"] = null;
         $param["monthlyIncome"] = $monthlyIncomeData;
         return view("admin.laporan.laporanPendapatan")->with($param);
     }
@@ -858,6 +860,8 @@ class Laporan extends Controller
         }
 
         $param["trans"] = $coba;
+        $param["tanggal_mulai"] = $startDate;
+        $param["tanggal_selesai"] = $endDate;
         $param["monthlyIncome"] = $monthlyIncomeData;
         return view("admin.laporan.laporanPendapatan")->with($param);
     }
@@ -882,7 +886,33 @@ class Laporan extends Controller
                 )
                 ->get();
         
-        $pdf = PDF::loadview('admin.laporan.laporanPendapatan_pdf',['data'=>$data]);
+        $pdf = PDF::loadview('admin.laporan.laporanPendapatan_pdf',['data'=>$data, 'tanggal_mulai'=>null, 'tanggal_selesai'=>null]);
+        // return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
+    }
+
+    public function pendapatanAdminCetakPDF2(Request $request) {
+        $data = DB::table('htrans')
+                ->select(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan as pendapatan_lapangan",
+                    DB::raw('SUM(dtrans.pendapatan_website_alat) as pendapatan_alat'),
+                    DB::raw('COUNT(dtrans.id_dtrans) as jumlah_alat'),
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan"
+                )
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->whereBetween('htrans.tanggal_trans', [$request->mulai, $request->selesai])
+                ->groupBy(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan",
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan"
+                )
+                ->get();
+        
+        $pdf = PDF::loadview('admin.laporan.laporanPendapatan_pdf',['data'=>$data, 'tanggal_mulai'=>$request->mulai, 'tanggal_selesai'=>$request->selesai]);
         // return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
     }

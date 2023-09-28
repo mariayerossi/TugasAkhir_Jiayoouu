@@ -23,7 +23,7 @@
 				$tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
 				$tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
 			@endphp
-			<h6 class="text-center mb-5">{{$tanggalBaru}} - {{$tanggal_selesai}}</h6>
+			<h6 class="text-center mb-5">{{$tanggalBaru}} - {{$tanggalBaru3}}</h6>
 		@endif
 	</center>
 

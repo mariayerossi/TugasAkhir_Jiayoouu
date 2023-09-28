@@ -31,19 +31,23 @@
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Pendapatan Website</h3>
+    @if ($tanggal_mulai != null && $tanggal_selesai != null)
+        @php
+            $tanggalAwal = $tanggal_mulai;
+            $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+            $tanggalBaru = $tanggalObjek->format('d-m-Y');
+
+            $tanggalAwal3 = $tanggal_selesai;
+            $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+            $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+        @endphp
+        <h6 class="text-center mb-5">{{$tanggalBaru}} - {{$tanggalBaru3}}</h6>
+    @endif
     <div class="d-flex justify-content-end mb-2">
         <h2><b>Rp {{ number_format($trans->sum("pendapatan_lapangan") + $trans->sum("pendapatan_alat"), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
-        <a href="/admin/laporan/pendapatan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
-    </div>
-
-    {{-- grafik --}}
-    <div class="mt-5 mb-5">
-        <h4>Grafik Pendapatan per Bulan</h4>
-        <div class="chart-container">
-            <canvas id="incomeChart"></canvas>
-        </div>
+        <a href="/admin/laporan/pendapatan/CetakPDF/{{$tanggal_mulai}}/{{$tanggal_selesai}}" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
     <div class="mb-5 flex-column flex-md-row">
@@ -72,15 +76,22 @@
         </div>
     </div>
 
+    {{-- grafik --}}
+    <div class="mt-5 mb-5">
+        <h4>Grafik Pendapatan per Bulan</h4>
+        <div class="chart-container">
+            <canvas id="incomeChart"></canvas>
+        </div>
+    </div>
+
     {{-- laporan pendapatan per alat olahraga --}}
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>No</th>
                 <th>Kode Transaksi</th>
+                <th>Tanggal Transaksi</th>
                 <th>Nama Lapangan</th>
                 <th>Jumlah Alat Disewakan</th>
-                <th>Tanggal Transaksi</th>
                 <th>Pendapatan Website</th>
             </tr>
         </thead>
@@ -88,16 +99,15 @@
             @if (!$trans->isEmpty())
                 @foreach ($trans as $item)
                     <tr>
-                        <td>{{$loop->iteration}}</td>
                         <td>{{$item->kode_trans}}</td>
-                        <td>{{$item->nama_lapangan}}</td>
-                        <td>{{$item->jumlah_alat}}</td>
                         @php
                             $tanggalAwal2 = $item->tanggal_trans;
                             $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
                             $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
                         @endphp
                         <td>{{$tanggalBaru2}}</td>
+                        <td>{{$item->nama_lapangan}}</td>
+                        <td>{{$item->jumlah_alat}}</td>
                         <td>Rp {{ number_format($item->pendapatan_lapangan + $item->pendapatan_alat, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
