@@ -666,6 +666,7 @@ Route::prefix("/tempat")->group(function(){
             Route::get("/laporanPendapatan", [Laporan::class, "laporanPendapatanTempat"])->middleware([CekTempat::class]);
             Route::get("/fiturPendapatan", [Laporan::class, "fiturPendapatanTempat"]);
             Route::get('/CetakPDF', [Laporan::class, "pendapatanTempatCetakPDF"]);
+            Route::get('/CetakPDF/{mulai}/{selesai}', [Laporan::class, "pendapatanTempatCetakPDF2"]);
         });
 
         Route::prefix("/stok")->group(function(){

@@ -31,19 +31,23 @@
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Laporan Pendapatan</h3>
+    @if ($tanggal_mulai != null && $tanggal_selesai != null)
+        @php
+            $tanggalAwal = $tanggal_mulai;
+            $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+            $tanggalBaru = $tanggalObjek->format('d-m-Y');
+
+            $tanggalAwal3 = $tanggal_selesai;
+            $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+            $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+        @endphp
+        <h6 class="text-center mb-5">{{$tanggalBaru}} - {{$tanggal_selesai}}</h6>
+    @endif
     <div class="d-flex justify-content-end mb-2">
         <h2><b>Rp {{ number_format($trans->sum('subtotal_lapangan') + $trans->sum('total_komisi') - $trans->sum("pendapatan_website_lapangan"), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
-        <a href="/tempat/laporan/pendapatan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
-    </div>
-    
-    {{-- grafik --}}
-    <div class="mt-5 mb-5">
-        <h4>Grafik Pendapatan per Bulan</h4>
-        <div class="chart-container">
-            <canvas id="incomeChart"></canvas>
-        </div>
+        <a href="/tempat/laporan/pendapatan/CetakPDF/{{$tanggal_mulai}}/{{$tanggal_selesai}}" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
     <div class="mb-5 flex-column flex-md-row">
@@ -53,25 +57,6 @@
             
             <form action="/tempat/laporan/pendapatan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-center">
                 @csrf
-                
-                {{-- <div class="mb-2 mb-md-0 mr-md-2">
-                    <select id="monthFilter" class="form-control" name="monthFilter">
-                        <option value="">Pilih Bulan</option>
-                        @for ($i = 1; $i <= 12; $i++)
-                            <option value="{{ $i }}">{{ date('F', mktime(0, 0, 0, $i, 10)) }}</option>
-                        @endfor
-                    </select>
-                </div>
-                
-                <div class="mb-2 mb-md-0 mr-md-2">
-                    <select id="yearFilter" class="form-control" name="yearFilter">
-                        <option value="">Pilih Tahun</option>
-                        @for ($i = date('Y'); $i >= date('Y') - 10; $i--)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
-                    </select>
-                </div> --}}
-
                 <!-- Input date untuk tanggal mulai -->
                 <div class="form-group mr-2 mb-2 mb-md-0">
                     <label for="tanggal_mulai" class="mb-0">Mulai:</label>
@@ -90,6 +75,14 @@
             </form>
         </div>
     </div>
+    
+    {{-- grafik --}}
+    <div class="mt-5 mb-5">
+        <h4>Grafik Pendapatan per Bulan</h4>
+        <div class="chart-container">
+            <canvas id="incomeChart"></canvas>
+        </div>
+    </div>
 
     <table class="table table-striped">
         <thead>
@@ -101,7 +94,7 @@
                 <th>Subtotal Lapangan</th>
                 <th>Jumlah Alat Disewakan</th>
                 <th>Total Komisi Alat</th>
-                <th>Total Pendapatan Kotor</th>
+                <th>Total Pendapatan Kotor(sebelum biaya aplikasi)</th>
                 <th>Total Pendapatan Bersih</th>
             </tr>
         </thead>

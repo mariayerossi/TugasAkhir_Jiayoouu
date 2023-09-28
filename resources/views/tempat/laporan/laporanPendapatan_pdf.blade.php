@@ -13,6 +13,18 @@
 	</style>
 	<center>
 		<h2>Laporan Pendapatan</h2>
+        @if ($tanggal_mulai != null && $tanggal_selesai != null)
+			@php
+				$tanggalAwal = $tanggal_mulai;
+				$tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+				$tanggalBaru = $tanggalObjek->format('d-m-Y');
+
+				$tanggalAwal3 = $tanggal_selesai;
+				$tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+				$tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+			@endphp
+			<h6 class="text-center mb-5">{{$tanggalBaru}} - {{$tanggal_selesai}}</h6>
+		@endif
 	</center>
 
 	<h4><b>Total: Rp {{ number_format($data->sum('subtotal_lapangan') + $data->sum('total_komisi') - $data->sum("pendapatan_website_lapangan"), 0, ',', '.') }}</b></h4>
@@ -27,7 +39,7 @@
                 <th>Subtotal Lapangan</th>
                 <th>Jumlah Alat Disewakan</th>
                 <th>Total Komisi Alat</th>
-                <th>Total Pendapatan Kotor</th>
+                <th>Total Pendapatan Kotor(sebelum biaya aplikasi)</th>
                 <th>Total Pendapatan Bersih</th>
             </tr>
 		</thead>
