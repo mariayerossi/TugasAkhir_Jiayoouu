@@ -406,6 +406,7 @@ Route::prefix("/pemilik")->group(function(){
         Route::prefix("/pendapatan")->group(function(){
             Route::get("/laporanPendapatan", [Laporan::class, "laporanPendapatanPemilik"])->middleware([CekPemilik::class]);
             Route::get("/fiturPendapatan", [Laporan::class, "fiturPendapatanPemilik"]);
+            Route::get('/CetakPDF/{mulai}/{selesai}', [Laporan::class, "pendapatanPemilikCetakPDF2"]);
             Route::get('/CetakPDF', [Laporan::class, "pendapatanPemilikCetakPDF"]);
         });
 

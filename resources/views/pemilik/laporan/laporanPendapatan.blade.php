@@ -1,6 +1,5 @@
 @extends('layouts.sidebarNavbar_pemilik')
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
 @section('content')
 <style>
     .square-image-container {
@@ -47,7 +46,7 @@
         <h2><b>Rp {{ number_format($disewakan->sum('total_komisi_pemilik') - $disewakan->sum("pendapatan_website_alat"), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
-        <a href="/pemilik/laporan/pendapatan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
+        <a href="/pemilik/laporan/pendapatan/CetakPDF/{{$tanggal_mulai}}/{{$tanggal_selesai}}" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
     <div class="mb-5 flex-column flex-md-row">
@@ -89,21 +88,19 @@
         @php
             $grouped = $disewakan->groupBy('nama_alat');
         @endphp
-
         {{-- Iterasi untuk setiap grup alat olahraga --}}
         @foreach ($grouped as $nama_alat => $items)
             
             {{-- Tampilkan nama alat olahraga --}}
-            <h3>{{ $nama_alat }}</h3>
+            <h4 class="mt-5"><b>{{ $nama_alat }}</b></h4>
 
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Komisi Alat</th>
-                        <th>Durasi</th>
                         <th>Tanggal Transaksi</th>
-                        <th>Pendapatan Kotor</th>
+                        <th>Komisi Alat (/jam)</th>
+                        <th>Durasi</th>
+                        <th>Pendapatan Kotor <br>(sebelum biaya aplikasi)</th>
                         <th>Pendapatan Bersih</th>
                     </tr>
                 </thead>
@@ -111,15 +108,14 @@
                     {{-- Iterasi untuk setiap item dalam grup alat olahraga --}}
                     @foreach ($items as $item)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                            <td>{{ $item->durasi_sewa }} jam</td>
                             @php
                                 $tanggalAwal2 = $item->tanggal_trans;
                                 $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
                                 $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
                             @endphp
                             <td>{{ $tanggalBaru2 }}</td>
+                            <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                            <td>{{ $item->durasi_sewa }} jam</td>
                             <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
                             <td>Rp {{ number_format($item->total_komisi_pemilik-$item->pendapatan_website_alat, 0, ',', '.') }}</td>
                         </tr>
@@ -135,9 +131,6 @@
 
 </div>
 <script>
-    $(document).ready(function() {
-        var table = $('.table').DataTable();
-    });
     var ctx = document.getElementById('incomeChart').getContext('2d');
     var incomeChart = new Chart(ctx, {
         type: 'bar',
@@ -162,7 +155,4 @@
         }
     });
 </script>
-{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 @endsection

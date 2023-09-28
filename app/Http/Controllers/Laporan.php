@@ -124,7 +124,24 @@ class Laporan extends Controller
                 ->where("dtrans.fk_id_pemilik","=",$role)
                 ->get();
  
-    	$pdf = PDF::loadview('pemilik.laporan.laporanPendapatan_pdf',['data'=>$data]);
+    	$pdf = PDF::loadview('pemilik.laporan.laporanPendapatan_pdf',['data'=>$data, 'tanggal_mulai'=>null, 'tanggal_selesai'=>null]);
+    	// return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
+    }
+
+    public function pendapatanPemilikCetakPDF2(Request $request){
+    	$role = Session::get("dataRole")->id_pemilik;
+
+        $data = DB::table('htrans')
+                ->select("htrans.tanggal_trans","alat_olahraga.nama_alat","alat_olahraga.komisi_alat","htrans.durasi_sewa","htrans.tanggal_trans","dtrans.total_komisi_pemilik","dtrans.total_komisi_pemilik", "dtrans.pendapatan_website_alat")
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                ->where("dtrans.fk_id_pemilik","=",$role)
+                ->whereBetween('htrans.tanggal_trans', [$request->mulai, $request->selesai])
+                ->get();
+        // dd($request->mulai);
+ 
+    	$pdf = PDF::loadview('pemilik.laporan.laporanPendapatan_pdf',['data'=>$data, 'tanggal_mulai'=>$request->mulai, 'tanggal_selesai'=>$request->selesai]);
     	// return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
     }
