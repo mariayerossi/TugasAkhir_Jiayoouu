@@ -63,6 +63,10 @@ class komplainRequest extends Model
         return komplainRequest::where('deleted_at',"=",null)->where("id_komplain_req","=",$id)->get();
     }
 
+    public function count_all_data_admin() {
+        return komplainRequest::where('deleted_at',"=",null)->count();
+    }
+
     public function updateStatus($data)
     {
         $komp = komplainRequest::find($data["id"]);

@@ -7,24 +7,24 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Total Customer</h5>
-                    <p class="display-5">{{$jumlahCustomer}}</p>
+                    <h5 class="card-title">Total Komplain Request</h5>
+                    <p class="display-5">{{$jumlahKomplainReq}}</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Total Alat Olahraga</h5>
-                    <p class="display-5">{{$jumlahAlat}}</p>
+                    <h5 class="card-title">Total Komplain Transaksi</h5>
+                    {{-- <p class="display-5">{{$jumlahKomplainTrans}}</p> --}}
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Total Lapangan</h5>
-                    <p class="display-5">{{$jumlahLapangan}}</p>
+                    <h5 class="card-title">Total Transaksi</h5>
+                    <p class="display-5">{{$jumlahTransaksi}}</p>
                 </div>
             </div>
         </div>

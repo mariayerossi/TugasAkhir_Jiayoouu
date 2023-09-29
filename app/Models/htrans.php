@@ -55,4 +55,8 @@ class htrans extends Model
     public function get_all_data_by_tempat_dikomplain($role){
         return htrans::where('deleted_at',"=",null)->where("fk_id_tempat", "=", $role)->where("status_trans","=", "Dikomplain")->get();
     }
+
+    public function count_all_data_admin() {
+        return htrans::where('deleted_at',"=",null)->count();
+    }
 }

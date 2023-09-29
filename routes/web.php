@@ -76,12 +76,12 @@ Route::get("/logout", [LoginRegister::class, "logout"]);
 // -------------------------------
 Route::prefix("/admin")->group(function(){
     Route::get("/beranda", function () {
-        $cust = new customer();
-        $param["jumlahCustomer"] = $cust->count_all_data_admin();
-        $alat = new ModelsAlatOlahraga();
-        $param["jumlahAlat"] = $alat->count_all_data_admin();
-        $lapangan = new ModelsLapanganOlahraga();
-        $param["jumlahLapangan"] = $lapangan->count_all_data_admin();
+        $req = new ModelsKomplainRequest();
+        $param["jumlahKomplainReq"] = $req->count_all_data_admin();
+        // $komtrans = new ModelsKomplainTransaksi();
+        // $param["jumlahKomplainTrans"] = $komtrans->count_all_data_admin();
+        $trans = new ModelsHtrans();
+        $param["jumlahTransaksi"] = $trans->count_all_data_admin();
         return view("admin.beranda")->with($param);
     })->middleware([CekAdmin::class]);
     Route::get("/registrasi_tempat", function () {
