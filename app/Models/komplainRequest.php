@@ -20,8 +20,8 @@ class komplainRequest extends Model
         $komp = new komplainRequest();
         $komp->jenis_komplain = $data["jenis"];
         $komp->keterangan_komplain = $data["keterangan"];
-        $komp->fk_id_request = $data["id_req"];
-        $komp->jenis_request = $data["req"];
+        $komp->fk_id_permintaan = $data["permintaan"];
+        $komp->fk_id_penawaran = $data["penawaran"];
         $komp->waktu_komplain = $data["waktu"];
         $komp->status_komplain = "Menunggu";
         $komp->fk_id_pemilik = $data["pemilik"];
@@ -31,12 +31,20 @@ class komplainRequest extends Model
         return $komp->id_komplain_req;
     }
 
-    public function get_all_data_by_id_req_tempat($id, $jenis, $role){
-        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_request","=",$id)->where("jenis_request","=",$jenis)->where("fk_id_tempat","=",$role)->get();
+    public function get_all_data_by_id_req_tempat_permintaan($id, $role){
+        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_permintaan","=",$id)->where("fk_id_tempat","=",$role)->get();
     }
 
-    public function get_all_data_by_id_req_pemilik($id, $jenis, $role){
-        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_request","=",$id)->where("jenis_request","=",$jenis)->where("fk_id_pemilik","=",$role)->get();
+    public function get_all_data_by_id_req_tempat_penawaran($id, $role){
+        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_penawaran","=",$id)->where("fk_id_tempat","=",$role)->get();
+    }
+
+    public function get_all_data_by_id_req_pemilik_permintaan($id, $role){
+        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_permintaan","=",$id)->where("fk_id_pemilik","=",$role)->get();
+    }
+
+    public function get_all_data_by_id_req_pemilik_penawaran($id, $role){
+        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_penawaran","=",$id)->where("fk_id_pemilik","=",$role)->get();
     }
 
     public function get_all_data_by_admin_baru(){

@@ -337,7 +337,7 @@ Route::prefix("/pemilik")->group(function(){
             $nego = new ModelsNegosiasi();
             $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
             $komplain = new ModelsKomplainRequest();
-            $param["komplain"] = $komplain->get_all_data_by_id_req_pemilik($id, "Permintaan", $role);
+            $param["komplain"] = $komplain->get_all_data_by_id_req_pemilik_permintaan($id, $role);
             return view("pemilik.permintaan.detailPermintaanNego")->with($param);
         })->middleware([CekPemilik::class]);
         Route::post("/terimaPermintaan", [RequestPermintaan::class, "terimaPermintaan"]);
@@ -374,7 +374,7 @@ Route::prefix("/pemilik")->group(function(){
             $nego = new ModelsNegosiasi();
             $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
             $komplain = new ModelsKomplainRequest();
-            $param["komplain"] = $komplain->get_all_data_by_id_req_pemilik($id, "Penawaran", $role);
+            $param["komplain"] = $komplain->get_all_data_by_id_req_pemilik_penawaran($id, $role);
             return view("pemilik.penawaran.detailPenawaranNego")->with($param);
         })->middleware([CekPemilik::class]);
         Route::post("/batalPenawaran", [RequestPenawaran::class, "batalPenawaran"]);
@@ -574,7 +574,7 @@ Route::prefix("/tempat")->group(function(){
             $nego = new ModelsNegosiasi();
             $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
             $komplain = new ModelsKomplainRequest();
-            $param["komplain"] = $komplain->get_all_data_by_id_req_tempat($id, "Permintaan", $role);
+            $param["komplain"] = $komplain->get_all_data_by_id_req_tempat_permintaan($id, $role);
             return view("tempat.permintaan.detailPermintaanNego")->with($param);
         })->middleware([CekTempat::class]);
         Route::post("/batalPermintaan", [RequestPermintaan::class, "batalPermintaan"]);
@@ -610,7 +610,7 @@ Route::prefix("/tempat")->group(function(){
             $nego = new ModelsNegosiasi();
             $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
             $komplain = new ModelsKomplainRequest();
-            $param["komplain"] = $komplain->get_all_data_by_id_req_tempat($id, "Penawaran", $role);
+            $param["komplain"] = $komplain->get_all_data_by_id_req_tempat_penawaran($id, $role);
             return view("tempat.penawaran.detailPenawaranNego")->with($param);
         })->middleware([CekTempat::class]);
         Route::post("/terimaPenawaran", [RequestPenawaran::class, "terimaPenawaran"]);

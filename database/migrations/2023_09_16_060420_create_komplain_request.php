@@ -15,8 +15,8 @@ return new class extends Migration
             $table->integerIncrements("id_komplain_req");
             $table->string("jenis_komplain");
             $table->string("keterangan_komplain",500);
-            $table->unsignedInteger("fk_id_request");
-            $table->string("jenis_request");
+            $table->unsignedInteger("fk_id_permintaan")->nullable();
+            $table->unsignedInteger("fk_id_penawaran")->nullable();
             $table->timestamp("waktu_komplain");
             $table->string("status_komplain");//Menunggu, Diterima, Ditolak
             $table->string("penanganan_komplain")->nullable();//pengembalian dana ke pemilik/pihak, tidak ada dll
@@ -30,6 +30,12 @@ return new class extends Migration
             $table->foreign('fk_id_tempat')
                   ->references('id_tempat')
                   ->on('pihak_tempat');
+            $table->foreign('fk_id_permintaan')
+                  ->references('id_permintaan')
+                  ->on('request_permintaan');
+            $table->foreign('fk_id_penawaran')
+                  ->references('id_penawaran')
+                  ->on('request_penawaran');
         });
     }
 

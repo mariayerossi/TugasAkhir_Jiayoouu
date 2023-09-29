@@ -60,21 +60,26 @@
                     @if (!$baru->isEmpty())
                         @foreach ($baru as $item)
                             @php
-                                if ($item->jenis_role == "Pemilik") {
-                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
+                                if ($item->fk_id_pemilik != null) {
+                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
                                 }
-                                else {
-                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
+                                else if ($item->fk_id_tempat != null) {
+                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
                                 }
                             @endphp
                             <tr>
                                 <td>{{$item->jenis_komplain}}</td>
-                                @if ($item->jenis_role == "Pemilik")
+                                @if ($item->fk_id_pemilik != null)
                                     <td>{{$dataPemilik->nama_pemilik}}</td>
-                                @else
+                                @elseif ($item->fk_id_tempat != null)
                                     <td>{{$dataTempat->nama_tempat}}</td>
                                 @endif
-                                <td>{{$item->jenis_request}}</td>
+
+                                @if ($item->fk_id_permintaan != null)
+                                    <td>Permintaan</td>
+                                @else
+                                    <td>Penawaran</td>
+                                @endif
                                 <td style="color:rgb(239, 203, 0)">{{$item->status_komplain}}</td>
                                 <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
                             </tr>
@@ -102,21 +107,26 @@
                     @if (!$diterima->isEmpty())
                         @foreach ($diterima as $item)
                             @php
-                                if ($item->jenis_role == "Pemilik") {
-                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
+                                if ($item->fk_id_pemilik != null) {
+                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
                                 }
-                                else {
-                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
+                                else if ($item->fk_id_tempat != null) {
+                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
                                 }
                             @endphp
                             <tr>
                                 <td>{{$item->jenis_komplain}}</td>
-                                @if ($item->jenis_role == "Pemilik")
+                                @if ($item->fk_id_pemilik != null)
                                     <td>{{$dataPemilik->nama_pemilik}}</td>
-                                @else
+                                @elseif ($item->fk_id_tempat != null)
                                     <td>{{$dataTempat->nama_tempat}}</td>
                                 @endif
-                                <td>{{$item->jenis_request}}</td>
+                                
+                                @if ($item->fk_id_permintaan != null)
+                                    <td>Permintaan</td>
+                                @else
+                                    <td>Penawaran</td>
+                                @endif
                                 <td style="color:rgb(0, 145, 0)">{{$item->status_komplain}}</td>
                                 <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
                             </tr>
@@ -144,21 +154,26 @@
                     @if (!$ditolak->isEmpty())
                         @foreach ($ditolak as $item)
                             @php
-                                if ($item->jenis_role == "Pemilik") {
-                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_user)->get()->first();
+                                if ($item->fk_id_pemilik != null) {
+                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
                                 }
                                 else {
-                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_user)->get()->first();
+                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
                                 }
                             @endphp
                             <tr>
                                 <td>{{$item->jenis_komplain}}</td>
-                                @if ($item->jenis_role == "Pemilik")
+                                @if ($item->fk_id_pemilik != null)
                                     <td>{{$dataPemilik->nama_pemilik}}</td>
                                 @else
                                     <td>{{$dataTempat->nama_tempat}}</td>
                                 @endif
-                                <td>{{$item->jenis_request}}</td>
+                                
+                                @if ($item->fk_id_permintaan != null)
+                                    <td>Permintaan</td>
+                                @else
+                                    <td>Penawaran</td>
+                                @endif
                                 <td style="color:red">{{$item->status_komplain}}</td>
                                 <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
                             </tr>

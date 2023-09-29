@@ -32,28 +32,54 @@ class KomplainRequest extends Controller
         if (Session::get("role") == "pemilik") {
             $pemilik = Session::get("dataRole")->id_pemilik;
 
-            $data = [
-                "jenis" => $request->jenis,
-                "keterangan" => $request->keterangan,
-                "id_req" => $request->fk_id_request,
-                "req" => $request->jenis_request,
-                "waktu" => $tgl_komplain,
-                "pemilik" => $pemilik,
-                "tempat" => null
-            ];
+            if ($request->jenis_request == "Permintaan") {
+                $data = [
+                    "jenis" => $request->jenis,
+                    "keterangan" => $request->keterangan,
+                    "permintaan" => $request->fk_id_request,
+                    "penawaran" => null,
+                    "waktu" => $tgl_komplain,
+                    "pemilik" => $pemilik,
+                    "tempat" => null
+                ];
+            }
+            else {
+                $data = [
+                    "jenis" => $request->jenis,
+                    "keterangan" => $request->keterangan,
+                    "permintaan" => null,
+                    "penawaran" => $request->fk_id_request,
+                    "waktu" => $tgl_komplain,
+                    "pemilik" => $pemilik,
+                    "tempat" => null
+                ];
+            }
         }
         else {
             $pemilik = Session::get("dataRole")->id_tempat;
 
-            $data = [
-                "jenis" => $request->jenis,
-                "keterangan" => $request->keterangan,
-                "id_req" => $request->fk_id_request,
-                "req" => $request->jenis_request,
-                "waktu" => $tgl_komplain,
-                "pemilik" => null,
-                "tempat" => $pemilik
-            ];
+            if ($request->jenis_request == "Permintaan") {
+                $data = [
+                    "jenis" => $request->jenis,
+                    "keterangan" => $request->keterangan,
+                    "permintaan" => $request->fk_id_request,
+                    "penawaran" => null,
+                    "waktu" => $tgl_komplain,
+                    "pemilik" => null,
+                    "tempat" => $pemilik
+                ];
+            }
+            else {
+                $data = [
+                    "jenis" => $request->jenis,
+                    "keterangan" => $request->keterangan,
+                    "permintaan" => null,
+                    "penawaran" => $request->fk_id_request,
+                    "waktu" => $tgl_komplain,
+                    "pemilik" => null,
+                    "tempat" => $pemilik
+                ];
+            }
         }
         $komp = new ModelsKomplainRequest();
         $id = $komp->insertKomplainReq($data);
@@ -162,11 +188,11 @@ class KomplainRequest extends Controller
         ];
 
         //pembatalan request otomatis
-        if ($request->jenis_request == "Permintaan") {
+        if ($request->fk_id_permintaan != null) {
             $per = new requestPermintaan();
             $per->updateStatus($data2);
         }
-        else if ($request->jenis_request == "Penawaran") {
+        else if ($request->fk_id_penawaran != null) {
             $pen = new requestPenawaran();
             $pen->updateStatus($data2);
         }

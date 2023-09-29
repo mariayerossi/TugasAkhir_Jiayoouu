@@ -316,8 +316,8 @@ class DatabaseSeeder extends Seeder
         DB::table('komplain_request')->insert([
             'jenis_komplain' => "Alat tidak sesuai",
             'keterangan_komplain' => "alat olahraga yang dikirim dan yang dijelaskan di detail beda jauh",
-            'fk_id_request' => 1,
-            'jenis_request' => "Penawaran",
+            'fk_id_permintaan' => null,
+            'fk_id_penawaran' => 1,
             'waktu_komplain' => date("Y-m-d H:i:s"),
             'status_komplain' => "Menunggu",
             'penanganan_komplain' => null,

@@ -55,7 +55,11 @@
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <h3 class="text-center mb-5">Detail Komplain</h3>
     <div class="d-flex justify-content-end mt-3 me-3">
-        <h6><b>Jenis Request: {{$komplain->first()->jenis_request}}</b></h6>
+        @if ($komplain->first()->fk_id_permintaan != null)
+            <h6><b>Jenis Request: Permintaan</b></h6>
+        @else
+            <h6><b>Jenis Request: Penawaran</b></h6>
+        @endif
     </div>
     <div class="d-flex justify-content-end mt-3 me-3">
         @if ($komplain->first()->status_komplain == "Menunggu")
@@ -67,11 +71,11 @@
         @endif
     </div>
     @php
-        if ($komplain->first()->jenis_role == "Pemilik") {
-            $namaUser = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->first()->fk_id_user)->get()->first()->nama_pemilik;
+        if ($komplain->first()->fk_id_pemilik != null) {
+            $namaUser = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->first()->fk_id_pemilik)->get()->first()->nama_pemilik;
         }
-        else if ($komplain->first()->jenis_role == "Tempat") {
-            $namaUser = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->first()->fk_id_user)->get()->first()->nama_tempat;
+        else {
+            $namaUser = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->first()->fk_id_tempat)->get()->first()->nama_tempat;
         }
 
         $tanggalAwal1 = $komplain->first()->waktu_komplain;
@@ -126,21 +130,21 @@
         </div>
     </div>
     @php
-        if ($komplain->first()->jenis_request == "Permintaan") {
-            $dataRequest = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first();
+        if ($komplain->first()->fk_id_permintaan != null) {
+            $dataRequest = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first();
             $id_request = $dataRequest->id_permintaan;
 
-            $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
-            $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+            $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_tempat;
+            $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_pemilik;
             $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
             $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
         }
-        else if ($komplain->first()->jenis_request == "Penawaran") {
-            $dataRequest = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first();
+        else if ($komplain->first()->fk_id_penawaran != null) {
+            $dataRequest = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first();
             $id_request = $dataRequest->id_penawaran;
 
-            $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
-            $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+            $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_tempat;
+            $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_pemilik;
             $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
             $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
         }
@@ -199,16 +203,16 @@
                     <h6>Penonaktifkan akun</h6>
                 </div>
                 @php
-                    if ($komplain->first()->jenis_request == "Permintaan") {
-                        $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
-                        $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+                    if ($komplain->first()->fk_id_permintaan == "Permintaan") {
+                        $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_tempat;
+                        $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_pemilik;
 
                         $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
                         $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
                     }
-                    else if ($komplain->first()->jenis_request == "Penawaran") {
-                        $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_tempat;
-                        $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_request)->get()->first()->fk_id_pemilik;
+                    else if ($komplain->first()->fk_id_penawaran == "Penawaran") {
+                        $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_tempat;
+                        $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_pemilik;
 
                         $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
                         $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
@@ -222,8 +226,13 @@
                     </select>
                 </div>
             </div>
-            <input type="hidden" name="jenis_request" value="{{$komplain->first()->jenis_request}}">
-            <input type="hidden" name="id_request" value="{{$komplain->first()->fk_id_request}}">
+            @if ($komplain->first()->fk_id_permintaan != null)
+                <input type="hidden" name="id_permintaan" value="{{$komplain->first()->fk_id_permintaan}}">
+                <input type="hidden" name="id_penawaran">
+            @elseif ($komplain->first()->fk_id_penawaran != null)
+                <input type="hidden" name="id_permintaan">
+                <input type="hidden" name="id_penawaran" value="{{$komplain->first()->fk_id_penawaran}}">
+            @endif
             <input type="hidden" name="id_komplain" value="{{$komplain->first()->id_komplain_req}}">
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-success me-3">Terima</button>
