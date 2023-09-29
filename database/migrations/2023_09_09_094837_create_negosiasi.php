@@ -15,8 +15,8 @@ return new class extends Migration
             $table->integerIncrements("id_negosiasi");
             $table->string("isi_negosiasi", 500);
             $table->timestamp("waktu_negosiasi");
-            $table->unsignedInteger("fk_id_request");
-            $table->string("jenis_request");
+            $table->unsignedInteger("fk_id_permintaan")->nullable();
+            $table->unsignedInteger("fk_id_penawaran")->nullable();
             $table->unsignedInteger("fk_id_pemilik")->nullable();
             $table->unsignedInteger("fk_id_tempat")->nullable();
             $table->timestamps();
@@ -27,6 +27,12 @@ return new class extends Migration
             $table->foreign('fk_id_tempat')
                   ->references('id_tempat')
                   ->on('pihak_tempat');
+            $table->foreign('fk_id_permintaan')
+                  ->references('id_permintaan')
+                  ->on('request_permintaan');
+            $table->foreign('fk_id_penawaran')
+                  ->references('id_penawaran')
+                  ->on('request_penawaran');
         });
     }
 

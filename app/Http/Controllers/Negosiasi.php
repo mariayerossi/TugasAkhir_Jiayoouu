@@ -26,8 +26,8 @@ class Negosiasi extends Controller
             $data = [
                 "isi" => $request->isi,
                 "waktu" => $waktu,
-                "request" => $request->permintaan,
-                "jenis" => "Permintaan",
+                "permintaan" => $request->permintaan,
+                "penawaran" => null,
                 "pemilik" => $pemilik,
                 "tempat" => null
             ];
@@ -38,8 +38,8 @@ class Negosiasi extends Controller
             $data = [
                 "isi" => $request->isi,
                 "waktu" => $waktu,
-                "request" => $request->permintaan,
-                "jenis" => "Permintaan",
+                "permintaan" => $request->permintaan,
+                "penawaran" => null,
                 "pemilik" => null,
                 "tempat" => $pemilik
             ];
@@ -79,8 +79,8 @@ class Negosiasi extends Controller
             $data = [
                 "isi" => $request->isi,
                 "waktu" => $waktu,
-                "request" => $request->penawaran,
-                "jenis" => "Penawaran",
+                "permintaan" => null,
+                "penawaran" => $request->penawaran,
                 "pemilik" => $pemilik,
                 "tempat" => null
             ];
@@ -91,8 +91,8 @@ class Negosiasi extends Controller
             $data = [
                 "isi" => $request->isi,
                 "waktu" => $waktu,
-                "request" => $request->penawaran,
-                "jenis" => "Penawaran",
+                "permintaan" => null,
+                "penawaran" => $request->penawaran,
                 "pemilik" => null,
                 "tempat" => $pemilik
             ];

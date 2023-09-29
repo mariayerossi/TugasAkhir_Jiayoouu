@@ -230,8 +230,8 @@ class DatabaseSeeder extends Seeder
         DB::table('negosiasi')->insert([
             'isi_negosiasi' => "halo kak! untuk harga sewa tidak bisa dipertimbangkan lagi?",
             'waktu_negosiasi' => date("Y-m-d H:i:s"),
-            'fk_id_request' => 1,
-            'jenis_request' => "Permintaan",
+            'fk_id_permintaan' => 1,
+            'fk_id_penawaran' => null,
             'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
@@ -256,8 +256,8 @@ class DatabaseSeeder extends Seeder
         DB::table('negosiasi')->insert([
             'isi_negosiasi' => "hai! saya mau menawarkan alat olahraga, monggo mungkin tertarik untuk menyewakannya",
             'waktu_negosiasi' => date("Y-m-d H:i:s"),
-            'fk_id_request' => 1,
-            'jenis_request' => "Penawaran",
+            'fk_id_permintaan' => null,
+            'fk_id_penawaran' => 1,
             'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
