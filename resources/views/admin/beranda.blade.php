@@ -5,28 +5,34 @@
     <h1 class="text-center mb-5">Dashboard Admin</h1>
     <div class="row">
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Total Komplain Request</h5>
-                    <p class="display-5">{{$jumlahKomplainReq}}</p>
+            <a href="/admin/komplain/request/daftarKomplain">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Komplain Request</h5>
+                        <p class="display-5">{{$jumlahKomplainReq}}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Total Komplain Transaksi</h5>
-                    {{-- <p class="display-5">{{$jumlahKomplainTrans}}</p> --}}
+            <a href="">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Komplain Transaksi</h5>
+                        {{-- <p class="display-5">{{$jumlahKomplainTrans}}</p> --}}
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Total Transaksi</h5>
-                    <p class="display-5">{{$jumlahTransaksi}}</p>
+            <a href="/admin/transaksi/daftarTransaksi">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Transaksi</h5>
+                        <p class="display-5">{{$jumlahTransaksi}}</p>
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     
