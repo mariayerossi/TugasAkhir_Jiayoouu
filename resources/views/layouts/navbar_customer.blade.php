@@ -76,12 +76,68 @@ Sportiva
         .dropdown-content.active {
             display: block;
         }
+        /* CSS untuk sidebar */
+        .sidebar {
+            position: fixed;
+            left: -300px; /* inisial di luar viewport */
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            overflow-x: hidden;
+            transition: left 0.3s;
+            z-index: 2000;
+            padding-top: 20px;
+        }
+        
+        .sidebar a {
+            font-family: "Poppins", sans-serif;
+            padding: 10px 15px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 16px;
+            color: #007466;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar.active {
+            left: 0; /* tampilkan saat active */
+        }
+
+        /* CSS untuk hamburger */
+        .hamburger {
+            display: none; /* sembunyikan inisial */
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+            nav .logo, .coba {
+                display: none !important; /* sembunyikan logo dan profil di navbar */
+            }
+        }
+        .sidebar .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
     </style>
     
     
     <div id="main">
         <!-- Tambahkan navbar sederhana di sini -->
         <nav>
+            <div class="hamburger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16" onclick="toggleNav()" style="cursor: pointer">
+                    <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+            </div>
             {{-- logo --}}
             <a href="" class="logo d-flex align-items-center">
                 <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
@@ -121,18 +177,66 @@ Sportiva
                         <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
                     </svg>
                 </a>
+                @php
+                    function decodePrice($encodedPrice, $key) {
+                        $encodedPrice = base64_decode($encodedPrice);
+                        $decodedPrice = '';
+                        $priceLength = strlen($encodedPrice);
+                        $keyLength = strlen($key);
+
+                        for ($i = 0; $i < $priceLength; $i++) {
+                            $decodedPrice .= $encodedPrice[$i] ^ $key[$i % $keyLength];
+                        }
+
+                        return $decodedPrice;
+                    }
+
+                    $saldo = decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+                @endphp
                 <div class="profile-dropdown ms-3">
                     <img src="{{ asset('../assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
                     <div class="dropdown-content">
                         <h6 class="m-3">{{Session::get("dataRole")->nama_user}}</h6>
+                        <h6 class="m-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+                                <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+                              </svg>: Rp {{ number_format($saldo, 0, ',', '.') }}
+                        </h6>
                         <hr>
                         <a href="/editprofile">Profile</a>
+                        <a href="">Top Up Saldo</a>
                         <a href="">Ulasan</a>
                         <a href="/logout">Logout</a>
                     </div>
                 </div>
             </div>
         </nav>
+        <div class="sidebar">
+            <!-- Logo dan profil Anda -->
+            <div class="logo-container">
+                <a href="" class="logo d-flex align-items-center">
+                    <img class="w-20 h-20" src="{{ asset('logo2.ico') }}" alt="Logo" width="40">
+                    <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
+                </a>
+            </div>
+            <div class="d-flex align-items-center ms-3">
+                <img src="{{ asset('../assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
+                <h5 class="m-3">{{Session::get("dataRole")->nama_user}}</h5>
+            </div>
+            <h6 style="margin-left: 70px">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+                    <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+                  </svg>: Rp {{ number_format($saldo, 0, ',', '.') }}
+            </h6>
+            <a href="" class="ms-5">Top Up Saldo</a>
+            <hr>
+            <a href="" class="ms-3"><i class="bi bi-pencil-square me-2"></i>Edit Profile</a>
+            <a href="" class="ms-3"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+            <hr>
+            <a href="" class="ms-3"><i class="bi bi-cart2 me-2"></i>Keranjang</a>
+            <a href="" class="ms-3"><i class="bi bi-clock-history me-2"></i>Riwayat Transaksi</a>
+        </div>
+        
 
         <!-- Konten utama Anda -->
         @yield('content')
@@ -158,6 +262,20 @@ Sportiva
                 document.querySelectorAll('.dropdown-content.active').forEach((activeContent) => {
                     activeContent.classList.remove('active');
                 });
+            }
+        });
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            let sidebar = document.querySelector('.sidebar');
+            if (sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            } else {
+                sidebar.classList.add('active');
+            }
+        });
+        document.addEventListener('click', function(event) {
+            let sidebar = document.querySelector('.sidebar');
+            if (!event.target.closest('.sidebar') && !event.target.closest('.hamburger')) {
+                sidebar.classList.remove('active');
             }
         });
     </script>
