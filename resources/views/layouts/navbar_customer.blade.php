@@ -87,6 +87,27 @@ Sportiva
                 <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
                 <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
             </a>
+            <div class="d-flex justify-content-center align-items-center mt-3 mb-3"> 
+                <form action="/tempat/searchAlat" method="GET" class="input-group responsive-form">
+                    @csrf
+                    <div class="input-group-prepend">
+                        <select class="form-control" name="kategori">
+                            <option value="" disabled selected>Kategori</option> 
+                            {{-- @if (!$kategori->isEmpty())
+                                @foreach ($kategori as $item)
+                                <option value="{{$item->nama_kategori}}">{{$item->nama_kategori}}</option>
+                                @endforeach
+                            @endif --}}
+                        </select>
+                    </div>
+                    <input type="text" name="cari" class="form-control" placeholder="Cari Alat..."> 
+                    <div class="input-group-append">
+                        <button class="btn btn-success" type="submit">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
             <div class="coba">
                 <a href="">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
