@@ -241,21 +241,75 @@ class LapanganOlahraga extends Controller
             // dd($query->get());
         }
         
-        $hasil = $query->get();
+        $hasil = $query
+                ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->get();
+        // dd($hasil);
         $kat = new kategori();
         $kategori = $kat->get_all_data();
 
-        $files = new filesLapanganOlahraga();
+        // $files = new filesLapanganOlahraga();
 
         //Cek role siapa yang sedang search alat
         $role = Session::get("role");
         if ($role == "pemilik") {
             // mengirimkan data ke tampilan
-            return view('pemilik.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+            return view('pemilik.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori]);
         }
         else if ($role == "admin") {
-            return view('admin.produk.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+            return view('admin.produk.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori]);
         }
+    }
+
+    public function searchLapanganCustomer(Request $request)
+    {
+        $query = DB::table('lapangan_olahraga')->where('lapangan_olahraga.deleted_at',"=",null)->where("lapangan_olahraga.status_lapangan","=","Aktif");
+    
+        if ($request->filled('kategori')) {
+            $query->where('lapangan_olahraga.kategori_lapangan',"=", $request->kategori);
+        }
+        // dd($query->get());
+        
+        if ($request->filled('cari')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama_lapangan', 'like', '%' . $request->cari . '%')
+                  ->orWhereExists(function ($subQuery) use ($request) {
+                      $subQuery->select(DB::raw(1))
+                               ->from('pihak_tempat')
+                               ->whereColumn('lapangan_olahraga.pemilik_lapangan', 'pihak_tempat.id_tempat')
+                               ->where('pihak_tempat.nama_tempat', 'like', '%' . $request->cari . '%');
+                  });
+            });
+        }
+
+        // if ($request->filled('cariPemilik')) {
+        //     $query = DB::table('lapangan_olahraga')
+        //     ->where('lapangan_olahraga.deleted_at',"=",null)
+        //     ->join('pihak_tempat', 'lapangan_olahraga.pemilik_lapangan', '=', 'pihak_tempat.id_tempat')
+        //     ->where('pihak_tempat.nama_tempat', 'like', '%' . $request->cariPemilik . '%');
+        //     // dd($query->get());
+        // }
+        
+        $hasil = $query
+                ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->get();
+        // dd($hasil);
+        $kat = new kategori();
+        $kategori = $kat->get_all_data();
+
+        // $files = new filesLapanganOlahraga();
+
+        return view('customer.beranda', ['lapangan' => $hasil, 'kategori' => $kategori]);
     }
 
     public function daftarLapangan() {

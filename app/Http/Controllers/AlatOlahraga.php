@@ -208,7 +208,9 @@ class AlatOlahraga extends Controller
         else {
             $query = DB::table('alat_olahraga')->where('deleted_at',"=",null)->where("fk_id_pemilik","!=",null)->where("status_alat","=","Aktif");
         }
+        // dd($query->get());
         // $search = $request->input("cari");
+        // dd($search);
     
         if ($request->filled('kategori')) {
             $query->where('kategori_alat', $request->kategori);
@@ -218,20 +220,28 @@ class AlatOlahraga extends Controller
             $query->where('nama_alat', 'like', '%' . $request->cari . '%');
         }
         
-        $hasil = $query->get();
+        $hasil = $query
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.kota_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->get();
+        // dd($hasil);
         $kat = new kategori();
         $kategori = $kat->get_all_data();
 
-        $files = new filesAlatOlahraga();
+        // $files = new filesAlatOlahraga();
 
         //Cek role siapa yang sedang search alat
         $role = Session::get("role");
         if ($role == "tempat") {
             // mengirimkan data ke tampilan
-            return view('tempat.cariAlat', ['alat' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+            return view('tempat.cariAlat', ['alat' => $hasil, 'kategori' => $kategori]);
         }
         else if ($role == "admin") {
-            return view('admin.produk.cariAlat', ['alat' => $hasil, 'kategori' => $kategori, 'files' => $files]);
+            return view('admin.produk.cariAlat', ['alat' => $hasil, 'kategori' => $kategori]);
         }
     }
 

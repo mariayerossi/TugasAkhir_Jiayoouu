@@ -716,4 +716,10 @@ Route::prefix("/customer")->group(function(){
         $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
         return view("customer.detailLapangan")->with($param);
     })->middleware([CekCustomer::class]);
+    Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapanganCustomer"]);
+
+    //bagian transaksi
+    Route::prefix("/transaksi")->group(function(){
+
+    });
 });

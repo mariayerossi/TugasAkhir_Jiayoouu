@@ -203,8 +203,13 @@
                                     </div>
                                     
                                     <!-- Nama Alat -->
-                                    <div class="col-8 d-flex align-items-center">
+                                    <div class="col-8 d-flex align-items-center justify-content-between">
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                        <form action="/customer/transaksi/tambahAlat" method="post">
+                                            @csrf
+                                            <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
+                                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -230,8 +235,13 @@
                                     </div>
                                     
                                     <!-- Nama Alat -->
-                                    <div class="col-8 d-flex align-items-center">
+                                    <div class="col-8 d-flex align-items-center justify-content-between">
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                        <form action="/customer/transaksi/tambahAlat" method="post">
+                                            @csrf
+                                            <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
+                                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -259,6 +269,11 @@
                                     <!-- Nama Alat -->
                                     <div class="col-8 d-flex align-items-center justify-content-between">
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                        <form action="/customer/transaksi/tambahAlat" method="post">
+                                            @csrf
+                                            <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
+                                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
