@@ -149,11 +149,11 @@ Sportiva
                     <div class="input-group-prepend">
                         <select class="form-control" name="kategori">
                             <option value="" disabled selected>Kategori</option> 
-                            {{-- @if (!$kategori->isEmpty())
+                            @if (!$kategori->isEmpty())
                                 @foreach ($kategori as $item)
                                 <option value="{{$item->nama_kategori}}">{{$item->nama_kategori}}</option>
                                 @endforeach
-                            @endif --}}
+                            @endif
                         </select>
                     </div>
                     <input type="text" name="cari" class="form-control" placeholder="Cari Alat..."> 

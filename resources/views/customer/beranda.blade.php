@@ -33,9 +33,6 @@
         @if (!$lapangan->isEmpty())
             @foreach ($lapangan as $item)
                 <div class="col-md-3 product-col mb-4">
-                    {{-- @php
-                        $dataFiles = $files->get_all_data($item->id_lapangan)->first();
-                    @endphp --}}
                     <a href="/pemilik/detailLapanganUmum/{{$item->id_lapangan}}">
                         <div class="card h-100">
                             <div class="aspect-ratio-square">
