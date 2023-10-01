@@ -134,6 +134,6 @@ class requestPermintaan extends Model
     }
 
     public function get_all_data_by_lapangan($role){
-        return requestPermintaan::where('deleted_at',"=",null)->where("req_lapangan", "=", $role)->where("status_permintaan","=", "Diterima")->get();
+        return requestPermintaan::where('deleted_at',"=",null)->where("req_lapangan", "=", $role)->where("status_permintaan","=", "Disewakan")->get();
     }
 }

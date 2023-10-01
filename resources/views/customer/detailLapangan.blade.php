@@ -95,9 +95,52 @@
         <i class="bi bi-chat-dots ms-5"></i> 5 review
     </p>
 
-    <div class="row mt-4 mb-4">
+    <div class="row">
         <div class="col-11">
             <h2>Rp {{number_format($lapangan->first()->harga_sewa_lapangan, 0, ',', '.')}} /jam</h2>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Bagian form (menggunakan 6 kolom) -->
+        <div class="col-md-8">
+            @include("layouts.message")
+            <form action="/pemilik/penawaran/requestPenawaranAlat" method="post" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                @csrf
+                <div class="d-flex justify-content-center">
+                    <h5><b>Atur Tanggal dan Jam Booking</b></h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-12 mt-2">
+                        <h6>Tanggal Sewa</h6>
+                    </div>
+                    <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                        <input type="date" name="tanggal" id="" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-12 mt-2">
+                        <h6>Jam Sewa</h6>
+                    </div>
+                    <div class="col-md-4 col-12 mt-2 mt-md-0 mb-3">
+                        <input type="time" name="mulai" class="form-control" onchange="forceHourOnly(this)">
+                    </div>
+                    <div class="col-md-4 col-12 mt-2 mt-md-0 mb-3">
+                        <input type="time" name="selesai" id="" class="form-control" onchange="forceHourOnly(this)">
+                    </div>
+                </div>
+                <h6>(Tidak ada alat olahraga yang disewa)</h6>
+                <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
+                <input type="hidden" name="id_tempat" value="{{$lapangan->first()->pemilik_lapangan}}">
+                <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_user}}">
+                <div class="d-flex justify-content-center mt-3">
+                    <button type="submit" class="btn btn-success me-2">Booking</button>
+                    <a href="" class="btn btn-outline-primary">+ Keranjang</a>
+                </div>
+            </form>
+        </div>
+        <!-- Ruang kosong (menggunakan 6 kolom lainnya) -->
+        <div class="col-md-4">
+            <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
         </div>
     </div>
     <h4>Lokasi Lapangan</h4>
@@ -274,6 +317,16 @@
             }
         });
     });
+    function forceHourOnly(input) {
+    const time = input.value;
+    if (time) {
+        const parts = time.split(':');
+        if (parts[1] !== '00') {
+            input.value = `${parts[0]}:00`;
+            // alert('Hanya jam penuh yang diperbolehkan!');
+        }
+    }
+}
 </script>
 @else
 <h1>Lapangan Olahraga tidak tersedia</h1>

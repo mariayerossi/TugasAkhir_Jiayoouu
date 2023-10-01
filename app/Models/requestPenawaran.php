@@ -149,7 +149,7 @@ class requestPenawaran extends Model
     }
 
     public function get_all_data_by_lapangan($role){
-        return requestPenawaran::where('deleted_at',"=",null)->where("req_lapangan", "=", $role)->where("status_penawaran","=", "Diterima")->get();
+        return requestPenawaran::where('deleted_at',"=",null)->where("req_lapangan", "=", $role)->where("status_penawaran","=", "Disewakan")->get();
     }
 
     public function updateKodeMulai($data)
