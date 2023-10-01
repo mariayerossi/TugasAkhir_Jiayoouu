@@ -167,6 +167,50 @@
             </ul>
         </div>
     </div>
+    @php
+        $dataJadwal = DB::table('htrans')
+                        ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
+                        ->where("status_trans","=","Diterima")
+                        ->orWhere("status_trans","=","Berlangsung")
+                        ->get();
+    @endphp
+    <div class="row mt-4 mb-4">
+        <div class="col-md-6 col-sm-12">
+            <h4>Jadwal Ketersediaan Lapangan</h4>
+             <!-- Tabel untuk menampilkan jadwal ketersediaan lapangan -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Jam</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!$dataJadwal->isEmpty())
+                    @foreach ($dataJadwal as $item)
+                        @php
+                            $tanggalAwal = $item->tanggal_sewa;
+                            $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+                            $tanggalBaru = $tanggalObjek->format('d-m-Y');
+                        @endphp
+                        <tr>
+                            @if ($item->status_trans == "Diterima")
+                                <td>{{$tanggalBaru}}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->jam_sewa)->format('H:i:s') }} - {{ \Carbon\Carbon::parse($item->jam_sewa)->addHours($item->durasi_sewa)->format('H:i:s') }}</td>
+                                <td>Telah Dibooking</td>
+                            @else
+                                <td style="background-color:gold">{{$tanggalBaru}}</td>
+                                <td style="background-color:gold">{{ \Carbon\Carbon::parse($item->jam_sewa)->format('H:i:s') }} - {{ \Carbon\Carbon::parse($item->jam_sewa)->addHours($item->durasi_sewa)->format('H:i:s') }}</td>
+                                <td style="background-color:gold">Sedang Dipakai</td>
+                            @endif
+                        </tr>
+                    @endforeach
+                @endif
+            </tbody>
+        </table>
+        </div>
+    </div>
     <div class="row mt-4 mb-4">
         <div class="col-md-6 col-sm-12">
             <h4>Jam Operasional Lapangan</h4>
