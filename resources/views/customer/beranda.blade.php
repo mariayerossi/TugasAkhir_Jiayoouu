@@ -33,7 +33,7 @@
         @if (!$lapangan->isEmpty())
             @foreach ($lapangan as $item)
                 <div class="col-md-3 product-col mb-4">
-                    <a href="/pemilik/detailLapanganUmum/{{$item->id_lapangan}}">
+                    <a href="/customer/detailLapangan/{{$item->id_lapangan}}">
                         <div class="card h-100">
                             <div class="aspect-ratio-square">
                                 <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" class="card-img-top">

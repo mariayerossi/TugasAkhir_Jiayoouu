@@ -126,9 +126,12 @@ Sportiva
             align-items: center;
             flex-direction: column;
         }
-
+        @media screen and (min-width: 992px) { 
+            .search-form-container {
+                width: 700px;
+            }
+        }
     </style>
-    
     
     <div id="main">
         <!-- Tambahkan navbar sederhana di sini -->
@@ -143,8 +146,8 @@ Sportiva
                 <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
                 <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
             </a>
-            <div class="d-flex justify-content-center align-items-center mt-3 mb-3"> 
-                <form action="/tempat/searchAlat" method="GET" class="input-group responsive-form">
+            <div class="search-form-container d-flex justify-content-center align-items-center mt-3 mb-3"> 
+                <form action="/customer/searchLapangan" method="GET" class="input-group">
                     @csrf
                     <div class="input-group-prepend">
                         <select class="form-control" name="kategori">
@@ -156,7 +159,7 @@ Sportiva
                             @endif
                         </select>
                     </div>
-                    <input type="text" name="cari" class="form-control" placeholder="Cari Alat..."> 
+                    <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan..."> 
                     <div class="input-group-append">
                         <button class="btn btn-success" type="submit">
                             <i class="bi bi-search"></i>
