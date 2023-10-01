@@ -216,7 +216,7 @@ Sportiva
         <div class="sidebar">
             <!-- Logo dan profil Anda -->
             <div class="logo-container">
-                <a href="" class="logo d-flex align-items-center">
+                <a href="/customer/beranda" class="logo d-flex align-items-center">
                     <img class="w-20 h-20" src="{{ asset('logo2.ico') }}" alt="Logo" width="40">
                     <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
                 </a>
@@ -233,7 +233,7 @@ Sportiva
             <a href="" class="ms-5">Top Up Saldo</a>
             <hr>
             <a href="" class="ms-3"><i class="bi bi-pencil-square me-2"></i>Edit Profile</a>
-            <a href="" class="ms-3"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+            <a href="/logout" class="ms-3"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
             <hr>
             <a href="" class="ms-3"><i class="bi bi-cart2 me-2"></i>Keranjang</a>
             <a href="" class="ms-3"><i class="bi bi-clock-history me-2"></i>Riwayat Transaksi</a>
