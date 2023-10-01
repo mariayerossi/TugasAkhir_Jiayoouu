@@ -12,6 +12,7 @@ use App\Http\Controllers\RequestPermintaan;
 use App\Http\Controllers\SewaSendiri;
 use App\Http\Controllers\Transaksi;
 use App\Http\Middleware\CekAdmin;
+use App\Http\Middleware\CekCustomer;
 use App\Http\Middleware\CekPemilik;
 use App\Http\Middleware\CekTempat;
 use App\Http\Middleware\Guest;
@@ -116,15 +117,16 @@ Route::prefix("/admin")->group(function(){
 
     //Bagian Alat Olahraga
     Route::prefix("/alat")->group(function(){
-        Route::get("/cariAlat", function () {
-            $kat = new kategori();
-            $param["kategori"] = $kat->get_all_data();
-            $alat = new ModelsAlatOlahraga();
-            $param["alat"] = $alat->get_all_data_for_admin();
-            $files = new filesAlatOlahraga();
-            $param["files"] = $files;
-            return view("admin.produk.cariAlat")->with($param);
-        })->middleware([CekAdmin::class]);
+        // Route::get("/cariAlat", function () {
+        //     $kat = new kategori();
+        //     $param["kategori"] = $kat->get_all_data();
+        //     $alat = new ModelsAlatOlahraga();
+        //     $param["alat"] = $alat->get_all_data_for_admin();
+        //     $files = new filesAlatOlahraga();
+        //     $param["files"] = $files;
+        //     return view("admin.produk.cariAlat")->with($param);
+        // })->middleware([CekAdmin::class]);
+        Route::get("/cariAlat", [AlatOlahraga::class, "cariAlatAdmin"])->middleware([CekAdmin::class]);
         Route::get("/detailAlatUmum/{id}", function ($id) {//melihat detail alat olahraga milik org lain
             $alat = new ModelsAlatOlahraga();
             $param["alat"] = $alat->get_all_data_by_id($id);
@@ -137,15 +139,16 @@ Route::prefix("/admin")->group(function(){
 
     //Bagian Lapangan Olahraga
     Route::prefix("/lapangan")->group(function(){
-        Route::get("/cariLapangan", function () {
-            $kat = new kategori();
-            $param["kategori"] = $kat->get_all_data();
-            $lapa = new ModelsLapanganOlahraga();
-            $param["lapangan"] = $lapa->get_all_data_for_admin();
-            $files = new filesLapanganOlahraga();
-            $param["files"] = $files;
-            return view("admin.produk.cariLapangan")->with($param);
-        })->middleware([CekAdmin::class]);
+        // Route::get("/cariLapangan", function () {
+        //     $kat = new kategori();
+        //     $param["kategori"] = $kat->get_all_data();
+        //     $lapa = new ModelsLapanganOlahraga();
+        //     $param["lapangan"] = $lapa->get_all_data_for_admin();
+        //     $files = new filesLapanganOlahraga();
+        //     $param["files"] = $files;
+        //     return view("admin.produk.cariLapangan")->with($param);
+        // })->middleware([CekAdmin::class]);
+        Route::get("/cariLapangan", [LapanganOlahraga::class, "cariLapanganAdmin"])->middleware([CekAdmin::class]);
         Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapangan"]);
         Route::get("/detailLapanganUmum/{id}", function ($id) {//melihat detail lapangan olahraga milik org lain
             $lapa = new ModelsLapanganOlahraga();
@@ -284,15 +287,16 @@ Route::prefix("/pemilik")->group(function(){
         // echo $id;
     })->middleware([CekPemilik::class]);
     Route::post("/editAlat", [AlatOlahraga::class, "editAlat"]);
-    Route::get("/cariLapangan", function () {
-        $kat = new kategori();
-        $param["kategori"] = $kat->get_all_data();
-        $lapa = new ModelsLapanganOlahraga();
-        $param["lapangan"] = $lapa->get_all_data2();
-        $files = new filesLapanganOlahraga();
-        $param["files"] = $files;
-        return view("pemilik.cariLapangan")->with($param);
-    })->middleware([CekPemilik::class]);
+    // Route::get("/cariLapangan", function () {
+    //     $kat = new kategori();
+    //     $param["kategori"] = $kat->get_all_data();
+    //     $lapa = new ModelsLapanganOlahraga();
+    //     $param["lapangan"] = $lapa->get_all_data2();
+    //     $files = new filesLapanganOlahraga();
+    //     $param["files"] = $files;
+    //     return view("pemilik.cariLapangan")->with($param);
+    // })->middleware([CekPemilik::class]);
+    Route::get("/cariLapangan", [LapanganOlahraga::class, "cariLapangan"])->middleware([CekPemilik::class]);
     Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapangan"]);
     Route::get("/detailLapanganUmum/{id}", function ($id) {//melihat detail lapangan olahraga milik org lain
         $lapa = new ModelsLapanganOlahraga();
@@ -442,15 +446,16 @@ Route::prefix("/tempat")->group(function(){
         $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($role);
         return view("tempat.beranda")->with($param);
     })->middleware([CekTempat::class]);
-    Route::get("/cariAlat", function () {
-        $kat = new kategori();
-        $param["kategori"] = $kat->get_all_data();
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data2();
-        $files = new filesAlatOlahraga();
-        $param["files"] = $files;
-        return view("tempat.cariAlat")->with($param);
-    })->middleware([CekTempat::class]);
+    // Route::get("/cariAlat", function () {
+    //     $kat = new kategori();
+    //     $param["kategori"] = $kat->get_all_data();
+    //     $alat = new ModelsAlatOlahraga();
+    //     $param["alat"] = $alat->get_all_data2();
+    //     $files = new filesAlatOlahraga();
+    //     $param["files"] = $files;
+    //     return view("tempat.cariAlat")->with($param);
+    // })->middleware([CekTempat::class]);
+    Route::get("/cariAlat", [AlatOlahraga::class, "cariAlat"])->middleware([CekTempat::class]);
     Route::get("/searchAlat", [AlatOlahraga::class, "searchAlat"]);
     Route::get("/detailAlatUmum/{id}", function ($id) {//melihat detail alat olahraga milik org lain
         $alat = new ModelsAlatOlahraga();
@@ -691,5 +696,6 @@ Route::prefix("/tempat")->group(function(){
 // HALAMAN CUSTOMER
 // -------------------------------
 Route::prefix("/customer")->group(function(){
-    Route::view("/beranda", "customer.beranda");
+    // Route::view("/beranda", "customer.beranda");
+    Route::get("/beranda", [LapanganOlahraga::class, "cariLapangan"])->middleware([CekCustomer::class]);
 });

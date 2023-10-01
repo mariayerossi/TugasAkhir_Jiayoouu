@@ -74,13 +74,13 @@
         @if (!$lapangan->isEmpty())
             @foreach ($lapangan as $item)
                 <div class="col-md-3 product-col mb-4">
-                    @php
+                    {{-- @php
                         $dataFiles = $files->get_all_data($item->id_lapangan)->first();
-                    @endphp
+                    @endphp --}}
                     <a href="/pemilik/detailLapanganUmum/{{$item->id_lapangan}}">
                         <div class="card h-100">
                             <div class="aspect-ratio-square">
-                                <img src="{{ asset('upload/' . $dataFiles->nama_file_lapangan) }}" class="card-img-top">
+                                <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" class="card-img-top">
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">{{$item->nama_lapangan}}</h5>

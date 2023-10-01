@@ -307,4 +307,42 @@ class AlatOlahraga extends Controller
         $param["disewakan"] = $data;
         return view("pemilik.alat.daftarDisewakan")->with($param);
     }
+
+    public function cariAlatAdmin() {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+
+        $data = DB::table('alat_olahraga')
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.kota_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->get();
+        // dd($data);
+
+        $param["alat"] = $data;
+        return view("admin.produk.cariAlat")->with($param);
+    }
+
+    public function cariAlat() {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+
+        $data = DB::table('alat_olahraga')
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.kota_alat")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_alat", "nama_file_alat")
+                        ->from('files_alat')
+                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("alat_olahraga.fk_id_pemilik","!=",null)
+                ->where("alat_olahraga.status_alat", "=", "Aktif")
+                ->get();
+        // dd($data);
+
+        $param["alat"] = $data;
+        return view("tempat.cariAlat")->with($param);
+    }
 }

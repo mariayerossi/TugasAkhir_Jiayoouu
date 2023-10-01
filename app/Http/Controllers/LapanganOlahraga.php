@@ -275,4 +275,44 @@ class LapanganOlahraga extends Controller
         $param["lapangan"] = $data;
         return view("tempat.lapangan.daftarLapangan")->with($param);
     }
+
+    public function cariLapangan() {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+
+        $data = DB::table('lapangan_olahraga')
+                ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->where("lapangan_olahraga.status_lapangan", "=", "Aktif")
+                ->get();
+        $param["lapangan"] = $data;
+        
+        if (Session::get("role") == "pemilik") {
+            return view("pemilik.cariLapangan")->with($param);
+        }
+        else if (Session::get("role") == "customer") {
+            return view("customer.beranda")->with($param);
+        }
+    }
+
+    public function cariLapanganAdmin() {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+
+        $data = DB::table('lapangan_olahraga')
+                ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->get();
+        $param["lapangan"] = $data;
+        
+        return view("admin.produk.cariLapangan")->with($param);
+    }
 }
