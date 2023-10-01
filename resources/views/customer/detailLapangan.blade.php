@@ -128,7 +128,17 @@
                         <input type="time" name="selesai" id="" class="form-control" onchange="forceHourOnly(this)">
                     </div>
                 </div>
-                <h6>(Tidak ada alat olahraga yang disewa)</h6>
+                @if (Session::has("sewaAlat"))
+                    @foreach (Session::get("sewaAlat") as $item)
+                        @if ($item["lapangan"] == $lapangan->first()->id_lapangan)
+                            <h6>{{$item["nama"]}}</h6>
+                        @else
+                            <h6>(Tidak ada alat olahraga yang disewa)</h6>
+                        @endif
+                    @endforeach
+                @else
+                    <h6>(Tidak ada alat olahraga yang disewa)</h6>
+                @endif
                 <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
                 <input type="hidden" name="id_tempat" value="{{$lapangan->first()->pemilik_lapangan}}">
                 <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_user}}">
@@ -235,7 +245,7 @@
                         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                         $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                     @endphp
-                    <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+                    <a href="/customer/detailAlat/{{$dataAlat->id_alat}}">
                         <div class="card h-70 mb-3">
                             <div class="card-body">
                                 <div class="row">
@@ -251,7 +261,10 @@
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                         <form action="/customer/transaksi/tambahAlat" method="post">
                                             @csrf
+                                            <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
+                                            <input type="hidden" name="nama" value="{{$dataAlat->nama_alat}}">
+                                            <input type="hidden" name="file" value="{{$dataFileAlat->nama_file_alat}}">
                                             <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
                                         </form>
                                     </div>
@@ -267,7 +280,7 @@
                         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                         $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                     @endphp
-                    <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+                    <a href="/customer/detailAlat/{{$dataAlat->id_alat}}">
                         <div class="card h-70 mb-3">
                             <div class="card-body">
                                 <div class="row">
@@ -283,7 +296,10 @@
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                         <form action="/customer/transaksi/tambahAlat" method="post">
                                             @csrf
+                                            <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
+                                            <input type="hidden" name="nama" value="{{$dataAlat->nama_alat}}">
+                                            <input type="hidden" name="file" value="{{$dataFileAlat->nama_file_alat}}">
                                             <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
                                         </form>
                                     </div>
@@ -299,7 +315,7 @@
                         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                         $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
                     @endphp
-                    <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+                    <a href="/customer/detailAlat/{{$dataAlat->id_alat}}">
                         <div class="card h-70 mb-3">
                             <div class="card-body">
                                 <div class="row">
@@ -315,7 +331,10 @@
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                         <form action="/customer/transaksi/tambahAlat" method="post">
                                             @csrf
+                                            <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
+                                            <input type="hidden" name="nama" value="{{$dataAlat->nama_alat}}">
+                                            <input type="hidden" name="file" value="{{$dataFileAlat->nama_file_alat}}">
                                             <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
                                         </form>
                                     </div>

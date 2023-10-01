@@ -155,4 +155,17 @@ class Transaksi extends Controller
         $param["trans"] = $trans;
         return view("admin.transaksi.daftarTransaksi")->with($param);
     }
+
+    public function tambahAlat(Request $request) {
+        $data = Session::get("sewaAlat");
+        array_push($data,[
+            "lapangan" => $request->id_lapangan,
+            "alat" => $request->id_alat,
+            "nama" => $request->nama,
+            "file" => $request->file
+        ]);
+        Session::put("sewaAlat", $data);
+        
+        return redirect()->back();
+    }
 }

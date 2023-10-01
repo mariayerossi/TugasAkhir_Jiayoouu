@@ -717,9 +717,18 @@ Route::prefix("/customer")->group(function(){
         return view("customer.detailLapangan")->with($param);
     })->middleware([CekCustomer::class]);
     Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapanganCustomer"]);
+    Route::get("/detailAlat/{id}", function ($id) {//melihat detail alat olahraga milik org lain
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        $alat = new ModelsAlatOlahraga();
+        $param["alat"] = $alat->get_all_data_by_id($id);
+        $files = new filesAlatOlahraga();
+        $param["files"] = $files->get_all_data($id);
+        return view("customer.detailAlat")->with($param);
+    })->middleware([CekCustomer::class]);
 
     //bagian transaksi
     Route::prefix("/transaksi")->group(function(){
-
+        Route::post("/tambahAlat", [Transaksi::class, "tambahAlat"]);
     });
 });
