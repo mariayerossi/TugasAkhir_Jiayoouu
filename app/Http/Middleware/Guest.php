@@ -22,6 +22,7 @@ class Guest
             if (Session::get("role") == "admin") return redirect('/admin/beranda');
             if (Session::get("role") == "pemilik") return redirect('/pemilik/beranda');
             if (Session::get("role") == "tempat") return redirect('/tempat/beranda');
+            if (Session::get("role") == "customer") return redirect('/customer/beranda');
         }
 
         // Jika tidak lanjutkan request

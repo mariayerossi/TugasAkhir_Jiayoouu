@@ -160,8 +160,14 @@
                         <h6>(Tidak ada alat olahraga yang disewa)</h6>
                     @endif
                     <div class="d-flex flex-wrap">
+                        @php
+                            $alatDitemukan = 0;
+                        @endphp
                         @foreach (Session::get("sewaAlat") as $item)
                             @if ($item["lapangan"] == $lapangan->first()->id_lapangan)
+                                @php
+                                $alatDitemukan += 1;
+                                @endphp
                                 <div class="card tiny-card h-70 mb-1 mr-1">
                                     <div class="card-body">
                                         <div class="row">
@@ -180,10 +186,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            @else
-                                <h6>(Tidak ada alat olahraga yang disewa)</h6>
                             @endif
                         @endforeach
+                        @if ($alatDitemukan == 0)
+                            <h6>(Tidak ada alat olahraga yang disewa)</h6>
+                        @endif
                     </div>
                 @else
                     <h6>(Tidak ada alat olahraga yang disewa)</h6>
