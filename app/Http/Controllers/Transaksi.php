@@ -164,7 +164,8 @@ class Transaksi extends Controller
             "lapangan" => $request->id_lapangan,
             "alat" => $request->id_alat,
             "nama" => $request->nama,
-            "file" => $request->file
+            "file" => $request->file,
+            "user" => Session::get("dataRole")->id_user
         ]);
     
         Session::put("sewaAlat", $data);
@@ -185,5 +186,9 @@ class Transaksi extends Controller
         Session::put("sewaAlat", $data);
     
         return response()->json(['status' => 'success', 'message' => 'Data berhasil dihapus']);
-    }    
+    }
+
+    public function tambahKeranjang(Request $request) {
+        dd($request->mulai);
+    }
 }

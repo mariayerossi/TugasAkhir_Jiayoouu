@@ -131,7 +131,7 @@
         <!-- Bagian form (menggunakan 6 kolom) -->
         <div class="col-md-8">
             @include("layouts.message")
-            <form action="/pemilik/penawaran/requestPenawaranAlat" method="post" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <form id="bookingForm" action="/customer/transaksi/tambahTransaksi" method="post" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 @csrf
                 <div class="d-flex justify-content-center">
                     <h5><b>Atur Tanggal dan Jam Booking</b></h5>
@@ -164,7 +164,7 @@
                             $alatDitemukan = 0;
                         @endphp
                         @foreach (Session::get("sewaAlat") as $item)
-                            @if ($item["lapangan"] == $lapangan->first()->id_lapangan)
+                            @if ($item["lapangan"] == $lapangan->first()->id_lapangan && $item["user"] == Session::get("dataRole")->id_user)
                                 @php
                                 $alatDitemukan += 1;
                                 @endphp
@@ -200,8 +200,17 @@
                 <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_user}}">
                 <div class="d-flex justify-content-center mt-3">
                     <button type="submit" class="btn btn-success me-2">Booking</button>
-                    <a href="" class="btn btn-outline-primary">+ Keranjang</a>
+                    <button type="button" id="addToCartBtn" class="btn btn-outline-primary">+ Keranjang</button>
+                    {{-- <a href="/customer/transaksi/tambahCart" class="btn btn-outline-primary">+ Keranjang</a> --}}
                 </div>
+            </form>
+            <form id="cartForm" action="/customer/transaksi/tambahKeranjang" method="post" style="display: none;">
+                @csrf
+                <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
+                <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_user}}">
+                <input type="hidden" name="tanggal">
+                <input type="hidden" name="mulai">
+                <input type="hidden" name="selesai">
             </form>
         </div>
         <!-- Ruang kosong (menggunakan 6 kolom lainnya) -->
@@ -522,6 +531,23 @@
                 });
             }
         });
+
+        document.querySelector('#addToCartBtn').addEventListener('click', function() {
+            // Ambil data dari form booking
+            event.preventDefault();
+            const tanggal = document.querySelector('#bookingForm input[name="tanggal"]').value;
+            const mulai = document.querySelector('#bookingForm input[name="mulai"]').value;
+            const selesai = document.querySelector('#bookingForm input[name="selesai"]').value;
+
+            // Set data ke form keranjang
+            const cartForm = document.querySelector('#cartForm');
+            cartForm.querySelector('input[name="tanggal"]').value = tanggal;
+            cartForm.querySelector('input[name="mulai"]').value = mulai;
+            cartForm.querySelector('input[name="selesai"]').value = selesai;
+
+            // Submit form keranjang
+            cartForm.submit();
+        });
     });
     function forceHourOnly(input) {
         const time = input.value;
@@ -533,6 +559,18 @@
             }
         }
     }
+    // document.querySelector('input[name="tanggal"]').addEventListener('change', function() {
+    //     document.querySelector('#hiddenTanggal').value = this.value;
+    // });
+
+    // document.querySelector('input[name="mulai"]').addEventListener('change', function() {
+    //     document.querySelector('#hiddenMulai').value = this.value;
+    // });
+
+    // document.querySelector('input[name="selesai"]').addEventListener('change', function() {
+    //     document.querySelector('#hiddenSelesai').value = this.value;
+    // });
+    
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 

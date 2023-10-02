@@ -731,5 +731,6 @@ Route::prefix("/customer")->group(function(){
     Route::prefix("/transaksi")->group(function(){
         Route::post("/tambahAlat", [Transaksi::class, "tambahAlat"]);
         Route::get("/deleteAlat/{lapangan}/{urutan}", [Transaksi::class, "deleteAlat"]);
+        Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);
     });
 });
