@@ -200,14 +200,23 @@
                 <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_user}}">
                 <div class="d-flex justify-content-center mt-3">
                     <button type="submit" class="btn btn-success me-2">Booking</button>
-                    <button type="button" id="addToCartBtn" class="btn btn-outline-primary">+ Keranjang</button>
+                    @php $disableButton = false @endphp
+
+                    @if (Session::has("cart"))
+                        @foreach (Session::get("cart") as $item)
+                            @if ($item["lapangan"] == $lapangan->first()->id_lapangan)
+                                @php $disableButton = true @endphp
+                                @break
+                            @endif
+                        @endforeach
+                    @endif
+                    <button type="button" id="addToCartBtn" @if($disableButton) disabled @endif class="btn btn-outline-primary">+ Keranjang</button>
                     {{-- <a href="/customer/transaksi/tambahCart" class="btn btn-outline-primary">+ Keranjang</a> --}}
                 </div>
             </form>
             <form id="cartForm" action="/customer/transaksi/tambahKeranjang" method="post" style="display: none;">
                 @csrf
                 <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
-                <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_user}}">
                 <input type="hidden" name="tanggal">
                 <input type="hidden" name="mulai">
                 <input type="hidden" name="selesai">

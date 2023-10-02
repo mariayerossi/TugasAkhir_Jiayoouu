@@ -189,6 +189,38 @@ class Transaksi extends Controller
     }
 
     public function tambahKeranjang(Request $request) {
-        dd($request->mulai);
+        $cart = [];
+        if(Session::has("cart")) $cart = Session::get("cart");
+        if ($cart != []) {
+            foreach ($cart as $key => $value) {
+                
+            }
+        }
+
+        //ambil alat-alat yang dipesan
+        $dataAlat = [];
+        if(Session::has("sewaAlat")) $dataAlat = Session::get("sewaAlat");
+
+        $alat = [];
+        if ($dataAlat != null) {
+            foreach ($dataAlat as $key => $value) {
+                if ($value["user"] == Session::get("dataRole")->id_user) {
+                    array_push($alat,[
+                        "alat" => $value["alat"]
+                    ]);
+                }
+            }
+        }
+        
+        array_push($cart,[
+            "lapangan" => $request->id_lapangan,
+            "tanggal" => $request->tanggal,
+            "mulai" => $request->mulai,
+            "selesai" => $request->selesai,
+            "user" => Session::get("dataRole")->id_user,
+            "alat" => $alat
+        ]);
+
+        Session::put("cart", $cart);
     }
 }
