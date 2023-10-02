@@ -159,14 +159,31 @@ class Transaksi extends Controller
     public function tambahAlat(Request $request) {
         $data = [];
         if(Session::has("sewaAlat")) $data = Session::get("sewaAlat");
+        
         array_push($data,[
             "lapangan" => $request->id_lapangan,
             "alat" => $request->id_alat,
             "nama" => $request->nama,
             "file" => $request->file
         ]);
+    
         Session::put("sewaAlat", $data);
         
-        return redirect()->back();
+        return response()->json(['status' => 'success', 'message' => 'Data berhasil ditambahkan']);
     }
+
+    public function deleteAlat($lapangan, $urutan) {
+        // Ambil data dari session
+        $data = Session::get("sewaAlat", []);
+    
+        unset($data[$urutan]);
+    
+        // Re-index array agar indexnya berurutan kembali
+        $data = array_values($data);
+    
+        // Update session
+        Session::put("sewaAlat", $data);
+    
+        return response()->json(['status' => 'success', 'message' => 'Data berhasil dihapus']);
+    }    
 }

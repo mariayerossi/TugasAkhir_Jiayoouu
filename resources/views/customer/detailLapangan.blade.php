@@ -63,7 +63,7 @@
         text-overflow: ellipsis;
     }
 
-    .square-image-container {
+    .square-image-container2 {
         height: 45px;
         width: 45px;
         overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
@@ -156,6 +156,9 @@
                     </div>
                 </div>
                 @if (Session::has("sewaAlat"))
+                    @if (Session::get("sewaAlat") == null)
+                        <h6>(Tidak ada alat olahraga yang disewa)</h6>
+                    @endif
                     <div class="d-flex flex-wrap">
                         @foreach (Session::get("sewaAlat") as $item)
                             @if ($item["lapangan"] == $lapangan->first()->id_lapangan)
@@ -164,7 +167,7 @@
                                         <div class="row">
                                             <!-- Gambar Alat -->
                                             <div class="col-4">
-                                                <div class="square-image-container">
+                                                <div class="square-image-container2">
                                                     <img src="{{ asset('upload/' . $item['file']) }}" alt="" class="img-fluid">
                                                 </div>
                                             </div>
@@ -172,14 +175,7 @@
                                             <!-- Nama Alat -->
                                             <div class="col-8 d-flex align-items-center justify-content-between">
                                                 <h5 class="card-title truncate-text">{{$item["nama"]}}</h5>
-                                                <form action="/customer/transaksi/tambahAlat" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
-                                                    <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
-                                                    <input type="hidden" name="nama" value="{{$dataAlat->nama_alat}}">
-                                                    <input type="hidden" name="file" value="{{$dataFileAlat->nama_file_alat}}">
-                                                    <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
-                                                </form>
+                                                <a href="/customer/transaksi/deleteAlat/{{$lapangan->first()->id_lapangan}}/{{$loop->iteration -1}}" class="btn btn-danger btn-sm delete-link"><i class="bi bi-x-lg"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -312,7 +308,7 @@
                                     <!-- Nama Alat -->
                                     <div class="col-8 d-flex align-items-center justify-content-between">
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                        <form action="/customer/transaksi/tambahAlat" method="post">
+                                        <form action="/customer/transaksi/tambahAlat" method="post" class="ajax-form">
                                             @csrf
                                             <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
@@ -358,7 +354,7 @@
                                     <!-- Nama Alat -->
                                     <div class="col-8 d-flex align-items-center justify-content-between">
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                        <form action="/customer/transaksi/tambahAlat" method="post">
+                                        <form action="/customer/transaksi/tambahAlat" method="post" class="ajax-form">
                                             @csrf
                                             <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
@@ -404,7 +400,7 @@
                                     <!-- Nama Alat -->
                                     <div class="col-8 d-flex align-items-center justify-content-between">
                                         <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                        <form action="/customer/transaksi/tambahAlat" method="post">
+                                        <form action="/customer/transaksi/tambahAlat" method="post" class="ajax-form">
                                             @csrf
                                             <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
@@ -449,7 +445,46 @@
 </div>
 <script>
     $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();   
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $('.ajax-form').on('submit', function(e) {
+            e.preventDefault();
+
+            var form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    // handle response dari server jika sukses
+                    location.reload(); // contoh: reload halaman
+                },
+                error: function(xhr) {
+                    // handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        $('.delete-link').on('click', function(e) {
+            e.preventDefault();
+
+            var link = $(this);
+
+            $.ajax({
+                url: link.attr('href'),
+                method: 'GET',
+                success: function(response) {
+                    // handle response dari server jika sukses
+                    location.reload(); // contoh: reload halaman
+                },
+                error: function(xhr) {
+                    // handle error
+                    console.error(xhr.responseText);
+                }
+            });
+        });
     });
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('form');
@@ -482,16 +517,18 @@
         });
     });
     function forceHourOnly(input) {
-    const time = input.value;
-    if (time) {
-        const parts = time.split(':');
-        if (parts[1] !== '00') {
-            input.value = `${parts[0]}:00`;
-            // alert('Hanya jam penuh yang diperbolehkan!');
+        const time = input.value;
+        if (time) {
+            const parts = time.split(':');
+            if (parts[1] !== '00') {
+                input.value = `${parts[0]}:00`;
+                // alert('Hanya jam penuh yang diperbolehkan!');
+            }
         }
     }
-}
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 @else
 <h1>Lapangan Olahraga tidak tersedia</h1>
 @endif
