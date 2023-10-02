@@ -157,7 +157,8 @@ class Transaksi extends Controller
     }
 
     public function tambahAlat(Request $request) {
-        $data = Session::get("sewaAlat");
+        $data = [];
+        if(Session::has("sewaAlat")) $data = Session::get("sewaAlat");
         array_push($data,[
             "lapangan" => $request->id_lapangan,
             "alat" => $request->id_alat,

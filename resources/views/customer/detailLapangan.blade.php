@@ -41,6 +41,33 @@
             height: 60px;
         }
     }
+    .tiny-card {
+        width: 150px; /* Lebar tetap kartu */
+        height: 50px; /* Tinggi tetap kartu */
+    }
+
+    .tiny-card .card-body {
+        padding: 1px; /* Padding minimal */
+    }
+
+    .tiny-card .square-image-container img {
+        height: 45px; /* Mengatur tinggi gambar agar sesuai dengan kartu */
+        width: 45px;
+    }
+
+    .tiny-card .card-title {
+        font-size: 10px; /* Ukuran font sangat kecil */
+        margin-bottom: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .square-image-container {
+        height: 45px;
+        width: 45px;
+        overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
+    }
 </style>
 @if (!$lapangan->isEmpty())
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
@@ -129,13 +156,31 @@
                     </div>
                 </div>
                 @if (Session::has("sewaAlat"))
-                    @foreach (Session::get("sewaAlat") as $item)
-                        @if ($item["lapangan"] == $lapangan->first()->id_lapangan)
-                            <h6>{{$item["nama"]}}</h6>
-                        @else
-                            <h6>(Tidak ada alat olahraga yang disewa)</h6>
-                        @endif
-                    @endforeach
+                    <div class="d-flex flex-wrap">
+                        @foreach (Session::get("sewaAlat") as $item)
+                            @if ($item["lapangan"] == $lapangan->first()->id_lapangan)
+                                <div class="card tiny-card h-70 mb-1 mr-1">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- Gambar Alat -->
+                                            <div class="col-4">
+                                                <div class="square-image-container">
+                                                    <img src="{{ asset('upload/' . $item['file']) }}" alt="" class="img-fluid">
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Nama Alat -->
+                                            <div class="col-8 d-flex align-items-center justify-content-between">
+                                                <h5 class="card-title truncate-text">{{$item["nama"]}}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <h6>(Tidak ada alat olahraga yang disewa)</h6>
+                            @endif
+                        @endforeach
+                    </div>
                 @else
                     <h6>(Tidak ada alat olahraga yang disewa)</h6>
                 @endif
@@ -265,7 +310,18 @@
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
                                             <input type="hidden" name="nama" value="{{$dataAlat->nama_alat}}">
                                             <input type="hidden" name="file" value="{{$dataFileAlat->nama_file_alat}}">
-                                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
+                                            @php $disableButton = false @endphp
+
+                                            @if (Session::has("sewaAlat"))
+                                                @foreach (Session::get("sewaAlat") as $item)
+                                                    @if ($item["alat"] == $dataAlat->id_alat)
+                                                        @php $disableButton = true @endphp
+                                                        @break
+                                                    @endif
+                                                @endforeach
+                                            @endif
+
+                                            <button type="submit" class="btn btn-success btn-sm" @if($disableButton) disabled @endif><i class="bi bi-plus-lg"></i></button>
                                         </form>
                                     </div>
                                 </div>
@@ -300,7 +356,18 @@
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
                                             <input type="hidden" name="nama" value="{{$dataAlat->nama_alat}}">
                                             <input type="hidden" name="file" value="{{$dataFileAlat->nama_file_alat}}">
-                                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
+                                            @php $disableButton = false @endphp
+
+                                            @if (Session::has("sewaAlat"))
+                                                @foreach (Session::get("sewaAlat") as $item)
+                                                    @if ($item["alat"] == $dataAlat->id_alat)
+                                                        @php $disableButton = true @endphp
+                                                        @break
+                                                    @endif
+                                                @endforeach
+                                            @endif
+
+                                            <button type="submit" class="btn btn-success btn-sm" @if($disableButton) disabled @endif><i class="bi bi-plus-lg"></i></button>
                                         </form>
                                     </div>
                                 </div>
@@ -335,7 +402,18 @@
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
                                             <input type="hidden" name="nama" value="{{$dataAlat->nama_alat}}">
                                             <input type="hidden" name="file" value="{{$dataFileAlat->nama_file_alat}}">
-                                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
+                                            @php $disableButton = false @endphp
+
+                                            @if (Session::has("sewaAlat"))
+                                                @foreach (Session::get("sewaAlat") as $item)
+                                                    @if ($item["alat"] == $dataAlat->id_alat)
+                                                        @php $disableButton = true @endphp
+                                                        @break
+                                                    @endif
+                                                @endforeach
+                                            @endif
+
+                                            <button type="submit" class="btn btn-success btn-sm" @if($disableButton) disabled @endif><i class="bi bi-plus-lg"></i></button>
                                         </form>
                                     </div>
                                 </div>
