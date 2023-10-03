@@ -239,22 +239,35 @@ class Transaksi extends Controller
                     ->where("lapangan_olahraga.id_lapangan","=",$value["lapangan"])
                     ->get();
 
-                foreach ($result as $item) {
-                    // Menambahkan data tambahan ke objek sebelum menambahkannya ke array $data
-                    if ($item->id_lapangan == $value["lapangan"]) {
-                        $item->tanggal = $value['tanggal'] ?? null;
-                        $item->mulai = $value['mulai'] ?? null;
-                        $item->selesai = $value['selesai'] ?? null;
-                        $item->user = $value['user'] ?? null;
-                        $item->alat = $value['alat'] ?? [];
+                    if ($result->first()->id_lapangan == $value["lapangan"]) {
+                        $result->first()->tanggal = $value['tanggal'] ?? null;
+                        $result->first()->mulai = $value['mulai'] ?? null;
+                        $result->first()->selesai = $value['selesai'] ?? null;
+                        $result->first()->user = $value['user'] ?? null;
+
+                        // dd($value['alat']);
+                        if ($value['alat'] != []) {
+                            foreach ($value['alat'] as $key => $value2) {
+                                $alat = DB::table('alat_olahraga')
+                                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat")
+                                ->joinSub(function($query) {
+                                    $query->select("fk_id_alat", "nama_file_alat")
+                                        ->from('files_alat')
+                                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                                ->where("alat_olahraga.id_alat", "=", $value2['alat'])
+                                ->get();
+                                // Mengubah elemen asli di dalam array
+                                $value['alat'][$key]["nama_alat"] = $alat->first()->nama_alat ?? null;
+                                $value['alat'][$key]["file_alat"] = $alat->first()->nama_file_alat ?? null;
+                            }
+                        }
+                        $result->first()->id_alat = $value['alat'] ?? [];
                     }
 
-                    $data[] = $item;
-                }
+                    $data[] = $result->first();
             }
         }
-
-        // dd(Session::get("cart"));
         $param["data"] = $data;
         return view("customer.cart")->with($param);
     }

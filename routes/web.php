@@ -734,5 +734,5 @@ Route::prefix("/customer")->group(function(){
     });
 
     Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);
-    Route::get("/daftarKeranjang", [Transaksi::class, "daftarKeranjang"]);
+    Route::get("/daftarKeranjang", [Transaksi::class, "daftarKeranjang"])->middleware([CekCustomer::class]);
 });

@@ -17,7 +17,33 @@
         height: 100%;
         object-fit: cover;
     }
+    .tiny-card {
+        width: 150px; /* Lebar tetap kartu */
+        height: 50px; /* Tinggi tetap kartu */
+    }
 
+    .tiny-card .card-body {
+        padding: 1px; /* Padding minimal */
+    }
+
+    .tiny-card .square-image-container img {
+        height: 45px; /* Mengatur tinggi gambar agar sesuai dengan kartu */
+        width: 45px;
+    }
+
+    .tiny-card .card-title {
+        font-size: 10px; /* Ukuran font sangat kecil */
+        margin-bottom: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .square-image-container2 {
+        height: 45px;
+        width: 45px;
+        overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
+    }
 </style>
 <div class="container mt-5">
     <h2 class="text-center mb-5">Daftar Keranjang</h2>
@@ -50,6 +76,31 @@
                             @else
                                 <p class="card-text"><strong>Jam Sewa: </strong>(Anda belum menentukan jam sewa)</p>
                             @endif
+                            <div class="d-flex flex-row flex-wrap">
+                            @foreach ($item->id_alat as $item2)
+                                <div class="card tiny-card h-70 mb-1 mr-1">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- Gambar Alat -->
+                                            <div class="col-4">
+                                                <div class="square-image-container2">
+                                                    <img src="{{ asset('upload/' . $item2['file_alat']) }}" alt="" class="img-fluid">
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Nama Alat -->
+                                            <div class="col-8 d-flex align-items-center justify-content-between">
+                                                <h5 class="card-title truncate-text">{{$item2["nama_alat"]}}</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-success me-3">Booking <i class="bi bi-bag-check"></i></button>
+                            <a href="" class="btn btn-danger"><i class="bi bi-trash3"></i></a>
                         </div>
                     </div>
                 </div>

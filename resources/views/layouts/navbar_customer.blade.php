@@ -238,7 +238,7 @@ Sportiva
             <a href="" class="ms-3"><i class="bi bi-pencil-square me-2"></i>Edit Profile</a>
             <a href="/logout" class="ms-3"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
             <hr>
-            <a href="" class="ms-3"><i class="bi bi-cart2 me-2"></i>Keranjang</a>
+            <a href="/customer/daftarKeranjang" class="ms-3"><i class="bi bi-cart2 me-2"></i>Keranjang</a>
             <a href="" class="ms-3"><i class="bi bi-clock-history me-2"></i>Riwayat Transaksi</a>
         </div>
 
