@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -191,11 +192,6 @@ class Transaksi extends Controller
     public function tambahKeranjang(Request $request) {
         $cart = [];
         if(Session::has("cart")) $cart = Session::get("cart");
-        if ($cart != []) {
-            foreach ($cart as $key => $value) {
-                
-            }
-        }
 
         //ambil alat-alat yang dipesan
         $dataAlat = [];
@@ -204,7 +200,7 @@ class Transaksi extends Controller
         $alat = [];
         if ($dataAlat != null) {
             foreach ($dataAlat as $key => $value) {
-                if ($value["user"] == Session::get("dataRole")->id_user) {
+                if ($value["user"] == Session::get("dataRole")->id_user && $value["lapangan"] == $request->id_lapangan) {
                     array_push($alat,[
                         "alat" => $value["alat"]
                     ]);
@@ -222,5 +218,44 @@ class Transaksi extends Controller
         ]);
 
         Session::put("cart", $cart);
+        return redirect("/customer/daftarKeranjang");
+    }
+
+    public function daftarKeranjang() {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+
+        $data = [];
+
+        if (Session::has("cart") && Session::get("cart") != null) {
+            foreach (Session::get("cart") as $key => $value) {
+                $result = DB::table('lapangan_olahraga')
+                    ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_lapangan", "nama_file_lapangan")
+                            ->from('files_lapangan')
+                            ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                    }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                    ->where("lapangan_olahraga.id_lapangan","=",$value["lapangan"])
+                    ->get();
+
+                foreach ($result as $item) {
+                    // Menambahkan data tambahan ke objek sebelum menambahkannya ke array $data
+                    if ($item->id_lapangan == $value["lapangan"]) {
+                        $item->tanggal = $value['tanggal'] ?? null;
+                        $item->mulai = $value['mulai'] ?? null;
+                        $item->selesai = $value['selesai'] ?? null;
+                        $item->user = $value['user'] ?? null;
+                        $item->alat = $value['alat'] ?? [];
+                    }
+
+                    $data[] = $item;
+                }
+            }
+        }
+
+        // dd(Session::get("cart"));
+        $param["data"] = $data;
+        return view("customer.cart")->with($param);
     }
 }

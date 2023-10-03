@@ -214,7 +214,7 @@
                     {{-- <a href="/customer/transaksi/tambahCart" class="btn btn-outline-primary">+ Keranjang</a> --}}
                 </div>
             </form>
-            <form id="cartForm" action="/customer/transaksi/tambahKeranjang" method="post" style="display: none;">
+            <form id="cartForm" action="/customer/tambahKeranjang" method="post" style="display: none;">
                 @csrf
                 <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
                 <input type="hidden" name="tanggal">
