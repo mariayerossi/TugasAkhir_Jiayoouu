@@ -289,4 +289,23 @@ class Transaksi extends Controller
         Session::put("cart", $data);
         return response()->json(['success' => true, 'message' => 'Item berhasil dihapus']);
     }
+
+    public function daftarRiwayat() {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+
+        $trans = DB::table('htrans')
+                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa")
+                ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->where("htrans.fk_id_user", "=", Session::get("dataRole")->id_user)
+                ->get();
+
+        $param["trans"] = $trans;
+        return view("customer.riwayat")->with($param);
+    }
 }
