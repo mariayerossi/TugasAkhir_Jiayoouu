@@ -101,7 +101,7 @@
                         </div>
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-success me-3">Booking <i class="bi bi-bag-check"></i></button>
-                            <button data-url="/customer/hapusKeranjang/{{$loop->iteration -1}}" class="btn btn-danger delete-cart-item"><i class="bi bi-trash3"></i></button>
+                            <button data-url="/customer/hapusKeranjang/{{$loop->count - $loop->iteration}}" class="btn btn-danger delete-cart-item"><i class="bi bi-trash3"></i></button>
                         </div>
                     </div>
                 </div>

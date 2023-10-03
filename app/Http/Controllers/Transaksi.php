@@ -268,6 +268,10 @@ class Transaksi extends Controller
                     $data[] = $result->first();
             }
         }
+        usort($data, function ($a, $b) {
+            return $b->id_lapangan - $a->id_lapangan; // urutan DESC
+        });
+
         $param["data"] = $data;
         return view("customer.cart")->with($param);
     }
