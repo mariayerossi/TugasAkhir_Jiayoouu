@@ -730,9 +730,10 @@ Route::prefix("/customer")->group(function(){
     //bagian transaksi
     Route::prefix("/transaksi")->group(function(){
         Route::post("/tambahAlat", [Transaksi::class, "tambahAlat"]);
-        Route::get("/deleteAlat/{lapangan}/{urutan}", [Transaksi::class, "deleteAlat"]);
+        Route::get("/deleteAlat/{urutan}", [Transaksi::class, "deleteAlat"]);
     });
 
     Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);
     Route::get("/daftarKeranjang", [Transaksi::class, "daftarKeranjang"])->middleware([CekCustomer::class]);
+    Route::get("/hapusKeranjang/{urutan}", [Transaksi::class, "hapusKeranjang"]);
 });

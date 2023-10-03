@@ -174,7 +174,7 @@ class Transaksi extends Controller
         return response()->json(['status' => 'success', 'message' => 'Data berhasil ditambahkan']);
     }
 
-    public function deleteAlat($lapangan, $urutan) {
+    public function deleteAlat($urutan) {
         // Ambil data dari session
         $data = Session::get("sewaAlat", []);
     
@@ -270,5 +270,19 @@ class Transaksi extends Controller
         }
         $param["data"] = $data;
         return view("customer.cart")->with($param);
+    }
+
+    public function hapusKeranjang($urutan) {
+        // Ambil data dari session
+        $data = Session::get("cart", []);
+    
+        unset($data[$urutan]);
+    
+        // Re-index array agar indexnya berurutan kembali
+        $data = array_values($data);
+    
+        // Update session
+        Session::put("cart", $data);
+        return response()->json(['success' => true, 'message' => 'Item berhasil dihapus']);
     }
 }

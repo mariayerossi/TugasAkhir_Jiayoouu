@@ -181,7 +181,7 @@
                                             <!-- Nama Alat -->
                                             <div class="col-8 d-flex align-items-center justify-content-between">
                                                 <h5 class="card-title truncate-text">{{$item["nama"]}}</h5>
-                                                <a href="/customer/transaksi/deleteAlat/{{$lapangan->first()->id_lapangan}}/{{$loop->iteration -1}}" class="btn btn-danger btn-sm delete-link"><i class="bi bi-x-lg"></i></a>
+                                                <a href="/customer/transaksi/deleteAlat/{{$loop->iteration -1}}" class="btn btn-danger btn-sm delete-link"><i class="bi bi-x-lg"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -582,7 +582,6 @@
     
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 @else
 <h1>Lapangan Olahraga tidak tersedia</h1>
 @endif

@@ -49,6 +49,7 @@
     <h2 class="text-center mb-5">Daftar Keranjang</h2>
     @if($data != null)
         @foreach($data as $item)
+        <a href="/customer/detailLapangan/{{$item->id_lapangan}}">
         <div class="card mb-3" style="max-width: 100%;">
             <div class="card-body">
                 <div class="row no-gutters">
@@ -100,15 +101,40 @@
                         </div>
                         <div class="d-flex justify-content-end">
                             <button class="btn btn-success me-3">Booking <i class="bi bi-bag-check"></i></button>
-                            <a href="" class="btn btn-danger"><i class="bi bi-trash3"></i></a>
+                            <button data-url="/customer/hapusKeranjang/{{$loop->iteration -1}}" class="btn btn-danger delete-cart-item"><i class="bi bi-trash3"></i></button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </a>
         @endforeach
     @else
-        <h5>Tidak ada Keranjang</h5>
+        <h5>Keranjang Kosong</h5>
     @endif
 </div>
+<script>
+    $(document).ready(function() {
+        $('.delete-cart-item').on('click', function(e) {
+            e.preventDefault(); // Mencegah aksi default
+
+            let url = $(this).data('url');
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    // Sukses menghapus item dari keranjang. Anda dapat melakukan aksi seperti memperbarui tampilan dsb.
+                    // alert('Item berhasil dihapus dari keranjang');
+                    location.reload(); // sebagai contoh, reload halaman. Anda bisa lakukan yang lain.
+                },
+                error: function(err) {
+                    // Terjadi kesalahan saat menghapus
+                    alert('Terjadi kesalahan saat menghapus item');
+                }
+            });
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
