@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\customer;
+use App\Models\dtrans;
 use App\Models\htrans;
 use App\Models\kategori;
 use DateTime;
@@ -11,6 +13,31 @@ use Illuminate\Support\Facades\Session;
 
 class Transaksi extends Controller
 {
+    private function encodePrice($price, $key) {
+        $encodedPrice = '';
+        $priceLength = strlen($price);
+        $keyLength = strlen($key);
+    
+        for ($i = 0; $i < $priceLength; $i++) {
+            $encodedPrice .= $price[$i] ^ $key[$i % $keyLength];
+        }
+    
+        return base64_encode($encodedPrice);
+    }
+
+    private function decodePrice($encodedPrice, $key) {
+        $encodedPrice = base64_decode($encodedPrice);
+        $decodedPrice = '';
+        $priceLength = strlen($encodedPrice);
+        $keyLength = strlen($key);
+    
+        for ($i = 0; $i < $priceLength; $i++) {
+            $decodedPrice .= $encodedPrice[$i] ^ $key[$i % $keyLength];
+        }
+    
+        return $decodedPrice;
+    }
+
     public function tambahTransaksi(Request $request) {
         $request->validate([
             "tanggal" => "required",
@@ -32,6 +59,8 @@ class Transaksi extends Controller
         //kasi pengecekan apakah ada tgl dan jam sama yg sdh dibooking
         $cek = DB::table('htrans')
                 ->select("jam_sewa", "durasi_sewa")
+                ->where("status_trans","=","Diterima")
+                ->orWhere("status_trans","=","Berlangsung")
                 ->where("tanggal_sewa", "=", $request->tanggal)
                 ->get();
 
@@ -51,7 +80,7 @@ class Transaksi extends Controller
 
             if ($conflict) {
                 // Ada konflik dengan booking yang ada
-                return back()->with('error', 'Maaf, slot ini sudah dibooking oleh customer lain.');
+                return back()->with('error', 'Maaf, slot ini sudah dibooking!');
             } else {
                 // Proses booking karena slot masih tersedia
                 // ... (kode untuk menyimpan booking)
@@ -64,40 +93,197 @@ class Transaksi extends Controller
                             ->get()
                             ->first();
         // dd($lapangan);
-        $subtotal_alat = 0;
+        $subtotal_alat_perjam = 0;
+        $komisi_alat_pemilik = 0;
+        $komisi_alat_tempat = 0;
+        $subtotal_alat_lain = 0;
         if (Session::has("sewaAlat") && Session::get("sewaAlat") != null) {
             foreach (Session::get("sewaAlat") as $key => $value) {
+                $milik = false;
+                //permintaan
                 $alat = DB::table('request_permintaan')
-                        ->select("req_harga_sewa as harga_alat")
-                        ->where("req_id_alat","=",$value["alat"])
+                        ->select("request_permintaan.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi")
+                        ->join("alat_olahraga", "request_permintaan.req_id_alat","=","alat_olahraga.id_alat")
+                        ->where("request_permintaan.req_id_alat","=",$value["alat"])
                         ->get()
                         ->first();
                 if ($alat == null) {
+                    //penawaran
                     $alat = DB::table('request_penawaran')
-                        ->select("req_harga_sewa as harga_alat")
-                        ->where("req_id_alat","=",$value["alat"])
-                        ->get()
-                        ->first();
-                    if ($alat == null) {
-                        $alat = DB::table('alat_olahraga')
-                            ->select("komisi_alat as harga_alat")
-                            ->join("sewa_sendiri", "alat_olahraga.id_alat","=","sewa_sendiri.req_id_alat")
-                            ->where("id_alat","=",$value["alat"])
+                            ->select("request_penawaran.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi")
+                            ->join("alat_olahraga", "request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
+                            ->where("request_penawaran.req_id_alat","=",$value["alat"])
                             ->get()
                             ->first();
+                    if ($alat == null) {
+                        //sewa sendiri
+                        $alat = DB::table('alat_olahraga')
+                            ->select("alat_olahraga.komisi_alat as harga_alat", "alat_olahraga.komisi_alat as komisi")
+                            ->join("sewa_sendiri", "alat_olahraga.id_alat","=","sewa_sendiri.req_id_alat")
+                            ->where("alat_olahraga.id_alat","=",$value["alat"])
+                            ->get()
+                            ->first();
+                        $milik = true;
                     }
                 }
 
-                $subtotal_alat += $alat->harga_alat;
+                $subtotal_alat_perjam += $alat->harga_alat; //per jam
+                if ($milik == false) {
+                    $komisi_alat_pemilik += $alat->komisi;//per jam
+                    $subtotal_alat_lain += $alat->harga_alat;
+                }
+                else {
+                    $komisi_alat_tempat += $alat->komisi; //per jam
+                }
             }
         }
+
+        //membuat durasi sewa nya
+        // Mengubah string waktu ke timestamp
+        $start_time = strtotime($request->mulai);
+        $end_time = strtotime($request->selesai);
+
+        // Menghitung durasi dalam detik
+        $duration_seconds = $end_time - $start_time;
+
+        // Menghitung durasi dalam menit
+        $duration_minutes = (int)($duration_seconds / 60);
+
+        // Menghitung durasi dalam jam dengan pembulatan ke jam terdekat
+        $durasi_sewa = (int)round($duration_minutes / 60);
+        //--------------------------------------------------------------------------
+
+        $subtotal_alat = $subtotal_alat_perjam * $durasi_sewa;
         // dd($subtotal_alat);
+        
+        date_default_timezone_set("Asia/Jakarta");
+        $tanggal_trans = date("Y-m-d H:i:s");
+
+        $subtotal_lapangan = $lapangan->harga_sewa_lapangan * $durasi_sewa;
+
+        $total = $subtotal_lapangan + $subtotal_alat;
+        
+        $total_komisi_alat_pemilik = $komisi_alat_pemilik * $durasi_sewa;
+        $total_komisi_alat_tempat = $komisi_alat_tempat * $durasi_sewa;
+
+        //subtotal dari alat olahraga lain(bkn milik tempat yng disewakan di tempat)
+        $total_subtotal_alat_lain = $subtotal_alat_lain * $durasi_sewa;
+
+        $persen_tempat = 0.09;
+        $pendapatan_tempat = ($subtotal_lapangan + ($total_subtotal_alat_lain - $total_komisi_alat_pemilik) + $total_komisi_alat_tempat) * $persen_tempat;
+
+        // dd($pendapatan_tempat);
+
+        //cek saldo e cukup gaa
+        $saldo = $this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+        if ($saldo < $total) {
+            return back()->with('error', 'Saldo anda tidak cukup! Silahkan top up saldo anda.');
+        }
+        //saldo dipotong sebesar total
+        $saldo -= $total;
+
+        //enkripsi kembali saldo
+        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+        //update db user
+        $dataSaldo = [
+            "id" => Session::get("dataRole")->id_user,
+            "saldo" => $enkrip
+        ];
+        $cust = new customer();
+        $cust->updateSaldo($dataSaldo);
+
+        //update session role
+        $user = new customer();
+        $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
+        Session::forget("dataRole");
+        Session::put("dataRole", $isiUser->first());
 
         $data = [
             "id_lapangan" => $request->id_lapangan,
-            "subtotal_lapangan" => $lapangan->harga_sewa_lapangan,
-            "subtotal_alat" => $subtotal_alat
+            "subtotal_lapangan" => $subtotal_lapangan,
+            "subtotal_alat" => $subtotal_alat,
+            "tanggal_trans" => $tanggal_trans,
+            "tanggal_sewa" => $request->tanggal,
+            "jam_sewa" => $request->mulai,
+            "durasi_sewa" => $durasi_sewa,
+            "total" => $total,
+            "id_user" => Session::get("dataRole")->id_user,
+            "id_tempat" => $request->id_tempat,
+            "pendapatan" => $pendapatan_tempat
         ];
+        $trans = new htrans();
+        $id = $trans->insertHtrans($data);
+
+        if (Session::has("sewaAlat") && Session::get("sewaAlat") != null) {
+            foreach (Session::get("sewaAlat") as $key => $value) {
+                $cek = false;
+
+                $alat1 = DB::table('request_permintaan')
+                        ->select("request_permintaan.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi", "alat_olahraga.fk_id_pemilik", "alat_olahraga.fk_id_tempat")
+                        ->join("alat_olahraga", "request_permintaan.req_id_alat","=","alat_olahraga.id_alat")
+                        ->where("request_permintaan.req_id_alat","=",$value["alat"])
+                        ->get()
+                        ->first();
+                
+                if ($alat1 == null) {
+                    $alat1 = DB::table('request_penawaran')
+                            ->select("request_penawaran.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi", "alat_olahraga.fk_id_pemilik", "alat_olahraga.fk_id_tempat")
+                            ->join("alat_olahraga", "request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
+                            ->where("request_penawaran.req_id_alat","=",$value["alat"])
+                            ->get()
+                            ->first();
+                        
+                    if ($alat1 == null) {
+                        $alat1 = DB::table('alat_olahraga')
+                            ->select("alat_olahraga.komisi_alat as harga_alat", "alat_olahraga.komisi_alat as komisi", "alat_olahraga.fk_id_pemilik", "alat_olahraga.fk_id_tempat")
+                            ->join("sewa_sendiri", "alat_olahraga.id_alat","=","sewa_sendiri.req_id_alat")
+                            ->where("alat_olahraga.id_alat","=",$value["alat"])
+                            ->get()
+                            ->first();
+                        $cek = true;
+                    }
+                }
+                $subtotal_per_alat = $alat1->harga_alat * $durasi_sewa;
+
+                $komisi_pemilik = $alat1->komisi * $durasi_sewa;
+
+                $komisi_tempat = ($alat1->harga_alat - $alat1->komisi) * $durasi_sewa;
+
+                $persen_alat = 0.11;
+
+                $pendapatan_alat = $komisi_pemilik * $persen_alat;
+
+                if ($cek == false) {
+                    $data2 = [
+                        "id_htrans" => $id,
+                        "id_alat" => $value["alat"],
+                        "harga_alat" => $alat1->harga_alat,
+                        "subtotal_alat" => $subtotal_per_alat,
+                        "komisi_pemilik" => $komisi_pemilik,
+                        "komisi_tempat" => $komisi_tempat,
+                        "id_pemilik" => $alat1->fk_id_pemilik,
+                        "id_tempat" => $alat1->fk_id_tempat,
+                        "pendapatan" => $pendapatan_alat
+                    ];
+                }
+                else {
+                    $data2 = [
+                        "id_htrans" => $id,
+                        "id_alat" => $value["alat"],
+                        "harga_alat" => $alat1->harga_alat,
+                        "subtotal_alat" => $subtotal_per_alat,
+                        "komisi_pemilik" => null,
+                        "komisi_tempat" => $komisi_pemilik,
+                        "id_pemilik" => $alat1->fk_id_pemilik,
+                        "id_tempat" => $alat1->fk_id_tempat,
+                        "pendapatan" => null
+                    ];
+                }
+                $dtrans = new dtrans();
+                $dtrans->insertDtrans($data2);
+            }
+        }
     }
     
     public function daftarTransaksiTempat(){

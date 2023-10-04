@@ -29,7 +29,7 @@ class htrans extends Model
 
     public function insertHtrans($data){
         $trans = new htrans();
-        $trans->kode_trans = dtrans::generateCode();
+        $trans->kode_trans = htrans::generateCode();
         $trans->fk_id_lapangan = $data["id_lapangan"];
         $trans->subtotal_lapangan = $data["subtotal_lapangan"];
         $trans->subtotal_alat = $data["subtotal_alat"];

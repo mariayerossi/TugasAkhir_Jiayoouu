@@ -189,7 +189,7 @@
                             @endif
                         @endforeach
                         @if ($alatDitemukan == 0)
-                            <h6>(Tidak ada alat olahraga yang disewa)</h6>
+                            {{-- <h6>(Tidak ada alat olahraga yang disewa)</h6> --}}
                         @endif
                     </div>
                 @else
@@ -197,7 +197,6 @@
                 @endif
                 <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
                 <input type="hidden" name="id_tempat" value="{{$lapangan->first()->pemilik_lapangan}}">
-                <input type="hidden" name="id_user" value="{{Session::get("dataRole")->id_user}}">
                 <div class="d-flex justify-content-center mt-3">
                     <button type="submit" class="btn btn-success me-2">Booking</button>
                     @php $disableButton = false @endphp

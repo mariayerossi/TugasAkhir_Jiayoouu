@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'email_user' => 'maria@gmail.com',
             'telepon_user' => "082374822343",
             'password_user' => password_hash('1234567890', PASSWORD_BCRYPT),
-            'saldo_user' => "XQ==",
+            'saldo_user' => "XElDVVNCVQ==",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -283,7 +283,7 @@ class DatabaseSeeder extends Seeder
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
             'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Menunggu",
+            'status_trans' => "Berlangsung",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -345,7 +345,7 @@ class DatabaseSeeder extends Seeder
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
             'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Menunggu",
+            'status_trans' => "Diterima",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 

@@ -26,9 +26,12 @@ class customer extends Model
         $user->save();
     }
 
-    public function cek_email_user($isi)
-    {
+    public function cek_email_user($isi){
         return customer::where('deleted_at',"=",null)->where('email_user',"=", $isi)->get();
+    }
+
+    public function get_all_data_by_id($id){
+        return customer::where('deleted_at',"=",null)->where('id_user',"=", $id)->get();
     }
 
     public function get_all_data(){
@@ -37,5 +40,11 @@ class customer extends Model
 
     public function count_all_data_admin(){
         return customer::where('deleted_at',"=",null)->count();
+    }
+
+    public function updateSaldo($data){
+        $user = customer::find($data["id"]);
+        $user->saldo_user = $data["saldo"];
+        $user->save();
     }
 }
