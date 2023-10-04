@@ -3,20 +3,34 @@
 @section('content')
 <style>
     .card-image-container {
-        width: 70%;  /* mengurangi lebar dari 100% ke 80% */
-        padding-top: 70%; /* rasio tetap 1:1 karena padding-top sama dengan lebar */
-        position: relative;
-        margin: 0 auto; /* pusatkan container gambar */
-    }
+    display: flex;
+    justify-content: center; /* Pusatkan gambar secara horizontal */
+    align-items: center; /* Pusatkan gambar secara vertikal */
+    height: 100%; /* Tentukan tinggi agar flexbox dapat bekerja dengan benar */
+}
 
-    .card-image-container img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.square-wrapper {
+    width: 70%;
+    padding-top: 70%; /* Rasio tetap 1:1 */
+    position: relative;
+    margin: 0 auto; /* Pusatkan wrapper gambar */
+}
+
+.square-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.card-image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Sesuaikan dengan preferensi Anda (cover atau contain) */
+}
     .tiny-card {
         width: 150px; /* Lebar tetap kartu */
         height: 50px; /* Tinggi tetap kartu */
@@ -54,8 +68,10 @@
                     <div class="row no-gutters">
                         <div class="col-md-3">
                             <div class="card-image-container">
-                                <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="" class="img-fluid">
-                            </div>
+                                <div class="square-wrapper">
+                                    <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="" class="img-fluid">
+                                </div>
+                            </div>                            
                         </div>
                         <div class="col-md-9">
                             <div class="card-body">

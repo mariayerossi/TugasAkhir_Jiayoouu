@@ -16,6 +16,26 @@ class htrans extends Model
     // protected $dates = ['deleted_at'];
     //---------------------------------
 
+    public function insertHtrans($data){
+        $trans = new htrans();
+        $trans->kode_trans = $data["kode"];
+        $trans->fk_id_lapangan = $data["id_lapangan"];
+        $trans->subtotal_lapangan = $data["subtotal_lapangan"];
+        $trans->subtotal_alat = $data["subtotal_alat"];
+        $trans->tanggal_trans = $data["tanggal_trans"];
+        $trans->tanggal_sewa = $data["tanggal_sewa"];
+        $trans->jam_sewa = $data["jam_sewa"];
+        $trans->durasi_sewa = $data["durasi_sewa"];
+        $trans->total_trans = $data["total"];
+        $trans->fk_id_user = $data["id_user"];
+        $trans->fk_id_tempat = $data["id_tempat"];
+        $trans->pendapatan_website_lapangan = $data["pendapatan"];
+        $trans->status_trans = "Menunggu";
+        $trans->save();
+
+        return $trans->id_htrans;
+    }
+
     public function get_all_data_by_id($id){
         return htrans::where('deleted_at',"=",null)->where("id_htrans", "=", $id)->get();
     }

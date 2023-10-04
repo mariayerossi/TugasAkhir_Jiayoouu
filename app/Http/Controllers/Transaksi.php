@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\Session;
 
 class Transaksi extends Controller
 {
+    public function tambahTransaksi(Request $request) {
+        $request->validate([
+            "tanggal" => "required",
+            "mulai" => "required",
+            "selesai" => "required"
+        ],[
+            "tanggal.required" => "tanggal sewa tidak boleh kosong!",
+            "mulai.required" => "jam mulai sewa tidak boleh kosong!",
+            "selesai.required" => "jam selesai sewa tidak boleh kosong!"
+        ]);
+
+        
+    }
+    
     public function daftarTransaksiTempat(){
         $role = Session::get("dataRole")->id_tempat;
         //baru
