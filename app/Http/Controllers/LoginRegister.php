@@ -269,6 +269,7 @@ class LoginRegister extends Controller
             //cek apakah role user
             $user = new customer();
             $dataUser = $user->cek_email_user($request->email);
+            // dd($dataUser);
             if (!$dataUser->isEmpty()) {
                 if (password_verify($request->password, $dataUser->first()->password_user)) {
                     Session::put("role","customer");

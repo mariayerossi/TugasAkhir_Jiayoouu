@@ -284,6 +284,8 @@ class Transaksi extends Controller
                 $dtrans->insertDtrans($data2);
             }
         }
+
+        return redirect("/customer/detailLapangan/$request->id_lapangan")->with("success","Berhasil booking lapangan olahraga!");
     }
     
     public function daftarTransaksiTempat(){
@@ -580,9 +582,84 @@ class Transaksi extends Controller
                         ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
                 }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
                 ->where("htrans.fk_id_user", "=", Session::get("dataRole")->id_user)
+                ->where("htrans.status_trans","=","Selesai")
                 ->get();
 
         $param["trans"] = $trans;
         return view("customer.riwayat")->with($param);
+    }
+
+    public function detailTransaksi(Request $request) {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        
+        if ($request->tanggal == null || $request->mulai == null || $request->selesai == null) {
+            return redirect()->back()->with("error", "Tanggal dan Jam sewa tidak boleh kosong!");
+        }
+
+        $start_time = strtotime($request->mulai);
+        $end_time = strtotime($request->selesai);
+        $duration_seconds = $end_time - $start_time;
+        $duration_minutes = (int)($duration_seconds / 60);
+        $durasi_sewa = (int)round($duration_minutes / 60);
+
+        $subtotal_alat_perjam = 0;
+        $komisi_alat_pemilik = 0;
+        $komisi_alat_tempat = 0;
+        $subtotal_alat_lain = 0;
+        if (Session::has("sewaAlat") && Session::get("sewaAlat") != null) {
+            foreach (Session::get("sewaAlat") as $key => $value) {
+                $milik = false;
+                //permintaan
+                $alat = DB::table('request_permintaan')
+                        ->select("request_permintaan.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi")
+                        ->join("alat_olahraga", "request_permintaan.req_id_alat","=","alat_olahraga.id_alat")
+                        ->where("request_permintaan.req_id_alat","=",$value["alat"])
+                        ->get()
+                        ->first();
+                if ($alat == null) {
+                    //penawaran
+                    $alat = DB::table('request_penawaran')
+                            ->select("request_penawaran.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi")
+                            ->join("alat_olahraga", "request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
+                            ->where("request_penawaran.req_id_alat","=",$value["alat"])
+                            ->get()
+                            ->first();
+                    if ($alat == null) {
+                        //sewa sendiri
+                        $alat = DB::table('alat_olahraga')
+                            ->select("alat_olahraga.komisi_alat as harga_alat", "alat_olahraga.komisi_alat as komisi")
+                            ->join("sewa_sendiri", "alat_olahraga.id_alat","=","sewa_sendiri.req_id_alat")
+                            ->where("alat_olahraga.id_alat","=",$value["alat"])
+                            ->get()
+                            ->first();
+                        $milik = true;
+                    }
+                }
+
+                $subtotal_alat_perjam += $alat->harga_alat; //per jam
+                if ($milik == false) {
+                    $komisi_alat_pemilik += $alat->komisi;//per jam
+                    $subtotal_alat_lain += $alat->harga_alat;
+                }
+                else {
+                    $komisi_alat_tempat += $alat->komisi; //per jam
+                }
+            }
+        }
+
+        $subtotal_alat = $subtotal_alat_perjam * $durasi_sewa;
+
+        $param["data"] = [
+            "tanggal" => $request->tanggal,
+            "mulai" => $request->mulai,
+            "selesai" => $request->selesai,
+            "durasi" => $durasi_sewa,
+            "id_lapangan" => $request->id_lapangan,
+            "id_tempat" => $request->id_tempat,
+            "subtotal_alat" => $subtotal_alat
+        ];
+
+        return view("customer.detailTransaksi")->with($param);
     }
 }

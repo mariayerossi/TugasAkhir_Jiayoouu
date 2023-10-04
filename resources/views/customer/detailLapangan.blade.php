@@ -131,7 +131,7 @@
         <!-- Bagian form (menggunakan 6 kolom) -->
         <div class="col-md-8">
             @include("layouts.message")
-            <form id="bookingForm" action="/customer/transaksi/tambahTransaksi" method="post" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <form id="bookingForm" action="/customer/transaksi/detailTransaksi" method="get" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 @csrf
                 <div class="d-flex justify-content-center">
                     <h5><b>Atur Tanggal dan Jam Booking</b></h5>
