@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,9 +17,19 @@ class htrans extends Model
     // protected $dates = ['deleted_at'];
     //---------------------------------
 
+    public static function generateCode()
+    {
+        $today = Carbon::now()->format('dmy');
+        
+        // Mengambil jumlah item yang sudah ada hari ini
+        $count = self::where('kode_trans', 'LIKE', "H$today%")->count() + 1;
+        
+        return 'H' . $today . str_pad($count, 4, '0', STR_PAD_LEFT);
+    }
+
     public function insertHtrans($data){
         $trans = new htrans();
-        $trans->kode_trans = $data["kode"];
+        $trans->kode_trans = dtrans::generateCode();
         $trans->fk_id_lapangan = $data["id_lapangan"];
         $trans->subtotal_lapangan = $data["subtotal_lapangan"];
         $trans->subtotal_alat = $data["subtotal_alat"];

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\htrans;
 use App\Models\kategori;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -20,7 +22,82 @@ class Transaksi extends Controller
             "selesai.required" => "jam selesai sewa tidak boleh kosong!"
         ]);
 
+        $date_mulai = new DateTime($request->mulai);
+        $date_selesai = new DateTime($request->selesai);
         
+        if ($date_selesai <= $date_mulai) {
+            return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
+        }
+
+        //kasi pengecekan apakah ada tgl dan jam sama yg sdh dibooking
+        $cek = DB::table('htrans')
+                ->select("jam_sewa", "durasi_sewa")
+                ->where("tanggal_sewa", "=", $request->tanggal)
+                ->get();
+
+        if (!$cek->isEmpty()) {
+            $conflict = false;
+            foreach ($cek as $value) {
+                $booking_jam_selesai = date('H:i', strtotime("+$value->durasi_sewa hour", strtotime($value->jam_sewa)));
+                
+                if (($request->mulai >= $value->jam_sewa && $request->mulai < $booking_jam_selesai) || 
+                    ($request->selesai > $value->jam_sewa && $request->selesai <= $booking_jam_selesai) ||
+                    ($request->mulai <= $value->jam_sewa && $request->selesai >= $booking_jam_selesai)) {
+                    
+                    $conflict = true;
+                    break;
+                }
+            }
+
+            if ($conflict) {
+                // Ada konflik dengan booking yang ada
+                return back()->with('error', 'Maaf, slot ini sudah dibooking oleh customer lain.');
+            } else {
+                // Proses booking karena slot masih tersedia
+                // ... (kode untuk menyimpan booking)
+            }
+        }
+
+        $lapangan = DB::table('lapangan_olahraga')
+                            ->select("harga_sewa_lapangan")
+                            ->where('lapangan_olahraga.id_lapangan',"=",$request->id_lapangan)
+                            ->get()
+                            ->first();
+        // dd($lapangan);
+        $subtotal_alat = 0;
+        if (Session::has("sewaAlat") && Session::get("sewaAlat") != null) {
+            foreach (Session::get("sewaAlat") as $key => $value) {
+                $alat = DB::table('request_permintaan')
+                        ->select("req_harga_sewa as harga_alat")
+                        ->where("req_id_alat","=",$value["alat"])
+                        ->get()
+                        ->first();
+                if ($alat == null) {
+                    $alat = DB::table('request_penawaran')
+                        ->select("req_harga_sewa as harga_alat")
+                        ->where("req_id_alat","=",$value["alat"])
+                        ->get()
+                        ->first();
+                    if ($alat == null) {
+                        $alat = DB::table('alat_olahraga')
+                            ->select("komisi_alat as harga_alat")
+                            ->join("sewa_sendiri", "alat_olahraga.id_alat","=","sewa_sendiri.req_id_alat")
+                            ->where("id_alat","=",$value["alat"])
+                            ->get()
+                            ->first();
+                    }
+                }
+
+                $subtotal_alat += $alat->harga_alat;
+            }
+        }
+        // dd($subtotal_alat);
+
+        $data = [
+            "id_lapangan" => $request->id_lapangan,
+            "subtotal_lapangan" => $lapangan->harga_sewa_lapangan,
+            "subtotal_alat" => $subtotal_alat
+        ];
     }
     
     public function daftarTransaksiTempat(){
