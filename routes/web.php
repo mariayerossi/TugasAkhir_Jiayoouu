@@ -7,6 +7,7 @@ use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\Laporan;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Controllers\Negosiasi;
+use App\Http\Controllers\RatingReviewLapangan;
 use App\Http\Controllers\RequestPenawaran;
 use App\Http\Controllers\RequestPermintaan;
 use App\Http\Controllers\Saldo;
@@ -763,5 +764,12 @@ Route::prefix("/customer")->group(function(){
         })->middleware([CekCustomer::class]);
         Route::post("/midtrans-callback", [Saldo::class, "callback"]);
         Route::post("/after_midtrans", [Saldo::class, "afterpayment"]);
+    });
+
+    Route::prefix("/rating")->group(function(){
+        Route::prefix("/lapangan")->group(function(){
+            Route::post("/tambahRating", [RatingReviewLapangan::class, "tambahRating"]);
+        });
+        
     });
 });

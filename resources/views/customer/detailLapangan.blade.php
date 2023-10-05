@@ -68,6 +68,13 @@
         width: 45px;
         overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
     }
+    .star:not(.filled) {
+        font-size: 24px;
+        cursor: pointer;
+    }
+    .bi-star-fill {
+        color: gold;
+    }
 </style>
 @if (!$lapangan->isEmpty())
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
@@ -452,6 +459,39 @@
             @endif
         </div>
     </div>
+    @php
+        $cekStatus = DB::table('htrans')
+                        ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
+                        ->where("fk_id_user","=",Session::get("dataRole")->id_user)
+                        ->where("status_trans","=","Selesai")
+                        ->get();
+        $cekRating = DB::table('rating_review_lapangan')
+                        ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
+                        ->where("fk_id_user","=",Session::get("dataRole")->id_user)
+                        ->get();
+    @endphp
+    @if (!$cekStatus->isEmpty() && $cekRating->isEmpty())
+        <div class="row mt-5">
+            <div class="col-12">
+                <h4>Beri Ulasan</h4>
+                <form action="/customer/rating/lapangan/tambahRating" method="post" id="ratingForm">
+                    @csrf
+                    <div class="rating-container">
+                        @for($i=1; $i<=5; $i++)
+                            <i class="bi bi-star star" data-rate="{{ $i }}"></i>
+                        @endfor
+                        <input type="hidden" name="rating" id="ratingValue">
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="comment">Review (opsional):</label>
+                        <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
+                    <button type="submit" class="btn btn-primary mt-2">Kirim</button>
+                </form>
+            </div>
+        </div>
+    @endif
     <!-- Reviews section -->
     <div class="row mt-5">
         <div class="col-12">
@@ -556,6 +596,48 @@
             // Submit form keranjang
             cartForm.submit();
         });
+
+
+        const stars = document.querySelectorAll('.star');
+        const ratingValueInput = document.getElementById('ratingValue');
+        const ratingForm = document.getElementById('ratingForm');
+
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                let ratingValue = this.getAttribute('data-rate');
+                fillStars(ratingValue);
+                ratingValueInput.value = ratingValue;
+            });
+        });
+
+        ratingForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Menghentikan aksi default form submit
+
+            $.ajax({
+                url: this.action,
+                method: "POST",
+                data: $(this).serialize(),
+                success: function(response) {
+                    swal("Success!", "Berhasil mengirim rating!", "success");
+                    window.location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    swal("Error!", "Gagal mengirim rating!", "error");
+                }
+            });
+        });
+
+        function fillStars(value) {
+            stars.forEach((star, index) => {
+                if (index < value) {
+                    star.classList.remove('bi-star');
+                    star.classList.add('bi-star-fill');
+                } else {
+                    star.classList.remove('bi-star-fill');
+                    star.classList.add('bi-star');
+                }
+            });
+        }
     });
     function forceHourOnly(input) {
         const time = input.value;
@@ -578,7 +660,6 @@
     // document.querySelector('input[name="selesai"]').addEventListener('change', function() {
     //     document.querySelector('#hiddenSelesai').value = this.value;
     // });
-    
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @else
