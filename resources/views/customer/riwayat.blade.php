@@ -71,10 +71,13 @@
                                 <div class="square-wrapper">
                                     <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="" class="img-fluid">
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="col-md-9">
                             <div class="card-body">
+                                <div class="d-flex justify-content-end">
+                                    <h6>Status: {{$item->status_trans}}</h6>
+                                </div>
                                 <p class="card-text"><strong>{{$item->kode_trans}}</strong></p>
                                 <h5 class="card-title"><b>{{$item->nama_lapangan}}</b></h5>
                                 @php
@@ -124,7 +127,15 @@
                                 <h4><b>Total: Rp {{number_format($item->total_trans, 0, ',', '.')}}</b></h4>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button class="btn btn-success">Booking Lagi <i class="bi bi-bag-check"></i></button>
+                                @if ($item->status_trans == "Selesai")
+                                    <button class="btn btn-success">Booking Lagi <i class="bi bi-bag-check"></i></button>
+                                @elseif ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")
+                                    <form action="/customer/transaksi/batalBooking" method="post">
+                                        @csrf
+                                        <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
+                                        <button type="submit" class="btn btn-danger">Batal Booking <i class="bi bi-x-lg"></i></button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>

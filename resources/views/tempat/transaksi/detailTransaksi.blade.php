@@ -201,15 +201,63 @@
 
     @if ($htrans->first()->status_trans == "Menunggu")
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
-            <form action="" method="post">
+            <form id="tolakTransaksiForm" action="/tempat/transaksi/tolakTransaksi" method="post">
                 @csrf
+                <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                 <button class="btn btn-danger me-3" type="submit">Tolak</button>
             </form>
-            <form action="" method="post">
+            <form id="terimaTransaksiForm" action="/tempat/transaksi/terimaTransaksi" method="post">
                 @csrf
+                <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                 <button class="btn btn-success" type="submit">Terima</button>
             </form>
         </div>
     @endif
 </div>
+<script>
+    $(document).ready(function() {
+        $(".btn-success").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+    
+            var formData = $("#terimaTransaksiForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/tempat/transaksi/terimaTransaksi",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+        });
+
+        $(".btn-danger").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+    
+            var formData = $("#tolakTransaksiForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/tempat/transaksi/tolakTransaksi",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+        });
+    });
+</script>    
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

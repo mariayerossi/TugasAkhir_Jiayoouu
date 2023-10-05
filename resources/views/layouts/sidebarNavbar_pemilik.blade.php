@@ -197,6 +197,7 @@ Sportiva
                         <h6 class="m-3">{{Session::get("dataRole")->nama_pemilik}}</h6>
                         <hr>
                         <a href="/editprofile">Profile</a>
+                        <a href="/pemilik/saldo/tarikSaldo">Tarik Saldo</a>
                         <a href="/logout">Logout</a>
                     </div>
                 </div>

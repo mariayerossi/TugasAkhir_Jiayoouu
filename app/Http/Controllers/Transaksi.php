@@ -6,6 +6,7 @@ use App\Models\customer;
 use App\Models\dtrans;
 use App\Models\htrans;
 use App\Models\kategori;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -574,7 +575,7 @@ class Transaksi extends Controller
         $param["kategori"] = $kat->get_all_data();
 
         $trans = DB::table('htrans')
-                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa")
+                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans")
                 ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
                 ->joinSub(function($query) {
                     $query->select("fk_id_lapangan", "nama_file_lapangan")
@@ -582,7 +583,7 @@ class Transaksi extends Controller
                         ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
                 }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
                 ->where("htrans.fk_id_user", "=", Session::get("dataRole")->id_user)
-                ->where("htrans.status_trans","=","Selesai")
+                ->orderBy("htrans.id_htrans", "desc")
                 ->get();
 
         $param["trans"] = $trans;
@@ -661,5 +662,55 @@ class Transaksi extends Controller
         ];
 
         return view("customer.detailTransaksi")->with($param);
+    }
+
+    public function terimaTransaksi(Request $request) {
+        $data = [
+            "id" => $request->id_htrans,
+            "status" => "Diterima"
+        ];
+        $trans = new htrans();
+        $trans->updateStatus($data);
+
+        return response()->json(['success' => true, 'message' => 'Berhasil Diterima!']);
+    }
+
+    public function tolakTransaksi(Request $request) {
+        $data = [
+            "id" => $request->id_htrans,
+            "status" => "Ditolak"
+        ];
+        $trans = new htrans();
+        $trans->updateStatus($data);
+
+        return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
+    }
+
+    public function batalBooking(Request $request) {
+        $id = $request->id_htrans;
+
+        //cek apakah tanggal sewa dan jam sewa sdh lewat atau belom
+        $trans = DB::table('htrans')
+                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans")
+                ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->where("htrans.id_htrans", "=", $id)
+                ->get()->first();
+
+        if ($trans->status_trans == "Diterima") {
+            $now = Carbon::now('Asia/Jakarta');
+            $sewaDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $trans->tanggal_sewa . ' ' . $trans->jam_sewa, 'Asia/Jakarta');
+
+            if ($sewaDateTime->lte($now)) {
+                //sudah lewat
+                return redirect()->back()->with("error", "Waktu sewa sudah lewat! Tidak bisa membatalkan booking.");
+            }
+        }
+
+        
     }
 }

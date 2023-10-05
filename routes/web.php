@@ -431,6 +431,15 @@ Route::prefix("/pemilik")->group(function(){
             Route::get('/CetakPDF', [Laporan::class, "tempatPemilikCetakPDF"]);
         });
     });
+
+    Route::prefix("/saldo")->group(function(){
+        Route::get("/tarikSaldo", function () {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            return view("pemilik.tarikSaldo")->with($param);
+        })->middleware([CekPemilik::class]);
+        Route::post("/tarikDana", [Saldo::class, "tarikSaldo"]);
+    });
 });
 
 // -------------------------------
@@ -665,6 +674,8 @@ Route::prefix("/tempat")->group(function(){
             $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
             return view("tempat.transaksi.detailTransaksi")->with($param);
         })->middleware([CekTempat::class]);
+        Route::post("terimaTransaksi", [Transaksi::class, "terimaTransaksi"]);
+        Route::post("tolakTransaksi", [Transaksi::class, "tolakTransaksi"]);
     });
 
     //bagian laporan
@@ -734,6 +745,7 @@ Route::prefix("/customer")->group(function(){
         Route::get("/deleteAlat/{urutan}", [Transaksi::class, "deleteAlat"]);
         Route::get("/detailTransaksi", [Transaksi::class, "detailTransaksi"]);
         Route::post("/tambahTransaksi", [Transaksi::class, "tambahTransaksi"]);
+        Route::post("/batalBooking", [Transaksi::class, "batalBooking"]);
     });
 
     Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);

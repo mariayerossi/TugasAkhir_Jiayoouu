@@ -114,4 +114,8 @@ class Saldo extends Controller
             'message' => 'Saldo berhasil diperbarui!'
         ]);
     }
+
+    public function tarikSaldo(Request $request) {
+        
+    }
 }
