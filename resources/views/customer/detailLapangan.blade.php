@@ -497,12 +497,22 @@
         <div class="col-12">
             <h4>Ulasan Lapangan</h4>
             <!-- Example of a review -->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Nama Pengguna</h5>
-                    <p>Ulasan pengguna tentang produk ini...</p>
-                </div>
-            </div>
+            @php
+                $rating = DB::table('rating_review_lapangan')
+                        ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
+                        ->where("fk_id_user","=",Session::get("dataRole")->id_user)
+                        ->get();
+            @endphp
+            @if (!$rating->isEmpty())
+                @foreach ($rating as $item)
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5>Nama Pengguna</h5>
+                            <p>Ulasan pengguna tentang produk ini...</p>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
             <!-- Repeat the above card for more reviews -->
         </div>
     </div>
