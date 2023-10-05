@@ -9,6 +9,7 @@ use App\Http\Controllers\LoginRegister;
 use App\Http\Controllers\Negosiasi;
 use App\Http\Controllers\RequestPenawaran;
 use App\Http\Controllers\RequestPermintaan;
+use App\Http\Controllers\Saldo;
 use App\Http\Controllers\SewaSendiri;
 use App\Http\Controllers\Transaksi;
 use App\Http\Middleware\CekAdmin;
@@ -740,4 +741,15 @@ Route::prefix("/customer")->group(function(){
     Route::get("/hapusKeranjang/{urutan}", [Transaksi::class, "hapusKeranjang"]);
 
     Route::get("/daftarRiwayat", [Transaksi::class, "daftarRiwayat"])->middleware([CekCustomer::class]);
+
+    Route::prefix("/saldo")->group(function(){
+        Route::post("/topup", [Saldo::class, "topup"]);
+        Route::get("/topupSaldo", function () {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            return view("customer.topup")->with($param);
+        })->middleware([CekCustomer::class]);
+        Route::post("/midtrans-callback", [Saldo::class, "callback"]);
+        Route::post("/after_midtrans", [Saldo::class, "afterpayment"]);
+    });
 });
