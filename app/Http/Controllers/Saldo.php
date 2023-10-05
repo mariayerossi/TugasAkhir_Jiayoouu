@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Session;
 class Saldo extends Controller
 {
     public function topup(Request $request) {
+        $request->validate([
+            "jumlah" => "required"
+        ],[
+            "required" => "Nominal top up tidak boleh kosong!"
+        ]);
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config("midtrans.server_key");
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
