@@ -176,7 +176,7 @@ class Transaksi extends Controller
         // dd($pendapatan_tempat);
 
         //cek saldo e cukup gaa
-        $saldo = $this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+        $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
         if ($saldo < $total) {
             return back()->with('error', 'Saldo anda tidak cukup! Silahkan top up saldo anda.');
         }
@@ -575,7 +575,7 @@ class Transaksi extends Controller
         $param["kategori"] = $kat->get_all_data();
 
         $trans = DB::table('htrans')
-                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans")
+                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans", "htrans.tanggal_trans")
                 ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
                 ->joinSub(function($query) {
                     $query->select("fk_id_lapangan", "nama_file_lapangan")
@@ -683,6 +683,8 @@ class Transaksi extends Controller
         $trans = new htrans();
         $trans->updateStatus($data);
 
+        //pengembalian dana ke customer
+
         return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
     }
 
@@ -707,10 +709,38 @@ class Transaksi extends Controller
 
             if ($sewaDateTime->lte($now)) {
                 //sudah lewat
-                return redirect()->back()->with("error", "Waktu sewa sudah lewat! Tidak bisa membatalkan booking.");
+                return response()->json(['success' => false, 'message' => 'Waktu sewa sudah lewat! Tidak bisa membatalkan booking.']);
             }
         }
 
-        
+        $data = [
+            "id" => $request->id_htrans,
+            "status" => "Dibatalkan"
+        ];
+        $trans = new htrans();
+        $trans->updateStatus($data);
+
+        //pengembalian dana
+        $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+        $saldo += $trans->total_trans;
+
+        //enkripsi kembali saldo
+        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+        //update db user
+        $dataSaldo = [
+            "id" => Session::get("dataRole")->id_user,
+            "saldo" => $enkrip
+        ];
+        $cust = new customer();
+        $cust->updateSaldo($dataSaldo);
+
+        //update session role
+        $user = new customer();
+        $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
+        Session::forget("dataRole");
+        Session::put("dataRole", $isiUser->first());
+
+        return response()->json(['success' => true, 'message' => 'Berhasil Dibatalkan!']);
     }
 }

@@ -76,7 +76,25 @@
                         <div class="col-md-9">
                             <div class="card-body">
                                 <div class="d-flex justify-content-end">
-                                    <h6>Status: {{$item->status_trans}}</h6>
+                                    <h6><b>Tanggal Transaksi: {{$item->tanggal_trans}}</b></h6>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <h6>Status: </h6>
+                                    @if ($item->status_trans == "Diterima")
+                                        <h6 style="color: rgb(0, 145, 0)">{{$item->status_trans}}</h6>
+                                    @elseif ($item->status_trans == "Ditolak")
+                                        <h6 style="color: red">{{$item->status_trans}}</h6>
+                                    @elseif ($item->status_trans == "Dibatalkan")
+                                        <h6 style="color: red">{{$item->status_trans}}</h6>
+                                    @elseif ($item->status_trans == "Menunggu")
+                                        <h6 style="color: rgb(239, 203, 0)">{{$item->status_trans}}</h6>
+                                    @elseif ($item->status_trans == "Selesai")
+                                        <h6 style="color: blue">{{$item->status_trans}}</h6>
+                                    @elseif ($item->status_trans == "Dikomplain")
+                                        <h6 style="color: red">{{$item->status_trans}}</h6>
+                                    @elseif ($item->status_trans == "Berlangsung")
+                                        <h6 style="color: rgb(255, 145, 0)">{{$item->status_trans}}</h6>
+                                    @endif
                                 </div>
                                 <p class="card-text"><strong>{{$item->kode_trans}}</strong></p>
                                 <h5 class="card-title"><b>{{$item->nama_lapangan}}</b></h5>
@@ -130,7 +148,7 @@
                                 @if ($item->status_trans == "Selesai")
                                     <button class="btn btn-success">Booking Lagi <i class="bi bi-bag-check"></i></button>
                                 @elseif ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")
-                                    <form action="/customer/transaksi/batalBooking" method="post">
+                                    <form id="batalTransaksiForm" action="/customer/transaksi/batalBooking" method="post">
                                         @csrf
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
                                         <button type="submit" class="btn btn-danger">Batal Booking <i class="bi bi-x-lg"></i></button>
@@ -144,4 +162,35 @@
         @endforeach
     @endif
 </div>
+<script>
+    $(document).ready(function() {
+        $(".btn-danger").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+    
+            var formData = $("#batalTransaksiForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/customer/transaksi/batalBooking",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal("Success!", response.message, "success");
+                    }
+                    else {
+                        swal("Error!", response.message, "error");
+                    }
+                    window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

@@ -136,6 +136,9 @@
         <div class="d-flex justify-content-end mt-3 me-3">
             <h5><b>Subtotal: Rp {{number_format($data["subtotal_alat"], 0, ',', '.')}}</b></h5>
         </div>
+        <div class="d-flex justify-content-end mt-5 me-3">
+            <h4><b>Total: Rp {{number_format(($dataLapangan->harga_sewa_lapangan * $data["durasi"]) + $data["subtotal_alat"], 0, ',', '.')}}</b></h4>
+        </div>
         <hr>
     
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
