@@ -161,12 +161,12 @@
             @csrf
             <div class="row mb-5 mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
-                    <input type="checkbox" name="pengembalianCheckbox" id="pengembalianCheckbox" onchange="toggleInput()">
+                    <input type="checkbox" name="pengembalianCheckbox3" id="pengembalianCheckbox3" onchange="toggleInput3()">
                 </div>
-                <div class="col-md-6 col-sm-10 mt-2" id="pengembalianLabel">
+                <div class="col-md-6 col-sm-10 mt-2" id="pengembalianLabel3">
                     <h6>Pengembalian Dana Customer {{$namaUser}} dari</h6>
                 </div>
-                <div class="col-md-5 col-sm-12" id="pengembalianInput">
+                <div class="col-md-5 col-sm-12" id="pengembalianInput3">
                     <input type="hidden" name="dikembalikan" value="{{$komplain->first()->fk_id_user}}">
                     <select class="form-control" name="pengembali">
                         {{-- <option value="" disabled selected>Masukkan produk yang akan dihapus</option>
