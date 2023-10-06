@@ -21,7 +21,9 @@
         height: 100%;
         object-fit: cover;
     }
-
+    .bi-star-fill {
+        color: gold;
+    }
 </style>
 @if (!$alat->isEmpty())
 <div class="container mt-5 p-5 mb-5" >
@@ -65,11 +67,21 @@
         <div class="col-lg-6">
             <h2><b>{{ ucwords($alat->first()->nama_alat)}}</b></h2>
             <p><i class="bi bi-geo-alt"></i> Kota {{$alat->first()->kota_alat}}</p>
+            @php
+                $averageRating = DB::table('rating_alat')
+                            ->where('fk_id_alat', $alat->first()->id_alat)
+                            ->avg('rating');
+
+                $totalReviews = DB::table('rating_alat')
+                                    ->where('fk_id_alat', $alat->first()->id_alat)
+                                    ->count();
+
+                $averageRating = round($averageRating, 1);
+            @endphp
             <p class="text-muted"> 
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16" style="color: gold">
                 <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
-                </svg> 4.5 rating
-                <i class="bi bi-chat-dots ms-5"></i> 5 review
+                </svg> {{ $averageRating }} rating ({{ $totalReviews }})
             </p>
             <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
             <p class="text-muted mt-2">
@@ -101,14 +113,37 @@
     <div class="row mt-5">
         <div class="col-12">
             <h4>Ulasan Alat Olahraga</h4>
-            <!-- Example of a review -->
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Nama Pengguna</h5>
-                    <p>Ulasan pengguna tentang produk ini...</p>
+            @php
+                $rating = DB::table('rating_alat')
+                        ->select("user.nama_user", "rating_alat.review", "rating_alat.rating")
+                        ->join("user", "rating_alat.fk_id_user","=","user.id_user")
+                        ->where("fk_id_alat","=",$alat->first()->id_alat)
+                        ->get();
+            @endphp
+            @if (!$rating->isEmpty())
+                @foreach ($rating as $item)
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5>{{$item->nama_user}}</h5>
+                            <!-- Tampilkan bintang -->
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($i <= $item->rating)
+                                    <i class="bi bi-star-fill"></i>
+                                @else
+                                    <i class="bi bi-star"></i>
+                                @endif
+                            @endfor
+                            <p class="mt-3">{{$item->review}}</p>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5>Tidak ada ulasan</h5>
+                    </div>
                 </div>
-            </div>
-            <!-- Repeat the above card for more reviews -->
+            @endif
         </div>
     </div>
 </div>

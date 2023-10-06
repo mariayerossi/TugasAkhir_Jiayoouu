@@ -361,5 +361,21 @@ class DatabaseSeeder extends Seeder
             'pendapatan_website_alat' => 4400,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        DB::table('rating_alat')->insert([
+            'rating' => 4,
+            'review' => "bola basketnya lumayan bagus, cuman agak kempes",
+            'fk_id_user' => 1,
+            'fk_id_alat' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('rating_lapangan')->insert([
+            'rating' => 5,
+            'review' => "lapangannya bagus, bersih, nyaman dibuat main",
+            'fk_id_user' => 1,
+            'fk_id_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
     }
 }
