@@ -99,7 +99,7 @@ Sportiva
                 <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain <i class="bi bi-caret-down-fill"></i></a>
                 <div class="sidebar-dropdown-content">
                     <a href="/admin/komplain/request/daftarKomplain">Request</a>
-                    <a href="">Transaksi</a>
+                    <a href="/admin/komplain/trans/daftarKomplain">Transaksi</a>
                     <!-- Add other sports or categories here -->
                 </div>
             </div>

@@ -24,10 +24,24 @@ class komplainTrans extends Model
         $komp->waktu_komplain = $data["waktu"];
         $komp->status_komplain = "Menunggu";
         $komp->fk_id_user = $data["user"];
-        $komp->fk_id_pemilik = $data["pemilik"];
-        $komp->fk_id_tempat = $data["tempat"];
         $komp->save();
 
         return $komp->id_komplain_trans;
+    }
+
+    public function get_all_data_by_admin_baru(){
+        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Menunggu")->get();
+    }
+
+    public function get_all_data_by_admin_diterima(){
+        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Diterima")->get();
+    }
+
+    public function get_all_data_by_admin_ditolak(){
+        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Ditolak")->get();
+    }
+
+    public function get_all_data_by_id($id){
+        return komplainTrans::where('deleted_at',"=",null)->where("id_komplain_trans","=",$id)->get();
     }
 }

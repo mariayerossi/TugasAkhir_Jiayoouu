@@ -25,13 +25,14 @@ use App\Models\dtrans as ModelsDtrans;
 use App\Models\slotWaktu as ModelsSlotWaktu;
 use App\Models\customer;
 use App\Models\filesAlatOlahraga;
-use App\Models\filesKomplainReq;
 use App\Models\filesLapanganOlahraga;
 use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
 use App\Models\negosiasi as ModelsNegosiasi;
 use App\Models\komplainRequest as ModelsKomplainRequest;
 use App\Models\filesKomplainReq as ModelsFilesKomplainReq;
+use App\Models\komplainTrans as ModelsKomplainTrans;
+use App\Models\filesKomplainTrans as ModelsFilesKomplainTrans;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use App\Models\registerTempat;
@@ -202,6 +203,25 @@ Route::prefix("/admin")->group(function(){
                 $files = new ModelsFilesKomplainReq();
                 $param["files"] = $files->get_all_data($id);
                 return view("admin.komplain.request.detailKomplain")->with($param);
+            })->middleware([CekAdmin::class]);
+            Route::post("/terimaKomplain", [KomplainRequest::class, "terimaKomplain"]);
+            Route::get("/tolakKomplain/{id}", [KomplainRequest::class, "tolakKomplain"]);
+        });
+
+        Route::prefix("/trans")->group(function(){
+            Route::get("/daftarKomplain", function () {
+                $komp = new ModelsKomplainTrans();
+                $param["baru"] = $komp->get_all_data_by_admin_baru();
+                $param["diterima"] = $komp->get_all_data_by_admin_diterima();
+                $param["ditolak"] = $komp->get_all_data_by_admin_ditolak();
+                return view("admin.komplain.trans.daftarKomplain")->with($param);
+            })->middleware([CekAdmin::class]);
+            Route::get("/detailKomplain/{id}", function ($id) {
+                $komp = new ModelsKomplainTrans();
+                $param["komplain"] = $komp->get_all_data_by_id($id);
+                $files = new ModelsFilesKomplainTrans();
+                $param["files"] = $files->get_all_data($id);
+                return view("admin.komplain.trans.detailKomplain")->with($param);
             })->middleware([CekAdmin::class]);
             Route::post("/terimaKomplain", [KomplainRequest::class, "terimaKomplain"]);
             Route::get("/tolakKomplain/{id}", [KomplainRequest::class, "tolakKomplain"]);

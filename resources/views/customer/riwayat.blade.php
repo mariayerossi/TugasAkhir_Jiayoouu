@@ -157,8 +157,8 @@
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
                                         <button type="submit" class="btn btn-warning" data-id="{{$item->id_htrans}}">Ajukan Komplain <i class="bi bi-pencil-square"></i></button>
                                     </form>
-                                @elseif ($item->status_trans == "Selesai" && $komplain != null)
-                                    <div class="col-8 d-flex flex-column justify-content-center">
+                                @elseif ($item->status_trans == "Dikomplain")
+                                    <div class="mt-3">
                                         <h4 class="card-title"><b>Komplain Anda telah dikirim!</b></h4>
                                         @if ($komplain->status_komplain == "Menunggu")
                                             <p class="card-text">Komplain kamu menunggu konfirmasi admin</p>
@@ -180,7 +180,7 @@
             </div>
             <div class="row form_komplain mb-5" data-id="{{$item->id_htrans}}">
                 <div class="col-md-8">
-                    <form action="/pemilik/komplain/tambahKomplain" method="post" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);background-color:white">
+                    <form action="/customer/komplain/ajukanKomplain" method="post" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);background-color:white">
                         @csrf
                         <div class="d-flex justify-content-center">
                             <h5><b>Ajukan Komplain</b></h5>
@@ -193,8 +193,8 @@
                                 <input type="radio" class="btn-check" name="jenis" id="info-outlined" autocomplete="off" value="Lapangan tidak sesuai">
                                 <label class="btn btn-outline-info" for="info-outlined"><i class="bi bi-house-slash me-2"></i>Lapangan tidak sesuai</label>
 
-                                <input type="radio" class="btn-check" name="jenis" id="danger-outlined" autocomplete="off" value="Lapangan Palsu">
-                                <label class="btn btn-outline-danger" for="danger-outlined"><i class="bi bi-house-x me-2"></i>Lapangan Palsu</label>
+                                <input type="radio" class="btn-check" name="jenis" id="danger-outlined" autocomplete="off" value="Alat tidak sesuai">
+                                <label class="btn btn-outline-danger" for="danger-outlined"><i class="bi bi-box2 me-2"></i>Alat tidak sesuai</label>
 
                                 <input type="radio" class="btn-check" name="jenis" id="primary-outlined" autocomplete="off" value="Lainnya">
                                 <label class="btn btn-outline-primary" for="primary-outlined"><i class="bi bi-justify-left me-2"></i></i>Lainnya</label>
@@ -205,8 +205,8 @@
                                 <h6>Jelaskan Komplain</h6>
                             </div>
                             <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                                <textarea id="myTextarea" class="form-control" name="keterangan" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Keterangan Komplain">{{ old('keterangan') }}</textarea>
-                                <p id="charCount">0/500</p>
+                                <textarea id="myTextarea" class="form-control" name="keterangan" rows="4" cols="50" data-id="{{$item->id_htrans}}" onkeyup="updateCount(this)" placeholder="Masukkan Keterangan Komplain">{{ old('keterangan') }}</textarea>
+                                <p id="charCount" data-id="{{$item->id_htrans}}">0/500</p>
                             </div>
                         </div>
                         <div class="row">
@@ -218,8 +218,7 @@
                                 <input type="file" class="form-control" name="foto[]" multiple accept=".jpg,.png,.jpeg">
                             </div>
                         </div>
-                        {{-- <input type="hidden" name="fk_id_request" value="{{$permintaan->first()->id_permintaan}}"> --}}
-                        <input type="hidden" name="jenis_request" value="Permintaan">
+                        <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-success">Kirim</button>
                         </div>
@@ -269,6 +268,24 @@
             $(`.form_komplain[data-id=${transaksiId}]`).show();
         });
     });
+    function updateCount(textarea) {
+        let textareaValue = textarea.value;
+        let charCount = textareaValue.length;
+        
+        // Menggunakan DOM traversal untuk mendapatkan elemen <p> yang tepat
+        let countElement = textarea.nextElementSibling;
+
+        if (charCount > 500) {
+            // Potong teks untuk membatasi hanya 500 karakter
+            textarea.value = textareaValue.substring(0, 500);
+            charCount = 500;
+            countElement.style.color = 'red';
+        } else {
+            countElement.style.color = 'black';
+        }
+
+        countElement.innerText = charCount + "/500";
+    }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

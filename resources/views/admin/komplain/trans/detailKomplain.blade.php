@@ -53,14 +53,7 @@
 </style>
 @include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
-    <h3 class="text-center mb-5">Detail Komplain Request</h3>
-    <div class="d-flex justify-content-end mt-3 me-3">
-        @if ($komplain->first()->fk_id_permintaan != null)
-            <h6><b>Jenis Request: Permintaan</b></h6>
-        @else
-            <h6><b>Jenis Request: Penawaran</b></h6>
-        @endif
-    </div>
+    <h3 class="text-center mb-5">Detail Komplain Transaksi</h3>
     <div class="d-flex justify-content-end mt-3 me-3">
         @if ($komplain->first()->status_komplain == "Menunggu")
             <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$komplain->first()->status_komplain}}</b></h6>
@@ -71,12 +64,7 @@
         @endif
     </div>
     @php
-        if ($komplain->first()->fk_id_pemilik != null) {
-            $namaUser = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->first()->fk_id_pemilik)->get()->first()->nama_pemilik;
-        }
-        else {
-            $namaUser = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->first()->fk_id_tempat)->get()->first()->nama_tempat;
-        }
+        $namaUser = DB::table('user')->where("id_user","=",$komplain->first()->fk_id_user)->get()->first()->nama_user;
 
         $tanggalAwal1 = $komplain->first()->waktu_komplain;
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
@@ -130,52 +118,41 @@
         </div>
     </div>
     @php
-        if ($komplain->first()->fk_id_permintaan != null) {
-            $dataRequest = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first();
-            $id_request = $dataRequest->id_permintaan;
-
-            $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_tempat;
-            $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_pemilik;
-            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-        }
-        else if ($komplain->first()->fk_id_penawaran != null) {
-            $dataRequest = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first();
-            $id_request = $dataRequest->id_penawaran;
-
-            $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_tempat;
-            $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_pemilik;
-            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-        }
-        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataRequest->req_id_alat)->get()->first();
-        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-
-        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataRequest->req_lapangan)->get()->first();
+        $dataHtrans = DB::table('htrans')
+                    ->select("files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan")
+                    ->where("id_htrans","=",$komplain->first()->fk_id_htrans)
+                    ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_lapangan", "nama_file_lapangan")
+                            ->from('files_lapangan')
+                            ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                    }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                    ->get()
+                    ->first();
     @endphp
     {{-- detail request --}}
-    <h5>Detail Request</h5>
-    <a href="/admin/request/detailRequest/{{$komplain->first()->jenis_request}}/{{$id_request}}">
+    <h5>Detail Transaksi</h5>
+    <a href="/admin/transaksi/detailTransaksi/{{$komplain->first()->fk_id_htrans}}">
         <div class="card h-70">
             <div class="card-body">
                 <div class="row">
                     <!-- Gambar Alat -->
                     <div class="col-4">
                         <div class="square-image-container">
-                            <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                            <img src="{{ asset('upload/' . $dataHtrans->nama_file_lapangan) }}" alt="" class="img-fluid">
                         </div>
                     </div>
                     
                     <!-- Nama Alat -->
                     <div class="col-8 d-flex flex-column justify-content-center">
-                        <h5 class="card-title truncate-text">{{$komplain->first()->jenis_request}} {{$dataAlat->nama_alat}}</h5>
-                        <p class="card-text">Pemilik alat: {{$nama_pemilik}}</p>
+                        <h5 class="card-title truncate-text">{{$dataHtrans->nama_lapangan}}</h5>
                     </div>
                 </div>
             </div>
         </div>
     </a>
 
+    {{-- blm mari --}}
     <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
     @if ($komplain->first()->status_komplain == "Menunggu")
         <form action="/admin/komplain/request/terimaKomplain" method="POST">
