@@ -157,21 +157,56 @@
     {{-- blm mari --}}
     <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
     @if ($komplain->first()->status_komplain == "Menunggu")
+        @php
+            $tempat = DB::table('pihak_tempat')
+                    ->join("htrans","pihak_tempat.id_tempat","=","htrans.fk_id_tempat")
+                    ->where("htrans.id_htrans","=",$komplain->first()->fk_id_htrans)
+                    ->get()
+                    ->first();
+            $pemilik = DB::table('pemilik_alat')
+                    ->join("dtrans","pemilik_alat.id_pemilik","=","dtrans.fk_id_pemilik")
+                    ->where("dtrans.fk_id_htrans","=",$komplain->first()->fk_id_htrans)
+                    ->get();
+            
+            $lapangan = DB::table('lapangan_olahraga')
+                    ->join("htrans","lapangan_olahraga.id_lapangan","=","htrans.fk_id_lapangan")
+                    ->where("htrans.id_htrans","=",$komplain->first()->fk_id_htrans)
+                    ->get()
+                    ->first();
+            $alat = DB::table('alat_olahraga')
+                    ->join("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
+                    ->where("dtrans.fk_id_htrans","=",$komplain->first()->fk_id_htrans)
+                    ->get();
+        @endphp
         <form action="/admin/komplain/trans/terimaKomplain" method="POST">
             @csrf
-            <div class="row mb-5 mt-5">
+            <div class="row mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                     <input type="checkbox" name="pengembalianCheckbox3" id="pengembalianCheckbox3" onchange="toggleInput3()">
                 </div>
-                <div class="col-md-6 col-sm-10 mt-2" id="pengembalianLabel3">
-                    <h6>Pengembalian Dana Customer {{$namaUser}} dari</h6>
+                <div class="col-md-8 col-sm-10 mt-2" id="pengembalianLabel3">
+                    <h6>Pengembalian Dana Customer {{$namaUser}} sebesar</h6>
                 </div>
-                <div class="col-md-5 col-sm-12" id="pengembalianInput3">
-                    <input type="hidden" name="dikembalikan" value="{{$komplain->first()->fk_id_user}}">
-                    <select class="form-control" name="pengembali">
-                        {{-- <option value="" disabled selected>Masukkan produk yang akan dihapus</option>
-                        <option value="{{$dataAlat->id_alat}}-alat" {{ old('produk') == $dataAlat->id_alat ? 'selected' : '' }}>{{$dataAlat->nama_alat}}</option>
-                        <option value="{{$dataLapangan->id_lapangan}}-lapangan" {{ old('produk') == $dataLapangan->id_lapangan ? 'selected' : '' }}>{{$dataLapangan->nama_lapangan}}</option> --}}
+                <input type="hidden" name="user" value="{{$komplain->first()->fk_id_user}}">
+                <div class="col-md-3 col-sm-12" id="pengembalianInput3">
+                    <input type="number" name="jumlah" id="" class="form-control" oninput="formatNumber(this)" placeholder="Masukkan Nominal...">
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-md-1 col-sm-2 d-flex align-items-center">
+                </div>
+                <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel4">
+                    <h6>dan dipotong dari saldo wallet milik</h6>
+                </div>
+                <div class="col-md-7 col-sm-12" id="pengembalianInput4">
+                    <select class="form-control" name="akun_dikembalikan">
+                        <option value="" disabled selected>Masukkan pemilik saldo wallet</option>
+                        <option value="{{$tempat->id_tempat}}-tempat">{{$tempat->nama_tempat}}</option>
+                        @if (!$pemilik->isEmpty())
+                            @foreach ($pemilik as $item)
+                                <option value="{{$item->id_pemilik}}-pemilik">{{$item->nama_pemilik}}</option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -183,11 +218,15 @@
                     <h6>Penghapusan Produk</h6>
                 </div>
                 <div class="col-md-7 col-sm-12" id="pengembalianInput">
-                    {{-- <select class="form-control" name="produk">
+                    <select class="form-control" name="produk">
                         <option value="" disabled selected>Masukkan produk yang akan dihapus</option>
-                        <option value="{{$dataAlat->id_alat}}-alat" {{ old('produk') == $dataAlat->id_alat ? 'selected' : '' }}>{{$dataAlat->nama_alat}}</option>
-                        <option value="{{$dataLapangan->id_lapangan}}-lapangan" {{ old('produk') == $dataLapangan->id_lapangan ? 'selected' : '' }}>{{$dataLapangan->nama_lapangan}}</option>
-                    </select> --}}
+                        <option value="{{$lapangan->id_lapangan}}-lapangan">{{$lapangan->nama_lapangan}}</option>
+                        @if (!$alat->isEmpty())
+                            @foreach ($alat as $item)
+                                <option value="{{$item->id_alat}}-alat">{{$item->nama_alat}}</option>
+                            @endforeach
+                        @endif
+                    </select>
                 </div>
             </div>
             <div class="row mb-5 mt-5">
@@ -197,29 +236,17 @@
                 <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel2">
                     <h6>Penonaktifkan akun</h6>
                 </div>
-                {{-- @php
-                    if ($komplain->first()->fk_id_permintaan == "Permintaan") {
-                        $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_tempat;
-                        $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_pemilik;
-
-                        $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-                        $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-                    }
-                    else if ($komplain->first()->fk_id_penawaran == "Penawaran") {
-                        $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_tempat;
-                        $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_pemilik;
-
-                        $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-                        $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-                    }
-                @endphp
                 <div class="col-md-7 col-sm-12" id="pengembalianInput2">
                     <select class="form-control" name="akun">
                         <option value="" disabled selected>Masukkan akun yang akan dinonaktifkan</option>
-                        <option value="{{$id_tempat}}-tempat" {{ old('akun') == $id_tempat ? 'selected' : '' }}>{{$nama_tempat}}</option>
-                        <option value="{{$id_pemilik}}-pemilik" {{ old('akun') == $id_pemilik ? 'selected' : '' }}>{{$nama_pemilik}}</option>
+                        <option value="{{$tempat->id_tempat}}-tempat">{{$tempat->nama_tempat}}</option>
+                        @if (!$pemilik->isEmpty())
+                            @foreach ($pemilik as $item)
+                                <option value="{{$item->id_pemilik}}-pemilik">{{$item->nama_pemilik}}</option>
+                            @endforeach
+                        @endif
                     </select>
-                </div> --}}
+                </div>
             </div>
             <input type="hidden" name="id_komplain" value="{{$komplain->first()->id_komplain_trans}}">
             <div class="d-flex justify-content-end">
@@ -283,6 +310,7 @@
     }
     toggleInput();
     toggleInput2();
+    toggleInput3();
     function toggleInput() {
         var checkbox = document.getElementById("pengembalianCheckbox");
         var label = document.getElementById("pengembalianLabel");
@@ -311,6 +339,29 @@
             label.style.opacity = "0.5";
             inputGroup.style.opacity = "0.5";
             inputGroup.querySelector('select').disabled = true;
+        }
+    }
+    function toggleInput3() {
+        var checkbox = document.getElementById("pengembalianCheckbox3");
+        var label = document.getElementById("pengembalianLabel3");
+        var inputGroup = document.getElementById("pengembalianInput3");
+        var label2 = document.getElementById("pengembalianLabel4");
+        var inputGroup2 = document.getElementById("pengembalianInput4");
+
+        if (checkbox.checked) {
+            label.style.opacity = "1";
+            inputGroup.style.opacity = "1";
+            inputGroup.querySelector('input').disabled = false;
+            label2.style.opacity = "1";
+            inputGroup2.style.opacity = "1";
+            inputGroup2.querySelector('select').disabled = false;
+        } else {
+            label.style.opacity = "0.5";
+            inputGroup.style.opacity = "0.5";
+            inputGroup.querySelector('input').disabled = true;
+            label2.style.opacity = "0.5";
+            inputGroup2.style.opacity = "0.5";
+            inputGroup2.querySelector('select').disabled = true;
         }
     }
     function formatNumber(input) {

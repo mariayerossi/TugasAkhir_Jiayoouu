@@ -57,4 +57,8 @@ class KomplainTrans extends Controller
 
         return redirect()->back()->with("success", "Berhasil Mengajukan Komplain!");
     }
+
+    public function terimaKomplain(Request $request) {
+
+    }
 }

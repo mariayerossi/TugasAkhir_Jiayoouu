@@ -223,7 +223,7 @@ Route::prefix("/admin")->group(function(){
                 $param["files"] = $files->get_all_data($id);
                 return view("admin.komplain.trans.detailKomplain")->with($param);
             })->middleware([CekAdmin::class]);
-            Route::post("/terimaKomplain", [KomplainRequest::class, "terimaKomplain"]);
+            Route::post("/terimaKomplain", [KomplainTrans::class, "terimaKomplain"]);
             Route::get("/tolakKomplain/{id}", [KomplainRequest::class, "tolakKomplain"]);
         });
     });
