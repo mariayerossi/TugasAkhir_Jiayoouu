@@ -44,4 +44,8 @@ class komplainTrans extends Model
     public function get_all_data_by_id($id){
         return komplainTrans::where('deleted_at',"=",null)->where("id_komplain_trans","=",$id)->get();
     }
+
+    public function count_all_data_admin() {
+        return komplainTrans::where('deleted_at',"=",null)->count();
+    }
 }

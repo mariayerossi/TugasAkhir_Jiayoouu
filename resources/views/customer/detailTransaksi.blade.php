@@ -150,8 +150,37 @@
                 <input type="hidden" name="tanggal" value="{{$data['tanggal']}}">
                 <input type="hidden" name="mulai" value="{{$data['mulai']}}">
                 <input type="hidden" name="selesai" value="{{$data['selesai']}}">
-                <button class="btn btn-success" type="submit">Booking Sekarang</button>
+                <button class="btn btn-success" type="submit" id="bookingBtn">Booking Sekarang</button>
             </form>
         </div>
+        <!-- Modal -->
+        <div class="modal fade" id="agreementModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agreement</h5>
+                    </div>
+                    <div class="modal-body">
+                        Alat olahraga yang dipergunakan melalui sistem peminjaman harus dijaga dengan baik. Apabila terdapat kerusakan yang disebabkan oleh kesengajaan pelanggan, maka denda akan dikenakan dengan cara <b>pemotongan dana dari saldo wallet pelanggan</b>. Keputusan mengenai apakah kerusakan tersebut disebabkan oleh kesengajaan atau bukan akan ditentukan oleh pihak pengelola fasilitas olahraga
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="confirmBooking">Setuju</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+    <script>
+        document.getElementById('bookingBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            $('#agreementModal').modal('show');
+        });
+    
+        document.getElementById('confirmBooking').addEventListener('click', function() {
+            $('#agreementModal').modal('hide');
+            document.querySelector('form[action="/customer/transaksi/tambahTransaksi"]').submit();
+        });
+    </script>
+        
 @endsection

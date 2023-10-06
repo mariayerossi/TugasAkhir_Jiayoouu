@@ -15,11 +15,11 @@
             </a>
         </div>
         <div class="col-md-4">
-            <a href="">
+            <a href="/admin/komplain/trans/daftarKomplain">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Total Komplain Transaksi</h5>
-                        {{-- <p class="display-5">{{$jumlahKomplainTrans}}</p> --}}
+                        <p class="display-5">{{$jumlahKomplainTrans}}</p>
                     </div>
                 </div>
             </a>
