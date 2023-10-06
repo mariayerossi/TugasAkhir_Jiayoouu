@@ -7,7 +7,7 @@ use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\Laporan;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Controllers\Negosiasi;
-use App\Http\Controllers\RatingReviewLapangan;
+use App\Http\Controllers\Rating;
 use App\Http\Controllers\RequestPenawaran;
 use App\Http\Controllers\RequestPermintaan;
 use App\Http\Controllers\Saldo;
@@ -747,6 +747,7 @@ Route::prefix("/customer")->group(function(){
         Route::get("/detailTransaksi", [Transaksi::class, "detailTransaksi"]);
         Route::post("/tambahTransaksi", [Transaksi::class, "tambahTransaksi"]);
         Route::post("/batalBooking", [Transaksi::class, "batalBooking"]);
+        Route::post("/bookingLagi", [Transaksi::class, "bookingLagi"]);
     });
 
     Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);
@@ -768,8 +769,11 @@ Route::prefix("/customer")->group(function(){
 
     Route::prefix("/rating")->group(function(){
         Route::prefix("/lapangan")->group(function(){
-            Route::post("/tambahRating", [RatingReviewLapangan::class, "tambahRating"]);
+            Route::post("/tambahRating", [Rating::class, "tambahRatingLapangan"]);
         });
         
+        Route::prefix("/alat")->group(function(){
+            Route::post("/tambahRating", [Rating::class, "tambahRatingAlat"]);
+        });
     });
 });

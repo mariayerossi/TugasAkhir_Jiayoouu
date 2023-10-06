@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rating_review_lapangan', function (Blueprint $table) {
-            $table->integerIncrements("id_rating_lapangan");
+        Schema::create('rating_alat', function (Blueprint $table) {
+            $table->integerIncrements("id_rating_alat");
             $table->integer("rating");//1 - 5
-            $table->string("review", 500)->nullable();
+            $table->string("review", 500)->nullable();//opsional
             $table->unsignedInteger("fk_id_user");
-            $table->unsignedInteger("fk_id_lapangan");
+            $table->unsignedInteger("fk_id_alat");
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fk_id_user')
                   ->references('id_user')
                   ->on('user');
-            $table->foreign('fk_id_lapangan')
-                  ->references('id_lapangan')
-                  ->on('lapangan_olahraga');
+            $table->foreign('fk_id_alat')
+                  ->references('id_alat')
+                  ->on('alat_olahraga');
         });
     }
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rating_review_lapangan');
+        Schema::dropIfExists('rating_alat');
     }
 };

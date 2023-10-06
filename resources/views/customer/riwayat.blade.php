@@ -146,7 +146,11 @@
                             </div>
                             <div class="d-flex justify-content-end">
                                 @if ($item->status_trans == "Selesai")
-                                    <button class="btn btn-success">Booking Lagi <i class="bi bi-bag-check"></i></button>
+                                    <form id="bookingLagi" action="/customer/transaksi/bookingLagi" method="post">
+                                        @csrf
+                                        <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
+                                        <button type="submit" class="btn btn-success">Booking Lagi <i class="bi bi-bag-check"></i></button>
+                                    </form>
                                 @elseif ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")
                                     <form id="batalTransaksiForm" action="/customer/transaksi/batalBooking" method="post">
                                         @csrf
