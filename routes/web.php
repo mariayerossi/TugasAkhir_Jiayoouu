@@ -3,6 +3,7 @@
 use App\Http\Controllers\AlatOlahraga;
 use App\Http\Controllers\KategoriOlahraga;
 use App\Http\Controllers\KomplainRequest;
+use App\Http\Controllers\KomplainTrans;
 use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\Laporan;
 use App\Http\Controllers\LoginRegister;
@@ -677,6 +678,7 @@ Route::prefix("/tempat")->group(function(){
         })->middleware([CekTempat::class]);
         Route::post("terimaTransaksi", [Transaksi::class, "terimaTransaksi"]);
         Route::post("tolakTransaksi", [Transaksi::class, "tolakTransaksi"]);
+        Route::post("konfirmasiDipakai", [Transaksi::class, "konfirmasiDipakai"]);
     });
 
     //bagian laporan
@@ -747,7 +749,6 @@ Route::prefix("/customer")->group(function(){
         Route::get("/detailTransaksi", [Transaksi::class, "detailTransaksi"]);
         Route::post("/tambahTransaksi", [Transaksi::class, "tambahTransaksi"]);
         Route::post("/batalBooking", [Transaksi::class, "batalBooking"]);
-        Route::post("/bookingLagi", [Transaksi::class, "bookingLagi"]);
     });
 
     Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);
@@ -775,5 +776,9 @@ Route::prefix("/customer")->group(function(){
         Route::prefix("/alat")->group(function(){
             Route::post("/tambahRating", [Rating::class, "tambahRatingAlat"]);
         });
+    });
+
+    Route::prefix("/komplain")->group(function(){
+        Route::post("/ajukanKomplain", [KomplainTrans::class, "ajukanKomplain"]);
     });
 });

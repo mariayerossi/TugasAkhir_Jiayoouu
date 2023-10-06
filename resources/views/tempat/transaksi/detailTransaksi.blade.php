@@ -37,7 +37,9 @@
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <h3 class="text-center mb-5">Detail Transaksi</h3>
     <div class="d-flex justify-content-end mt-3 me-3">
-        <h6><b>Kode Transaksi: {{$htrans->first()->kode_trans}}</b></h6>
+        @if ($htrans->first()->status_trans == "Berlangsung" || $htrans->first()->status_trans == "Selesai" || $htrans->first()->status_trans == "Dikomplain")
+            <h6><b>Kode Transaksi: {{$htrans->first()->kode_trans}}</b></h6>
+        @endif
     </div>
     @php
         $dataUser = DB::table('user')->where("id_user","=",$htrans->first()->fk_id_user)->get()->first();
@@ -212,6 +214,21 @@
                 <button class="btn btn-success" type="submit">Terima</button>
             </form>
         </div>
+    @elseif ($htrans->first()->status_trans == "Diterima")
+        <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+            <form id="konfirmasiDipakai" action="/tempat/transaksi/konfirmasiDipakai" method="post">
+                @csrf
+                <h6>Konfirmasi ketika customer datang dan menggunakan lapangan</h6>
+                <div class="input-group">
+                    <input type="text" name="kode" id="" class="form-control" placeholder="Masukkan kode transaksi...">
+                    <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
+                    <input type="hidden" name="kode_htrans" value="{{$htrans->first()->kode_trans}}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Konfirmasi</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     @endif
 </div>
 <script>
@@ -254,6 +271,27 @@
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+        });
+
+        $('#konfirmasiDipakai').on('submit', function(event) {
+            event.preventDefault();  // Prevent form from submitting the default way
+            
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Handle success. 
+                    // You can update the frontend or show a success message here
+                    window.location.reload();
+                    swal("Success!", "Berhasil mengkonfirmasi transaksi!", "success");
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    // If you send back errors in a known format, you can display them here
+                    swal("Error!", "Gagal mengkonfirmasi transaksi!", "error");
                 }
             });
         });

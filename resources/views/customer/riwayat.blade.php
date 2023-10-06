@@ -63,7 +63,7 @@
     <h2 class="text-center mb-5">Daftar Riwayat Transaksi</h2>
     @if (!$trans->isEmpty())
         @foreach ($trans as $item)
-            <div class="card mb-3" style="max-width: 100%;">
+            <div class="card mt-5" style="max-width: 100%;" data-id="{{$item->id_htrans}}">
                 <div class="card-body">
                     <div class="row no-gutters">
                         <div class="col-md-3">
@@ -144,13 +144,28 @@
                             <div class="d-flex justify-content-end">
                                 <h4><b>Total: Rp {{number_format($item->total_trans, 0, ',', '.')}}</b></h4>
                             </div>
+                            @php
+                                $komplain = DB::table('komplain_trans')
+                                            ->where("fk_id_htrans","=",$item->id_htrans)
+                                            ->get()
+                                            ->first();
+                            @endphp
                             <div class="d-flex justify-content-end">
-                                @if ($item->status_trans == "Selesai")
-                                    <form id="bookingLagi" action="/customer/transaksi/bookingLagi" method="post">
+                                @if ($item->status_trans == "Selesai" && $komplain == null)
+                                    <form id="ajukanKomplain" action="/customer/komplain/ajukanKomplain" method="post">
                                         @csrf
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
-                                        <button type="submit" class="btn btn-success">Booking Lagi <i class="bi bi-bag-check"></i></button>
+                                        <button type="submit" class="btn btn-warning" data-id="{{$item->id_htrans}}">Ajukan Komplain <i class="bi bi-pencil-square"></i></button>
                                     </form>
+                                @elseif ($item->status_trans == "Selesai" && $komplain != null)
+                                    <div class="col-8 d-flex flex-column justify-content-center">
+                                        <h4 class="card-title"><b>Komplain Anda telah dikirim!</b></h4>
+                                        @if ($komplain->status_komplain == "Menunggu")
+                                            <p class="card-text">Komplain kamu menunggu konfirmasi admin</p>
+                                        @else
+                                            <p class="card-text">Komplain kamu sudah {{$komplain->first()->status_komplain}} oleh admin</p>
+                                        @endif
+                                    </div>
                                 @elseif ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")
                                     <form id="batalTransaksiForm" action="/customer/transaksi/batalBooking" method="post">
                                         @csrf
@@ -161,6 +176,57 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row form_komplain mb-5" data-id="{{$item->id_htrans}}">
+                <div class="col-md-8">
+                    <form action="/pemilik/komplain/tambahKomplain" method="post" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);background-color:white">
+                        @csrf
+                        <div class="d-flex justify-content-center">
+                            <h5><b>Ajukan Komplain</b></h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Jenis Komplain</h6>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                <input type="radio" class="btn-check" name="jenis" id="info-outlined" autocomplete="off" value="Lapangan tidak sesuai">
+                                <label class="btn btn-outline-info" for="info-outlined"><i class="bi bi-house-slash me-2"></i>Lapangan tidak sesuai</label>
+
+                                <input type="radio" class="btn-check" name="jenis" id="danger-outlined" autocomplete="off" value="Lapangan Palsu">
+                                <label class="btn btn-outline-danger" for="danger-outlined"><i class="bi bi-house-x me-2"></i>Lapangan Palsu</label>
+
+                                <input type="radio" class="btn-check" name="jenis" id="primary-outlined" autocomplete="off" value="Lainnya">
+                                <label class="btn btn-outline-primary" for="primary-outlined"><i class="bi bi-justify-left me-2"></i></i>Lainnya</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Jelaskan Komplain</h6>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                <textarea id="myTextarea" class="form-control" name="keterangan" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Keterangan Komplain">{{ old('keterangan') }}</textarea>
+                                <p id="charCount">0/500</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Lampirkan Bukti <i class="bi bi-info-circle" data-toggle="tooltip" title="Lampirkan bukti komplain yang dapat memperkuat pernyataan"></i></h6>
+                                <span style="font-size: 14px">lampirkan 2 file sekaligus</span>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                <input type="file" class="form-control" name="foto[]" multiple accept=".jpg,.png,.jpeg">
+                            </div>
+                        </div>
+                        {{-- <input type="hidden" name="fk_id_request" value="{{$permintaan->first()->id_permintaan}}"> --}}
+                        <input type="hidden" name="jenis_request" value="Permintaan">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success">Kirim</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4">
+                    <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
                 </div>
             </div>
         @endforeach
@@ -193,6 +259,14 @@
                     alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
                 }
             });
+        });
+
+        $(".form_komplain").hide();
+
+        $(".btn-warning").click(function(e) {
+            e.preventDefault();  // Menghentikan perilaku default (navigasi)
+            let transaksiId = $(this).data('id'); // Mengambil data-id dari tombol yang ditekan
+            $(`.form_komplain[data-id=${transaksiId}]`).show();
         });
     });
 </script>

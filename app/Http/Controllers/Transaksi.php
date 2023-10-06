@@ -437,6 +437,28 @@ class Transaksi extends Controller
         return view("admin.transaksi.daftarTransaksi")->with($param);
     }
 
+    public function konfirmasiDipakai(Request $request) {
+        $request->validate([
+            "kode" => "required"
+        ],[
+            "required" => "Kode transaksi tidak boleh kosong!"
+        ]);
+        // dd($request->kode_trans);
+
+        if ($request->kode != $request->kode_htrans) {
+            return response()->json(['error' => 'Kode transaksi salah!'], 400);
+        }
+
+        $data = [
+            "id" => $request->id_htrans,
+            "status" => "Berlangsung"
+        ];
+        $trans = new htrans();
+        $trans->updateStatus($data);
+
+        return response()->json(['success' => 'Berhasil mengkonfirmasi transaksi!'], 200);
+    }
+
     public function tambahAlat(Request $request) {
         $data = [];
         if(Session::has("sewaAlat")) $data = Session::get("sewaAlat");
