@@ -145,18 +145,23 @@
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
             @php
                 //ketika cust sdh terima kan redirect back ke detail extend, button cancel dan terima di hilangin aja
+                $cek = DB::table('extend_waktu')
+                        ->where("fk_id_htrans", "=",$trans->id_htrans)
+                        ->get();
             @endphp
-            <a href="javascript:history.back()" class="btn btn-danger me-3" type="submit">Cancel</a>
-            <form action="/customer/transaksi/tambahWaktu" method="post">
-                @csrf
-                <input type="hidden" name="id_htrans" value="{{$trans->id_htrans}}">
-                <input type="hidden" name="jam" value="{{$jam_mulai}}">
-                <input type="hidden" name="durasi" value="{{$durasi}}">
-                <input type="hidden" name="subtotal_lapangan" value="{{$trans->harga_sewa_lapangan * $durasi}}">
-                <input type="hidden" name="subtotal_alat" value="{{$total_harga * $durasi}}">
-                <input type="hidden" name="total" value="{{($trans->harga_sewa_lapangan * $durasi) + ($total_harga * $durasi)}}">
-                <button class="btn btn-success" type="submit" id="bookingBtn">Tambah</button>
-            </form>
+            @if ($cek->isEmpty())
+                <a href="javascript:history.back()" class="btn btn-danger me-3" type="submit">Cancel</a>
+                <form action="/customer/transaksi/tambahWaktu" method="post">
+                    @csrf
+                    <input type="hidden" name="id_htrans" value="{{$trans->id_htrans}}">
+                    <input type="hidden" name="jam" value="{{$jam_mulai}}">
+                    <input type="hidden" name="durasi" value="{{$durasi}}">
+                    <input type="hidden" name="subtotal_lapangan" value="{{$trans->harga_sewa_lapangan * $durasi}}">
+                    <input type="hidden" name="subtotal_alat" value="{{$total_harga * $durasi}}">
+                    <input type="hidden" name="total" value="{{($trans->harga_sewa_lapangan * $durasi) + ($total_harga * $durasi)}}">
+                    <button class="btn btn-success" type="submit" id="bookingBtn">Tambah</button>
+                </form>
+            @endif
         </div>
         <!-- Modal -->
         <div class="modal fade" id="agreementModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

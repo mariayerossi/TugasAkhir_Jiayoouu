@@ -63,41 +63,17 @@
     </div>
 
     @php
-        function getBulan($bulan) {
-            $namaBulan = array(
-                '01' => 'Januari',
-                '02' => 'Februari',
-                '03' => 'Maret',
-                '04' => 'April',
-                '05' => 'Mei',
-                '06' => 'Juni',
-                '07' => 'Juli',
-                '08' => 'Agustus',
-                '09' => 'September',
-                '10' => 'Oktober',
-                '11' => 'November',
-                '12' => 'Desember',
-            );
-
-            return $namaBulan[$bulan];
-        }
-
         $tanggalAwal2 = $htrans->first()->tanggal_sewa;
         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
         $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
-        
-        // Pecah tanggal dan ganti bagian bulannya
-        $pecahTanggal = explode('-', $tanggalBaru2);
-        $pecahTanggal[1] = getBulan($pecahTanggal[1]);
-        $tanggalDenganNamaBulan = implode(' ', $pecahTanggal); 
     @endphp
 
     <div class="row mb-5 mt-4">
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Tanggal Sewa: {{$tanggalDenganNamaBulan}}</h6>
+            <h6>Tanggal Sewa: {{$tanggalBaru2}}</h6>
         </div>
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Jam Sewa: {{$htrans->first()->jam_sewa}} WIB</h6>
+            <h6>Jam Sewa: {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->format('H:i:s') }} WIB - {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->addHours($htrans->first()->durasi_sewa)->format('H:i:s') }} WIB</h6>
         </div>
     </div>
     
@@ -239,8 +215,23 @@
                     ->get();
         @endphp
         @if (!$extend->isEmpty())
-            <h5>Permintaan Perpanjangan Waktu Sewa</h5>
+            <h5 class="mb-4">Permintaan Perpanjangan Waktu Sewa</h5>
+            <h6 class="mb-3">Jam sewa: {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i:s') }} WIB - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i:s') }} WIB</h6>
+            <h6>Subtotal Lapangan: Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</h6>
+            <h6>Subtotal Alat: Rp {{number_format($extend->first()->subtotal_alat, 0, ',', '.')}}</h6>
+            <h5><b>Total: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h5>
+            
+            {{-- button terima --}}
+            <form action="" method="post">
+                @csrf
+                <button type="submit" class="btn btn-success">Terima</button>
+            </form>
 
+            {{-- button tolak --}}
+            <form action="" method="post">
+                @csrf
+                <button type="submit" class="btn btn-danger">Tolak</button>
+            </form>
         @endif
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
             {{-- ini pakai cornjob bisa ga? jadi sebelum waktu sewa nya habis button cetak nota didisable --}}

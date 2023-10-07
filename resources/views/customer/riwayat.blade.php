@@ -159,13 +159,19 @@
                                         <button type="submit" class="btn btn-warning" data-id="{{$item->id_htrans}}">Ajukan Komplain <i class="bi bi-pencil-square"></i></button>
                                     </form>
                                 @elseif  ($item->status_trans == "Berlangsung")
-                                    <form id="tambahWaktu" action="/customer/transaksi/detailTambahWaktu" method="get">
-                                        @csrf
-                                        <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
-                                        <input type="hidden" name="durasi" id="durasi_jam">
-                                        {{-- ketika cust sdh terima kan redirect back ke detail extend, button ini di hilangin aja --}}
-                                        <button type="submit" class="btn btn-primary me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert()">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
-                                    </form>
+                                    @php
+                                        $cek = DB::table('extend_waktu')
+                                                ->where("fk_id_htrans", "=",$item->id_htrans)
+                                                ->get();
+                                    @endphp
+                                    @if ($cek->isEmpty())
+                                        <form id="tambahWaktu" action="/customer/transaksi/detailTambahWaktu" method="get">
+                                            @csrf
+                                            <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
+                                            <input type="hidden" name="durasi" id="durasi_jam">
+                                            <button type="submit" class="btn btn-primary me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert()">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
+                                        </form>
+                                    @endif
                                 @elseif ($item->status_trans == "Dikomplain")
                                     <div class="mt-3">
                                         <h4 class="card-title"><b>Komplain Anda telah dikirim!</b></h4>
