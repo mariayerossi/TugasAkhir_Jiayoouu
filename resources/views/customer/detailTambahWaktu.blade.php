@@ -47,9 +47,9 @@
             <div class="col-md-6 col-sm-12 mb-3">
                 <h6>Tanggal Sewa: {{$tanggalBaru2}}</h6>
             </div>
-            {{-- <div class="col-md-6 col-sm-12 mb-3">
-                <h6>Jam Sewa: {{$data["mulai"]}} WIB - {{$data["selesai"]}} WIB</h6>
-            </div> --}}
+            <div class="col-md-6 col-sm-12 mb-3">
+                <h6>Jam Sewa: {{$jam_mulai}} WIB - {{$jam_selesai}} WIB</h6>
+            </div>
         </div>
         
         <h5>Lapangan yang Disewa</h5>
@@ -79,17 +79,20 @@
             <h5><b>Subtotal: Rp {{number_format($trans->harga_sewa_lapangan * $durasi, 0, ',', '.')}}</b></h5>
         </div>
         
-        {{-- <div class="row mt-5">
+        <div class="row mt-5">
             <div class="col-md-6 col-sm-12">
                 <h5>Alat Olahraga yang Disewa</h5>
-                @if (Session::has("sewaAlat"))
-                    @foreach (Session::get("sewaAlat") as $item)
+                @if (!$dtrans->isEmpty())
+                    @php
+                        $total_harga = 0;
+                    @endphp
+                    @foreach ($dtrans as $item)
                         @php
-                            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item["alat"])->get()->first();
-                            $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item["alat"])->get()->first();
-                            $sewaSendiri = DB::table("sewa_sendiri")->where("req_id_alat","=",$item["alat"])->get()->first();
-                            $permintaan  = DB::table("request_permintaan")->where("req_id_alat","=",$item["alat"])->get()->first();
-                            $penawaran  = DB::table("request_penawaran")->where("req_id_alat","=",$item["alat"])->get()->first();
+                            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
+                            $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
+                            $sewaSendiri = DB::table("sewa_sendiri")->where("req_id_alat","=",$item->fk_id_alat)->get()->first();
+                            $permintaan  = DB::table("request_permintaan")->where("req_id_alat","=",$item->fk_id_alat)->get()->first();
+                            $penawaran  = DB::table("request_penawaran")->where("req_id_alat","=",$item->fk_id_alat)->get()->first();
 
                             $harga = 0;
                             if ($permintaan != null) {
@@ -101,6 +104,8 @@
                             else if ($sewaSendiri != null) {
                                 $harga = $dataAlat->komisi_alat;
                             }
+
+                            $total_harga += $harga;
                         @endphp
                         <a href="/customer/detailAlat/{{$dataAlat->id_alat}}">
                             <div class="card h-70 mb-3">
@@ -116,7 +121,7 @@
                                         <!-- Nama Alat -->
                                         <div class="col-8">
                                             <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                            <p class="card-text">Rp {{number_format($harga, 0, ',', '.')}} x {{$data["durasi"]}} Jam</p>
+                                            <p class="card-text">Rp {{number_format($harga, 0, ',', '.')}} x {{$durasi}} Jam</p>
                                         </div>
                                     </div>
                                 </div>
@@ -129,23 +134,20 @@
             </div>
         </div>
         <div class="d-flex justify-content-end mt-3 me-3">
-            <h5><b>Subtotal: Rp {{number_format($data["subtotal_alat"], 0, ',', '.')}}</b></h5>
+            <h5><b>Subtotal: Rp {{number_format($total_harga * $durasi, 0, ',', '.')}}</b></h5>
         </div>
         <div class="d-flex justify-content-end mt-5 me-3">
-            <h4><b>Total: Rp {{number_format(($dataLapangan->harga_sewa_lapangan * $data["durasi"]) + $data["subtotal_alat"], 0, ',', '.')}}</b></h4>
+            <h4><b>Total: Rp {{number_format(($trans->harga_sewa_lapangan * $durasi) + ($total_harga * $durasi), 0, ',', '.')}}</b></h4>
         </div>
         <hr>
     
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
             <a href="javascript:history.back()" class="btn btn-danger me-3" type="submit">Cancel</a>
-            <form action="/customer/transaksi/tambahTransaksi" method="post">
+            <form action="/customer/transaksi/tambahWaktu" method="post">
                 @csrf
-                <input type="hidden" name="id_lapangan" value="{{$data['id_lapangan']}}">
-                <input type="hidden" name="id_tempat" value="{{$data['id_tempat']}}">
-                <input type="hidden" name="tanggal" value="{{$data['tanggal']}}">
-                <input type="hidden" name="mulai" value="{{$data['mulai']}}">
-                <input type="hidden" name="selesai" value="{{$data['selesai']}}">
-                <button class="btn btn-success" type="submit" id="bookingBtn">Booking Sekarang</button>
+                <input type="hidden" name="id_htrans" value="{{$trans->id_htrans}}">
+                <input type="hidden" name="durasi" value="{{$durasi}}">
+                <button class="btn btn-success" type="submit" id="bookingBtn">Tambah</button>
             </form>
         </div>
         <!-- Modal -->
@@ -163,7 +165,7 @@
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
 
     </div>
     <script>
@@ -174,8 +176,7 @@
     
         document.getElementById('confirmBooking').addEventListener('click', function() {
             $('#agreementModal').modal('hide');
-            document.querySelector('form[action="/customer/transaksi/tambahTransaksi"]').submit();
+            document.querySelector('form[action="/customer/transaksi/tambahWaktu"]').submit();
         });
     </script>
-        
 @endsection

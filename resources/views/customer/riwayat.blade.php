@@ -61,6 +61,7 @@
 </style>
 <div class="container mt-5">
     <h2 class="text-center mb-5">Daftar Riwayat Transaksi</h2>
+    @include("layouts.message")
     @if (!$trans->isEmpty())
         @foreach ($trans as $item)
             <div class="card mt-5" style="max-width: 100%;" data-id="{{$item->id_htrans}}">
@@ -152,16 +153,17 @@
                             @endphp
                             <div class="d-flex justify-content-end">
                                 @if ($item->status_trans == "Selesai" && $komplain == null)
+                                    <form id="ajukanKomplain" action="/customer/komplain/ajukanKomplain" method="post">
+                                        @csrf
+                                        <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
+                                        <button type="submit" class="btn btn-warning" data-id="{{$item->id_htrans}}">Ajukan Komplain <i class="bi bi-pencil-square"></i></button>
+                                    </form>
+                                @elseif  ($item->status_trans == "Berlangsung")
                                     <form id="tambahWaktu" action="/customer/transaksi/detailTambahWaktu" method="get">
                                         @csrf
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
                                         <input type="hidden" name="durasi" id="durasi_jam">
                                         <button type="submit" class="btn btn-primary me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert()">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
-                                    </form>
-                                    <form id="ajukanKomplain" action="/customer/komplain/ajukanKomplain" method="post">
-                                        @csrf
-                                        <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
-                                        <button type="submit" class="btn btn-warning" data-id="{{$item->id_htrans}}">Ajukan Komplain <i class="bi bi-pencil-square"></i></button>
                                     </form>
                                 @elseif ($item->status_trans == "Dikomplain")
                                     <div class="mt-3">
