@@ -449,6 +449,7 @@ class Transaksi extends Controller
             return response()->json(['error' => 'Kode transaksi salah!'], 400);
         }
 
+        //update status htrans
         $data = [
             "id" => $request->id_htrans,
             "status" => "Berlangsung"
@@ -764,5 +765,30 @@ class Transaksi extends Controller
         Session::put("dataRole", $isiUser->first());
 
         return response()->json(['success' => true, 'message' => 'Berhasil Dibatalkan!']);
+    }
+
+    public function detailTambahWaktu(Request $request) {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        $htrans = DB::table('htrans')
+                ->select("htrans.id_htrans","htrans.kode_trans","lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan","files_lapangan.nama_file_lapangan","lapangan_olahraga.harga_sewa_lapangan","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa")
+                ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->where("htrans.id_htrans","=",$request->id_htrans)
+                ->get()
+                ->first();
+        
+        // $booking_jam_selesai = date('H:i', strtotime("+$request->durasi hour", strtotime($value->jam_sewa)));
+        $param["durasi"] = $request->durasi;
+        $param["trans"] = $htrans;
+        return view("customer.detailTambahWaktu")->with($param);
+    }
+
+    public function tambahWaktu(Request $request) {
+        dd($request->durasi);
     }
 }

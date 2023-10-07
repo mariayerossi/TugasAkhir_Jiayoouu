@@ -769,6 +769,8 @@ Route::prefix("/customer")->group(function(){
         Route::get("/detailTransaksi", [Transaksi::class, "detailTransaksi"]);
         Route::post("/tambahTransaksi", [Transaksi::class, "tambahTransaksi"]);
         Route::post("/batalBooking", [Transaksi::class, "batalBooking"]);
+        Route::post("/tambahWaktu", [Transaksi::class, "tambahWaktu"]);
+        Route::get("/detailTambahWaktu", [Transaksi::class, "detailTambahWaktu"]);
     });
 
     Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);

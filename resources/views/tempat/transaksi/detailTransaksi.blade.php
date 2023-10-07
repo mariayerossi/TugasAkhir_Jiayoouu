@@ -229,6 +229,11 @@
                 </div>
             </form>
         </div>
+    @elseif ($htrans->first()->status_trans == "Berlangsung")
+        <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+            <button class="btn btn-primary">Cetak Nota</button>
+            {{-- nyetak nota & status htrans selesai --}}
+        </div>
     @endif
 </div>
 <script>

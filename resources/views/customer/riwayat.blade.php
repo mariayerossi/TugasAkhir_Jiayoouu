@@ -152,6 +152,12 @@
                             @endphp
                             <div class="d-flex justify-content-end">
                                 @if ($item->status_trans == "Selesai" && $komplain == null)
+                                    <form id="tambahWaktu" action="/customer/transaksi/detailTambahWaktu" method="get">
+                                        @csrf
+                                        <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
+                                        <input type="hidden" name="durasi" id="durasi_jam">
+                                        <button type="submit" class="btn btn-primary me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert()">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
+                                    </form>
                                     <form id="ajukanKomplain" action="/customer/komplain/ajukanKomplain" method="post">
                                         @csrf
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
@@ -286,6 +292,35 @@
 
         countElement.innerText = charCount + "/500";
     }
+    function showSweetAlert() {
+        event.preventDefault()
+        swal({
+            title: "Extend Waktu Sewa",
+            text: "Masukkan durasi jam:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Durasi jam"
+        }, function(inputValue){
+            if (inputValue === false) return false;
+            if (inputValue === "" || isNaN(inputValue)) {
+                swal.showInputError("Anda harus memasukkan durasi jam yang valid!");
+                return false;
+            }
+            document.getElementById("durasi_jam").value = inputValue;
+            document.getElementById("tambahWaktu").submit();
+        });
+
+        setTimeout(function() {
+            // Mengubah tipe input menjadi number setelah SweetAlert muncul
+            var input = document.querySelector(".sweet-alert input");
+            if (input) {
+                input.type = "number";
+            }
+        }, 1);
+}
+
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
