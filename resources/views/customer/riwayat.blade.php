@@ -163,6 +163,7 @@
                                         @csrf
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
                                         <input type="hidden" name="durasi" id="durasi_jam">
+                                        {{-- ketika cust sdh terima kan redirect back ke detail extend, button ini di hilangin aja --}}
                                         <button type="submit" class="btn btn-primary me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert()">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
                                     </form>
                                 @elseif ($item->status_trans == "Dikomplain")

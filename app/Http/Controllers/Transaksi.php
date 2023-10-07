@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\customer;
 use App\Models\dtrans;
+use App\Models\extendWaktu;
 use App\Models\htrans;
 use App\Models\kategori;
 use Carbon\Carbon;
@@ -705,6 +706,19 @@ class Transaksi extends Controller
         $trans->updateStatus($data);
 
         //pengembalian dana ke customer
+        $saldo = (int)$this->decodePrice($request->saldo_user, "mysecretkey");
+        $saldo += $request->total;
+
+        //enkripsi kembali saldo
+        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+        //update db user
+        $dataSaldo = [
+            "id" => $request->id_user,
+            "saldo" => $enkrip
+        ];
+        $cust = new customer();
+        $cust->updateSaldo($dataSaldo);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
     }
@@ -829,6 +843,42 @@ class Transaksi extends Controller
     }
 
     public function tambahWaktu(Request $request) {
-        
+        $data = [
+            "jam" => $request->jam,
+            "durasi" => $request->durasi,
+            "id_htrans" => $request->id_htrans,
+            "lapangan" => $request->subtotal_lapangan,
+            "alat" => $request->subtotal_alat,
+            "total" => $request->total
+        ];
+        $extend = new extendWaktu();
+        $extend->insertExtend($data);
+
+        //cek saldo e cukup gaa
+        $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+        if ($saldo < $request->total) {
+            return back()->with('error', 'Saldo anda tidak cukup! Silahkan top up saldo anda.');
+        }
+        //saldo dipotong sebesar total
+        $saldo -= $request->total;
+
+        //enkripsi kembali saldo
+        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+        //update db user
+        $dataSaldo = [
+            "id" => Session::get("dataRole")->id_user,
+            "saldo" => $enkrip
+        ];
+        $cust = new customer();
+        $cust->updateSaldo($dataSaldo);
+
+        //update session role
+        $user = new customer();
+        $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
+        Session::forget("dataRole");
+        Session::put("dataRole", $isiUser->first());
+
+        return redirect()->back()->with("success", "Berhasil melakukan extend waktu! menunggu konfirmasi pemilik tempat olahraga");
     }
 }

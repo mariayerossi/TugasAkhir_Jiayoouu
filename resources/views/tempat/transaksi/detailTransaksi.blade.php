@@ -206,6 +206,9 @@
             <form id="tolakTransaksiForm" action="/tempat/transaksi/tolakTransaksi" method="post">
                 @csrf
                 <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
+                <input type="hidden" name="id_user" value="{{$htrans->first()->fk_id_user}}">
+                <input type="hidden" name="saldo_user" value="{{$dataUser->saldo_user}}">
+                <input type="hidden" name="total" value="{{$htrans->first()->total_trans}}">
                 <button class="btn btn-danger me-3" type="submit">Tolak</button>
             </form>
             <form id="terimaTransaksiForm" action="/tempat/transaksi/terimaTransaksi" method="post">
@@ -230,9 +233,19 @@
             </form>
         </div>
     @elseif ($htrans->first()->status_trans == "Berlangsung")
+        @php
+            $extend = DB::table('extend_waktu')
+                    ->where("fk_id_htrans","=",$htrans->first()->id_htrans)
+                    ->get();
+        @endphp
+        @if (!$extend->isEmpty())
+            <h5>Permintaan Perpanjangan Waktu Sewa</h5>
+
+        @endif
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+            {{-- ini pakai cornjob bisa ga? jadi sebelum waktu sewa nya habis button cetak nota didisable --}}
             <button class="btn btn-primary">Cetak Nota</button>
-            {{-- nyetak nota & status htrans selesai --}}
+            {{-- nyetak nota & status htrans berubah menjadi selesai --}}
         </div>
     @endif
 </div>
