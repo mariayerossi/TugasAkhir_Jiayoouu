@@ -224,7 +224,7 @@ Route::prefix("/admin")->group(function(){
                 return view("admin.komplain.trans.detailKomplain")->with($param);
             })->middleware([CekAdmin::class]);
             Route::post("/terimaKomplain", [KomplainTrans::class, "terimaKomplain"]);
-            Route::get("/tolakKomplain/{id}", [KomplainRequest::class, "tolakKomplain"]);
+            Route::get("/tolakKomplain/{id}", [KomplainTrans::class, "tolakKomplain"]);
         });
     });
 

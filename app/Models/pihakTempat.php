@@ -44,4 +44,10 @@ class pihakTempat extends Model
         $temp->deleted_at = $data["tanggal"];
         $temp->save();
     }
+
+    public function updateSaldo($data){
+        $temp = pihakTempat::find($data["id"]);
+        $temp->saldo_tempat = $data["saldo"];
+        $temp->save();
+    }
 }

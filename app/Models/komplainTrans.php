@@ -48,4 +48,18 @@ class komplainTrans extends Model
     public function count_all_data_admin() {
         return komplainTrans::where('deleted_at',"=",null)->count();
     }
+
+    public function updateStatus($data)
+    {
+        $komp = komplainTrans::find($data["id"]);
+        $komp->status_komplain = $data["status"];
+        $komp->save();
+    }
+
+    public function updatePenanganan($data)
+    {
+        $komp = komplainTrans::find($data["id"]);
+        $komp->penanganan_komplain = $data["penanganan"];
+        $komp->save();
+    }
 }

@@ -187,7 +187,6 @@
                 <div class="col-md-8 col-sm-10 mt-2" id="pengembalianLabel3">
                     <h6>Pengembalian Dana Customer {{$namaUser}} sebesar</h6>
                 </div>
-                <input type="hidden" name="user" value="{{$komplain->first()->fk_id_user}}">
                 <div class="col-md-3 col-sm-12" id="pengembalianInput3">
                     <input type="number" name="jumlah" id="" class="form-control" oninput="formatNumber(this)" placeholder="Masukkan Nominal...">
                 </div>
@@ -248,6 +247,8 @@
                     </select>
                 </div>
             </div>
+            <input type="hidden" name="user" value="{{$komplain->first()->fk_id_user}}">
+            <input type="hidden" name="id_htrans" value="{{$komplain->first()->fk_id_htrans}}">
             <input type="hidden" name="id_komplain" value="{{$komplain->first()->id_komplain_trans}}">
             <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-success me-3">Terima</button>
@@ -259,7 +260,7 @@
         @if ($komplain->first()->penanganan_komplain != null)
             <div class="row mb-5 mt-4">
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <h6>Penanganan: {{$komplain->first()->penanganan_komplain}} dan Pembatalan Request oleh admin</h6>
+                    <h6>Penanganan: {{$komplain->first()->penanganan_komplain}} dan Pembatalan Transaksi oleh admin</h6>
                 </div>
                 
                 <div class="col-md-6 col-sm-12 mb-3">
@@ -268,7 +269,7 @@
         @else
             <div class="row mb-5 mt-4">
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <h6>Penanganan: Pembatalan Request oleh admin</h6>
+                    <h6>Penanganan: Pembatalan Transaksi oleh admin</h6>
                 </div>
                 
                 <div class="col-md-6 col-sm-12 mb-3">
@@ -304,7 +305,7 @@
             closeOnConfirm: false
         }, function(isConfirm) {
             if (isConfirm) {
-                window.location.href = "/admin/komplain/request/tolakKomplain/{{$komplain->first()->id_komplain_req}}";
+                window.location.href = "/admin/komplain/trans/tolakKomplain/{{$komplain->first()->id_komplain_trans}}";
             }
         });
     }

@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             'email_user' => 'maria@gmail.com',
             'telepon_user' => "082374822343",
             'password_user' => password_hash('1234567890', PASSWORD_BCRYPT),
-            'saldo_user' => "XElDVVNCVQ==",
+            'saldo_user' => "XElDVVNCVQ==",//1 jt
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -32,7 +32,7 @@ class DatabaseSeeder extends Seeder
             'telepon_pemilik' => "086768686774",
             'ktp_pemilik' => "ktp_pemilik1.jpg",
             'password_pemilik' => password_hash('1234567890', PASSWORD_BCRYPT),
-            'saldo_pemilik' => "XQ==",
+            'saldo_pemilik' => "VUlDVVNC",//800.000
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             'ktp_tempat_reg' => "ktp_tempat1.jpg",
             'npwp_tempat_reg' => "npwp_tempat1.jpg",
             'password_tempat_reg' => password_hash('1234567890', PASSWORD_BCRYPT),
-            'saldo_tempat_reg' => "XQ==",
+            'saldo_tempat_reg' => "VUlDVVNC",//800.000
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
             'ktp_tempat' => "ktp_tempat1.jpg",
             'npwp_tempat' => "npwp_tempat1.jpg",
             'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
-            'saldo_tempat' => "XQ==",
+            'saldo_tempat' => "VUlDVVNC",//800.000
             'created_at' => date("Y-m-d H:i:s"),
         ]);
         
@@ -375,6 +375,23 @@ class DatabaseSeeder extends Seeder
             'review' => "lapangannya bagus, bersih, nyaman dibuat main",
             'fk_id_user' => 1,
             'fk_id_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('komplain_trans')->insert([
+            'jenis_komplain' => "Alat tidak sesuai",
+            'keterangan_komplain' => "alat olahraga bedaa",
+            'fk_id_htrans' => 1,
+            'waktu_komplain' => date("Y-m-d H:i:s"),
+            'status_komplain' => "Menunggu",
+            'penanganan_komplain' => null,
+            'fk_id_user' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_komplain_trans')->insert([
+            'nama_file_komplain' => "bola_jelek.jpg",
+            'fk_id_komplain_trans' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
     }

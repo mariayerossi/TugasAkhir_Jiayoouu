@@ -41,4 +41,10 @@ class pemilikAlat extends Model
         $pemi->deleted_at = $data["tanggal"];
         $pemi->save();
     }
+
+    public function updateSaldo($data){
+        $pemi = pemilikAlat::find($data["id"]);
+        $pemi->saldo_pemilik = $data["saldo"];
+        $pemi->save();
+    }
 }
