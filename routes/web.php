@@ -775,6 +775,7 @@ Route::prefix("/customer")->group(function(){
     Route::prefix("/extend")->group(function(){
         Route::post("/tambahWaktu", [Transaksi::class, "tambahWaktu"]);
         Route::get("/detailTambahWaktu", [Transaksi::class, "detailTambahWaktu"]);
+        Route::post("/terimaExtend", [Transaksi::class, "terimaExtend"]);
     });
 
     Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);

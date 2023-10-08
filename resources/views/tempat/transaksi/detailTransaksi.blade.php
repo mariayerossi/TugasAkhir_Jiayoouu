@@ -215,24 +215,56 @@
                     ->get();
         @endphp
         @if (!$extend->isEmpty())
-            <h5 class="mb-4">Permintaan Perpanjangan Waktu Sewa</h5>
-            <h6 class="mb-3">Jam sewa: {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i:s') }} WIB - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i:s') }} WIB</h6>
-            <h6>Subtotal Lapangan: Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</h6>
-            <h6>Subtotal Alat: Rp {{number_format($extend->first()->subtotal_alat, 0, ',', '.')}}</h6>
-            <h5><b>Total: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h5>
+            <h3 class="text-center mb-5 mt-5">Permintaan Perpanjangan Waktu Sewa</h3>
+            @php
+                $tanggalAwal4 = $extend->first()->tanggal_extend;
+                $tanggalObjek4 = DateTime::createFromFormat('Y-m-d', $tanggalAwal4);
+                $tanggalBaru4 = $tanggalObjek4->format('d-m-Y');
+            @endphp
+
+            <div class="row mb-5 mt-4">
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <h6>Tanggal Sewa: {{$tanggalBaru4}}</h6>
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <h6>Jam Sewa: {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i:s') }} WIB - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i:s') }} WIB ({{$extend->first()->durasi_extend}} jam)</h6>
+                </div>
+            </div>
+            <h6><b>Detail:</b></h6>
+
+            <h6>Subtotal Lapangan: </h6>
+            <h6>Rp {{number_format($dataLapangan->harga_sewa_lapangan, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam = <b>Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</b></h6>
+            
+            <h6 class="mt-3">Subtotal Alat: </h6>
+            @php
+                $extendDtrans = DB::table('extend_dtrans')
+                        ->where("fk_id_extend_htrans","=",$extend->first()->id_extend_htrans)
+                        ->get();
+            @endphp
+            <ul>
+                @if (!$extendDtrans->isEmpty())
+                    @foreach ($extendDtrans as $item)
+                        <li>Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam = </li>
+                    @endforeach
+                @endif
+            </ul>
+            <h6><b>Rp {{number_format($extend->first()->subtotal_alat, 0, ',', '.')}}</b></h6>
+            <h5 class="mt-5"><b>Total: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h5>
             
             @if ($extend->first()->status_extend == "Menunggu")
                 <div class="d-flex justify-content-right mt-5 me-3 mb-5">
-                    {{-- button terima --}}
-                    <form action="" method="post">
-                        @csrf
-                        <button type="submit" class="btn btn-success">Terima</button>
-                    </form>
-
                     {{-- button tolak --}}
                     <form action="" method="post">
                         @csrf
+                        <input type="hidden" name="id_extend" value="{{$extend->first()->id_extend_htrans}}">
                         <button type="submit" class="btn btn-danger">Tolak</button>
+                    </form>
+
+                    {{-- button terima --}}
+                    <form action="" method="post" class="ms-3">
+                        @csrf
+                        <input type="hidden" name="id_extend" value="{{$extend->first()->id_extend_htrans}}">
+                        <button type="submit" class="btn btn-success">Terima</button>
                     </form>
                 </div>
             @elseif ($extend->first()->status_extend == "Diterima")

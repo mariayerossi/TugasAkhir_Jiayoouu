@@ -946,4 +946,8 @@ class Transaksi extends Controller
 
         return redirect()->back()->with("success", "Berhasil melakukan extend waktu! menunggu konfirmasi pemilik tempat olahraga");
     }
+
+    public function terimaExtend(Request $request) {
+
+    }
 }
