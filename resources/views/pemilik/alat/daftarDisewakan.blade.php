@@ -55,8 +55,8 @@
                         @endphp
                         <td>{{$tanggalBaru2}}</td>
                         <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
-                        <td>{{$item->durasi_sewa}} jam</td>
-                        <td>Rp {{ number_format($item->subtotal_alat, 0, ',', '.') }}</td>
+                        <td>{{$item->durasi_sewa + $item->durasi_extend}} jam</td>
+                        <td>Rp {{ number_format($item->subtotal_alat + $item->subtotal_extend, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else

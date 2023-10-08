@@ -61,9 +61,9 @@
                             @endphp
                             <td>{{ $tanggalBaru2 }}</td>
                             <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                            <td>{{ $item->durasi_sewa }} jam</td>
-                            <td>Rp {{ number_format($item->total_komisi_pemilik, 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format($item->total_komisi_pemilik-$item->pendapatan_website_alat, 0, ',', '.') }}</td>
+                            <td>{{ $item->durasi_sewa + $item->durasi_extend }} jam</td>
+                            <td>Rp {{ number_format($item->total_komisi_pemilik + $item->komisi_extend, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format(($item->total_komisi_pemilik - $item->pendapatan_website_alat) + ($item->komisi_extend - $item->pendapatan_extend), 0, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </tbody>

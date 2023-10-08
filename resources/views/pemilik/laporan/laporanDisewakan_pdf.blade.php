@@ -36,8 +36,8 @@
                         <td>{{$item->nama_alat}}</td>
                         <td>{{$item->total_sewa}} kali</td>
                         <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                        <td>{{$item->total_durasi}} jam</td>
-                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                        <td>{{$item->total_durasi + $item->durasi_extend}} jam</td>
+                        <td>Rp {{ number_format($item->total_pendapatan + $item->komisi_extend, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else

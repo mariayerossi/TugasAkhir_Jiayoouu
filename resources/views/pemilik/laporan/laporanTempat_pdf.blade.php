@@ -33,7 +33,7 @@
 						<td>{{$loop->iteration}}</td>
 						<td>{{$item->nama_tempat}}</td>
 						<td>{{$item->jumlah}}</td>
-						<td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
+						<td>Rp {{ number_format($item->total_komisi + $item->komisi_extend, 0, ',', '.') }}</td>
 					</tr>
 				@endforeach
 			@else

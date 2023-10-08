@@ -302,7 +302,9 @@ class AlatOlahraga extends Controller
         $role = Session::get("dataRole")->id_pemilik;
 
         $data = DB::table('dtrans')
-                ->select("htrans.tanggal_sewa","files_alat.nama_file_alat","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat")
+                ->select("htrans.tanggal_sewa","files_alat.nama_file_alat","alat_olahraga.nama_alat","dtrans.harga_sewa_alat","htrans.durasi_sewa","dtrans.subtotal_alat", "extend_dtrans.subtotal_alat as subtotal_extend","extend_htrans.durasi_extend")
+                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                ->leftJoin("extend_htrans", "extend_dtrans.fk_id_extend_htrans","=","extend_htrans.id_extend_htrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
