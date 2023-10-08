@@ -348,7 +348,7 @@
                     </form>
 
                     {{-- button terima --}}
-                    <form id="terimaExtendForm" action="/customer/extend/terimaExtend" method="post" class="ms-2">
+                    <form id="terimaExtendForm" action="/tempat/extend/terimaExtend" method="post" class="ms-2">
                         @csrf
                         <input type="hidden" name="id_extend" value="{{$extend->first()->id_extend_htrans}}">
                         <button type="submit" id="terimaExtend" class="btn btn-success">Terima</button>
@@ -364,8 +364,11 @@
                 </div>
             @endif
         @endif
-        @if ($)
-            
+        @if (!$extend->isEmpty() && $extend->first()->status_extend != "Menunggu" || $extend->isEmpty())
+            <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+                <button class="btn btn-primary">Cetak Nota</button>
+                {{-- klo cetak nota diprint, maka status htrans berubah selesai --}}
+            </div>
         @endif
     @endif
 </div>
@@ -438,19 +441,18 @@
             event.preventDefault(); // Mencegah perilaku default form
     
             var formData = $("#terimaExtendForm").serialize(); // Mengambil data dari form
-    
+            // console.log(formData)
+            
             $.ajax({
-                url: "/tempat/extend/terimaExtend",
+                url: $(this).attr('action'),
                 type: "POST",
                 data: formData,
                 success: function(response) {
                     window.location.reload();
                     // alert('Berhasil Diterima!');
-                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
-                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                    alert(errorThrown);
                 }
             });
         });

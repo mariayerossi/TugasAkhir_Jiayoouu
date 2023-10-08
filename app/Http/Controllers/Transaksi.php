@@ -949,7 +949,7 @@ class Transaksi extends Controller
 
     public function terimaExtend(Request $request) {
         $data = [
-            "id" => $request->id_htrans,
+            "id" => $request->id_extend,
             "status" => "Diterima"
         ];
         $extend = new extendHtrans();
