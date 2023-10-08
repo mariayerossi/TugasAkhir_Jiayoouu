@@ -8,6 +8,7 @@ use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\Laporan;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Controllers\Negosiasi;
+use App\Http\Controllers\NotifikasiEmail;
 use App\Http\Controllers\Rating;
 use App\Http\Controllers\RequestPenawaran;
 use App\Http\Controllers\RequestPermintaan;
@@ -809,3 +810,5 @@ Route::prefix("/customer")->group(function(){
         Route::post("/ajukanKomplain", [KomplainTrans::class, "ajukanKomplain"]);
     });
 });
+
+Route::get("/sendEmail", [NotifikasiEmail::class, "sendEmail"]);

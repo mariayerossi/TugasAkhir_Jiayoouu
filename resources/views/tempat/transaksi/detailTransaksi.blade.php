@@ -208,6 +208,7 @@
                 </div>
             </form>
         </div>
+    {{-- ---------------------------------------------------------------------------------------------- --}}
     @elseif ($htrans->first()->status_trans == "Berlangsung")
         @php
             $extend = DB::table('extend_htrans')
@@ -230,7 +231,6 @@
                     <h6>Jam Sewa: {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i:s') }} WIB - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i:s') }} WIB ({{$extend->first()->durasi_extend}} jam)</h6>
                 </div>
             </div>
-            <h6><b>Detail:</b></h6>
 
             <h6>Subtotal Lapangan: </h6>
             <h6>Rp {{number_format($dataLapangan->harga_sewa_lapangan, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam = <b>Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</b></h6>
