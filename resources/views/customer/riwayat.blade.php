@@ -59,7 +59,7 @@
         overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
     }
 </style>
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <h2 class="text-center mb-5">Daftar Riwayat Transaksi</h2>
     @include("layouts.message")
     @if (!$trans->isEmpty())
@@ -191,6 +191,19 @@
                                     </form>
                                 @endif
                             </div>
+                            @php
+                                $extend = DB::table('extend_htrans')
+                                        ->where("fk_id_htrans", "=",$item->id_htrans)
+                                        ->get();
+                            @endphp
+                            @if (!$extend->isEmpty())
+                                <hr>
+                                <p class="card-text"><strong>Extend Durasi: </strong>{{$extend->first()->durasi_extend}} jam</p>
+                                <p class="card-text"><strong>Extend Jam Sewa: </strong>{{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i:s') }} - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i:s') }}</p>
+                                <div class="d-flex justify-content-end">
+                                    <h4><b>Total Extend: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h4>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
