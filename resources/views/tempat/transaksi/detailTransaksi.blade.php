@@ -210,7 +210,7 @@
         </div>
     @elseif ($htrans->first()->status_trans == "Berlangsung")
         @php
-            $extend = DB::table('extend_waktu')
+            $extend = DB::table('extend_htrans')
                     ->where("fk_id_htrans","=",$htrans->first()->id_htrans)
                     ->get();
         @endphp
@@ -221,17 +221,25 @@
             <h6>Subtotal Alat: Rp {{number_format($extend->first()->subtotal_alat, 0, ',', '.')}}</h6>
             <h5><b>Total: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h5>
             
-            {{-- button terima --}}
-            <form action="" method="post">
-                @csrf
-                <button type="submit" class="btn btn-success">Terima</button>
-            </form>
+            @if ($extend->first()->status_extend == "Menunggu")
+                <div class="d-flex justify-content-right mt-5 me-3 mb-5">
+                    {{-- button terima --}}
+                    <form action="" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-success">Terima</button>
+                    </form>
 
-            {{-- button tolak --}}
-            <form action="" method="post">
-                @csrf
-                <button type="submit" class="btn btn-danger">Tolak</button>
-            </form>
+                    {{-- button tolak --}}
+                    <form action="" method="post">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Tolak</button>
+                    </form>
+                </div>
+            @elseif ($extend->first()->status_extend == "Diterima")
+                <h5 style="color: rgb(0, 145, 0)">Extend Waktu telah diterima</h5>
+            @elseif ($extend->first()->status_extend == "Ditolak")
+                <h5 style="color: red">Extend Waktu telah ditolak</h5>
+            @endif
         @endif
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
             {{-- ini pakai cornjob bisa ga? jadi sebelum waktu sewa nya habis button cetak nota didisable --}}

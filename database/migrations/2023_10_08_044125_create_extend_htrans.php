@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('extend_waktu', function (Blueprint $table) {
-            $table->integerIncrements("id_extend");
+        Schema::create('extend_htrans', function (Blueprint $table) {
+            $table->integerIncrements("id_extend_htrans");
+            $table->unsignedInteger("fk_id_htrans");
+            $table->date("tanggal_extend");
             $table->time("jam_sewa");
             $table->integer("durasi_extend");
-            $table->unsignedInteger("fk_id_htrans");
             $table->integer("subtotal_lapangan");
             $table->integer("subtotal_alat");
             $table->integer("total");
-            $table->string("status_extend");
+            $table->integer("pendapatan_website_lapangan");
+            $table->string("status_extend");//menunggu, diterima, ditolak
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fk_id_htrans')
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('extend_waktu');
+        Schema::dropIfExists('extend_htrans');
     }
 };

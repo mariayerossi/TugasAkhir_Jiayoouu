@@ -160,12 +160,12 @@
                                     </form>
                                 @elseif  ($item->status_trans == "Berlangsung")
                                     @php
-                                        $cek = DB::table('extend_waktu')
+                                        $cek = DB::table('extend_htrans')
                                                 ->where("fk_id_htrans", "=",$item->id_htrans)
                                                 ->get();
                                     @endphp
                                     @if ($cek->isEmpty())
-                                        <form id="tambahWaktu" action="/customer/transaksi/detailTambahWaktu" method="get">
+                                        <form id="tambahWaktu" action="/customer/extend/detailTambahWaktu" method="get">
                                             @csrf
                                             <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
                                             <input type="hidden" name="durasi" id="durasi_jam">

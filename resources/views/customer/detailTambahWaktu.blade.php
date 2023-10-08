@@ -145,13 +145,13 @@
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
             @php
                 //ketika cust sdh terima kan redirect back ke detail extend, button cancel dan terima di hilangin aja
-                $cek = DB::table('extend_waktu')
+                $cek = DB::table('extend_htrans')
                         ->where("fk_id_htrans", "=",$trans->id_htrans)
                         ->get();
             @endphp
             @if ($cek->isEmpty())
                 <a href="javascript:history.back()" class="btn btn-danger me-3" type="submit">Cancel</a>
-                <form action="/customer/transaksi/tambahWaktu" method="post">
+                <form action="/customer/extend/tambahWaktu" method="post">
                     @csrf
                     <input type="hidden" name="id_htrans" value="{{$trans->id_htrans}}">
                     <input type="hidden" name="jam" value="{{$jam_mulai}}">

@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\customer;
 use App\Models\dtrans;
-use App\Models\extendWaktu;
+use App\Models\extendDtrans;
+use App\Models\extendHtrans;
 use App\Models\htrans;
 use App\Models\kategori;
 use Carbon\Carbon;
@@ -210,7 +211,7 @@ class Transaksi extends Controller
             "total" => $total,
             "id_user" => Session::get("dataRole")->id_user,
             "id_tempat" => $request->id_tempat,
-            "pendapatan" => $pendapatan_tempat
+            "pendapatan" => (int)$pendapatan_tempat
         ];
         $trans = new htrans();
         $id = $trans->insertHtrans($data);
@@ -251,7 +252,6 @@ class Transaksi extends Controller
                 $komisi_tempat = ($alat1->harga_alat - $alat1->komisi) * $durasi_sewa;
 
                 $persen_alat = 0.11;
-
                 $pendapatan_alat = $komisi_pemilik * $persen_alat;
 
                 if ($cek == false) {
@@ -264,7 +264,7 @@ class Transaksi extends Controller
                         "komisi_tempat" => $komisi_tempat,
                         "id_pemilik" => $alat1->fk_id_pemilik,
                         "id_tempat" => $alat1->fk_id_tempat,
-                        "pendapatan" => $pendapatan_alat
+                        "pendapatan" => (int)$pendapatan_alat
                     ];
                 }
                 else {
@@ -843,24 +843,89 @@ class Transaksi extends Controller
     }
 
     public function tambahWaktu(Request $request) {
+        $htrans = DB::table('htrans')
+                ->where("htrans.id_htrans","=",$request->id_htrans)
+                ->get()
+                ->first();
+        // dd($htrans);
+        $dtrans = DB::table('dtrans')
+                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                ->where("dtrans.fk_id_htrans","=",$request->id_htrans)
+                ->get();
+        // dd($dtrans);
+
+        $komisi_tempat = 0;
+        if (!$dtrans->isEmpty()) {
+            foreach ($dtrans as $value) {
+                if ($value->fk_id_pemilik != null) {//milik pemilik
+                    $komisi_tempat += $value->harga_sewa_alat - $value->komisi_alat;
+                }
+                else if ($value->fk_id_tempat != null) {//milik tempat
+                    $komisi_tempat += $value->harga_sewa_alat;
+                }
+            }
+        }
+        // dd($komisi_tempat);
+
+        $total_komisi_tempat = $komisi_tempat * $request->durasi;
+        // dd($total_komisi_tempat);
+
+        $persen_tempat = 0.09;
+        $pendapatan_tempat = ($request->subtotal_lapangan + $total_komisi_tempat) * $persen_tempat;
+        // dd($pendapatan_tempat);
+
         $data = [
-            "jam" => $request->jam,
-            "durasi" => $request->durasi,
             "id_htrans" => $request->id_htrans,
-            "lapangan" => $request->subtotal_lapangan,
-            "alat" => $request->subtotal_alat,
-            "total" => $request->total
+            "tanggal" => $htrans->tanggal_sewa,
+            "jam" => $request->jam,
+            "durasi" => (int)$request->durasi,
+            "lapangan" => (int)$request->subtotal_lapangan,
+            "alat" => (int)$request->subtotal_alat,
+            "total" => (int)$request->total,
+            "pendapatan" => (int)$pendapatan_tempat
         ];
-        $extend = new extendWaktu();
-        $extend->insertExtend($data);
+        // dd($data);
+        $extend = new extendHtrans();
+        $id = $extend->insertExtendHtrans($data);
+
+        $persen_pemilik = 0.11;
+
+        if (!$dtrans->isEmpty()) {
+            foreach ($dtrans as $value) {
+                if ($value->fk_id_pemilik != null) {//milik pemilik
+                    $data2 = [
+                        "id_extend_htrans" => $id,
+                        "id_dtrans" => $value->id_dtrans,
+                        "harga" => $value->harga_sewa_alat,
+                        "subtotal" => $value->harga_sewa_alat * $request->durasi,
+                        "total_pemilik" => $value->komisi_alat * $request->durasi,
+                        "total_tempat" => ($value->harga_sewa_alat - $value->komisi_alat) * $request->durasi,
+                        "pendapatan" => (int)(($value->komisi_alat * $request->durasi) * $persen_pemilik)
+                    ];
+                }
+                else if ($value->fk_id_tempat != null) {//milik tempat
+                    $data2 = [
+                        "id_extend_htrans" => $id,
+                        "id_dtrans" => $value->id_dtrans,
+                        "harga" => $value->harga_sewa_alat,
+                        "subtotal" => $value->harga_sewa_alat * $request->durasi,
+                        "total_pemilik" => null,
+                        "total_tempat" => $value->harga_sewa_alat * $request->durasi,
+                        "pendapatan" => null
+                    ];
+                }
+                $extendDtrans = new extendDtrans();
+                $extendDtrans->insertExtendDtrans($data2);
+            }
+        }
 
         //cek saldo e cukup gaa
         $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
-        if ($saldo < $request->total) {
+        if ($saldo < (int)$request->total) {
             return back()->with('error', 'Saldo anda tidak cukup! Silahkan top up saldo anda.');
         }
         //saldo dipotong sebesar total
-        $saldo -= $request->total;
+        $saldo -= (int)$request->total;
 
         //enkripsi kembali saldo
         $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
