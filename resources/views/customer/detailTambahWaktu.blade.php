@@ -189,7 +189,7 @@
     
         document.getElementById('confirmBooking').addEventListener('click', function() {
             $('#agreementModal').modal('hide');
-            document.querySelector('form[action="/customer/transaksi/tambahWaktu"]').submit();
+            document.querySelector('form[action="/customer/extend/tambahWaktu"]').submit();
         });
     </script>
 @endsection

@@ -185,12 +185,12 @@
                 <input type="hidden" name="id_user" value="{{$htrans->first()->fk_id_user}}">
                 <input type="hidden" name="saldo_user" value="{{$dataUser->saldo_user}}">
                 <input type="hidden" name="total" value="{{$htrans->first()->total_trans}}">
-                <button class="btn btn-danger me-3" type="submit">Tolak</button>
+                <button class="btn btn-danger me-3" id="tolakTrans" type="submit">Tolak</button>
             </form>
             <form id="terimaTransaksiForm" action="/tempat/transaksi/terimaTransaksi" method="post">
                 @csrf
                 <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
-                <button class="btn btn-success" type="submit">Terima</button>
+                <button class="btn btn-success" id="terimaTrans" type="submit">Terima</button>
             </form>
         </div>
     @elseif ($htrans->first()->status_trans == "Diterima")
@@ -232,27 +232,114 @@
                 </div>
             </div>
 
-            <h6>Subtotal Lapangan: </h6>
-            <h6>Rp {{number_format($dataLapangan->harga_sewa_lapangan, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam = <b>Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</b></h6>
-            
-            <h6 class="mt-3">Subtotal Alat: </h6>
+            <h5>Lapangan yang Disewa</h5>
+            <a href="/tempat/lapangan/lihatDetailLapangan/{{$htrans->first()->fk_id_lapangan}}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row d-md-flex align-items-md-center">
+                            <!-- Gambar -->
+                            <div class="col-4">
+                                <div class="square-image-container">
+                                    <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="" class="img-fluid">
+                                </div>
+                            </div>
+                            
+                            <!-- Nama -->
+                            <div class="col-8">
+                                <h5 class="card-title truncate-text">{{$dataLapangan->nama_lapangan}}</h5>
+                                <!-- Contoh detail lain: -->
+                                <p class="card-text">Rp {{number_format($dataLapangan->harga_sewa_lapangan, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam</p>
+                                {{-- Anda bisa menambahkan detail lain di sini sesuai kebutuhan Anda --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="d-flex justify-content-end mt-3 me-3">
+                <h5><b>Subtotal: Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</b></h5>
+            </div>
+
             @php
                 $extendDtrans = DB::table('extend_dtrans')
                         ->where("fk_id_extend_htrans","=",$extend->first()->id_extend_htrans)
                         ->get();
             @endphp
-            <ul>
-                @if (!$extendDtrans->isEmpty())
-                    @foreach ($extendDtrans as $item)
-                        <li>Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam = </li>
-                    @endforeach
-                @endif
-            </ul>
-            <h6><b>Rp {{number_format($extend->first()->subtotal_alat, 0, ',', '.')}}</b></h6>
-            <h5 class="mt-5"><b>Total: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h5>
+
+            <div class="row mt-5">
+                <div class="col-md-6 col-sm-12">
+                    <h5>Alat Olahraga yang Disewa</h5>
+                    @if (!$dtrans->isEmpty())
+                        @foreach ($dtrans as $item)
+                            @php
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
+                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
+                                $cekSendiri = DB::table("sewa_sendiri")->where("req_id_alat","=",$item->fk_id_alat)->get()->first();
+                            @endphp
+                            @if ($cekSendiri != null)
+                                <a href="/tempat/alat/lihatDetail/{{$dataAlat->id_alat}}">
+                                    <div class="card h-70 mb-3">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <!-- Gambar Alat -->
+                                                <div class="col-4">
+                                                    <div class="square-image-container">
+                                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Nama Alat -->
+                                                <div class="col-8">
+                                                    <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                                    <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @else
+                                <a href="/tempat/detailAlatUmum/{{$dataAlat->id_alat}}">
+                                    <div class="card h-70 mb-3">
+                                        <div class="card-body">
+                                            <div class="row d-md-flex align-items-md-center">
+                                                <!-- Gambar Alat -->
+                                                <div class="col-4">
+                                                    <div class="square-image-container">
+                                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Nama Alat -->
+                                                <div class="col-8">
+                                                    <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                                    <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endif
+                        @endforeach
+                    @else
+                        <p>(Tidak ada alat olahraga yang disewa)</p>
+                    @endif
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-3 me-3">
+                <h5><b>Subtotal: Rp {{number_format($extend->first()->subtotal_alat, 0, ',', '.')}}</b></h5>
+            </div>
+            <hr>
+            @if ($extend->first()->status_extend == "Dibatalkan" || $extend->first()->status_extend == "Ditolak")
+                <div class="d-flex justify-content-end mt-5 me-3">
+                    <h4><b style="color: red">Total: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h4>
+                </div>
+            @else 
+                <div class="d-flex justify-content-end mt-5 me-3">
+                    <h4><b>Total: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h4>
+                </div>
+            @endif
             
             @if ($extend->first()->status_extend == "Menunggu")
-                <div class="d-flex justify-content-right mt-5 me-3 mb-5">
+                <div class="d-flex justify-content-end mt-5 me-3 mb-5">
                     {{-- button tolak --}}
                     <form action="" method="post">
                         @csrf
@@ -261,28 +348,30 @@
                     </form>
 
                     {{-- button terima --}}
-                    <form action="" method="post" class="ms-3">
+                    <form id="terimaExtendForm" action="/customer/extend/terimaExtend" method="post" class="ms-2">
                         @csrf
                         <input type="hidden" name="id_extend" value="{{$extend->first()->id_extend_htrans}}">
-                        <button type="submit" class="btn btn-success">Terima</button>
+                        <button type="submit" id="terimaExtend" class="btn btn-success">Terima</button>
                     </form>
                 </div>
             @elseif ($extend->first()->status_extend == "Diterima")
-                <h5 style="color: rgb(0, 145, 0)">Extend Waktu telah diterima</h5>
+                <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+                    <h5 style="color: rgb(0, 145, 0)">Extend Waktu telah diterima</h5>
+                </div>
             @elseif ($extend->first()->status_extend == "Ditolak")
-                <h5 style="color: red">Extend Waktu telah ditolak</h5>
+                <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+                    <h5 style="color: red">Extend Waktu telah ditolak</h5>
+                </div>
             @endif
         @endif
-        <div class="d-flex justify-content-end mt-5 me-3 mb-5">
-            {{-- ini pakai cornjob bisa ga? jadi sebelum waktu sewa nya habis button cetak nota didisable --}}
-            <button class="btn btn-primary">Cetak Nota</button>
-            {{-- nyetak nota & status htrans berubah menjadi selesai --}}
-        </div>
+        @if ($)
+            
+        @endif
     @endif
 </div>
 <script>
     $(document).ready(function() {
-        $(".btn-success").click(function(event) {
+        $("#terimaTrans").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
     
             var formData = $("#terimaTransaksiForm").serialize(); // Mengambil data dari form
@@ -303,7 +392,7 @@
             });
         });
 
-        $(".btn-danger").click(function(event) {
+        $("#tolakTrans").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
     
             var formData = $("#tolakTransaksiForm").serialize(); // Mengambil data dari form
@@ -341,6 +430,27 @@
                     // Handle errors
                     // If you send back errors in a known format, you can display them here
                     swal("Error!", "Gagal mengkonfirmasi transaksi!", "error");
+                }
+            });
+        });
+
+        $("#terimaExtend").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+    
+            var formData = $("#terimaExtendForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/tempat/extend/terimaExtend",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
                 }
             });
         });

@@ -171,6 +171,8 @@
                                             <input type="hidden" name="durasi" id="durasi_jam">
                                             <button type="submit" class="btn btn-primary me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert()">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
                                         </form>
+                                    @elseif (!$cek->isEmpty())
+                                        <h6 class="mt-4">Status Extend Waktu {{$cek->first()->status_extend}} Admin</h6>
                                     @endif
                                 @elseif ($item->status_trans == "Dikomplain")
                                     <div class="mt-3">

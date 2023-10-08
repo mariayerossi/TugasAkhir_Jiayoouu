@@ -31,4 +31,10 @@ class extendHtrans extends Model
 
         return $extend->id_extend_htrans;
     }
+
+    public function updateStatus($data){
+        $extend = extendHtrans::find($data["id"]);
+        $extend->status_extend = $data["status"];
+        $extend->save();
+    }
 }

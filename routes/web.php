@@ -702,6 +702,10 @@ Route::prefix("/tempat")->group(function(){
         Route::post("konfirmasiDipakai", [Transaksi::class, "konfirmasiDipakai"]);
     });
 
+    Route::prefix("/extend")->group(function(){
+        Route::post("/terimaExtend", [Transaksi::class, "terimaExtend"]);
+    });
+
     //bagian laporan
     Route::prefix("/laporan")->group(function(){
         Route::prefix("/pendapatan")->group(function(){
@@ -776,7 +780,6 @@ Route::prefix("/customer")->group(function(){
     Route::prefix("/extend")->group(function(){
         Route::post("/tambahWaktu", [Transaksi::class, "tambahWaktu"]);
         Route::get("/detailTambahWaktu", [Transaksi::class, "detailTambahWaktu"]);
-        Route::post("/terimaExtend", [Transaksi::class, "terimaExtend"]);
     });
 
     Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);

@@ -948,6 +948,13 @@ class Transaksi extends Controller
     }
 
     public function terimaExtend(Request $request) {
+        $data = [
+            "id" => $request->id_htrans,
+            "status" => "Diterima"
+        ];
+        $extend = new extendHtrans();
+        $extend->updateStatus($data);
 
+        return response()->json(['success' => true, 'message' => 'Berhasil Diterima!']);
     }
 }
