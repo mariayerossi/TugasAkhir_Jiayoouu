@@ -341,10 +341,13 @@
             @if ($extend->first()->status_extend == "Menunggu")
                 <div class="d-flex justify-content-end mt-5 me-3 mb-5">
                     {{-- button tolak --}}
-                    <form action="" method="post">
+                    <form id="tolakExtendForm" action="/tempat/extend/tolakExtend" method="post">
                         @csrf
+                        <input type="hidden" name="saldo_user" value="{{$dataUser->saldo_user}}">
+                        <input type="hidden" name="id_user" value="{{$dataUser->id_user}}">
+                        <input type="hidden" name="total" value="{{$extend->first()->total}}">
                         <input type="hidden" name="id_extend" value="{{$extend->first()->id_extend_htrans}}">
-                        <button type="submit" class="btn btn-danger">Tolak</button>
+                        <button type="submit" id="tolakExtend" class="btn btn-danger">Tolak</button>
                     </form>
 
                     {{-- button terima --}}
@@ -437,10 +440,30 @@
             });
         });
 
-        $("#terimaExtend").click(function(event) {
+        $("#terimaExtendForm").on('submit', function(event) {
             event.preventDefault(); // Mencegah perilaku default form
     
             var formData = $("#terimaExtendForm").serialize(); // Mengambil data dari form
+            // console.log(formData)
+            
+            $.ajax({
+                url: $(this).attr('action'),
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    window.location.reload();
+                    // alert('Berhasil Diterima!');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        });
+
+        $("#tolakExtendForm").on('submit', function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+    
+            var formData = $("#tolakExtendForm").serialize(); // Mengambil data dari form
             // console.log(formData)
             
             $.ajax({

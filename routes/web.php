@@ -697,14 +697,15 @@ Route::prefix("/tempat")->group(function(){
             $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
             return view("tempat.transaksi.detailTransaksi")->with($param);
         })->middleware([CekTempat::class]);
-        Route::post("terimaTransaksi", [Transaksi::class, "terimaTransaksi"]);
-        Route::post("tolakTransaksi", [Transaksi::class, "tolakTransaksi"]);
-        Route::post("konfirmasiDipakai", [Transaksi::class, "konfirmasiDipakai"]);
+        Route::post("/terimaTransaksi", [Transaksi::class, "terimaTransaksi"]);
+        Route::post("/tolakTransaksi", [Transaksi::class, "tolakTransaksi"]);
+        Route::post("/konfirmasiDipakai", [Transaksi::class, "konfirmasiDipakai"]);
     });
 
     //bagian extend
     Route::prefix("/extend")->group(function(){
         Route::post("/terimaExtend", [Transaksi::class, "terimaExtend"]);
+        Route::post("/tolakExtend", [Transaksi::class, "tolakExtend"]);
     });
 
     //bagian laporan

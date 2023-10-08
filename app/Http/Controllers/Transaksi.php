@@ -707,7 +707,7 @@ class Transaksi extends Controller
 
         //pengembalian dana ke customer
         $saldo = (int)$this->decodePrice($request->saldo_user, "mysecretkey");
-        $saldo += $request->total;
+        $saldo += (int)$request->total;
 
         //enkripsi kembali saldo
         $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
@@ -956,5 +956,31 @@ class Transaksi extends Controller
         $extend->updateStatus($data);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Diterima!']);
+    }
+
+    public function tolakExtend(Request $request) {
+        $data = [
+            "id" => $request->id_extend,
+            "status" => "Ditolak"
+        ];
+        $extend = new extendHtrans();
+        $extend->updateStatus($data);
+
+        //pengembalian dana ke customer
+        $saldo = (int)$this->decodePrice($request->saldo_user, "mysecretkey");
+        $saldo += (int)$request->total;
+
+        //enkripsi kembali saldo
+        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+        //update db user
+        $dataSaldo = [
+            "id" => $request->id_user,
+            "saldo" => $enkrip
+        ];
+        $cust = new customer();
+        $cust->updateSaldo($dataSaldo);
+
+        return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
     }
 }
