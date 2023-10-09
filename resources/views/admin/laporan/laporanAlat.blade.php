@@ -56,7 +56,7 @@
                 <th>Harga Sewa</th>
                 <th>Status</th>
                 <th>Disewakan</th>
-                <th>Total Pendapatan</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tbody>
@@ -77,7 +77,7 @@
                             <td style="color:red">{{$item->status_alat}}</td>
                         @endif
                         <td>{{$item->total_sewa}} Kali</td>
-                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->total_pendapatan + $item->pendapatan_ext, 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else

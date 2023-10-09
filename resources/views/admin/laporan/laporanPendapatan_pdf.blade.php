@@ -27,7 +27,7 @@
 		@endif
 	</center>
 
-	<h4><b>Rp {{ number_format($data->sum("pendapatan_lapangan") + $data->sum("pendapatan_alat"), 0, ',', '.') }}</b></h4>
+	<h4><b>Rp Rp {{ number_format($data->sum("pendapatan_lapangan") + $data->sum("pendapatan_alat") + $data->sum("lapangan_ext") + $data->sum("alat_ext"), 0, ',', '.') }}</b></h4>
  
 	<table class='table table-bordered'>
 		<thead>
@@ -52,7 +52,7 @@
                         <td>{{$tanggalBaru2}}</td>
                         <td>{{$item->nama_lapangan}}</td>
                         <td>{{$item->jumlah_alat}}</td>
-                        <td>Rp {{ number_format($item->pendapatan_lapangan + $item->pendapatan_alat, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format(($item->pendapatan_lapangan + $item->pendapatan_alat) + ($item->lapangan_ext + $item->alat_ext), 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else
