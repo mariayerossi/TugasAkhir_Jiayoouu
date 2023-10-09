@@ -65,7 +65,7 @@
                         <td>{{$item->nama_tempat}}</td>
                         <td>{{$item->jumlah_lapangan}}</td>
                         <td>{{$item->jumlah_trans}}</td>
-                        <td>Rp {{ number_format($item->total_lapangan+$item->total_alat, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format(($item->total_lapangan + $item->total_alat) + ($item->lapangan_ext + $item->alat_ext), 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else

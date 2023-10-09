@@ -1106,12 +1106,12 @@ class Laporan extends Controller
                 ->select(
                     "pihak_tempat.id_tempat",
                     "pihak_tempat.nama_tempat",
-                    DB::raw('COUNT(htrans.id_htrans) as jumlah_trans'),
-                    DB::raw('SUM(htrans.subtotal_lapangan) as total_lapangan'),
-                    DB::raw('SUM(dtrans.total_komisi_tempat) as total_alat'),
-                    DB::raw('COUNT(lapangan_olahraga.id_lapangan) as jumlah_lapangan'),
-                    DB::raw('SUM(extend_htrans.subtotal_lapangan) as lapangan_ext'),
-                    DB::raw('SUM(extend_dtrans.total_komisi_tempat) as alat_ext'),
+                    DB::raw('COUNT(DISTINCT htrans.id_htrans) as jumlah_trans'),
+                    DB::raw('SUM(DISTINCT htrans.subtotal_lapangan) as total_lapangan'),
+                    DB::raw('SUM(DISTINCT dtrans.total_komisi_tempat) as total_alat'),
+                    DB::raw('COUNT(DISTINCT lapangan_olahraga.id_lapangan) as jumlah_lapangan'),
+                    DB::raw('SUM(DISTINCT extend_htrans.subtotal_lapangan) as lapangan_ext'),
+                    DB::raw('SUM(DISTINCT extend_dtrans.total_komisi_tempat) as alat_ext'),
                 )
                 ->leftJoin("lapangan_olahraga","pihak_tempat.id_tempat","=","lapangan_olahraga.pemilik_lapangan")
                 ->leftJoin("htrans", "pihak_tempat.id_tempat", "=", "htrans.fk_id_tempat")
@@ -1123,7 +1123,7 @@ class Laporan extends Controller
                     "pihak_tempat.nama_tempat"
                 )
                 ->get();
-        dd($coba);
+        // dd($coba);
 
         $monthlyIncome = [];
 
@@ -1162,14 +1162,18 @@ class Laporan extends Controller
                 ->select(
                     "pihak_tempat.id_tempat",
                     "pihak_tempat.nama_tempat",
-                    DB::raw('COUNT(htrans.id_htrans) as jumlah_trans'),
-                    DB::raw('SUM(htrans.subtotal_lapangan) as total_lapangan'),
-                    DB::raw('SUM(dtrans.total_komisi_tempat) as total_alat'),
-                    DB::raw('COUNT(lapangan_olahraga.id_lapangan) as jumlah_lapangan')
+                    DB::raw('COUNT(DISTINCT htrans.id_htrans) as jumlah_trans'),
+                    DB::raw('SUM(DISTINCT htrans.subtotal_lapangan) as total_lapangan'),
+                    DB::raw('SUM(DISTINCT dtrans.total_komisi_tempat) as total_alat'),
+                    DB::raw('COUNT(DISTINCT lapangan_olahraga.id_lapangan) as jumlah_lapangan'),
+                    DB::raw('SUM(DISTINCT extend_htrans.subtotal_lapangan) as lapangan_ext'),
+                    DB::raw('SUM(DISTINCT extend_dtrans.total_komisi_tempat) as alat_ext'),
                 )
                 ->leftJoin("lapangan_olahraga","pihak_tempat.id_tempat","=","lapangan_olahraga.pemilik_lapangan")
                 ->leftJoin("htrans", "pihak_tempat.id_tempat", "=", "htrans.fk_id_tempat")
                 ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->groupBy(
                     "pihak_tempat.id_tempat",
                     "pihak_tempat.nama_tempat"
