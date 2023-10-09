@@ -71,8 +71,8 @@
                         @else
                             <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
                         @endif
-                        <td>{{$item->total_durasi}} jam</td>
-                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                        <td>{{$item->total_durasi  + $item->durasi_ext}} jam</td>
+                        <td>Rp {{ number_format($item->total_pendapatan + $item->komisi_ext, 0, ',', '.') }}</td>
                         @if ($item->fk_id_pemilik != null)
                             <td>Alat Sewaan</td>
                             <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>

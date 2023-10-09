@@ -67,8 +67,8 @@
                         <td>{{$item->nama_lapangan}}</td>
                         <td>{{$item->total_sewa}} kali</td>
                         <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
-                        <td>{{$item->total_durasi}} jam</td>
-                        <td>Rp {{ number_format($item->total_pendapatan, 0, ',', '.') }}</td>
+                        <td>{{$item->total_durasi + $item->durasi_ext}} jam</td>
+                        <td>Rp {{ number_format($item->total_pendapatan + $item->subtotal_ext, 0, ',', '.') }}</td>
                         @if ($item->status_lapangan == "Aktif")
                             <td style="color: green">{{$item->status_lapangan}}</td>
                         @else

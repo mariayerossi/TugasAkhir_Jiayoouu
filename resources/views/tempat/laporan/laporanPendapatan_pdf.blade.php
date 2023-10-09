@@ -27,7 +27,7 @@
 		@endif
 	</center>
 
-	<h4><b>Total: Rp {{ number_format($data->sum('subtotal_lapangan') + $data->sum('total_komisi') - $data->sum("pendapatan_website_lapangan"), 0, ',', '.') }}</b></h4>
+	<h4><b>Total: Rp {{ number_format(($data->sum('subtotal_lapangan') + $trans->sum('total_komisi') - $data->sum("pendapatan_website_lapangan")) + ($data->sum("subtotal_ext") + $data->sum('komisi_extend') - $data->sum("pendapatan_ext")), 0, ',', '.') }}</b></h4>
  
 	<table class='table table-bordered'>
 		<thead>
@@ -60,11 +60,11 @@
                         @endphp
                         <td>{{$tanggalBaru2}}</td>
                         <td>{{$item->nama_lapangan}}</td>
-                        <td>Rp {{ number_format($item->subtotal_lapangan, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->subtotal_lapangan + $item->subtotal_ext, 0, ',', '.') }}</td>
                         <td>{{$item->alat}}</td>
-                        <td>Rp {{ number_format($item->total_komisi, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($item->total_komisi+$item->subtotal_lapangan-$item->pendapatan_website_lapangan, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->total_komisi + $item->komisi_extend, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item->total_komisi + $item->subtotal_lapangan + $item->komisi_extend + $item->subtotal_ext, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format(($item->total_komisi + $item->subtotal_lapangan - $item->pendapatan_website_lapangan) + ($item->komisi_extend + $item->subtotal_ext - $item->pendapatan_ext), 0, ',', '.') }}</td>
                     </tr>
                 @endforeach
             @else

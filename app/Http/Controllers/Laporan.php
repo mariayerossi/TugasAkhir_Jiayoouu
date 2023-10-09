@@ -387,14 +387,14 @@ class Laporan extends Controller
         }
 
         //blm mari
-        foreach ($allData as $data) {
-            $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$data->id_htrans)->sum("total_komisi_tempat");
-            $dataExtendDtrans = DB::table('extend_dtrans')->where("fk_id_extend_htrans","=",$data->id_extend_htrans)->sum("total_komisi_tempat");
+        foreach ($coba as $data) {
+            // $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$data->id_htrans)->sum("total_komisi_tempat");
+            // $dataExtendDtrans = DB::table('extend_dtrans')->where("fk_id_extend_htrans","=",$data->id_extend_htrans)->sum("total_komisi_tempat");
             // dd($data->id_extend_htrans);
             $bulan = date('m', strtotime($data->tanggal_trans));
             $year = date('Y', strtotime($data->tanggal_trans));
             if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] += ($data->subtotal_lapangan + $dataDtrans - $data->pendapatan_website_lapangan) + ($data->subtotal_ext + $dataExtendDtrans - $data->pendapatan_ext);
+                $monthlyIncome[(int)$bulan] += ($data->subtotal_lapangan + $data->total_komisi - $data->pendapatan_website_lapangan) + ($data->subtotal_ext + $data->komisi_extend - $data->pendapatan_ext);
             }
         }
 
@@ -445,10 +445,16 @@ class Laporan extends Controller
                         'htrans.tanggal_trans',
                         DB::raw('COUNT(dtrans.id_dtrans) as alat'),
                         "lapangan_olahraga.nama_lapangan",
-                        "htrans.pendapatan_website_lapangan"
+                        "htrans.pendapatan_website_lapangan",
+                        DB::raw('SUM(extend_dtrans.total_komisi_tempat) as komisi_extend'),
+                        'extend_htrans.subtotal_lapangan as subtotal_ext',
+                        "extend_htrans.pendapatan_website_lapangan as pendapatan_ext",
+                        'extend_htrans.id_extend_htrans'
                     )
                     ->leftJoin("dtrans", "htrans.id_htrans", "=", "dtrans.fk_id_htrans")
                     ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                    ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                    ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                     ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
                     ->where("htrans.fk_id_tempat", "=", $role)
                     ->groupBy(
@@ -457,7 +463,10 @@ class Laporan extends Controller
                         'htrans.subtotal_lapangan',
                         'htrans.tanggal_trans',
                         "lapangan_olahraga.nama_lapangan",
-                        "htrans.pendapatan_website_lapangan"
+                        "htrans.pendapatan_website_lapangan",
+                        'extend_htrans.subtotal_lapangan',
+                        "extend_htrans.pendapatan_website_lapangan",
+                        'extend_htrans.id_extend_htrans'
                     )
                     ->get();
         
@@ -467,7 +476,7 @@ class Laporan extends Controller
             $bulan = date('m', strtotime($data->tanggal_trans));
             $year = date('Y', strtotime($data->tanggal_trans));
             if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] += $data->subtotal_lapangan+$dataDtrans-$data->pendapatan_website_lapangan;
+                $monthlyIncome[(int)$bulan] += ($data->subtotal_lapangan + $data->total_komisi - $data->pendapatan_website_lapangan) + ($data->subtotal_ext + $data->komisi_extend - $data->pendapatan_ext);
             }
         }
 
@@ -486,28 +495,37 @@ class Laporan extends Controller
     public function pendapatanTempatCetakPDF() {
         $role = Session::get("dataRole")->id_tempat;
         $data = DB::table('htrans')
-            ->select(
-                'htrans.id_htrans',
-                "htrans.kode_trans",
-                DB::raw('SUM(dtrans.total_komisi_tempat) as total_komisi'),
-                'htrans.subtotal_lapangan',
-                'htrans.tanggal_trans',
-                DB::raw('COUNT(dtrans.id_dtrans) as alat'),
-                "lapangan_olahraga.nama_lapangan",
-                "htrans.pendapatan_website_lapangan"
-            )
-            ->leftJoin("dtrans", "htrans.id_htrans", "=", "dtrans.fk_id_htrans")
-            ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
-            ->where("htrans.fk_id_tempat", "=", $role)
-            ->groupBy(
-                'htrans.id_htrans',
-                'htrans.kode_trans',
-                'htrans.subtotal_lapangan',
-                'htrans.tanggal_trans',
-                "lapangan_olahraga.nama_lapangan",
-                "htrans.pendapatan_website_lapangan"
-            )
-            ->get();
+                ->select(
+                    'htrans.id_htrans',
+                    "htrans.kode_trans",
+                    DB::raw('SUM(dtrans.total_komisi_tempat) as total_komisi'),
+                    'htrans.subtotal_lapangan',
+                    'htrans.tanggal_trans',
+                    DB::raw('COUNT(dtrans.id_dtrans) as alat'),
+                    "lapangan_olahraga.nama_lapangan",
+                    "htrans.pendapatan_website_lapangan",
+                    DB::raw('SUM(extend_dtrans.total_komisi_tempat) as komisi_extend'),
+                    'extend_htrans.subtotal_lapangan as subtotal_ext',
+                    "extend_htrans.pendapatan_website_lapangan as pendapatan_ext",
+                    'extend_htrans.id_extend_htrans'
+                )
+                ->leftJoin("dtrans", "htrans.id_htrans", "=", "dtrans.fk_id_htrans")
+                ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                ->where("htrans.fk_id_tempat", "=", $role)
+                ->groupBy(
+                    'htrans.id_htrans',
+                    'htrans.kode_trans',
+                    'htrans.subtotal_lapangan',
+                    'htrans.tanggal_trans',
+                    "lapangan_olahraga.nama_lapangan",
+                    "htrans.pendapatan_website_lapangan",
+                    'extend_htrans.subtotal_lapangan',
+                    "extend_htrans.pendapatan_website_lapangan",
+                    'extend_htrans.id_extend_htrans'
+                )
+                ->get();
  
     	$pdf = PDF::loadview('tempat.laporan.laporanPendapatan_pdf',['data'=>$data, 'tanggal_mulai'=>null, 'tanggal_selesai'=>null]);
     	// return $pdf->download('laporan-pendapatan-pdf');
@@ -525,10 +543,16 @@ class Laporan extends Controller
                 'htrans.tanggal_trans',
                 DB::raw('COUNT(dtrans.id_dtrans) as alat'),
                 "lapangan_olahraga.nama_lapangan",
-                "htrans.pendapatan_website_lapangan"
+                "htrans.pendapatan_website_lapangan",
+                DB::raw('SUM(extend_dtrans.total_komisi_tempat) as komisi_extend'),
+                'extend_htrans.subtotal_lapangan as subtotal_ext',
+                "extend_htrans.pendapatan_website_lapangan as pendapatan_ext",
+                'extend_htrans.id_extend_htrans'
             )
             ->leftJoin("dtrans", "htrans.id_htrans", "=", "dtrans.fk_id_htrans")
             ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+            ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+            ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
             ->whereBetween('htrans.tanggal_trans', [$request->mulai, $request->selesai])
             ->where("htrans.fk_id_tempat", "=", $role)
             ->groupBy(
@@ -537,7 +561,10 @@ class Laporan extends Controller
                 'htrans.subtotal_lapangan',
                 'htrans.tanggal_trans',
                 "lapangan_olahraga.nama_lapangan",
-                "htrans.pendapatan_website_lapangan"
+                "htrans.pendapatan_website_lapangan",
+                'extend_htrans.subtotal_lapangan',
+                "extend_htrans.pendapatan_website_lapangan",
+                'extend_htrans.id_extend_htrans'
             )
             ->get();
             // dd($request->mulai);
@@ -617,10 +644,14 @@ class Laporan extends Controller
                     DB::raw('SUM(dtrans.total_komisi_tempat) as total_pendapatan'),
                     "alat_olahraga.status_alat",
                     "alat_olahraga.fk_id_pemilik",
-                    "alat_olahraga.fk_id_tempat"
+                    "alat_olahraga.fk_id_tempat",
+                    DB::raw('SUM(extend_htrans.durasi_extend) as durasi_ext'),
+                    DB::raw('SUM(extend_dtrans.total_komisi_tempat) as komisi_ext'),
                 )
                 ->leftJoin("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
+                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->where("htrans.fk_id_tempat", "=", $role)
                 ->groupBy(
                     "alat_olahraga.id_alat",
@@ -710,9 +741,12 @@ class Laporan extends Controller
                         "lapangan_olahraga.harga_sewa_lapangan",
                         DB::raw('SUM(htrans.durasi_sewa) as total_durasi'),
                         "lapangan_olahraga.status_lapangan",
-                        DB::raw('SUM(htrans.subtotal_lapangan) as total_pendapatan')
+                        DB::raw('SUM(htrans.subtotal_lapangan) as total_pendapatan'),
+                        DB::raw('SUM(extend_htrans.durasi_extend) as durasi_ext'),
+                        DB::raw('SUM(extend_htrans.subtotal_lapangan) as subtotal_ext'),
                     )
                     ->leftJoin("htrans", "lapangan_olahraga.id_lapangan", "=", "htrans.fk_id_lapangan")
+                    ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                     ->where("lapangan_olahraga.pemilik_lapangan", "=", $role)
                     ->groupBy(
                         "lapangan_olahraga.id_lapangan",
@@ -765,9 +799,12 @@ class Laporan extends Controller
                     "lapangan_olahraga.harga_sewa_lapangan",
                     DB::raw('SUM(htrans.durasi_sewa) as total_durasi'),
                     "lapangan_olahraga.status_lapangan",
-                    DB::raw('SUM(htrans.subtotal_lapangan) as total_pendapatan')
+                    DB::raw('SUM(htrans.subtotal_lapangan) as total_pendapatan'),
+                    DB::raw('SUM(extend_htrans.durasi_extend) as durasi_ext'),
+                    DB::raw('SUM(extend_htrans.subtotal_lapangan) as subtotal_ext'),
                 )
                 ->leftJoin("htrans", "lapangan_olahraga.id_lapangan", "=", "htrans.fk_id_lapangan")
+                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->where("lapangan_olahraga.pemilik_lapangan", "=", $role)
                 ->groupBy(
                     "lapangan_olahraga.id_lapangan",
