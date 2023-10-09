@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\alatOlahraga;
 use App\Models\requestPenawaran as ModelsRequestPenawaran;
 use DateInterval;
+use App\Models\notifikasiEmail;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,16 +25,28 @@ class RequestPenawaran extends Controller
         date_default_timezone_set("Asia/Jakarta");
         $tgl_tawar = date("Y-m-d H:i:s");
 
-        $data = [
-            "lapangan" => $request->id_lapangan,
-            "id_alat" => $array[0],
-            "id_tempat" => $request->id_tempat,
-            "id_pemilik" => $request->id_pemilik,
-            "tgl_tawar" => $tgl_tawar,
-            "status" => "Menunggu"
+        // $data = [
+        //     "lapangan" => $request->id_lapangan,
+        //     "id_alat" => $array[0],
+        //     "id_tempat" => $request->id_tempat,
+        //     "id_pemilik" => $request->id_pemilik,
+        //     "tgl_tawar" => $tgl_tawar,
+        //     "status" => "Menunggu"
+        // ];
+        // $req = new ModelsRequestPenawaran();
+        // $req->insertPenawaran($data);
+
+        //kasih notif ke pihak tempat klo ada penawaran alat baru
+        $email_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_tempat)->get()->first()->email_tempat;
+        // dd($email_tempat);
+        $dataNotif = [
+            "subject" => "Testing email",
+            "nama_customer" => "Maria Yerossi",
+            "tagihan" => 50000
         ];
-        $req = new ModelsRequestPenawaran();
-        $req->insertPenawaran($data);
+        // Mail::to("maria.yerossi@gmail.com")->send(new notifEmail($data));
+        $e = new notifikasiEmail();
+        $e->sendEmail("maria.yerossi@gmail.com",$dataNotif);
 
         return redirect()->back()->with("success", "Berhasil Menawarkan Alat!");
     }
