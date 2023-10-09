@@ -33,6 +33,33 @@
         height: 60px;
     }
 }
+.tiny-card {
+    width: 150px; /* Lebar tetap kartu */
+    height: 50px; /* Tinggi tetap kartu */
+}
+
+.tiny-card .card-body {
+    padding: 1px; /* Padding minimal */
+}
+
+.tiny-card .square-image-container img {
+    height: 45px; /* Mengatur tinggi gambar agar sesuai dengan kartu */
+    width: 45px;
+}
+
+.tiny-card .card-title {
+    font-size: 10px; /* Ukuran font sangat kecil */
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.square-image-container2 {
+    height: 45px;
+    width: 45px;
+    overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
+}
 </style>
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <h3 class="text-center mb-5">Detail Transaksi</h3>
@@ -369,8 +396,84 @@
         @endif
         @if (!$extend->isEmpty() && $extend->first()->status_extend != "Menunggu" || $extend->isEmpty())
             <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+                @if (!$dtrans->isEmpty())
+                    <button class="btn btn-warning me-2">Ajukan Kerusakan Alat</button>
+                @endif
                 <button class="btn btn-primary">Cetak Nota</button>
                 {{-- klo cetak nota diprint, maka status htrans berubah selesai --}}
+            </div>
+            <div class="row form_rusak">
+                <div class="col-md-8">
+                    <form action="/tempat/kerusakan/ajukanKerusakan" method="post" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);background-color:white">
+                        @csrf
+                        <div class="d-flex justify-content-center">
+                            <h5><b>Ajukan Kerusakan Alat</b></h5>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Pilih Alat Olahraga yang Rusak</h6>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3 d-flex flex-wrap">
+                                @foreach ($dtrans as $item)
+                                    @php
+                                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
+                                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
+                                    @endphp
+                                    <div class="custom-radio-container">
+                                        <input type="radio" class="btn-check" name="rusak" id="alat-{{$dataAlat->id_alat}}" autocomplete="off" value="{{$dataAlat->id_alat}}">
+                                        <label class="btn btn-outline-primary" for="alat-{{$dataAlat->id_alat}}">
+                                            <div class="card tiny-card h-70 mb-1 mr-1">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <!-- Gambar Alat -->
+                                                        <div class="col-4">
+                                                            <div class="square-image-container2">
+                                                                <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Nama Alat -->
+                                                        <div class="col-8 d-flex align-items-center justify-content-between">
+                                                            <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Apakah terdapat unsur kesengajaan dalam kerusakan alat olahraga?</h6>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                <input type="radio" class="btn-check" name="unsur" id="danger-outlined" autocomplete="off" value="Ya">
+                                <label class="btn btn-outline-danger" for="danger-outlined">Ya</label>
+
+                                <input type="radio" class="btn-check" name="unsur" id="primary-outlined" autocomplete="off" value="Tidak">
+                                <label class="btn btn-outline-primary" for="primary-outlined">Tidak</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 col-12 mt-2">
+                                <h6>Lampirkan Bukti</h6>
+                                <span style="font-size: 14px">lampirkan 2 file sekaligus</span>
+                            </div>
+                            <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                <input type="file" class="form-control" name="foto[]" multiple accept=".jpg,.png,.jpeg">
+                            </div>
+                        </div>
+                        <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success">Kirim</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4">
+                    <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
+                </div>
             </div>
         @endif
     @endif
@@ -478,6 +581,12 @@
                     alert(errorThrown);
                 }
             });
+        });
+
+        $(".form_rusak").hide();
+        $(".btn-warning").click(function(e) {
+            e.preventDefault();  // Menghentikan perilaku default (navigasi)
+            $(`.form_rusak`).show();
         });
     });
 </script>    

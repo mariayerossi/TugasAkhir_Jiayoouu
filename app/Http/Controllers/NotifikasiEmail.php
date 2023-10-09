@@ -10,13 +10,14 @@ use Illuminate\Support\Facades\Mail;
 class NotifikasiEmail extends Controller
 {
     public function sendEmail() {
-        $data = [
+        $dataNotif = [
             "subject" => "Testing email",
-            "nama_customer" => "Maria Yerossi",
-            "tagihan" => 50000
+            "judul" => "Penawaran Alat Olahraga Baru",
+            "nama_user" => "Maria Yerossi",
+            "isi" => "Anda memiliki 1 penawaran alat olahraga baru yang masih belum diterima.Silahkan terima penawaran!"
         ];
         // Mail::to("maria.yerossi@gmail.com")->send(new notifEmail($data));
         $e = new ModelsNotifikasiEmail();
-        $e->sendEmail("maria.yerossi@gmail.com",$data);
+        $e->sendEmail("maria.yerossi@gmail.com",$dataNotif);
     }
 }

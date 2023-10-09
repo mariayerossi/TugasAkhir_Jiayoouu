@@ -263,6 +263,8 @@
 </div>
 <script>
     $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+        
         $(".btn-danger").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
     

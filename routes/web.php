@@ -816,4 +816,5 @@ Route::prefix("/customer")->group(function(){
     });
 });
 
+//contoh
 Route::get("/sendEmail", [NotifikasiEmail::class, "sendEmail"]);

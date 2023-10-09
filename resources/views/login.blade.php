@@ -63,13 +63,13 @@ Sportiva
                   <input type="password" name="password" id="form3Example4" class="form-control" />
                 </div>
   
-                <!-- Checkbox -->
+                {{-- <!-- Checkbox -->
                 <div class="form-check d-flex justify-content-center mb-4">
                   <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" />
                   <label class="form-check-label" for="form2Example33">
                     Remember me
                   </label>
-                </div>
+                </div> --}}
   
                 <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mb-4">

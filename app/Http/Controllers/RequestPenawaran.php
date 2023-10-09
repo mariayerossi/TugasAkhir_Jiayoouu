@@ -25,28 +25,34 @@ class RequestPenawaran extends Controller
         date_default_timezone_set("Asia/Jakarta");
         $tgl_tawar = date("Y-m-d H:i:s");
 
-        // $data = [
-        //     "lapangan" => $request->id_lapangan,
-        //     "id_alat" => $array[0],
-        //     "id_tempat" => $request->id_tempat,
-        //     "id_pemilik" => $request->id_pemilik,
-        //     "tgl_tawar" => $tgl_tawar,
-        //     "status" => "Menunggu"
-        // ];
-        // $req = new ModelsRequestPenawaran();
-        // $req->insertPenawaran($data);
+        $data = [
+            "lapangan" => $request->id_lapangan,
+            "id_alat" => $array[0],
+            "id_tempat" => $request->id_tempat,
+            "id_pemilik" => $request->id_pemilik,
+            "tgl_tawar" => $tgl_tawar,
+            "status" => "Menunggu"
+        ];
+        $req = new ModelsRequestPenawaran();
+        $req->insertPenawaran($data);
 
         //kasih notif ke pihak tempat klo ada penawaran alat baru
         $email_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_tempat)->get()->first()->email_tempat;
+        $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_tempat)->get()->first()->nama_tempat;
+        $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first()->nama_alat;
+        $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first()->komisi_alat;
         // dd($email_tempat);
         $dataNotif = [
-            "subject" => "Testing email",
-            "nama_customer" => "Maria Yerossi",
-            "tagihan" => 50000
+            "subject" => "Penawaran Alat Olahraga Baru",
+            "judul" => "Penawaran Alat Olahraga Baru",
+            "nama_user" => $nama_tempat,
+            "isi" => "Anda memiliki 1 penawaran alat olahraga baru:<br><br>
+                    <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
+                    <b>Komisi Pemilik Alat : Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
+                    Silahkan konfirmasi penawaran!"
         ];
-        // Mail::to("maria.yerossi@gmail.com")->send(new notifEmail($data));
         $e = new notifikasiEmail();
-        $e->sendEmail("maria.yerossi@gmail.com",$dataNotif);
+        $e->sendEmail($email_tempat,$dataNotif);
 
         return redirect()->back()->with("success", "Berhasil Menawarkan Alat!");
     }

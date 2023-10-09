@@ -38,7 +38,7 @@ class notifEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'notifEmail',
+            view: 'email',
             with: $this->data,
         );
     }
