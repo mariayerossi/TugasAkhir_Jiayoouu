@@ -105,18 +105,17 @@
                     <tr>
                         <th>Item</th>
                         <th>Keterangan</th>
-                        <th>Status</th>
+                        {{-- <th>Status</th> --}}
+                        <th>Permintaan Extend</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (!$berlangsung->isEmpty())
                         @foreach ($berlangsung as $item)
-                            {{-- @php
-                                $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
-                                $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
-                                $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                            @endphp --}}
+                            @php
+                                $extend = DB::table('extend_htrans')->where("fk_id_htrans","=",$item->id_htrans)->get();
+                            @endphp
                             <tr>
                                 <td style="display: flex; align-items: center;">
                                     <div class="square-image-container" style="margin-right: 10px;">
@@ -130,7 +129,18 @@
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
                                 <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
-                                <td><span style="color:rgb(255, 145, 0)">Berlangsung</span></td>
+                                {{-- <td><span style="color:rgb(255, 145, 0)">Berlangsung</span></td> --}}
+                                @if (!$extend->isEmpty())
+                                    @if ($extend->first()->status_extend == "Menunggu")
+                                        <td><span style="color:rgb(239, 203, 0)">{{$extend->first()->status_extend}}</span></td>
+                                    @elseif ($extend->first()->status_extend == "Diterima")
+                                        <td><span style="color:rgb(0, 145, 0)">{{$extend->first()->status_extend}}</span></td>
+                                    @elseif ($extend->first()->status_extend == "Ditolak")
+                                        <td><span style="color:red">{{$extend->first()->status_extend}}</span></td>
+                                    @endif
+                                @else
+                                    <td>Tidak ada extend</td>
+                                @endif
                                 <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach

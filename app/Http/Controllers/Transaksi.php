@@ -288,16 +288,23 @@ class Transaksi extends Controller
 
         //hapus session sewaAlat
         $sewaAlat = Session::get("sewaAlat");
-
         foreach ($sewaAlat as $key => $item) {
             if ($item['lapangan'] == "1") {
                 // 3. Hapus item tersebut dari array
                 unset($sewaAlat[$key]);
             }
         }
-
-        // 4. Simpan kembali array yang telah dimodifikasi ke dalam session
         Session::put("sewaAlat", $sewaAlat);
+
+        //hapus session cart
+        $cart = Session::get("cart");
+        foreach ($cart as $key => $item) {
+            if ($item['lapangan'] == "1") {
+                // 3. Hapus item tersebut dari array
+                unset($cart[$key]);
+            }
+        }
+        Session::put("cart", $cart);
 
         return redirect("/customer/detailLapangan/$request->id_lapangan")->with("success","Berhasil booking lapangan olahraga!");
     }
@@ -546,7 +553,7 @@ class Transaksi extends Controller
         if (Session::has("cart") && Session::get("cart") != null) {
             foreach (Session::get("cart") as $key => $value) {
                 $result = DB::table('lapangan_olahraga')
-                    ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
+                    ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan","lapangan_olahraga.pemilik_lapangan")
                     ->joinSub(function($query) {
                         $query->select("fk_id_lapangan", "nama_file_lapangan")
                             ->from('files_lapangan')

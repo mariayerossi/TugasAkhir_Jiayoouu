@@ -178,14 +178,30 @@
             <form id="bookingForm" action="/customer/transaksi/detailTransaksi" method="get" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 @csrf
                 <div class="d-flex justify-content-center">
-                    <h5><b>Atur Tanggal dan Jam Booking</b></h5>
+                    <h5><b>Atur Tanggal dan Jam Bookings</b></h5>
                 </div>
+                @php
+                    $tanggal = "";
+                    $mulai = "";
+                    $selesai = "";
+                @endphp
+                @if (Session::has("cart"))
+                    @foreach (Session::get("cart") as $item)
+                        @if ($item["lapangan"] == $lapangan->first()->id_lapangan)
+                            @php
+                                $tanggal = $item["tanggal"];
+                                $mulai = $item["mulai"];
+                                $selesai = $item["selesai"]
+                            @endphp
+                        @endif
+                    @endforeach
+                @endif
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">
                         <h6>Tanggal Sewa</h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                        <input type="date" name="tanggal" id="" class="form-control">
+                        <input type="date" name="tanggal" id="tanggal" class="form-control" value="{{old("tanggal") ?? $tanggal}}">
                     </div>
                 </div>
                 <div class="row">
@@ -193,10 +209,10 @@
                         <h6>Jam Sewa</h6>
                     </div>
                     <div class="col-md-4 col-12 mt-2 mt-md-0 mb-3">
-                        <input type="time" name="mulai" class="form-control" onchange="forceHourOnly(this)">
+                        <input type="time" name="mulai" id="mulai" class="form-control" onchange="forceHourOnly(this)" value="{{old("mulai") ?? $mulai}}">
                     </div>
                     <div class="col-md-4 col-12 mt-2 mt-md-0 mb-3">
-                        <input type="time" name="selesai" id="" class="form-control" onchange="forceHourOnly(this)">
+                        <input type="time" name="selesai" id="selesai" class="form-control" onchange="forceHourOnly(this)" value="{{old("selesai") ?? $selesai}}">
                     </div>
                 </div>
                 @if (Session::has("sewaAlat"))
@@ -253,7 +269,7 @@
                             @endif
                         @endforeach
                     @endif
-                    <button type="button" id="addToCartBtn" @if($disableButton) disabled @endif class="btn btn-outline-primary">+ Keranjang</button>
+                    <button type="button" id="addToCartBtn" @if($disableButton) disabled @endif class="btn btn-outline-primary">+ Favorit</button>
                     {{-- <a href="/customer/transaksi/tambahCart" class="btn btn-outline-primary">+ Keranjang</a> --}}
                 </div>
             </form>
@@ -683,6 +699,49 @@
             }
         }
     }
+    // // default tanggal besok
+    // let today = new Date();
+    // today.setDate(today.getDate() + 1);
+    // let dd = String(today.getDate()).padStart(2, '0');
+    // let mm = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+    // let yyyy = today.getFullYear();
+    // let tomorrow = yyyy + '-' + mm + '-' + dd;
+    // document.getElementById('tanggal').value = tomorrow;
+
+    // default tanggal besok
+    if (!document.getElementById('tanggal').value) {
+        let today = new Date();
+        today.setDate(today.getDate() + 1);
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); // Bulan dimulai dari 0
+        let yyyy = today.getFullYear();
+        let tomorrow = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('tanggal').value = tomorrow;
+    }
+
+    // default waktu mulai (sekarang)
+    if (!document.getElementById('mulai').value) {
+        let now = new Date();
+        let hh = String(now.getHours()).padStart(2, '0');
+        let currentTime = hh + ':00';
+        document.getElementById('mulai').value = currentTime;
+    }
+
+    // default waktu selesai
+    if (!document.getElementById('selesai').value) {
+        let currentDate = new Date();
+        let hoursToAdd = 2;
+        currentDate.setHours(currentDate.getHours() + hoursToAdd);
+        if(currentDate.getHours() >= 24) {
+            currentDate.setHours(currentDate.getHours() - 24);
+        }
+        currentDate.setMinutes(0);
+        let twoDigitHours = String(currentDate.getHours()).padStart(2, '0');
+        let twoDigitMinutes = String(currentDate.getMinutes()).padStart(2, '0');
+        let timeString = `${twoDigitHours}:${twoDigitMinutes}`;
+        document.getElementById("selesai").value = timeString;
+    }
+
     // document.querySelector('input[name="tanggal"]').addEventListener('change', function() {
     //     document.querySelector('#hiddenTanggal').value = this.value;
     // });

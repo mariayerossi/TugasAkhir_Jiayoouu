@@ -46,7 +46,7 @@
     }
 </style>
 <div class="container mt-5">
-    <h2 class="text-center mb-5">Daftar Keranjang</h2>
+    <h2 class="text-center mb-5">Daftar Favorit</h2>
     @if($data != null)
         @foreach($data as $item)
         <a href="/customer/detailLapangan/{{$item->id_lapangan}}">
@@ -100,7 +100,15 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button class="btn btn-success me-3">Booking <i class="bi bi-bag-check"></i></button>
+                            <form action="/customer/transaksi/detailTransaksi" method="get">
+                                @csrf
+                                <input type="hidden" name="id_lapangan" value="{{$item->id_lapangan}}">
+                                <input type="hidden" name="id_tempat" value="{{$item->pemilik_lapangan}}">
+                                <input type="hidden" name="tanggal" value="{{$item->tanggal}}">
+                                <input type="hidden" name="mulai" value="{{$item->mulai}}">
+                                <input type="hidden" name="selesai" value="{{$item->selesai}}">
+                                <button class="btn btn-success me-3">Booking <i class="bi bi-bag-check"></i></button>
+                            </form>
                             <button data-url="/customer/hapusKeranjang/{{$loop->count - $loop->iteration}}" class="btn btn-danger delete-cart-item"><i class="bi bi-trash3"></i></button>
                         </div>
                     </div>

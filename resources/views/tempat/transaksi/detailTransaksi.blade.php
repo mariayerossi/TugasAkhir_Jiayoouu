@@ -60,6 +60,13 @@
     width: 45px;
     overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
 }
+.floating-btn {
+    position: fixed;
+    bottom: 20px;  /* Anda bisa menyesuaikan jarak dari bawah */
+    right: 20px;   /* Anda bisa menyesuaikan jarak dari sisi kanan */
+    z-index: 1000; /* Z-index tinggi agar button berada di atas elemen lainnya */
+}
+
 </style>
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <h3 class="text-center mb-5">Detail Transaksi</h3>
@@ -243,6 +250,10 @@
                     ->get();
         @endphp
         @if (!$extend->isEmpty())
+            <div id="extend">
+                <hr style="height: 3px;
+                border: none;
+                background-color: black;">
             <h3 class="text-center mb-5 mt-5">Permintaan Perpanjangan Waktu Sewa</h3>
             @php
                 $tanggalAwal4 = $extend->first()->tanggal_extend;
@@ -393,6 +404,7 @@
                     <h5 style="color: red">Extend Waktu telah ditolak</h5>
                 </div>
             @endif
+            </div>
         @endif
         @if (!$extend->isEmpty() && $extend->first()->status_extend != "Menunggu" || $extend->isEmpty())
             <div class="d-flex justify-content-end mt-5 me-3 mb-5">
@@ -478,7 +490,16 @@
         @endif
     @endif
 </div>
+<button id="scrollDownButton" class="btn btn-primary floating-btn">Lihat Extend <i class="bi bi-arrow-down-circle"></i></button>
 <script>
+    document.getElementById('scrollDownButton').addEventListener('click', function() {
+        var extendElement = document.getElementById('extend');
+
+        // Menggunakan 'scrollIntoView' untuk menggulung ke elemen
+        extendElement.scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
     $(document).ready(function() {
         $("#terimaTrans").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
