@@ -43,7 +43,6 @@
         @endphp
     
         @php
-    
             $tanggalAwal2 = $data["tanggal"];
             $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
             $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
