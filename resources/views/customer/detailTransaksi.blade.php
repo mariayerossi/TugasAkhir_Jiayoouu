@@ -125,8 +125,9 @@
                                                     <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                                     <p class="card-text">Rp {{number_format($harga, 0, ',', '.')}} x {{$data["durasi"]}} Jam</p>
                                                 </div>
-                                                <form action="/tempat/transaksi/deleteAlatDetail/{{$loop->iteration}}" method="get">
-                                                    <button type="submit" class="btn btn-danger btn-sm mt-lg-0 mt-2"><i class="bi bi-trash3"></i></button>
+                                                <form action="/customer/transaksi/deleteAlatDetail/{{$item["alat"]}}" method="get">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-danger btn-sm mt-lg-0 mt-2 delete-link"><i class="bi bi-trash3"></i></button>
                                                 </form>
                                             </div>
                                         </div>
@@ -188,6 +189,27 @@
             $('#agreementModal').modal('hide');
             document.querySelector('form[action="/customer/transaksi/tambahTransaksi"]').submit();
         });
+        $(document).ready(function(){
+            $('.delete-link').on('click', function(e) {
+                e.preventDefault();
+
+                var form = $(this).closest('form'); // Ambil elemen form terdekat dari tombol yang diklik
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: 'GET',
+                    success: function(response) {
+                        // handle response dari server jika sukses
+                        location.reload(); // contoh: reload halaman
+                    },
+                    error: function(xhr) {
+                        // handle error
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+        });
     </script>
-        
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

@@ -513,17 +513,18 @@ class Transaksi extends Controller
         return response()->json(['status' => 'success', 'message' => 'Data berhasil dihapus']);
     }
 
-    public function deleteAlatDetail($urutan) {
-        dd($urutan);
-        // //hapus session sewaAlat
-        // $sewaAlat = Session::get("sewaAlat");
-        // foreach ($sewaAlat as $key => $item) {
-        //     if ($item['lapangan'] == "1") {
-        //         // 3. Hapus item tersebut dari array
-        //         unset($sewaAlat[$key]);
-        //     }
-        // }
-        // Session::put("sewaAlat", $sewaAlat);
+    public function deleteAlatDetail($id) {
+        //hapus session sewaAlat
+        $sewaAlat = Session::get("sewaAlat");
+        foreach ($sewaAlat as $key => $item) {
+            if ($item['alat'] == $id) {
+                // 3. Hapus item tersebut dari array
+                unset($sewaAlat[$key]);
+            }
+        }
+        Session::put("sewaAlat", $sewaAlat);
+
+        return response()->json(['status' => 'success', 'message' => 'Data berhasil dihapus']);
     }
 
     public function tambahKeranjang(Request $request) {
