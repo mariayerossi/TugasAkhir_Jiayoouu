@@ -178,7 +178,7 @@
             <form id="bookingForm" action="/customer/transaksi/detailTransaksi" method="get" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 @csrf
                 <div class="d-flex justify-content-center">
-                    <h5><b>Atur Tanggal dan Jam Bookings</b></h5>
+                    <h5><b>Atur Tanggal dan Jam Booking</b></h5>
                 </div>
                 @php
                     $tanggal = "";

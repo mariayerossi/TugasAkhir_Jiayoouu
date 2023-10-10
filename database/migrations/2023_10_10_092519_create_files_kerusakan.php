@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kerusakan_alat', function (Blueprint $table) {
-            $table->integerIncrements("id_kerusakan");
-            $table->unsignedInteger("fk_id_dtrans");
-            $table->string("kesengajaan");//ya / tidak
+        Schema::create('files_kerusakan', function (Blueprint $table) {
+            $table->integerIncrements("id_file_kerusakan");
+            $table->string("nama_file_kerusakan");
+            $table->unsignedInteger("fk_id_kerusakan");
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('fk_id_dtrans')
-                  ->references('id_dtrans')
-                  ->on('dtrans');
+            $table->foreign('fk_id_kerusakan')
+                  ->references('id_kerusakan')
+                  ->on('kerusakan_alat');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kerusakan_alat');
+        Schema::dropIfExists('files_kerusakan');
     }
 };

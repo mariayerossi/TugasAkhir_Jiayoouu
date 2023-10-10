@@ -1011,8 +1011,4 @@ class Transaksi extends Controller
 
         return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
     }
-
-    public function ajukanKerusakan(Request $request) {
-
-    }
 }

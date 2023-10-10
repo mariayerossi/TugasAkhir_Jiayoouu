@@ -490,7 +490,9 @@
         @endif
     @endif
 </div>
-<button id="scrollDownButton" class="btn btn-primary floating-btn">Lihat Extend <i class="bi bi-arrow-down-circle"></i></button>
+@if (!$extend->isEmpty())
+    <button id="scrollDownButton" class="btn btn-primary floating-btn">Lihat Extend <i class="bi bi-arrow-down-circle"></i></button>
+@endif
 <script>
     document.getElementById('scrollDownButton').addEventListener('click', function() {
         var extendElement = document.getElementById('extend');

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AlatOlahraga;
 use App\Http\Controllers\KategoriOlahraga;
+use App\Http\Controllers\KerusakanAlat;
 use App\Http\Controllers\KomplainRequest;
 use App\Http\Controllers\KomplainTrans;
 use App\Http\Controllers\LapanganOlahraga;
@@ -709,7 +710,7 @@ Route::prefix("/tempat")->group(function(){
     });
 
     Route::prefix("/kerusakan")->group(function(){
-        Route::post("/ajukanKerusakan", [Transaksi::class, "ajukanKerusakan"]);
+        Route::post("/ajukanKerusakan", [KerusakanAlat::class, "ajukanKerusakan"]);
     });
 
     //bagian laporan
