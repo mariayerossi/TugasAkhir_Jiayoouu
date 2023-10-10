@@ -57,10 +57,10 @@
 <div class="container mt-5 mb-5 p-4 rounded">
     <form action="/tempat/kerusakan/ajukanKerusakan" method="post" enctype="multipart/form-data">
         @csrf
-        <div class="form-template card-form">
-            <div class="d-flex justify-content-center">
-                <h3 class="text-center mb-5">Ajukan Kerusakan Alat</h3>
-            </div>
+        <div class="d-flex justify-content-center">
+            <h3 class="text-center mb-5">Ajukan Kerusakan Alat</h3>
+        </div>
+        <div class="form-template card-form p-5">
             <div class="row mb-3">
                 <div class="col-md-4 col-12 mt-2">
                     <h6>Pilih Alat Olahraga yang Rusak</h6>
