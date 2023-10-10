@@ -786,6 +786,7 @@ Route::prefix("/customer")->group(function(){
         Route::get("/detailTransaksi", [Transaksi::class, "detailTransaksi"]);
         Route::post("/tambahTransaksi", [Transaksi::class, "tambahTransaksi"]);
         Route::post("/batalBooking", [Transaksi::class, "batalBooking"]);
+        Route::get("/deleteAlatDetail/{urutan}", [Transaksi::class, "deleteAlatDetail"]);
     });
 
     //bagian transaksi

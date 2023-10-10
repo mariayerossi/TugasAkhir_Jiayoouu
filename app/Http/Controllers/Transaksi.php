@@ -513,6 +513,19 @@ class Transaksi extends Controller
         return response()->json(['status' => 'success', 'message' => 'Data berhasil dihapus']);
     }
 
+    public function deleteAlatDetail($urutan) {
+        dd($urutan);
+        // //hapus session sewaAlat
+        // $sewaAlat = Session::get("sewaAlat");
+        // foreach ($sewaAlat as $key => $item) {
+        //     if ($item['lapangan'] == "1") {
+        //         // 3. Hapus item tersebut dari array
+        //         unset($sewaAlat[$key]);
+        //     }
+        // }
+        // Session::put("sewaAlat", $sewaAlat);
+    }
+
     public function tambahKeranjang(Request $request) {
         $cart = [];
         if(Session::has("cart")) $cart = Session::get("cart");
@@ -661,41 +674,43 @@ class Transaksi extends Controller
         $subtotal_alat_lain = 0;
         if (Session::has("sewaAlat") && Session::get("sewaAlat") != null) {
             foreach (Session::get("sewaAlat") as $key => $value) {
-                $milik = false;
-                //permintaan
-                $alat = DB::table('request_permintaan')
-                        ->select("request_permintaan.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi")
-                        ->join("alat_olahraga", "request_permintaan.req_id_alat","=","alat_olahraga.id_alat")
-                        ->where("request_permintaan.req_id_alat","=",$value["alat"])
-                        ->get()
-                        ->first();
-                if ($alat == null) {
-                    //penawaran
-                    $alat = DB::table('request_penawaran')
-                            ->select("request_penawaran.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi")
-                            ->join("alat_olahraga", "request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
-                            ->where("request_penawaran.req_id_alat","=",$value["alat"])
+                if ($value["lapangan"] == $request->id_lapangan) {
+                    $milik = false;
+                    //permintaan
+                    $alat = DB::table('request_permintaan')
+                            ->select("request_permintaan.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi")
+                            ->join("alat_olahraga", "request_permintaan.req_id_alat","=","alat_olahraga.id_alat")
+                            ->where("request_permintaan.req_id_alat","=",$value["alat"])
                             ->get()
                             ->first();
                     if ($alat == null) {
-                        //sewa sendiri
-                        $alat = DB::table('alat_olahraga')
-                            ->select("alat_olahraga.komisi_alat as harga_alat", "alat_olahraga.komisi_alat as komisi")
-                            ->join("sewa_sendiri", "alat_olahraga.id_alat","=","sewa_sendiri.req_id_alat")
-                            ->where("alat_olahraga.id_alat","=",$value["alat"])
-                            ->get()
-                            ->first();
-                        $milik = true;
+                        //penawaran
+                        $alat = DB::table('request_penawaran')
+                                ->select("request_penawaran.req_harga_sewa as harga_alat", "alat_olahraga.komisi_alat as komisi")
+                                ->join("alat_olahraga", "request_penawaran.req_id_alat","=","alat_olahraga.id_alat")
+                                ->where("request_penawaran.req_id_alat","=",$value["alat"])
+                                ->get()
+                                ->first();
+                        if ($alat == null) {
+                            //sewa sendiri
+                            $alat = DB::table('alat_olahraga')
+                                ->select("alat_olahraga.komisi_alat as harga_alat", "alat_olahraga.komisi_alat as komisi")
+                                ->join("sewa_sendiri", "alat_olahraga.id_alat","=","sewa_sendiri.req_id_alat")
+                                ->where("alat_olahraga.id_alat","=",$value["alat"])
+                                ->get()
+                                ->first();
+                            $milik = true;
+                        }
                     }
-                }
 
-                $subtotal_alat_perjam += $alat->harga_alat; //per jam
-                if ($milik == false) {
-                    $komisi_alat_pemilik += $alat->komisi;//per jam
-                    $subtotal_alat_lain += $alat->harga_alat;
-                }
-                else {
-                    $komisi_alat_tempat += $alat->komisi; //per jam
+                    $subtotal_alat_perjam += $alat->harga_alat; //per jam
+                    if ($milik == false) {
+                        $komisi_alat_pemilik += $alat->komisi;//per jam
+                        $subtotal_alat_lain += $alat->harga_alat;
+                    }
+                    else {
+                        $komisi_alat_tempat += $alat->komisi; //per jam
+                    }
                 }
             }
         }

@@ -343,6 +343,7 @@ class LapanganOlahraga extends Controller
                 }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
                 ->where("lapangan_olahraga.status_lapangan", "=", "Aktif")
                 ->get();
+                // dd($data);
         $param["lapangan"] = $data;
         
         if (Session::get("role") == "pemilik") {

@@ -89,44 +89,51 @@
                 <h5>Alat Olahraga yang Disewa</h5>
                 @if (Session::has("sewaAlat"))
                     @foreach (Session::get("sewaAlat") as $item)
-                        @php
-                            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item["alat"])->get()->first();
-                            $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item["alat"])->get()->first();
-                            $sewaSendiri = DB::table("sewa_sendiri")->where("req_id_alat","=",$item["alat"])->get()->first();
-                            $permintaan  = DB::table("request_permintaan")->where("req_id_alat","=",$item["alat"])->get()->first();
-                            $penawaran  = DB::table("request_penawaran")->where("req_id_alat","=",$item["alat"])->get()->first();
+                        @if ($item["lapangan"] == $data["id_lapangan"])
+                            @php
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item["alat"])->get()->first();
+                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item["alat"])->get()->first();
+                                $sewaSendiri = DB::table("sewa_sendiri")->where("req_id_alat","=",$item["alat"])->get()->first();
+                                $permintaan  = DB::table("request_permintaan")->where("req_id_alat","=",$item["alat"])->get()->first();
+                                $penawaran  = DB::table("request_penawaran")->where("req_id_alat","=",$item["alat"])->get()->first();
 
-                            $harga = 0;
-                            if ($permintaan != null) {
-                                $harga = $permintaan->req_harga_sewa;
-                            }
-                            else if ($penawaran != null) {
-                                $harga = $penawaran->req_harga_sewa;
-                            }
-                            else if ($sewaSendiri != null) {
-                                $harga = $dataAlat->komisi_alat;
-                            }
-                        @endphp
-                        <a href="/customer/detailAlat/{{$dataAlat->id_alat}}">
-                            <div class="card h-70 mb-3">
-                                <div class="card-body">
-                                    <div class="row">
-                                        <!-- Gambar Alat -->
-                                        <div class="col-4">
-                                            <div class="square-image-container">
-                                                <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                $harga = 0;
+                                if ($permintaan != null) {
+                                    $harga = $permintaan->req_harga_sewa;
+                                }
+                                else if ($penawaran != null) {
+                                    $harga = $penawaran->req_harga_sewa;
+                                }
+                                else if ($sewaSendiri != null) {
+                                    $harga = $dataAlat->komisi_alat;
+                                }
+                            @endphp
+                            <a href="/customer/detailAlat/{{$dataAlat->id_alat}}">
+                                <div class="card h-70 mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <!-- Gambar Alat -->
+                                            <div class="col-4">
+                                                <div class="square-image-container">
+                                                    <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                                </div>
                                             </div>
-                                        </div>
-                                        
-                                        <!-- Nama Alat -->
-                                        <div class="col-8">
-                                            <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                            <p class="card-text">Rp {{number_format($harga, 0, ',', '.')}} x {{$data["durasi"]}} Jam</p>
+                                            
+                                            <!-- Nama Alat -->
+                                            <div class="col-lg-8 col-12 d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                                    <p class="card-text">Rp {{number_format($harga, 0, ',', '.')}} x {{$data["durasi"]}} Jam</p>
+                                                </div>
+                                                <form action="/tempat/transaksi/deleteAlatDetail/{{$loop->iteration}}" method="get">
+                                                    <button type="submit" class="btn btn-danger btn-sm mt-lg-0 mt-2"><i class="bi bi-trash3"></i></button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        @endif
                     @endforeach
                 @else
                     <p>(Tidak ada alat olahraga yang disewa)</p>
