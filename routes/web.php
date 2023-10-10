@@ -708,6 +708,10 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/tolakExtend", [Transaksi::class, "tolakExtend"]);
     });
 
+    Route::prefix("/kerusakan")->group(function(){
+        Route::post("/ajukanKerusakan", [Transaksi::class, "ajukanKerusakan"]);
+    });
+
     //bagian laporan
     Route::prefix("/laporan")->group(function(){
         Route::prefix("/pendapatan")->group(function(){

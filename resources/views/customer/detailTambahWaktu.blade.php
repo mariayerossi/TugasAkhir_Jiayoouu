@@ -171,7 +171,7 @@
                         <h5 class="modal-title" id="exampleModalLabel">Agreement</h5>
                     </div>
                     <div class="modal-body">
-                        Alat olahraga yang dipergunakan melalui sistem peminjaman harus dijaga dengan baik. Apabila terdapat kerusakan yang disebabkan oleh kesengajaan pelanggan, maka denda akan dikenakan dengan cara <b>pemotongan dana dari saldo wallet pelanggan</b>. Keputusan mengenai apakah kerusakan tersebut disebabkan oleh kesengajaan atau bukan akan ditentukan oleh pihak pengelola fasilitas olahraga
+                        Alat olahraga yang dipergunakan melalui sistem peminjaman harus dijaga dengan baik. Apabila terdapat kerusakan yang disebabkan oleh kesengajaan pelanggan, maka denda akan dikenakan dengan cara <b>pembayaran tunai sebesar ganti rugi yang telah ditetapkan</b> kepada pihak tempat olahraga. Keputusan mengenai apakah kerusakan tersebut disebabkan oleh kesengajaan atau bukan akan ditentukan oleh pihak pengelola fasilitas olahraga
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="confirmBooking">Setuju</button>

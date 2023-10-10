@@ -8,7 +8,7 @@
         padding-top: 75%; /* aspek rasio 4:3 */
         background-position: center center;
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 70%; /* Mengurangi ukuran gambar */
     }
     .square-image-container {
     width: 100px;
@@ -40,9 +40,35 @@
         width: 60px;
         height: 60px;
     }
+    .image-container {
+        background-size: 100%; /* Memperbesar gambar lapangan menjadi 100% */
+    }
 }
 .bi-star-fill {
         color: gold;
+    }
+    .carousel-control-prev, .carousel-control-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background-color: rgba(0,0,0,0.5); /* Warna latar belakang tombol dengan sedikit transparansi */
+        border-radius: 50%; /* Membuat tombol berbentuk bulat */
+        border: none; /* Menghilangkan border */
+        z-index: 10; /* Menjamin tombol muncul di atas gambar */
+    }
+
+    .carousel-control-prev {
+        left: 10px; /* Posisi dari sisi kiri */
+    }
+
+    .carousel-control-next {
+        right: 10px; /* Posisi dari sisi kanan */
+    }
+
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        /* Anda bisa menambahkan style untuk ikon panah di sini, misalnya dengan mengganti gambar latar belakang */
     }
 </style>
 @if (!$lapangan->isEmpty())

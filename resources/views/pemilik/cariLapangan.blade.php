@@ -52,7 +52,7 @@
             @csrf
             <div class="input-group-prepend">
                 <select class="form-control" name="kategori">
-                    <option value="" disabled selected>Kategori</option> 
+                    <option value="" disabled selected>Kategori</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
                         <option value="{{$item->nama_kategori}}">{{$item->nama_kategori}}</option>

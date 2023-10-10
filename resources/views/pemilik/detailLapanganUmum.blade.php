@@ -8,7 +8,7 @@
         padding-top: 75%; /* aspek rasio 4:3 */
         background-position: center center;
         background-repeat: no-repeat;
-        background-size: cover;
+        background-size: 70%; /* Mengurangi ukuran gambar */
     }
     .square-image-container {
     width: 100px;
@@ -40,13 +40,40 @@
         width: 60px;
         height: 60px;
     }
+    .image-container {
+        background-size: 100%; /* Memperbesar gambar lapangan menjadi 100% */
+    }
 }
 .bi-star-fill {
         color: gold;
     }
+    .carousel-control-prev, .carousel-control-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background-color: rgba(0,0,0,0.5); /* Warna latar belakang tombol dengan sedikit transparansi */
+        border-radius: 50%; /* Membuat tombol berbentuk bulat */
+        border: none; /* Menghilangkan border */
+        z-index: 10; /* Menjamin tombol muncul di atas gambar */
+    }
+
+    .carousel-control-prev {
+        left: 10px; /* Posisi dari sisi kiri */
+    }
+
+    .carousel-control-next {
+        right: 10px; /* Posisi dari sisi kanan */
+    }
+
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        /* Anda bisa menambahkan style untuk ikon panah di sini, misalnya dengan mengganti gambar latar belakang */
+    }
 </style>
 @if (!$lapangan->isEmpty())
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
+    @include("layouts.message")
     <!-- Carousel Gambar Lapangan -->
     <div class="row mb-4">
         <div class="col-12">
@@ -116,7 +143,6 @@
     <div class="row">
         <!-- Bagian form (menggunakan 6 kolom) -->
         <div class="col-md-8">
-            @include("layouts.message")
             <form action="/pemilik/penawaran/requestPenawaranAlat" method="post" class="mt-3 mb-4" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 @csrf
                 <div class="d-flex justify-content-center">

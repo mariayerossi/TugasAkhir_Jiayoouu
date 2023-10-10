@@ -36,6 +36,7 @@
     </style>
     <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
         <h3 class="text-center mb-5">Detail Transaksi</h3>
+        @include("layouts.message")
         @php
             $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$data["id_lapangan"])->get()->first();
             $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
@@ -161,7 +162,7 @@
                         <h5 class="modal-title" id="exampleModalLabel">Agreement</h5>
                     </div>
                     <div class="modal-body">
-                        Alat olahraga yang dipergunakan melalui sistem peminjaman harus dijaga dengan baik. Apabila terdapat kerusakan yang disebabkan oleh kesengajaan pelanggan, maka denda akan dikenakan dengan cara <b>pemotongan dana dari saldo wallet pelanggan</b>. Keputusan mengenai apakah kerusakan tersebut disebabkan oleh kesengajaan atau bukan akan ditentukan oleh pihak pengelola fasilitas olahraga
+                        Alat olahraga yang dipergunakan melalui sistem peminjaman harus dijaga dengan baik. Apabila terdapat kerusakan yang disebabkan oleh kesengajaan pelanggan, maka denda akan dikenakan dengan cara <b>pembayaran tunai sebesar ganti rugi yang telah ditetapkan</b> kepada pihak tempat olahraga. Keputusan mengenai apakah kerusakan tersebut disebabkan oleh kesengajaan atau bukan akan ditentukan oleh pihak pengelola fasilitas olahraga
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="confirmBooking">Setuju</button>

@@ -42,6 +42,7 @@ class Transaksi extends Controller
     }
 
     public function tambahTransaksi(Request $request) {
+        // dd(Session::get("sewaAlat"));
         $request->validate([
             "tanggal" => "required",
             "mulai" => "required",
@@ -284,6 +285,19 @@ class Transaksi extends Controller
                 $dtrans->insertDtrans($data2);
             }
         }
+
+        //hapus session sewaAlat
+        $sewaAlat = Session::get("sewaAlat");
+
+        foreach ($sewaAlat as $key => $item) {
+            if ($item['lapangan'] == "1") {
+                // 3. Hapus item tersebut dari array
+                unset($sewaAlat[$key]);
+            }
+        }
+
+        // 4. Simpan kembali array yang telah dimodifikasi ke dalam session
+        Session::put("sewaAlat", $sewaAlat);
 
         return redirect("/customer/detailLapangan/$request->id_lapangan")->with("success","Berhasil booking lapangan olahraga!");
     }
@@ -618,6 +632,13 @@ class Transaksi extends Controller
         
         if ($request->tanggal == null || $request->mulai == null || $request->selesai == null) {
             return redirect()->back()->with("error", "Tanggal dan Jam sewa tidak boleh kosong!");
+        }
+
+        $date_mulai = new DateTime($request->mulai);
+        $date_selesai = new DateTime($request->selesai);
+        
+        if ($date_selesai <= $date_mulai) {
+            return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
         }
 
         $start_time = strtotime($request->mulai);
@@ -982,5 +1003,9 @@ class Transaksi extends Controller
         $cust->updateSaldo($dataSaldo);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
+    }
+
+    public function ajukanKerusakan(Request $request) {
+
     }
 }
