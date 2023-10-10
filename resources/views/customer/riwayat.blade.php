@@ -267,27 +267,41 @@
         
         $(".btn-danger").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
+
+            swal({
+                title: "Apakah anda yakin?",
+                text: "Pembatalan booking akan dikenakan denda sebesar 10% dari total transaksi.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Lanjutkan",
+                cancelButtonText: "Batalkan",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    var formData = $("#batalTransaksiForm").serialize(); // Mengambil data dari form
     
-            var formData = $("#batalTransaksiForm").serialize(); // Mengambil data dari form
-    
-            $.ajax({
-                url: "/customer/transaksi/batalBooking",
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    if (response.success) {
-                        swal("Success!", response.message, "success");
-                    }
-                    else {
-                        swal("Error!", response.message, "error");
-                    }
-                    window.location.reload();
-                    // alert('Berhasil Diterima!');
-                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
-                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                    $.ajax({
+                        url: "/customer/transaksi/batalBooking",
+                        type: "POST",
+                        data: formData,
+                        success: function(response) {
+                            if (response.success) {
+                                swal("Success!", response.message, "success");
+                            }
+                            else {
+                                swal("Error!", response.message, "error");
+                            }
+                            window.location.reload();
+                            // alert('Berhasil Diterima!');
+                            // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                            // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                        }
+                    });
                 }
             });
         });

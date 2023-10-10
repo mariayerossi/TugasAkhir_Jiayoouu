@@ -8,6 +8,7 @@ use App\Models\extendDtrans;
 use App\Models\extendHtrans;
 use App\Models\htrans;
 use App\Models\kategori;
+use App\Models\pihakTempat;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -756,7 +757,7 @@ class Transaksi extends Controller
 
         //cek apakah tanggal sewa dan jam sewa sdh lewat atau belom
         $trans = DB::table('htrans')
-                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans")
+                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans", "htrans.fk_id_tempat")
                 ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
                 ->joinSub(function($query) {
                     $query->select("fk_id_lapangan", "nama_file_lapangan")
@@ -776,16 +777,14 @@ class Transaksi extends Controller
             }
         }
 
-        $data = [
-            "id" => $request->id_htrans,
-            "status" => "Dibatalkan"
-        ];
-        $trans = new htrans();
-        $trans->updateStatus($data);
-
         //pengembalian dana
         $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
-        $saldo += $trans->total_trans;
+
+        //pemotongan denda 10%
+        $denda = 0.10;
+        $total_denda = $trans->total_trans * $denda;
+
+        $saldo += $trans->total_trans - $total_denda;
 
         //enkripsi kembali saldo
         $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
@@ -803,6 +802,27 @@ class Transaksi extends Controller
         $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
         Session::forget("dataRole");
         Session::put("dataRole", $isiUser->first());
+
+        //total_denda masuk ke saldo pihak tempat
+        $saldoTempatAwal = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->saldo_tempat;
+        $saldoTempat = (int)$this->decodePrice($saldoTempatAwal, "mysecretkey");
+
+        $saldoTempat += $total_denda;
+        $saldoAkhir = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+
+        $dataSaldoTempat = [
+            "id" => $trans->fk_id_tempat,
+            "saldo" => $saldoAkhir
+        ];
+        $temp = new pihakTempat();
+        $temp->updateSaldo($dataSaldoTempat);
+
+        $data = [
+            "id" => $request->id_htrans,
+            "status" => "Dibatalkan"
+        ];
+        $trans = new htrans();
+        $trans->updateStatus($data);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Dibatalkan!']);
     }

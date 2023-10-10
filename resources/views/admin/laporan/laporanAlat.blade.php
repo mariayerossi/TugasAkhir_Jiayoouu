@@ -51,12 +51,13 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Foto</th>
+                {{-- <th>Foto</th> --}}
                 <th>Nama</th>
                 <th>Harga Sewa</th>
                 <th>Status</th>
                 <th>Disewakan</th>
-                <th>Total</th>
+                <th>Pendapatan Website</th>
+                <th>Detail</th>
             </tr>
         </thead>
         <tbody>
@@ -64,11 +65,11 @@
                 @foreach ($alat as $item)
                     <tr>
                         <td>{{$loop->iteration}}</td>
-                        <td>
+                        {{-- <td>
                             <div class="square-image-container">
                                 <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
                             </div>
-                        </td>
+                        </td> --}}
                         <td>{{$item->nama_alat}}</td>
                         <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
                         @if ($item->status_alat == "Aktif")
@@ -78,6 +79,7 @@
                         @endif
                         <td>{{$item->total_sewa}} Kali</td>
                         <td>Rp {{ number_format($item->total_pendapatan + $item->pendapatan_ext, 0, ',', '.') }}</td>
+                        <td><a href="/admin/alat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                     </tr>
                 @endforeach
             @else

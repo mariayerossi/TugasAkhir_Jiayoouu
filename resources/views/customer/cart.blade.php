@@ -118,7 +118,7 @@
         </a>
         @endforeach
     @else
-        <h5>Keranjang Kosong</h5>
+        <h5>Daftar Favorit Kosong</h5>
     @endif
 </div>
 <script>

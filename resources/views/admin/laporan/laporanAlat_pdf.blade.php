@@ -26,7 +26,7 @@
                 <th>Harga Sewa</th>
                 <th>Status</th>
                 <th>Disewakan</th>
-                <th>Total</th>
+                <th>Pendapatan Website</th>
 			</tr>
 		</thead>
 		<tbody>

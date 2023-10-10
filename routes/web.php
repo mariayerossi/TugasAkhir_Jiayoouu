@@ -710,6 +710,11 @@ Route::prefix("/tempat")->group(function(){
     });
 
     Route::prefix("/kerusakan")->group(function(){
+        Route::get("/detailKerusakan/{id}", function ($id) {
+            $dtrans = new ModelsDtrans();
+            $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
+            return view("tempat.transaksi.detailKerusakan")->with($param);
+        })->middleware([CekTempat::class]);
         Route::post("/ajukanKerusakan", [KerusakanAlat::class, "ajukanKerusakan"]);
     });
 

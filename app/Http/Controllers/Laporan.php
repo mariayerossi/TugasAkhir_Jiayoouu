@@ -30,6 +30,8 @@ class Laporan extends Controller
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->get();
         // dd($coba);
 
@@ -95,6 +97,8 @@ class Laporan extends Controller
             ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
             ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
             ->where("dtrans.fk_id_pemilik","=",$role)
+            ->where("htrans.status_trans","!=","Dibatalkan")
+            ->where("htrans.status_trans","!=","Ditolak")
             ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
             ->get();
         
@@ -128,6 +132,8 @@ class Laporan extends Controller
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->get();
  
     	$pdf = PDF::loadview('pemilik.laporan.laporanPendapatan_pdf',['data'=>$data, 'tanggal_mulai'=>null, 'tanggal_selesai'=>null]);
@@ -145,6 +151,8 @@ class Laporan extends Controller
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->whereBetween('htrans.tanggal_trans', [$request->mulai, $request->selesai])
                 ->get();
         // dd($request->mulai);
@@ -161,7 +169,10 @@ class Laporan extends Controller
         $allData = DB::table('alat_olahraga')
                     ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'),"alat_olahraga.kategori_alat","alat_olahraga.status_alat")
                     ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
+                    ->leftJoin("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
                     ->where("alat_olahraga.fk_id_pemilik","=",$role)
+                    ->where("htrans.status_trans","!=","Dibatalkan")
+                    ->where("htrans.status_trans","!=","Ditolak")
                     ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "alat_olahraga.kategori_alat", "alat_olahraga.status_alat")
                     ->get();
 
@@ -174,16 +185,14 @@ class Laporan extends Controller
     public function stokPemilikCetakPDF(){
     	$role = Session::get("dataRole")->id_pemilik;
         $data = DB::table('alat_olahraga')
-                    ->select("files_alat.nama_file_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'),"alat_olahraga.kategori_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat","alat_olahraga.created_at")
-                    ->joinSub(function($query) {
-                        $query->select("fk_id_alat", "nama_file_alat")
-                            ->from('files_alat')
-                            ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
-                    }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
-                    ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
-                    ->where("alat_olahraga.fk_id_pemilik","=",$role)
-                    ->groupBy("alat_olahraga.nama_alat", "alat_olahraga.kategori_alat", "alat_olahraga.komisi_alat","alat_olahraga.status_alat","alat_olahraga.created_at")
-                    ->get();
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'),"alat_olahraga.kategori_alat","alat_olahraga.status_alat")
+                ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
+                ->leftJoin("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                ->where("alat_olahraga.fk_id_pemilik","=",$role)
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
+                ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "alat_olahraga.kategori_alat", "alat_olahraga.status_alat")
+                ->get();
  
     	$pdf = PDF::loadview('pemilik.laporan.laporanStok_pdf',['data'=>$data]);
     	// return $pdf->download('laporan-pendapatan-pdf');
@@ -215,6 +224,8 @@ class Laporan extends Controller
                     ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                     ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                     ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                    ->where("htrans.status_trans","!=","Dibatalkan")
+                    ->where("htrans.status_trans","!=","Ditolak")
                     ->where("alat_olahraga.fk_id_pemilik","=",$role)
                     ->groupBy(
                         "alat_olahraga.id_alat",
@@ -295,6 +306,8 @@ class Laporan extends Controller
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->where("alat_olahraga.fk_id_pemilik","=",$role)
                 ->groupBy(
                     "alat_olahraga.id_alat",
@@ -316,6 +329,8 @@ class Laporan extends Controller
             ->join('htrans', 'pihak_tempat.id_tempat', '=', 'htrans.fk_id_tempat')
             ->join('dtrans', 'htrans.id_htrans', '=', 'dtrans.fk_id_htrans')
             ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+            ->where("htrans.status_trans","!=","Dibatalkan")
+            ->where("htrans.status_trans","!=","Ditolak")
             ->where('dtrans.fk_id_pemilik', '=', $role)
             ->groupBy('pihak_tempat.id_tempat', 'pihak_tempat.nama_tempat')  // tambahkan 'pihak_tempat.nama_tempat' ke GROUP BY
             ->get();
@@ -332,6 +347,8 @@ class Laporan extends Controller
             ->join('htrans', 'pihak_tempat.id_tempat', '=', 'htrans.fk_id_tempat')
             ->join('dtrans', 'htrans.id_htrans', '=', 'dtrans.fk_id_htrans')
             ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+            ->where("htrans.status_trans","!=","Dibatalkan")
+            ->where("htrans.status_trans","!=","Ditolak")
             ->where('dtrans.fk_id_pemilik', '=', $role)
             ->groupBy('pihak_tempat.id_tempat', 'pihak_tempat.nama_tempat')  // tambahkan 'pihak_tempat.nama_tempat' ke GROUP BY
             ->get();
@@ -367,6 +384,8 @@ class Laporan extends Controller
             ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
             ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
             ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+            ->where("htrans.status_trans","!=","Dibatalkan")
+            ->where("htrans.status_trans","!=","Ditolak")
             ->where("htrans.fk_id_tempat", "=", $role)
             ->groupBy(
                 'htrans.id_htrans',
@@ -457,6 +476,8 @@ class Laporan extends Controller
                     ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                     ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
                     ->where("htrans.fk_id_tempat", "=", $role)
+                    ->where("htrans.status_trans","!=","Dibatalkan")
+                    ->where("htrans.status_trans","!=","Ditolak")
                     ->groupBy(
                         'htrans.id_htrans',
                         'htrans.kode_trans',
@@ -513,6 +534,8 @@ class Laporan extends Controller
                 ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->where("htrans.fk_id_tempat", "=", $role)
                 ->groupBy(
                     'htrans.id_htrans',
@@ -555,6 +578,8 @@ class Laporan extends Controller
             ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
             ->whereBetween('htrans.tanggal_trans', [$request->mulai, $request->selesai])
             ->where("htrans.fk_id_tempat", "=", $role)
+            ->where("htrans.status_trans","!=","Dibatalkan")
+            ->where("htrans.status_trans","!=","Ditolak")
             ->groupBy(
                 'htrans.id_htrans',
                 'htrans.kode_trans',
@@ -653,6 +678,8 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->where("htrans.fk_id_tempat", "=", $role)
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->groupBy(
                     "alat_olahraga.id_alat",
                     "alat_olahraga.nama_alat",
@@ -714,6 +741,8 @@ class Laporan extends Controller
                 ->leftJoin("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                 ->where("htrans.fk_id_tempat", "=", $role)
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->groupBy(
                     "alat_olahraga.id_alat",
                     "alat_olahraga.nama_alat",
@@ -747,6 +776,8 @@ class Laporan extends Controller
                     )
                     ->leftJoin("htrans", "lapangan_olahraga.id_lapangan", "=", "htrans.fk_id_lapangan")
                     ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                    ->where("htrans.status_trans","!=","Dibatalkan")
+                    ->where("htrans.status_trans","!=","Ditolak")
                     ->where("lapangan_olahraga.pemilik_lapangan", "=", $role)
                     ->groupBy(
                         "lapangan_olahraga.id_lapangan",
@@ -805,6 +836,8 @@ class Laporan extends Controller
                 )
                 ->leftJoin("htrans", "lapangan_olahraga.id_lapangan", "=", "htrans.fk_id_lapangan")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->where("lapangan_olahraga.pemilik_lapangan", "=", $role)
                 ->groupBy(
                     "lapangan_olahraga.id_lapangan",
@@ -837,6 +870,8 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->groupBy(
                     "htrans.kode_trans",
                     "htrans.pendapatan_website_lapangan",
@@ -907,6 +942,8 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
                 ->groupBy(
                     "htrans.kode_trans",
@@ -960,6 +997,8 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->groupBy(
                     "htrans.kode_trans",
                     "htrans.pendapatan_website_lapangan",
@@ -990,6 +1029,8 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->whereBetween('htrans.tanggal_trans', [$request->mulai, $request->selesai])
                 ->groupBy(
                     "htrans.kode_trans",
@@ -1011,23 +1052,19 @@ class Laporan extends Controller
         $coba = DB::table('alat_olahraga')
                 ->select(
                     "alat_olahraga.id_alat",
-                    "files_alat.nama_file_alat",
                     "alat_olahraga.nama_alat",
                     DB::raw('COUNT(htrans.id_htrans) as total_sewa'),
                     "dtrans.harga_sewa_alat",
                     "alat_olahraga.status_alat",
-                    DB::raw('SUM(dtrans.subtotal_alat) as total_pendapatan'),
-                    DB::raw('SUM(extend_dtrans.subtotal_alat) as pendapatan_ext'),
+                    DB::raw('SUM(dtrans.pendapatan_website_alat) as total_pendapatan'),
+                    DB::raw('SUM(extend_dtrans.pendapatan_website_alat) as pendapatan_ext'),
                 )
                 ->leftJoin("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
                 ->leftJoin("htrans", "dtrans.fk_id_htrans", "=", "htrans.id_htrans")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
-                ->joinSub(function($query) {
-                    $query->select("fk_id_alat", "nama_file_alat")
-                        ->from('files_alat')
-                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
-                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->groupBy(
                     "alat_olahraga.id_alat",
                     "alat_olahraga.nama_alat",
@@ -1072,23 +1109,19 @@ class Laporan extends Controller
         $data = DB::table('alat_olahraga')
                 ->select(
                     "alat_olahraga.id_alat",
-                    "files_alat.nama_file_alat",
                     "alat_olahraga.nama_alat",
                     DB::raw('COUNT(htrans.id_htrans) as total_sewa'),
                     "dtrans.harga_sewa_alat",
                     "alat_olahraga.status_alat",
-                    DB::raw('SUM(dtrans.subtotal_alat) as total_pendapatan'),
-                    DB::raw('SUM(extend_dtrans.subtotal_alat) as pendapatan_ext'),
+                    DB::raw('SUM(dtrans.pendapatan_website_alat) as total_pendapatan'),
+                    DB::raw('SUM(extend_dtrans.pendapatan_website_alat) as pendapatan_ext'),
                 )
                 ->leftJoin("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
                 ->leftJoin("htrans", "dtrans.fk_id_htrans", "=", "htrans.id_htrans")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
-                ->joinSub(function($query) {
-                    $query->select("fk_id_alat", "nama_file_alat")
-                        ->from('files_alat')
-                        ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
-                }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->groupBy(
                     "alat_olahraga.id_alat",
                     "alat_olahraga.nama_alat",
@@ -1107,17 +1140,19 @@ class Laporan extends Controller
                     "pihak_tempat.id_tempat",
                     "pihak_tempat.nama_tempat",
                     DB::raw('COUNT(DISTINCT htrans.id_htrans) as jumlah_trans'),
-                    DB::raw('SUM(DISTINCT htrans.subtotal_lapangan) as total_lapangan'),
-                    DB::raw('SUM(DISTINCT dtrans.total_komisi_tempat) as total_alat'),
+                    DB::raw('SUM(DISTINCT htrans.pendapatan_website_lapangan) as total_lapangan'),
+                    // DB::raw('SUM(DISTINCT dtrans.total_komisi_tempat) as total_alat'),
                     DB::raw('COUNT(DISTINCT lapangan_olahraga.id_lapangan) as jumlah_lapangan'),
-                    DB::raw('SUM(DISTINCT extend_htrans.subtotal_lapangan) as lapangan_ext'),
-                    DB::raw('SUM(DISTINCT extend_dtrans.total_komisi_tempat) as alat_ext'),
+                    DB::raw('SUM(DISTINCT extend_htrans.pendapatan_website_lapangan) as lapangan_ext'),
+                    // DB::raw('SUM(DISTINCT extend_dtrans.total_komisi_tempat) as alat_ext'),
                 )
                 ->leftJoin("lapangan_olahraga","pihak_tempat.id_tempat","=","lapangan_olahraga.pemilik_lapangan")
                 ->leftJoin("htrans", "pihak_tempat.id_tempat", "=", "htrans.fk_id_tempat")
                 ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->groupBy(
                     "pihak_tempat.id_tempat",
                     "pihak_tempat.nama_tempat"
@@ -1163,17 +1198,19 @@ class Laporan extends Controller
                     "pihak_tempat.id_tempat",
                     "pihak_tempat.nama_tempat",
                     DB::raw('COUNT(DISTINCT htrans.id_htrans) as jumlah_trans'),
-                    DB::raw('SUM(DISTINCT htrans.subtotal_lapangan) as total_lapangan'),
-                    DB::raw('SUM(DISTINCT dtrans.total_komisi_tempat) as total_alat'),
+                    DB::raw('SUM(DISTINCT htrans.pendapatan_website_lapangan) as total_lapangan'),
+                    // DB::raw('SUM(DISTINCT dtrans.total_komisi_tempat) as total_alat'),
                     DB::raw('COUNT(DISTINCT lapangan_olahraga.id_lapangan) as jumlah_lapangan'),
-                    DB::raw('SUM(DISTINCT extend_htrans.subtotal_lapangan) as lapangan_ext'),
-                    DB::raw('SUM(DISTINCT extend_dtrans.total_komisi_tempat) as alat_ext'),
+                    DB::raw('SUM(DISTINCT extend_htrans.pendapatan_website_lapangan) as lapangan_ext'),
+                    // DB::raw('SUM(DISTINCT extend_dtrans.total_komisi_tempat) as alat_ext'),
                 )
                 ->leftJoin("lapangan_olahraga","pihak_tempat.id_tempat","=","lapangan_olahraga.pemilik_lapangan")
                 ->leftJoin("htrans", "pihak_tempat.id_tempat", "=", "htrans.fk_id_tempat")
                 ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
                 ->groupBy(
                     "pihak_tempat.id_tempat",
                     "pihak_tempat.nama_tempat"

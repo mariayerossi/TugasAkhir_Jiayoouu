@@ -18,7 +18,7 @@ class kerusakanAlat extends Model
     public function insertKerusakanAlat($data)
     {
         $ker = new kerusakanAlat();
-        $ker->fk_id_dtrans = $data["id_htrans"];
+        $ker->fk_id_dtrans = $data["id_dtrans"];
         $ker->kesengajaan = $data["sengaja"];
         $ker->save();
 

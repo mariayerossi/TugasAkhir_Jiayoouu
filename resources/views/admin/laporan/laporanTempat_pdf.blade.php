@@ -24,7 +24,7 @@
                 <th>Nama</th>
                 <th>Jumlah Lapangan</th>
                 <th>Total Transaksi</th>
-                <th>Total Pendapatan</th>
+                <th>Pendapatan Website</th>
             </tr>
 		</thead>
 		<tbody>
@@ -35,7 +35,7 @@
 						<td>{{$item->nama_tempat}}</td>
 						<td>{{$item->jumlah_lapangan}}</td>
 						<td>{{$item->jumlah_trans}}</td>
-						<td>Rp {{ number_format(($item->total_lapangan + $item->total_alat) + ($item->lapangan_ext + $item->alat_ext), 0, ',', '.') }}</td>
+						<td>Rp {{ number_format($item->total_lapangan + $item->lapangan_ext, 0, ',', '.') }}</td>
 					</tr>
 				@endforeach
 			@else
