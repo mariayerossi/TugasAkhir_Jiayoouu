@@ -9,6 +9,7 @@ use App\Models\requestPermintaan;
 use App\Models\sewaSendiri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class KerusakanAlat extends Controller
 {
@@ -111,6 +112,46 @@ class KerusakanAlat extends Controller
         }
         else {
             return redirect()->back()->with("error", "Gagal mengajukan kerusakan alat olahraga!");
+        }
+    }
+
+    public function daftarKerusakan() {
+        if (Session::get("role") == "tempat") {
+            $data = DB::table('kerusakan_alat')
+                    ->select("files_alat.nama_file_alat","alat_olahraga.nama_alat","alat_olahraga.ganti_rugi_alat","kerusakan_alat.kesengajaan","pemilik_alat.nama_pemilik","htrans.kode_trans")
+                    ->join("dtrans","kerusakan_alat.fk_id_dtrans","=","dtrans.id_dtrans")
+                    ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                    ->join("pemilik_alat","dtrans.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+                    ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_alat", "nama_file_alat")
+                            ->from('files_alat')
+                            ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                    }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                    ->where("htrans.fk_id_tempat","=",Session::get("dataRole")->id_tempat)
+                    ->orderBy("kerusakan_alat.id_kerusakan","DESC")
+                    ->get();
+            // dd($data);
+            $param["rusak"] = $data;
+            return view("tempat.daftarKerusakan")->with($param);
+        }
+        else if (Session::get("role") == "admin") {
+            $data = DB::table('kerusakan_alat')
+                    ->select("files_alat.nama_file_alat","alat_olahraga.nama_alat","alat_olahraga.ganti_rugi_alat","kerusakan_alat.kesengajaan","pemilik_alat.nama_pemilik","htrans.kode_trans", "htrans.id_htrans")
+                    ->join("dtrans","kerusakan_alat.fk_id_dtrans","=","dtrans.id_dtrans")
+                    ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                    ->join("pemilik_alat","dtrans.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+                    ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_alat", "nama_file_alat")
+                            ->from('files_alat')
+                            ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
+                    }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                    ->orderBy("kerusakan_alat.id_kerusakan","DESC")
+                    ->get();
+            // dd($data);
+            $param["rusak"] = $data;
+            return view("admin.produk.daftarKerusakan")->with($param);
         }
     }
 }

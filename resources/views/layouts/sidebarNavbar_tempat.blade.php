@@ -175,6 +175,7 @@ Sportiva
             </div>
         </div>
         <a href="/tempat/transaksi/daftarTransaksi"><i class="bi bi-journal-text me-3"></i></i>Transaksi</a>
+        <a href="/tempat/kerusakan/daftarKerusakan"><i class="bi bi-heartbreak me-3"></i>Daftar Alat yang Rusak</a>
         <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-clipboard-data me-3"></i>Laporan <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">

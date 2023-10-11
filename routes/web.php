@@ -188,6 +188,7 @@ Route::prefix("/admin")->group(function(){
             $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
             return view("admin.transaksi.detailTransaksi")->with($param);
         })->middleware([CekAdmin::class]);
+        Route::get("/daftarKerusakan", [KerusakanAlat::class, "daftarKerusakan"]);
     });
 
     Route::prefix("/komplain")->group(function(){
@@ -716,6 +717,7 @@ Route::prefix("/tempat")->group(function(){
             return view("tempat.transaksi.detailKerusakan")->with($param);
         })->middleware([CekTempat::class]);
         Route::post("/ajukanKerusakan", [KerusakanAlat::class, "ajukanKerusakan"]);
+        Route::get("/daftarKerusakan", [KerusakanAlat::class, "daftarKerusakan"]);
     });
 
     //bagian laporan

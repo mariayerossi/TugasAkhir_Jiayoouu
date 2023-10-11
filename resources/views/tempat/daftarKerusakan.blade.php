@@ -1,7 +1,6 @@
-@extends('layouts.sidebar_admin')
-
-<!-- DataTables -->
+@extends('layouts.sidebarNavbar_tempat')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+
 @section('content')
 <style>
     .square-image-container {
@@ -18,48 +17,47 @@
     width: 100%;
     height: 100%;
 }
+
 </style>
 <div class="container mt-5">
-    <div class="row mb-3">
-        <div class="col-12">
-            <h3 class="text-center mb-5">Daftar Transaksi</h3>
-        </div>
-    </div>
+    <h3 class="text-center mb-5">Daftar Alat Olahraga yang Rusak</h3>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Kode</th>
+                <th>Kode Transaksi</th>
                 <th>Foto</th>
                 <th>Nama</th>
-                <th>Total</th>
-                <th>Penyewa</th>
-                <th>Aksi</th>
+                <th>Ganti Rugi</th>
+                <th>Unsur Kesengajaan</th>
+                <th>Pemilik Alat</th>
             </tr>
         </thead>
         <tbody>
-            @if (!$trans->isEmpty())
-                @foreach ($trans as $item)
+            @if (!$rusak->isEmpty())
+                @foreach ($rusak as $item)
                     {{-- @php
-                        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$item->fk_id_lapangan)->get()->first();
-                        $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
-                        $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
+                        $dataFiles = $files->get_all_data($item->id_alat)->first();
                     @endphp --}}
                     <tr>
                         <td>{{$item->kode_trans}}</td>
                         <td>
                             <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="">
+                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
                             </div>
                         </td>
-                        <td>{{$item->nama_lapangan}}</td>
-                        <td>Rp {{ number_format($item->total_trans + $item->total, 0, ',', '.') }}</td>
-                        <td>{{$item->nama_user}}</td>
-                        <td><a class="btn btn-outline-success" href="/admin/transaksi/detailTransaksi/{{$item->id_htrans}}">Lihat Detail</a></td>
+                        <td>{{$item->nama_alat}}</td>
+                        <td>Rp {{ number_format($item->ganti_rugi_alat, 0, ',', '.') }}</td>
+                        @if ($item->kesengajaan == "Ya")
+                            <td style="color: red">{{$item->kesengajaan}}, Disengaja</td>
+                        @else
+                            <td style="color:green">{{$item->status_alat}}</td>
+                        @endif
+                        <td>{{$item->nama_pemilik}}</td>
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="4" class="text-center">Tidak Ada Data</td>
+                    <td colspan="6" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
         </tbody>

@@ -16,14 +16,23 @@
     <form action="/tempat/kerusakan/ajukanKerusakan" method="post" enctype="multipart/form-data">
         @csrf
         <div class="d-flex justify-content-center">
-            <h3 class="text-center mb-5">Ajukan Kerusakan Alat</h3>
+            <h3 class="text-center mb-3">Ajukan Kerusakan Alat</h3>
+        </div>
+        <div style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-3 mb-5">
+            <i class="bi bi-exclamation-circle"></i> Penentuan kerusakan alat olahraga karena unsur kesengajaan berada pada tanggung jawab Anda.<br>
+            <ul>
+                <li> Jika terdapat kesengajaan, pelanggan wajib memberikan ganti rugi sesuai nominal yang ditentukan oleh pemilik alat.</li>
+                <li> Namun, tanpa unsur kesengajaan, ganti rugi tidak dikenakan.</li>
+                <li> Ganti rugi diserahkan saat pemilik alat mengambil alat.</li>
+            </ul>
         </div>
         @foreach ($dtrans as $index => $item)
         <div class="form-template card-form p-5">
             @php
                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
             @endphp
-            <h5 class="text-center mb-5">{{$dataAlat->nama_alat}}</h5>
+            <h5 class="text-center mb-1">{{$dataAlat->nama_alat}}</h5>
+            <h6 class="text-center mb-5">Ganti Rugi: Rp {{number_format($dataAlat->ganti_rugi_alat, 0, ',', '.')}}</h6>
             <div class="row mb-3">
                 <div class="col-md-4 col-12 mt-2">
                     <h6>Apakah terdapat unsur kesengajaan dalam kerusakan alat olahraga?</h6>
