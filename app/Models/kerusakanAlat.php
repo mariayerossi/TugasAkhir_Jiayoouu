@@ -19,9 +19,8 @@ class kerusakanAlat extends Model
     {
         $ker = new kerusakanAlat();
         $ker->fk_id_dtrans = $data["id_dtrans"];
-        $ker->kesengajaan = $data["sengaja"];
+        $ker->kesengajaan = $data["unsur"];
+        $ker->nama_file = $data["foto"];
         $ker->save();
-
-        return $ker->id_kerusakan;
     }
 }

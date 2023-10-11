@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integerIncrements("id_kerusakan");
             $table->unsignedInteger("fk_id_dtrans");
             $table->string("kesengajaan");//ya / tidak
+            $table->string("nama_file");
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fk_id_dtrans')
