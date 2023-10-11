@@ -6,6 +6,7 @@ use App\Models\alatOlahraga;
 use App\Models\requestPermintaan as ModelsRequestPermintaan;
 use DateInterval;
 use DateTime;
+use App\Models\notifikasiEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -40,19 +41,37 @@ class RequestPermintaan extends Controller
             return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
         }
         else {
-            $data = [
-                "harga" => $harga,
-                "lapangan" => $array[0],
-                "mulai" => $request->tgl_mulai,
-                "selesai" => $request->tgl_selesai,
-                "id_alat" => $request->id_alat,
-                "id_tempat" => $request->id_tempat,
-                "id_pemilik" => $request->id_pemilik,
-                "tgl_minta" => $tgl_minta,
-                "status" => "Menunggu"
+            // $data = [
+            //     "harga" => $harga,
+            //     "lapangan" => $array[0],
+            //     "mulai" => $request->tgl_mulai,
+            //     "selesai" => $request->tgl_selesai,
+            //     "id_alat" => $request->id_alat,
+            //     "id_tempat" => $request->id_tempat,
+            //     "id_pemilik" => $request->id_pemilik,
+            //     "tgl_minta" => $tgl_minta,
+            //     "status" => "Menunggu"
+            // ];
+            // $per = new ModelsRequestPermintaan();
+            // $per->insertPermintaan($data);
+
+            //notif email
+            $email_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->email_pemilik;
+            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->nama_pemilik;
+            $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->nama_alat;
+            $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->komisi_alat;
+
+            $dataNotif = [
+                "subject" => "Permintaan Alat Olahraga Baru",
+                "judul" => "Permintaan Alat Olahraga Baru",
+                "nama_user" => $nama_pemilik,
+                "isi" => "Anda memiliki satu permintaan alat olahraga baru:<br><br>
+                        <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
+                        <b>Komisi Pemilik Alat : Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
+                        Silahkan Konfirmasi Permintaan!"
             ];
-            $per = new ModelsRequestPermintaan();
-            $per->insertPermintaan($data);
+            $e = new notifikasiEmail();
+            $e->sendEmail($email_pemilik,$dataNotif);
     
             return redirect()->back()->with("success", "Berhasil Mengirim Request!");
         }
@@ -105,6 +124,7 @@ class RequestPermintaan extends Controller
         $req = new ModelsRequestPermintaan();
         $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
         $id_alat = $req->get_all_data_by_id($request->id_permintaan)->first()->req_id_alat;
+        $id_tempat = $req->get_all_data_by_id($request->id_permintaan)->first()->fk_id_tempat;
 
         $alat = new alatOlahraga();
         $dataAlat = $alat->get_all_data_by_id($id_alat)->first();
@@ -124,6 +144,24 @@ class RequestPermintaan extends Controller
                 ];
                 $alat = new alatOlahraga();
                 $alat->updateStatus($data3);
+
+                $email_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->email_tempat;
+                $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+                $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$id_alat)->get()->first()->nama_alat;
+                $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$id_alat)->get()->first()->komisi_alat;
+
+                //notif email ke pihak tempat
+                $dataNotif = [
+                    "subject" => "Permintaan Alat Olahraga Diterima",
+                    "judul" => "Permintaan Alat Olahraga Diterima",
+                    "nama_user" => $nama_tempat,
+                    "isi" => "Yeay! Anda memiliki satu permintaan alat olahraga yang telah diterima:<br><br>
+                            <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
+                            <b>Komisi Pemilik Alat : Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
+                            Tunggu alat olahraga diantar oleh pemilik alat olahraga ya!"
+                ];
+                $e = new notifikasiEmail();
+                $e->sendEmail($email_tempat,$dataNotif);
         
                 return redirect("/pemilik/permintaan/daftarPermintaan");
             }
@@ -141,12 +179,33 @@ class RequestPermintaan extends Controller
         $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
 
         if ($status == "Menunggu") {
-            $data = [
-                "id" => $request->id_permintaan,
-                "status" => "Ditolak"
+            // $data = [
+            //     "id" => $request->id_permintaan,
+            //     "status" => "Ditolak"
+            // ];
+            // $per = new ModelsRequestPermintaan();
+            // $per->updateStatus($data);
+
+            $req = new ModelsRequestPermintaan();
+            $id_tempat = $req->get_all_data_by_id($request->id_permintaan)->first()->fk_id_tempat;
+            $id_alat = $req->get_all_data_by_id($request->id_permintaan)->first()->req_id_alat;
+            $email_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->email_tempat;
+            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+            $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$id_alat)->get()->first()->nama_alat;
+            $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$id_alat)->get()->first()->komisi_alat;
+
+            //notif email ke pihak tempat
+            $dataNotif = [
+                "subject" => "Permintaan Alat Olahraga Diterima",
+                "judul" => "Permintaan Alat Olahraga Diterima",
+                "nama_user" => $nama_tempat,
+                "isi" => "Sayang sekali! Anda memiliki satu permintaan alat olahraga yang ditolak:<br><br>
+                        <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
+                        <b>Komisi Pemilik Alat : Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
+                        Pilih dan ajukan permintaan alat olahraga lain. Teruslah bersemangat dan inovatif dalam memilih produk terbaik untuk Anda!"
             ];
-            $per = new ModelsRequestPermintaan();
-            $per->updateStatus($data);
+            $e = new notifikasiEmail();
+            $e->sendEmail($email_tempat, $dataNotif);
     
             return redirect("/pemilik/permintaan/daftarPermintaan");
         }

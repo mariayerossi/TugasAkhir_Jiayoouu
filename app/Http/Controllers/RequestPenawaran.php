@@ -46,10 +46,10 @@ class RequestPenawaran extends Controller
             "subject" => "Penawaran Alat Olahraga Baru",
             "judul" => "Penawaran Alat Olahraga Baru",
             "nama_user" => $nama_tempat,
-            "isi" => "Anda memiliki 1 penawaran alat olahraga baru:<br><br>
+            "isi" => "Anda memiliki satu penawaran alat olahraga baru:<br><br>
                     <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
                     <b>Komisi Pemilik Alat : Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
-                    Silahkan konfirmasi penawaran!"
+                    Silahkan Konfirmasi Penawaran!"
         ];
         $e = new notifikasiEmail();
         $e->sendEmail($email_tempat,$dataNotif);
@@ -110,7 +110,7 @@ class RequestPenawaran extends Controller
                                 "subject" => "Penawaran Alat Olahraga Anda Telah Diterima",
                                 "judul" => "Penawaran Alat Olahraga Anda Telah Diterima",
                                 "nama_user" => $pemilik->nama_pemilik,
-                                "isi" => "Anda memiliki 1 penawaran alat olahraga yang telah diterima:<br><br>
+                                "isi" => "Yeay! Anda memiliki satu penawaran alat olahraga yang telah diterima:<br><br>
                                         <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
                                         <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
                                         Silahkan konfirmasi detail penawaran!"
@@ -157,7 +157,7 @@ class RequestPenawaran extends Controller
                 "subject" => "Penawaran Alat Olahraga Anda Telah Ditolak",
                 "judul" => "Penawaran Alat Olahraga Anda Telah Ditolak",
                 "nama_user" => $pemilik->nama_pemilik,
-                "isi" => "Anda memiliki 1 penawaran alat olahraga yang telah ditolak:<br><br>
+                "isi" => "Sayang sekali! Anda memiliki satu penawaran alat olahraga yang ditolak:<br><br>
                         <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
                         Tawarkan alat olahragamu di tempat lain. Tetap semangat dan terus berinovasi dalam menawarkan produkmu!"
