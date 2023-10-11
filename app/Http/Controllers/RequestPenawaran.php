@@ -388,7 +388,7 @@ class RequestPenawaran extends Controller
                         Cari dan temukan alat olahraga lain untuk disewakan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail("maria.yerossi@gmail.com",$dataNotif);
+            $e->sendEmail($tempat->email_tempat,$dataNotif);
 
             //notif pemilik
             $dataNotif2 = [
@@ -401,7 +401,7 @@ class RequestPenawaran extends Controller
                         Sewakan lagi alat olahragamu di Sportiva dan kumpulkan keuntungannya!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail("maria.yerossi@gmail.com",$dataNotif2);
+            $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
 
             return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
         }

@@ -222,7 +222,7 @@ class DatabaseSeeder extends Seeder
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
             'tanggal_minta' => date("Y-m-d H:i:s"),
-            'status_permintaan' => "Menunggu",
+            'status_permintaan' => "Diterima",
             'kode_mulai' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);

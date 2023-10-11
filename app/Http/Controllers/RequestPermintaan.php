@@ -252,12 +252,12 @@ class RequestPermintaan extends Controller
         ]);
 
         if ($request->isi == $request->kode) {
-            $data = [
-                "id" => $request->id,
-                "status" => "Disewakan"
-            ];
-            $per = new ModelsRequestPermintaan();
-            $per->updateStatus($data);
+            // $data = [
+            //     "id" => $request->id,
+            //     "status" => "Disewakan"
+            // ];
+            // $per = new ModelsRequestPermintaan();
+            // $per->updateStatus($data);
 
             $req = new ModelsRequestPermintaan();
             $permintaan = $req->get_all_data_by_id($request->id)->first();
