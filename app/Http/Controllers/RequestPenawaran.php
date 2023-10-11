@@ -247,6 +247,23 @@ class RequestPenawaran extends Controller
             ];
             $alat = new alatOlahraga();
             $alat->updateStatus($data4);
+
+
+            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$dataReq->fk_id_tempat)->get()->first();
+            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataReq->req_id_alat)->get()->first();
+
+            $dataNotif = [
+                "subject" => "Detail Penawaran Alat Olahraga Anda Telah Dikonfirmasi",
+                "judul" => "Detail Penawaran Alat Olahraga Anda Telah Dikonfirmasi",
+                "nama_user" => $tempat->nama_tempat,
+                "isi" => "Anda memiliki satu penawaran alat olahraga yang detailnya telah dikonfirmasi pemilik:<br><br>
+                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        Tunggu pemilik alat olahraga mengantarkan alat olahraganya ke anda!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($tempat->email_tempat, $dataNotif);
+
             return redirect("/pemilik/penawaran/daftarPenawaran");
         }
         else {
@@ -319,7 +336,7 @@ class RequestPenawaran extends Controller
             $e->sendEmail($tempat->email_tempat,$dataNotif);
 
             //notif pemilik
-            $dataNotif = [
+            $dataNotif2 = [
                 "subject" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
                 "judul" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $pemilik->nama_pemilik,
@@ -329,7 +346,7 @@ class RequestPenawaran extends Controller
                         Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail($pemilik->email_pemilik,$dataNotif);
+            $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
 
             return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
         }
@@ -352,6 +369,40 @@ class RequestPenawaran extends Controller
             ];
             $per = new ModelsRequestPenawaran();
             $per->updateStatusAlat($data);
+
+            $req = new ModelsRequestPenawaran();
+            $penawaran = $req->get_all_data_by_id($request->id)->first();
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
+            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
+            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->fk_id_tempat)->get()->first();
+
+            //blom mari
+            //notif tempat
+            $dataNotif = [
+                "subject" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "judul" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "nama_user" => $tempat->nama_tempat,
+                "isi" => "Selamat! Penawaran alat olahraga telah mendapatkan konfirmasi:<br><br>
+                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($tempat->email_tempat,$dataNotif);
+
+            //notif pemilik
+            $dataNotif2 = [
+                "subject" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "judul" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "nama_user" => $pemilik->nama_pemilik,
+                "isi" => "Selamat! Penawaran alat olahraga Anda telah mendapatkan konfirmasi:<br><br>
+                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
+
             return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
         }
         else {
