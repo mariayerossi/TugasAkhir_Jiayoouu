@@ -311,6 +311,39 @@ class RequestPermintaan extends Controller
             ];
             $per = new ModelsRequestPermintaan();
             $per->updateStatusAlat($data);
+
+            $req = new ModelsRequestPermintaan();
+            $permintaan = $req->get_all_data_by_id($request->id)->first();
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$permintaan->fk_id_pemilik)->get()->first();
+            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->req_id_alat)->get()->first();
+            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();
+
+            //notif tempat
+            $dataNotif = [
+                "subject" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
+                "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
+                "nama_user" => $tempat->nama_tempat,
+                "isi" => "Alat olahraga telah dikonfirmasi pengambilannya:<br><br>
+                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        Cari dan temukan alat olahraga lain untuk disewakan!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($tempat->email_tempat,$dataNotif);
+
+            //notif pemilik
+            $dataNotif2 = [
+                "subject" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
+                "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
+                "nama_user" => $pemilik->nama_pemilik,
+                "isi" => "Alat olahraga anda yang telah dikonfirmasi pengambilannya:<br><br>
+                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        Sewakan lagi alat olahragamu di Sportiva dan kumpulkan keuntungannya!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
+
             return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
         }
         else {

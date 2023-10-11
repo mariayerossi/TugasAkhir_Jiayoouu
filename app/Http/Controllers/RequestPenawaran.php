@@ -382,7 +382,7 @@ class RequestPenawaran extends Controller
                 "subject" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $tempat->nama_tempat,
-                "isi" => "Pengambilan alat olahraga telah dikonfirmasi:<br><br>
+                "isi" => "Alat olahraga telah dikonfirmasi pengambilannya:<br><br>
                         <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
                         Cari dan temukan alat olahraga lain untuk disewakan!"
@@ -395,7 +395,7 @@ class RequestPenawaran extends Controller
                 "subject" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $pemilik->nama_pemilik,
-                "isi" => "Pengambilan alat olahraga Anda telah dikonfirmasi:<br><br>
+                "isi" => "Alat olahraga anda yang telah dikonfirmasi pengambilannya:<br><br>
                         <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
                         Sewakan lagi alat olahragamu di Sportiva dan kumpulkan keuntungannya!"
