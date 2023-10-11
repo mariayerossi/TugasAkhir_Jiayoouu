@@ -23,7 +23,7 @@
             @php
                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
             @endphp
-            <h5 class="text-center mb-5">{{$dataAlat->nama_alat}} - {{$item->id_dtrans}}</h5>
+            <h5 class="text-center mb-5">{{$dataAlat->nama_alat}}</h5>
             <div class="row mb-3">
                 <div class="col-md-4 col-12 mt-2">
                     <h6>Apakah terdapat unsur kesengajaan dalam kerusakan alat olahraga?</h6>

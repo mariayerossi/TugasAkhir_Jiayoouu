@@ -2,72 +2,115 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\alatOlahraga;
 use App\Models\kerusakanAlat as ModelsKerusakanAlat;
+use App\Models\requestPenawaran;
+use App\Models\requestPermintaan;
+use App\Models\sewaSendiri;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KerusakanAlat extends Controller
 {
     public function ajukanKerusakan(Request $request) {
-        // $data = $request->all();
-        
-        // $totalForms = count($request->input('id_dtrans'));
-        // dd($request->input('id_dtrans', []));
-
-        // $data = [];
-        // for ($i = 0; $i < $totalForms; $i++) {
-        //     // Mengecek apakah unsur kesengajaan dan foto telah diberikan
-        //     $unsur = $request->input('unsur' . $i);
-        //     $foto = $request->file('foto' . $i);
-            
-        //     if (!is_null($unsur) && !is_null($foto)) {
-
-        //         // Contoh: menyimpan ke database
-        //         // $dtrans = DTrans::find($request->input('id_dtrans.' . $i)); // Sesuaikan dengan model Anda
-
-        //         // Simpan foto
-        //         // $fotoPath = $foto->store('bukti_kerusakan', 'public');
-                
-        //         // // Update data dtrans
-        //         // $dtrans->unsur_kesengajaan = $unsur;
-        //         // $dtrans->foto_bukti = $fotoPath;
-        //         // $dtrans->save();
-        //         array_push($data,[
-        //             "unsur" => $unsur
-        //         ]);
-        //     }
-        // }
-        // dd($data);
-
-
         // Mengambil semua data dari request
-        $allIdDtrans = $request->input('id_dtrans', []);
-        $allData = $request->all();
-
-        foreach ($allIdDtrans as $index => $idDtransValue) {
-            if(isset($allData['unsur' . $index + 1])) {
-                $unsurValue = $allData['unsur' . $index + 1];
-                dd($unsurValue);
-
-                // Proses upload foto
-                $fotoName = null;
-                if ($request->hasFile('foto' . $index + 1)) {
-                    $foto = $request->file('foto' . $index + 1);
+        $cek = false;
+        foreach ($request->input('id_dtrans') as $index => $id_dtrans) {
+            // Ambil unsur dan foto
+            $unsur = $request->input("unsur$index");
+            $foto = $request->file("foto$index");
+            
+            if ($unsur != null) {
+                if ($foto != null) {
                     $destinasi = "/upload";
-                    $fotoName = uniqid() . "." . $foto->getClientOriginalExtension();
-                    $foto->move(public_path($destinasi), $fotoName);
+                    $foto2 = uniqid().".".$foto->getClientOriginalExtension();
+                    $foto->move(public_path($destinasi),$foto2);
+
+                    $data = [
+                        "id_dtrans" => $id_dtrans,
+                        "unsur" => $unsur,
+                        "foto" => $foto2
+                    ];
+                    $ker = new ModelsKerusakanAlat();
+                    $ker->insertKerusakanAlat($data);
+
+                    $dataTrans = DB::table('dtrans')
+                            ->select("dtrans.fk_id_alat", "htrans.fk_id_lapangan")
+                            ->leftJoin("htrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                            ->where("dtrans.id_dtrans","=",$id_dtrans)
+                            ->get()
+                            ->first();
+
+                    //ubah status alat menjadi non aktif
+                    $data2 = [
+                        "id" => $dataTrans->fk_id_alat,
+                        "status" => "Non Aktif"
+                    ];
+                    $alat = new alatOlahraga();
+                    $alat->updateStatus($data2);
+
+                    //hapus request alat di tempat
+                    $permintaan = DB::table('request_permintaan')
+                                ->where("req_id_alat","=",$dataTrans->fk_id_alat)
+                                ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
+                                ->get();
+                    if ($permintaan != null) {
+                        $id = $permintaan->first()->id_permintaan;
+                        
+                        $data3 = [
+                            "id" => $id,
+                            "status" => "Selesai"
+                        ];
+                        $per = new requestPermintaan();
+                        $per->updateStatus($data3);
+                    }
+                    else {
+                        $penawaran = DB::table('request_penawaran')
+                                ->where("req_id_alat","=",$dataTrans->fk_id_alat)
+                                ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
+                                ->get();
+                        if ($penawaran != null) {
+                            $id = $penawaran->first()->id_penawaran;
+                            
+                            $data3 = [
+                                "id" => $id,
+                                "status" => "Selesai"
+                            ];
+                            $pen = new requestPenawaran();
+                            $pen->updateStatus($data3);
+                        }
+                        else {
+                            $sewa = DB::table('sewa_sendiri')
+                            ->where("req_id_alat","=",$dataTrans->fk_id_alat)
+                            ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
+                            ->get();
+
+                            $id = $sewa->first()->id_sewa;
+
+                            date_default_timezone_set("Asia/Jakarta");
+                            
+                            $data3 = [
+                                "id" => $id,
+                                "delete" => date("Y-m-d H:i:s")
+                            ];
+                            $pen = new sewaSendiri();
+                            $pen->deleteSewa($data3);
+                        }
+                    }
+
+                    $cek = true;
                 }
-
-                $data = [
-                    "id_dtrans" => $idDtransValue,
-                    "unsur" => $unsurValue,
-                    "foto" => $fotoName
-                ];
-
-                $ker = new ModelsKerusakanAlat();
-                $ker->insertKerusakanAlat($data);
-            } else {
-                // Kode untuk menangani form yang tidak lengkap, misalnya kembalikan dengan pesan kesalahan
+                else {
+                    return redirect()->back()->with("error", "Foto tidak boleh kosong!");
+                }
             }
+        }
+
+        if ($cek) {
+            return redirect()->back()->with("success", "Berhasil mengajukan kerusakan alat olahraga!");
+        }
+        else {
+            return redirect()->back()->with("error", "Gagal mengajukan kerusakan alat olahraga!");
         }
     }
 }
