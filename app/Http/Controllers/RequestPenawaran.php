@@ -388,7 +388,7 @@ class RequestPenawaran extends Controller
                         Cari dan temukan alat olahraga lain untuk disewakan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail($tempat->email_tempat,$dataNotif);
+            $e->sendEmail("maria.yerossi@gmail.com",$dataNotif);
 
             //notif pemilik
             $dataNotif2 = [
@@ -401,7 +401,7 @@ class RequestPenawaran extends Controller
                         Sewakan lagi alat olahragamu di Sportiva dan kumpulkan keuntungannya!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
+            $e->sendEmail("maria.yerossi@gmail.com",$dataNotif2);
 
             return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
         }
@@ -654,9 +654,22 @@ class RequestPenawaran extends Controller
             "isi" => "Anda memiliki satu alat olahraga yang masa sewanya sudah selesai:<br><br>
                     <b>Nama Alat Olahraga   : ".$alat->nama_alat."</b><br>
                     <b>Komisi Alat Olahraga : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
-                    Cari dan temukan alat olahraga lain untuk disewakan!"
+                    Tunggu alat olahraga diambil oleh pemilik alat. Cari dan temukan lagi alat olahraga lain untuk disewakan!"
         ];
         $e = new notifikasiEmail();
         $e->sendEmail($tempat->email_tempat,$dataNotif);
+
+        //notif email pemilik
+        $dataNotif2 = [
+            "subject" => "Masa Sewa Alat Olahraga Telah Selesai",
+            "judul" => "Masa Sewa Alat Olahraga Telah Selesai",
+            "nama_user" => $pemilik->nama_pemilik,
+            "isi" => "Anda memiliki satu alat olahraga yang masa sewanya sudah selesai:<br><br>
+                    <b>Nama Alat Olahraga   : ".$alat->nama_alat."</b><br>
+                    <b>Komisi Alat Olahraga : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
+                    Anda bisa mengambil alat olahraga Anda dan mencoba untuk menyewakannya di tempat lain. Teruslah berusaha dan berinovasi dalam penawaran Anda!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
     }
 }

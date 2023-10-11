@@ -246,7 +246,7 @@ class DatabaseSeeder extends Seeder
         //     'fk_id_tempat' => 1,
         //     'fk_id_pemilik' => 1,
         //     'tanggal_tawar' => date("Y-m-d H:i:s"),
-        //     'status_penawaran' => "Diterima",
+        //     'status_penawaran' => "Selesai",
         //     'status_tempat' => "Setuju",
         //     'status_pemilik' => "Setuju",
         //     'kode_mulai' => null,
