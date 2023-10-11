@@ -502,7 +502,43 @@ class RequestPermintaan extends Controller
         return view("pemilik.permintaan.daftarPermintaan")->with($param);
     }
 
-    public function statusSelesai() {
+    public function statusSelesai($id) {
+        $data = [
+            "id" => $id,
+            "status" => "Selesai"
+        ];
+        $pen = new ModelsRequestPermintaan();
+        $pen->updateStatus($data);
+
+        $permintaan = DB::table('request_permintaan')->where("id_permintaan","=",$id)->get()->first();
+        $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();
+        $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$permintaan->fk_id_pemilik)->get()->first();
+        $alat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->req_id_alat)->get()->first();
         
+        //notif email tempat
+        $dataNotif = [
+            "subject" => "Masa Sewa Alat Olahraga Telah Selesai",
+            "judul" => "Masa Sewa Alat Olahraga Telah Selesai",
+            "nama_user" => $tempat->nama_tempat,
+            "isi" => "Anda memiliki satu alat olahraga yang masa sewanya sudah selesai:<br><br>
+                    <b>Nama Alat Olahraga   : ".$alat->nama_alat."</b><br>
+                    <b>Komisi Alat Olahraga : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
+                    Tunggu alat olahraga diambil oleh pemilik alat. Cari dan temukan lagi alat olahraga lain untuk disewakan!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($tempat->email_tempat,$dataNotif);
+
+        //notif email pemilik
+        $dataNotif2 = [
+            "subject" => "Masa Sewa Alat Olahraga Telah Selesai",
+            "judul" => "Masa Sewa Alat Olahraga Telah Selesai",
+            "nama_user" => $pemilik->nama_pemilik,
+            "isi" => "Anda memiliki satu alat olahraga yang masa sewanya sudah selesai:<br><br>
+                    <b>Nama Alat Olahraga   : ".$alat->nama_alat."</b><br>
+                    <b>Komisi Alat Olahraga : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
+                    Anda bisa mengambil alat olahraga Anda dan mencoba untuk menyewakannya di tempat lain. Teruslah berusaha dan berinovasi dalam penawaran Anda!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
     }
 }
