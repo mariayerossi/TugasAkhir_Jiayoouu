@@ -501,4 +501,8 @@ class RequestPermintaan extends Controller
 
         return view("pemilik.permintaan.daftarPermintaan")->with($param);
     }
+
+    public function statusSelesai() {
+        
+    }
 }

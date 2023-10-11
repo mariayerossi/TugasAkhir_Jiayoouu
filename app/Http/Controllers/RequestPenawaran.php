@@ -363,12 +363,12 @@ class RequestPenawaran extends Controller
         ]);
 
         if ($request->isi == $request->kode) {
-            $data = [
-                "id" => $request->id,
-                "status" => "Dikembalikan"
-            ];
-            $per = new ModelsRequestPenawaran();
-            $per->updateStatusAlat($data);
+            // $data = [
+            //     "id" => $request->id,
+            //     "status" => "Dikembalikan"
+            // ];
+            // $per = new ModelsRequestPenawaran();
+            // $per->updateStatusAlat($data);
 
             $req = new ModelsRequestPenawaran();
             $penawaran = $req->get_all_data_by_id($request->id)->first();
@@ -379,26 +379,26 @@ class RequestPenawaran extends Controller
             //blom mari
             //notif tempat
             $dataNotif = [
-                "subject" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
-                "judul" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "subject" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
+                "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $tempat->nama_tempat,
-                "isi" => "Selamat! Penawaran alat olahraga telah mendapatkan konfirmasi:<br><br>
+                "isi" => "Pengambilan alat olahraga telah dikonfirmasi:<br><br>
                         <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
-                        Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
+                        Cari dan temukan alat olahraga lain untuk disewakan!"
             ];
             $e = new notifikasiEmail();
             $e->sendEmail($tempat->email_tempat,$dataNotif);
 
             //notif pemilik
             $dataNotif2 = [
-                "subject" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
-                "judul" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "subject" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
+                "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $pemilik->nama_pemilik,
-                "isi" => "Selamat! Penawaran alat olahraga Anda telah mendapatkan konfirmasi:<br><br>
+                "isi" => "Pengambilan alat olahraga Anda telah dikonfirmasi:<br><br>
                         <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
-                        Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
+                        Sewakan lagi alat olahragamu di Sportiva dan kumpulkan keuntungannya!"
             ];
             $e = new notifikasiEmail();
             $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
@@ -631,5 +631,32 @@ class RequestPenawaran extends Controller
         $param["dikomplain"] = $dikomplain;
 
         return view("tempat.penawaran.daftarPenawaran")->with($param);
+    }
+
+    public function statusSelesai($id) {
+        $data = [
+            "id" => $id,
+            "status" => "Selesai"
+        ];
+        $pen = new ModelsRequestPenawaran();
+        $pen->updateStatus($data);
+
+        $penawaran = DB::table('request_penawaran')->where("id_penawaran","=",$id)->get()->first();
+        $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->fk_id_tempat)->get()->first();
+        $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
+        $alat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
+        
+        //notif email tempat
+        $dataNotif = [
+            "subject" => "Masa Sewa Alat Olahraga Telah Selesai",
+            "judul" => "Masa Sewa Alat Olahraga Telah Selesai",
+            "nama_user" => $tempat->nama_tempat,
+            "isi" => "Anda memiliki satu alat olahraga yang masa sewanya sudah selesai:<br><br>
+                    <b>Nama Alat Olahraga   : ".$alat->nama_alat."</b><br>
+                    <b>Komisi Alat Olahraga : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
+                    Cari dan temukan alat olahraga lain untuk disewakan!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($tempat->email_tempat,$dataNotif);
     }
 }
