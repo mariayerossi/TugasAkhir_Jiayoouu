@@ -276,7 +276,7 @@ class RequestPermintaan extends Controller
                         Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail($tempat->email_tempat,$dataNotif);
+            $e->sendEmail("maria.yerossi@gmail.com",$dataNotif);
 
             //notif pemilik
             $dataNotif2 = [
@@ -289,7 +289,7 @@ class RequestPermintaan extends Controller
                         Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
+            $e->sendEmail("maria.yerossi@gmail.com",$dataNotif2);
             return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
         }
         else {
