@@ -103,6 +103,20 @@ class RequestPenawaran extends Controller
                             ];
                             $per = new ModelsRequestPenawaran();
                             $per->updateStatusTempat($data);
+
+                            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dataAlat->fk_id_pemilik)->get()->first();
+
+                            $dataNotif = [
+                                "subject" => "Penawaran Alat Olahraga Anda Telah Diterima",
+                                "judul" => "Penawaran Alat Olahraga Anda Telah Diterima",
+                                "nama_user" => $pemilik->nama_pemilik,
+                                "isi" => "Anda memiliki 1 penawaran alat olahraga yang telah diterima:<br><br>
+                                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
+                                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                                        Silahkan konfirmasi detail penawaran!"
+                            ];
+                            $e = new notifikasiEmail();
+                            $e->sendEmail($pemilik->email_pemilik,$dataNotif);
                     
                             return redirect()->back()->with("success", "Menunggu konfirmasi pemilik alat olahraga");
                         }
@@ -126,20 +140,35 @@ class RequestPenawaran extends Controller
 
     public function tolakPenawaran(Request $request) {
         $req = new ModelsRequestPenawaran();
-        $status = $req->get_all_data_by_id($request->id_penawaran)->first()->status_penawaran;
+        $penawaran = $req->get_all_data_by_id($request->id_penawaran)->first();
 
-        if ($status == "Menunggu") {
+        if ($penawaran->status_penawaran == "Menunggu") {
             $data = [
                 "id" => $request->id_penawaran,
                 "status" => "Ditolak"
             ];
             $per = new ModelsRequestPenawaran();
             $per->updateStatus($data);
+
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
+            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
+
+            $dataNotif = [
+                "subject" => "Penawaran Alat Olahraga Anda Telah Ditolak",
+                "judul" => "Penawaran Alat Olahraga Anda Telah Ditolak",
+                "nama_user" => $pemilik->nama_pemilik,
+                "isi" => "Anda memiliki 1 penawaran alat olahraga yang telah ditolak:<br><br>
+                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        Tawarkan alat olahragamu di tempat lain. Tetap semangat dan terus berinovasi dalam menawarkan produkmu!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($pemilik->email_pemilik,$dataNotif);
     
             return redirect("/tempat/penawaran/daftarPenawaran");
         }
         else {
-            return redirect()->back()->with("error", "Gagal menolak penawaran! status alat sudah $status");
+            return redirect()->back()->with("error", "Gagal menolak penawaran! status alat sudah $penawaran->status_penawaran");
         }
     }
     
@@ -269,6 +298,39 @@ class RequestPenawaran extends Controller
             ];
             $per = new ModelsRequestPenawaran();
             $per->updateStatus($data);
+            
+            $req = new ModelsRequestPenawaran();
+            $penawaran = $req->get_all_data_by_id($request->id)->first();
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
+            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
+            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->fk_id_tempat)->get()->first();
+
+            //notif tempat
+            $dataNotif = [
+                "subject" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "judul" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "nama_user" => $tempat->nama_tempat,
+                "isi" => "Selamat! Penawaran alat olahraga telah mendapatkan konfirmasi:<br><br>
+                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($tempat->email_tempat,$dataNotif);
+
+            //notif pemilik
+            $dataNotif = [
+                "subject" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "judul" => "Penawaran Alat Olahraga Telah Dikonfirmasi",
+                "nama_user" => $pemilik->nama_pemilik,
+                "isi" => "Selamat! Penawaran alat olahraga Anda telah mendapatkan konfirmasi:<br><br>
+                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($pemilik->email_pemilik,$dataNotif);
+
             return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
         }
         else {

@@ -15,9 +15,10 @@
         .container {
             max-width: 600px;
             margin: 50px auto;
-            background-color: #ffffff;
+            background-color: #d7d7d7;
             border-radius: 10px;
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            /* border: 10px solid rgb(130, 130, 130); */
             padding: 20px;
         }
 
@@ -31,6 +32,8 @@
 
         .content {
             padding: 20px;
+            background-color: white;
+            color: black;
         }
 
         .footer {
