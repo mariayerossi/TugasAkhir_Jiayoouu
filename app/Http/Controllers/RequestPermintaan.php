@@ -252,12 +252,12 @@ class RequestPermintaan extends Controller
         ]);
 
         if ($request->isi == $request->kode) {
-            // $data = [
-            //     "id" => $request->id,
-            //     "status" => "Disewakan"
-            // ];
-            // $per = new ModelsRequestPermintaan();
-            // $per->updateStatus($data);
+            $data = [
+                "id" => $request->id,
+                "status" => "Disewakan"
+            ];
+            $per = new ModelsRequestPermintaan();
+            $per->updateStatus($data);
 
             $req = new ModelsRequestPermintaan();
             $permintaan = $req->get_all_data_by_id($request->id)->first();
@@ -276,7 +276,7 @@ class RequestPermintaan extends Controller
                         Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail("maria.yerossi@gmail.com",$dataNotif);
+            $e->sendEmail($tempat->email_tempat,$dataNotif);
 
             //notif pemilik
             $dataNotif2 = [
@@ -289,7 +289,7 @@ class RequestPermintaan extends Controller
                         Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail("maria.yerossi@gmail.com",$dataNotif2);
+            $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
             return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
         }
         else {

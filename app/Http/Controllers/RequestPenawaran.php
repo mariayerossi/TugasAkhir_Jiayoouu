@@ -363,12 +363,12 @@ class RequestPenawaran extends Controller
         ]);
 
         if ($request->isi == $request->kode) {
-            // $data = [
-            //     "id" => $request->id,
-            //     "status" => "Dikembalikan"
-            // ];
-            // $per = new ModelsRequestPenawaran();
-            // $per->updateStatusAlat($data);
+            $data = [
+                "id" => $request->id,
+                "status" => "Dikembalikan"
+            ];
+            $per = new ModelsRequestPenawaran();
+            $per->updateStatusAlat($data);
 
             $req = new ModelsRequestPenawaran();
             $penawaran = $req->get_all_data_by_id($request->id)->first();
