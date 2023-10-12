@@ -115,13 +115,15 @@ class KerusakanAlat extends Controller
                             $sengaja = "Setelah melakukan pengecekan, kami menemukan bukti yang menunjukkan bahwa kerusakan ini terjadi karena adanya kesengajaan. Oleh karena itu, sesuai dengan peraturan dan ketentuan yang telah disepakati, akan ada biaya ganti rugi yang dikenakan kepada pihak yang bertanggung jawab.";
                         }
 
+                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dtrans->fk_id_alat)->get()->first();
+
                         $dataNotif = [
                             "subject" => "Pemberitahuan Kerusakan Alat Olahraga😢",
                             "judul" => "Pemberitahuan Kerusakan Alat Olahraga",
                             "nama_user" => $pemilik->nama_pemilik,
                             "isi" => "Maaf! Alat olahraga yang anda sewakan mengalami kerusakan:<br><br>
-                                    <b>Nama Alat Olahraga: </b><br>
-                                    <b>Ganti Rugi Alat Olahraga: Rp </b><br><br>
+                                    <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                    <b>Ganti Rugi Alat Olahraga: Rp ".number_format($dataAlat->ganti_rugi_alat, 0, ',', '.')."</b><br><br>
                                     ".$sengaja."<br><br>
                                     Alat olahraga sudah bisa diambil di tempat olahraga! Terus sewakan alat olahragamu di Sportiva!"
                         ];

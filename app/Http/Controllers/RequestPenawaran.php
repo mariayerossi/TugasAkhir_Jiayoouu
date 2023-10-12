@@ -6,6 +6,7 @@ use App\Models\alatOlahraga;
 use App\Models\requestPenawaran as ModelsRequestPenawaran;
 use DateInterval;
 use App\Models\notifikasiEmail;
+use App\Models\pihakTempat;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -634,6 +635,8 @@ class RequestPenawaran extends Controller
     }
 
     public function statusSelesai($id) {
+        //select semua table request_penawaran lalu where tgl selesai > now, jd jgn pake $id
+
         $data = [
             "id" => $id,
             "status" => "Selesai"
@@ -641,13 +644,41 @@ class RequestPenawaran extends Controller
         $pen = new ModelsRequestPenawaran();
         $pen->updateStatus($data);
 
-        //total komisi tempat masuk saldo tempat
-        
-
         $penawaran = DB::table('request_penawaran')->where("id_penawaran","=",$id)->get()->first();
         $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->fk_id_tempat)->get()->first();
         $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
         $alat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
+
+        //total komisi tempat (alat sewa) masuk saldo tempat
+        $trans = DB::table('dtrans')
+                ->select("htrans.fk_id_tempat", "dtrans.id_dtrans", "dtrans.total_komisi_tempat", "dtrans.fk_id_tempat as tempat")
+                ->join("htrans", "dtrans.fk_id_htrans","htrans.id_htrans")
+                ->where("fk_id_alat","=",$penawaran->req_id_alat)
+                ->get();
+        if (!$trans->isEmpty()) {
+            foreach ($trans as $key => $value) {
+                if ($value->fk_id_tempat == $penawaran->fk_id_tempat) {
+                    if ($value->tempat == null) {
+                        $extend_dtrans = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value->id_dtrans)->get()->first();
+
+                        $saldo = (int)$this->decodePrice($tempat->saldo_tempat, "mysecretkey");
+                        // dd($saldo2);
+                        $saldo += (int)$value->total_komisi_tempat + $extend_dtrans->total_komisi_tempat;
+                        // dd($saldo2);
+
+                        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+                        //update db
+                        $dataSaldo = [
+                            "id" => $value->fk_id_tempat,
+                            "saldo" => $enkrip
+                        ];
+                        $temp = new pihakTempat();
+                        $temp->updateSaldo($dataSaldo);
+                    }
+                }
+            }
+        }
         
         //notif email tempat
         $dataNotif = [
