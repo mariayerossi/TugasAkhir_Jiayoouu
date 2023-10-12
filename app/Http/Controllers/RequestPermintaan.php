@@ -66,8 +66,8 @@ class RequestPermintaan extends Controller
                 "judul" => "Permintaan Alat Olahraga Baru",
                 "nama_user" => $nama_pemilik,
                 "isi" => "Anda memiliki satu permintaan alat olahraga baru:<br><br>
-                        <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
-                        <b>Komisi Pemilik Alat : Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
+                        <b>Nama Alat Olahraga: ".$nama_alat."</b><br>
+                        <b>Komisi Pemilik Alat: Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
                         Silahkan Konfirmasi Permintaan!"
             ];
             $e = new notifikasiEmail();
@@ -156,8 +156,8 @@ class RequestPermintaan extends Controller
                     "judul" => "Permintaan Alat Olahraga Diterima",
                     "nama_user" => $nama_tempat,
                     "isi" => "Yeay! Anda memiliki satu permintaan alat olahraga yang telah diterima:<br><br>
-                            <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
-                            <b>Komisi Pemilik Alat : Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
+                            <b>Nama Alat Olahraga: ".$nama_alat."</b><br>
+                            <b>Komisi Pemilik Alat: Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
                             Tunggu alat olahraga diantar oleh pemilik alat olahraga ya!"
                 ];
                 $e = new notifikasiEmail();
@@ -200,8 +200,8 @@ class RequestPermintaan extends Controller
                 "judul" => "Permintaan Alat Olahraga Diterima",
                 "nama_user" => $nama_tempat,
                 "isi" => "Sayang sekali! Anda memiliki satu permintaan alat olahraga yang ditolak:<br><br>
-                        <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
-                        <b>Komisi Pemilik Alat : Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
+                        <b>Nama Alat Olahraga: ".$nama_alat."</b><br>
+                        <b>Komisi Pemilik Alat: Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
                         Pilih dan ajukan permintaan alat olahraga lain. Teruslah bersemangat dan inovatif dalam memilih produk terbaik untuk Anda!"
             ];
             $e = new notifikasiEmail();
@@ -271,8 +271,8 @@ class RequestPermintaan extends Controller
                 "judul" => "Permintaan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $tempat->nama_tempat,
                 "isi" => "Selamat! Permintaan alat olahraga telah mendapatkan konfirmasi:<br><br>
-                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
-                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga: Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
                         Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
             ];
             $e = new notifikasiEmail();
@@ -284,8 +284,8 @@ class RequestPermintaan extends Controller
                 "judul" => "Permintaan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $pemilik->nama_pemilik,
                 "isi" => "Selamat! Permintaan alat olahraga Anda telah mendapatkan konfirmasi:<br><br>
-                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
-                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga: Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
                         Waktunya bersinar! Alat Olahraga kini siap untuk disewakan dan menghasilkan keuntungan!"
             ];
             $e = new notifikasiEmail();
@@ -324,8 +324,8 @@ class RequestPermintaan extends Controller
                 "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $tempat->nama_tempat,
                 "isi" => "Alat olahraga telah dikonfirmasi pengambilannya:<br><br>
-                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
-                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga: Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
                         Cari dan temukan alat olahraga lain untuk disewakan!"
             ];
             $e = new notifikasiEmail();
@@ -337,8 +337,8 @@ class RequestPermintaan extends Controller
                 "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $pemilik->nama_pemilik,
                 "isi" => "Alat olahraga anda yang telah dikonfirmasi pengambilannya:<br><br>
-                        <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
-                        <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                        <b>Komisi Alat Olahraga: Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
                         Sewakan lagi alat olahragamu di Sportiva dan kumpulkan keuntungannya!"
             ];
             $e = new notifikasiEmail();
@@ -586,8 +586,8 @@ class RequestPermintaan extends Controller
             "judul" => "Masa Sewa Alat Olahraga Telah Selesai",
             "nama_user" => $tempat->nama_tempat,
             "isi" => "Anda memiliki satu alat olahraga yang masa sewanya sudah selesai:<br><br>
-                    <b>Nama Alat Olahraga   : ".$alat->nama_alat."</b><br>
-                    <b>Komisi Alat Olahraga : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
+                    <b>Nama Alat Olahraga: ".$alat->nama_alat."</b><br>
+                    <b>Komisi Alat Olahraga: Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
                     Tunggu alat olahraga diambil oleh pemilik alat. Cari dan temukan lagi alat olahraga lain untuk disewakan!"
         ];
         $e = new notifikasiEmail();
@@ -599,8 +599,8 @@ class RequestPermintaan extends Controller
             "judul" => "Masa Sewa Alat Olahraga Telah Selesai",
             "nama_user" => $pemilik->nama_pemilik,
             "isi" => "Anda memiliki satu alat olahraga yang masa sewanya sudah selesai:<br><br>
-                    <b>Nama Alat Olahraga   : ".$alat->nama_alat."</b><br>
-                    <b>Komisi Alat Olahraga : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
+                    <b>Nama Alat Olahraga: ".$alat->nama_alat."</b><br>
+                    <b>Komisi Alat Olahraga: Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
                     Anda bisa mengambil alat olahraga Anda dan mencoba untuk menyewakannya di tempat lain. Teruslah berusaha dan berinovasi dalam penawaran Anda!"
         ];
         $e = new notifikasiEmail();

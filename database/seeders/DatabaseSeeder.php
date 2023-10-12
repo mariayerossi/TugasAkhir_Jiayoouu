@@ -246,7 +246,7 @@ class DatabaseSeeder extends Seeder
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
             'tanggal_tawar' => date("Y-m-d H:i:s"),
-            'status_penawaran' => "Menunggu",
+            'status_penawaran' => "Diterima",
             'status_tempat' => "Setuju",
             'status_pemilik' => "Setuju",
             'kode_mulai' => null,
@@ -313,24 +313,24 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        // DB::table('komplain_request')->insert([
-        //     'jenis_komplain' => "Alat tidak sesuai",
-        //     'keterangan_komplain' => "alat olahraga yang dikirim dan yang dijelaskan di detail beda jauh",
-        //     'fk_id_permintaan' => null,
-        //     'fk_id_penawaran' => 1,
-        //     'waktu_komplain' => date("Y-m-d H:i:s"),
-        //     'status_komplain' => "Menunggu",
-        //     'penanganan_komplain' => null,
-        //     'fk_id_pemilik' => null,
-        //     'fk_id_tempat' => 1,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
+        DB::table('komplain_request')->insert([
+            'jenis_komplain' => "Alat tidak sesuai",
+            'keterangan_komplain' => "alat olahraga yang dikirim dan yang dijelaskan di detail beda jauh",
+            'fk_id_permintaan' => null,
+            'fk_id_penawaran' => 1,
+            'waktu_komplain' => date("Y-m-d H:i:s"),
+            'status_komplain' => "Menunggu",
+            'penanganan_komplain' => null,
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
 
-        // DB::table('files_komplain_req')->insert([
-        //     'nama_file_komplain' => "bola_jelek.jpg",
-        //     'fk_id_komplain_req' => 1,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
+        DB::table('files_komplain_req')->insert([
+            'nama_file_komplain' => "bola_jelek.jpg",
+            'fk_id_komplain_req' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
 
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0002",

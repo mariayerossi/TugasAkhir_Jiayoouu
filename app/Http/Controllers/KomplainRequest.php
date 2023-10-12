@@ -11,6 +11,9 @@ use App\Models\pihakTempat;
 use App\Models\requestPenawaran;
 use App\Models\requestPermintaan;
 use Illuminate\Http\Request;
+use App\Models\notifikasiEmail;
+use DateTime;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class KomplainRequest extends Controller
@@ -97,6 +100,7 @@ class KomplainRequest extends Controller
             $file->insertFilesKomplainReq($data2);
         }
 
+        $jenis = "";
         //mengubah status request menjadi "Dikomplain"
         if ($request->jenis_request == "Permintaan") {
             $data3 = [
@@ -105,6 +109,8 @@ class KomplainRequest extends Controller
             ];
             $per = new requestPermintaan();
             $per->updateStatus($data3);
+
+            $jenis = "Permintaan";
         }
         else if ($request->jenis_request == "Penawaran") {
             $data3 = [
@@ -113,7 +119,35 @@ class KomplainRequest extends Controller
             ];
             $pen = new requestPenawaran();
             $pen->updateStatus($data3);
+
+            $jenis = "Penawaran";
         }
+
+        //kirim notif ke admin
+        $namaUser = "";
+        if (Session::get("role") == "pemilik") {
+            $namaUser = Session::get("dataRole")->nama_pemilik;
+        }
+        else {
+            $namaUser = Session::get("dataRole")->nama_tempat;
+        }
+
+        $tanggalAwal = $tgl_komplain;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+
+        $dataNotif = [
+            "subject" => "Komplain ".$jenis." Baru",
+            "judul" => "Komplain ".$jenis." Baru dari ".$namaUser,
+            "nama_user" => "Admin",
+            "isi" => "Anda memiliki satu komplain ".$jenis." baru:<br><br>
+                    <b>Diajukan oleh: ".$namaUser."</b><br>
+                    <b>Diajukan pada: ".$tanggalBaru."</b><br>
+                    <b>Jenis Komplain: ".$request->jenis."</b><br><br>
+                    Mohon segera masuk dan tangani komplain ini untuk meningkatkan kepuasan pengguna!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail("admin@gmail.com",$dataNotif);
 
         return redirect()->back()->with("success", "Berhasil Mengajukan Komplain!");
     }
@@ -137,13 +171,13 @@ class KomplainRequest extends Controller
                     $alat = new alatOlahraga();
                     $alat->softDelete($data);
 
-                    $penanganan = "Hapus Alat";
+                    $penanganan = "Hapus Alat,";
                 }
                 else if ($array[1] == "lapangan") {
                     $lapangan = new lapanganOlahraga();
                     $lapangan->softDelete($data);
 
-                    $penanganan = "Hapus Lapangan";
+                    $penanganan = "Hapus Lapangan,";
                 }
             }
             else {
@@ -168,13 +202,13 @@ class KomplainRequest extends Controller
                     $temp = new pihakTempat();
                     $temp->softDelete($data);
 
-                    $penanganan = "Hapus Tempat";
+                    $penanganan .= "Hapus Tempat";
                 }
                 else if ($array[1] == "pemilik") {
                     $pemi = new pemilikAlat();
                     $pemi->softDelete($data);
 
-                    $penanganan = "Hapus Pemilik";
+                    $penanganan .= "Hapus Pemilik";
                 }
             }
             else {
@@ -213,6 +247,48 @@ class KomplainRequest extends Controller
         $penang = new ModelsKomplainRequest();
         $penang->updatePenanganan($data4);
 
+        //notif pemilik/tempat
+        $komplain = DB::table('komplain_request')->where("id_komplain_req","=",$request->id_komplain)->get()->first();
+        $pengaju = "";
+        $email = "";
+        if ($komplain->fk_id_pemilik != null) {
+            // yang mengajukan pemilik
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->fk_id_pemilik)->get()->first();
+            $pengaju = $pemilik->nama_pemilik;
+            $email = $pemilik->email_pemilik;
+        }
+        else {
+            //yang mengajukan tempat
+            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->fk_id_tempat)->get()->first();
+            $pengaju = $tempat->nama_tempat;
+            $email = $tempat->email_tempat;
+        }
+
+        $jenis = "";
+        if ($komplain->fk_id_permintaan != null) {
+            //jenis request permintaan
+            $jenis = "Permintaan";
+        }
+        else {
+            $jenis = "Penawaran";
+        }
+
+        $tanggalAwal = $komplain->waktu_komplain;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+
+        $dataNotif = [
+            "subject" => "Komplain ".$jenis." Anda Telah Diterima",
+            "judul" => "Komplain ".$jenis." Anda Telah Diterima",
+            "nama_user" => $pengaju,
+            "isi" => "Yeay! Komplain ".$jenis." yang Anda ajukan telah diterima Admin:<br><br>
+                    <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
+                    <b>Diajukan pada: ".$tanggalBaru."</b><br><br>
+                    Komplain ini telah disetujui Admin dengan penanganan berupa ".$penanganan."!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($email, $dataNotif);
+
         return redirect()->back()->with("success", "Berhasil menangani komplain!");
     }
 
@@ -223,6 +299,48 @@ class KomplainRequest extends Controller
         ];
         $komp = new ModelsKomplainRequest();
         $komp->updateStatus($data);
+
+        //notif pemilik/tempat
+        $komplain = DB::table('komplain_request')->where("id_komplain_req","=",$request->id)->get()->first();
+        $pengaju = "";
+        $email = "";
+        if ($komplain->fk_id_pemilik != null) {
+            // yang mengajukan pemilik
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->fk_id_pemilik)->get()->first();
+            $pengaju = $pemilik->nama_pemilik;
+            $email = $pemilik->email_pemilik;
+        }
+        else {
+            //yang mengajukan tempat
+            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->fk_id_tempat)->get()->first();
+            $pengaju = $tempat->nama_tempat;
+            $email = $tempat->email_tempat;
+        }
+
+        $jenis = "";
+        if ($komplain->fk_id_permintaan != null) {
+            //jenis request permintaan
+            $jenis = "Permintaan";
+        }
+        else {
+            $jenis = "Penawaran";
+        }
+
+        $tanggalAwal = $komplain->waktu_komplain;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+
+        $dataNotif = [
+            "subject" => "Komplain ".$jenis." Anda Telah Ditolak",
+            "judul" => "Komplain ".$jenis." Anda Telah Ditolak",
+            "nama_user" => $pengaju,
+            "isi" => "Maaf! Komplain ".$jenis." yang Anda ajukan belum bisa kami terima.<br><br>
+                    <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
+                    <b>Diajukan pada: ".$tanggalBaru."</b><br><br>
+                    Kami menghargai umpan balik Anda! Kami akan berusaha lebih baik di masa depan. Terima kasih atas pengertiannya!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($email, $dataNotif);
 
         return redirect()->back()->with("success", "Berhasil menolak komplain!");
     }
