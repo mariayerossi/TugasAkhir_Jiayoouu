@@ -1225,7 +1225,12 @@ class Transaksi extends Controller
 
     public function cetakNota(Request $request) {
         //cetak nota
-
+        $trans = DB::table('dtrans')
+                ->rightJoin("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                ->where("htrans.id_htrans","=",$request->id_htrans)
+                ->get()
+                ->first();
+        dd($trans);
 
         //status htrans berubah menjadi "selesai"
         $data = [
