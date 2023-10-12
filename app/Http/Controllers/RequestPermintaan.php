@@ -41,19 +41,19 @@ class RequestPermintaan extends Controller
             return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
         }
         else {
-            // $data = [
-            //     "harga" => $harga,
-            //     "lapangan" => $array[0],
-            //     "mulai" => $request->tgl_mulai,
-            //     "selesai" => $request->tgl_selesai,
-            //     "id_alat" => $request->id_alat,
-            //     "id_tempat" => $request->id_tempat,
-            //     "id_pemilik" => $request->id_pemilik,
-            //     "tgl_minta" => $tgl_minta,
-            //     "status" => "Menunggu"
-            // ];
-            // $per = new ModelsRequestPermintaan();
-            // $per->insertPermintaan($data);
+            $data = [
+                "harga" => $harga,
+                "lapangan" => $array[0],
+                "mulai" => $request->tgl_mulai,
+                "selesai" => $request->tgl_selesai,
+                "id_alat" => $request->id_alat,
+                "id_tempat" => $request->id_tempat,
+                "id_pemilik" => $request->id_pemilik,
+                "tgl_minta" => $tgl_minta,
+                "status" => "Menunggu"
+            ];
+            $per = new ModelsRequestPermintaan();
+            $per->insertPermintaan($data);
 
             //notif email
             $email_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->email_pemilik;
@@ -179,12 +179,12 @@ class RequestPermintaan extends Controller
         $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
 
         if ($status == "Menunggu") {
-            // $data = [
-            //     "id" => $request->id_permintaan,
-            //     "status" => "Ditolak"
-            // ];
-            // $per = new ModelsRequestPermintaan();
-            // $per->updateStatus($data);
+            $data = [
+                "id" => $request->id_permintaan,
+                "status" => "Ditolak"
+            ];
+            $per = new ModelsRequestPermintaan();
+            $per->updateStatus($data);
 
             $req = new ModelsRequestPermintaan();
             $id_tempat = $req->get_all_data_by_id($request->id_permintaan)->first()->fk_id_tempat;

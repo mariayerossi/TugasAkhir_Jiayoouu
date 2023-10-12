@@ -10,6 +10,7 @@ use App\Models\htrans;
 use App\Models\kategori;
 use App\Models\pihakTempat;
 use Carbon\Carbon;
+use App\Models\notifikasiEmail;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -288,24 +289,54 @@ class Transaksi extends Controller
         }
 
         //hapus session sewaAlat
-        $sewaAlat = Session::get("sewaAlat");
-        foreach ($sewaAlat as $key => $item) {
-            if ($item['lapangan'] == "1") {
-                // 3. Hapus item tersebut dari array
-                unset($sewaAlat[$key]);
+        if (Session::has("sewaAlat")) {
+            $sewaAlat = Session::get("sewaAlat");
+            foreach ($sewaAlat as $key => $item) {
+                if ($item['lapangan'] == "1") {
+                    // 3. Hapus item tersebut dari array
+                    unset($sewaAlat[$key]);
+                }
             }
+            Session::put("sewaAlat", $sewaAlat);
         }
-        Session::put("sewaAlat", $sewaAlat);
 
         //hapus session cart
-        $cart = Session::get("cart");
-        foreach ($cart as $key => $item) {
-            if ($item['lapangan'] == "1") {
-                // 3. Hapus item tersebut dari array
-                unset($cart[$key]);
+        if (Session::has("cart")) {
+            $cart = Session::get("cart");
+            foreach ($cart as $key => $item) {
+                if ($item['lapangan'] == "1") {
+                    // 3. Hapus item tersebut dari array
+                    unset($cart[$key]);
+                }
+            }
+            Session::put("cart", $cart);
+        }
+
+        //notif ke tempat
+        $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_tempat)->get()->first();
+        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$request->id_lapangan)->get()->first();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$id)->get();
+
+        $dtransStr = "";
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
             }
         }
-        Session::put("cart", $cart);
+
+        $dataNotif = [
+            "subject" => "Transaksi Persewaan Baru Menunggu Konfirmasi Anda!",
+            "judul" => "Transaksi Persewaan Baru Menunggu Konfirmasi Anda!",
+            "nama_user" => $dataTempat->nama_tempat,
+            "isi" => "Anda baru saja menerima satu transaksi persewaan baru:<br><br>
+                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                    ".$dtransStr."<br>
+                    <b>Total Transaksi: Rp ".number_format($total, 0, ',', '.')."</b><br><br>
+                    Harap segera konfirmasi transaksi untuk memastikan kelancaran prosesnya!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($dataTempat->email_tempat, $dataNotif);
 
         return redirect("/customer/detailLapangan/$request->id_lapangan")->with("success","Berhasil booking lapangan olahraga!");
     }
@@ -740,6 +771,34 @@ class Transaksi extends Controller
         $trans = new htrans();
         $trans->updateStatus($data);
 
+        // notif ke customer
+        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$request->id_htrans)->get()->first();
+        $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
+        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
+
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+
+        $dtransStr = "";
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+            }
+        }
+        
+        $dataNotif = [
+            "subject" => "🎉Transaksi Anda Telah Diterima!🎉",
+            "judul" => "Transaksi Anda Telah Diterima Pihak Pengelola Tempat Olahraga!",
+            "nama_user" => $cust->nama_user,
+            "isi" => "Yeay! Transaksi Anda telah diterima:<br><br>
+                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                    ".$dtransStr."<br>
+                    <b>Total Transaksi: Rp ".number_format($dataHtrans->total_trans, 0, ',', '.')."</b><br><br>
+                    Ingat untuk datang tepat waktu dan nikmati sesi olahraga Anda! 😊"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($cust->email_user, $dataNotif);
+
         return response()->json(['success' => true, 'message' => 'Berhasil Diterima!']);
     }
 
@@ -765,6 +824,34 @@ class Transaksi extends Controller
         ];
         $cust = new customer();
         $cust->updateSaldo($dataSaldo);
+
+        //notif ke cust
+        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$request->id_htrans)->get()->first();
+        $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
+        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
+
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+
+        $dtransStr = "";
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+            }
+        }
+
+        $dataNotif = [
+            "subject" => "⚠️Transaksi Anda Ditolak!⚠️",
+            "judul" => "Transaksi Anda Ditolak Pihak Pengelola Tempat Olahraga!",
+            "nama_user" => $cust->nama_user,
+            "isi" => "Maaf! Transaksi Anda Tidak Dapat Diproses:<br><br>
+                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                    ".$dtransStr."<br>
+                    <b>Total Transaksi: Rp ".number_format($dataHtrans->total_trans, 0, ',', '.')."</b><br><br>
+                    Jangan khawatir! Dana Anda telah kami kembalikan ke saldo wallet Anda. Cari dan sewa lapangan olahraga lain di Sportiva! 😊"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($cust->email_user, $dataNotif);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
     }
@@ -1009,6 +1096,32 @@ class Transaksi extends Controller
         Session::forget("dataRole");
         Session::put("dataRole", $isiUser->first());
 
+        //notif ke tempat
+        $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$htrans->fk_id_tempat)->get()->first();
+        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->fk_id_lapangan)->get()->first();
+
+        $dtransStr = "";
+        if (!$dtrans->isEmpty()) {
+            foreach ($dtrans as $key => $value) {
+                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+            }
+        }
+
+        $dataNotif = [
+            "subject" => "Extend Waktu Baru Menunggu Konfirmasi Anda!",
+            "judul" => "Extend Waktu Baru Menunggu Konfirmasi Anda!",
+            "nama_user" => $dataTempat->nama_tempat,
+            "isi" => "Anda baru saja menerima satu permintaan extend waktu baru:<br><br>
+                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                    ".$dtransStr."<br>
+                    <b>Durasi Extend: ".$request->durasi." jam</b><br>
+                    <b>Total Transaksi: Rp ".number_format($request->total, 0, ',', '.')."</b><br><br>
+                    Harap segera konfirmasi untuk memastikan kelancaran prosesnya!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($dataTempat->email_tempat, $dataNotif);
+
         return redirect()->back()->with("success", "Berhasil melakukan extend waktu! menunggu konfirmasi pemilik tempat olahraga");
     }
 
@@ -1019,6 +1132,36 @@ class Transaksi extends Controller
         ];
         $extend = new extendHtrans();
         $extend->updateStatus($data);
+
+        // notif ke customer
+        $extend = DB::table('extend_htrans')->where("id_extend_htrans","=",$request->id_extend)->get()->first();
+        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$extend->fk_id_htrans)->get()->first();
+        $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
+        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
+
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+
+        $dtransStr = "";
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+            }
+        }
+        
+        $dataNotif = [
+            "subject" => "🎉Extend Waktu Anda Telah Diterima!🎉",
+            "judul" => "Extend Waktu Anda Telah Diterima Pihak Pengelola Tempat Olahraga!",
+            "nama_user" => $cust->nama_user,
+            "isi" => "Yeay! Extend Waktu Anda telah diterima:<br><br>
+                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                    ".$dtransStr."<br>
+                    <b>Durasi Extend: ".$extend->durasi_extend." jam</b><br>
+                    <b>Total Transaksi: Rp ".number_format($extend->total, 0, ',', '.')."</b><br><br>
+                    Selamat menikmati sesi olahraga Anda! Semoga sehat selalu! 😊"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($cust->email_user, $dataNotif);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Diterima!']);
     }
@@ -1045,6 +1188,36 @@ class Transaksi extends Controller
         ];
         $cust = new customer();
         $cust->updateSaldo($dataSaldo);
+
+        //notif ke cust
+        $extend = DB::table('extend_htrans')->where("id_extend_htrans","=",$request->id_extend)->get()->first();
+        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$extend->fk_id_htrans)->get()->first();
+        $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
+        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
+
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+
+        $dtransStr = "";
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+            }
+        }
+
+        $dataNotif = [
+            "subject" => "⚠️Extend Waktu Anda Ditolak!⚠️",
+            "judul" => "Extend Waktu Anda Ditolak Pihak Pengelola Tempat Olahraga!",
+            "nama_user" => $cust->nama_user,
+            "isi" => "Maaf! Extend Waktu Anda Tidak Dapat Diproses:<br><br>
+                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                    ".$dtransStr."<br>
+                    <b>Durasi Extend: ".$extend->durasi_extend." jam</b><br>
+                    <b>Total Transaksi: Rp ".number_format($extend->total, 0, ',', '.')."</b><br><br>
+                    Jangan khawatir! Dana Anda telah kami kembalikan ke saldo wallet Anda. Cari dan sewa lapangan olahraga lain di Sportiva! 😊"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail("maria.yerossi@gmail.com", $dataNotif);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
     }

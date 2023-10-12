@@ -211,9 +211,15 @@
         </div>
     @endif
 
+    @php
+        $extend = DB::table('extend_htrans')
+                ->where("fk_id_htrans","=",$htrans->first()->id_htrans)
+                ->get();
+    @endphp
+
     @if ($htrans->first()->status_trans == "Menunggu")
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
-            <form id="tolakTransaksiForm" action="/tempat/transaksi/tolakTransaksi" method="post">
+            <form id="tolakTransaksiForm" action="" method="post">
                 @csrf
                 <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                 <input type="hidden" name="id_user" value="{{$htrans->first()->fk_id_user}}">
@@ -221,7 +227,7 @@
                 <input type="hidden" name="total" value="{{$htrans->first()->total_trans}}">
                 <button class="btn btn-danger me-3" id="tolakTrans" type="submit">Tolak</button>
             </form>
-            <form id="terimaTransaksiForm" action="/tempat/transaksi/terimaTransaksi" method="post">
+            <form id="terimaTransaksiForm" action="" method="post">
                 @csrf
                 <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                 <button class="btn btn-success" id="terimaTrans" type="submit">Terima</button>
@@ -424,16 +430,23 @@
     <button id="scrollDownButton" class="btn btn-primary floating-btn">Lihat Extend <i class="bi bi-arrow-down-circle"></i></button>
 @endif
 <script>
-    document.getElementById('scrollDownButton').addEventListener('click', function() {
-        var extendElement = document.getElementById('extend');
+    document.addEventListener("DOMContentLoaded", function() {
+        var scrollDownButton = document.getElementById('scrollDownButton');
 
-        // Menggunakan 'scrollIntoView' untuk menggulung ke elemen
-        extendElement.scrollIntoView({
-            behavior: 'smooth'
-        });
+        if (scrollDownButton) {  // Cek apakah elemen ada
+            scrollDownButton.addEventListener('click', function() {
+                var extendElement = document.getElementById('extend');
+
+                // Menggunakan 'scrollIntoView' untuk menggulung ke elemen
+                extendElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        }
     });
     $(document).ready(function() {
         $("#terimaTrans").click(function(event) {
+            console.log("klik");
             event.preventDefault(); // Mencegah perilaku default form
     
             var formData = $("#terimaTransaksiForm").serialize(); // Mengambil data dari form
