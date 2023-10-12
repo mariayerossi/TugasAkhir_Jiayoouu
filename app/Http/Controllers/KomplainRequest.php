@@ -278,8 +278,8 @@ class KomplainRequest extends Controller
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
 
         $dataNotif = [
-            "subject" => "Komplain ".$jenis." Anda Telah Diterima",
-            "judul" => "Komplain ".$jenis." Anda Telah Diterima",
+            "subject" => "Komplain ".$jenis." Anda Telah Diterima!",
+            "judul" => "Komplain ".$jenis." Anda Telah Diterima!",
             "nama_user" => $pengaju,
             "isi" => "Yeay! Komplain ".$jenis." yang Anda ajukan telah diterima Admin:<br><br>
                     <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
@@ -331,8 +331,8 @@ class KomplainRequest extends Controller
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
 
         $dataNotif = [
-            "subject" => "Komplain ".$jenis." Anda Telah Ditolak",
-            "judul" => "Komplain ".$jenis." Anda Telah Ditolak",
+            "subject" => "Komplain ".$jenis." Anda Telah Ditolak!",
+            "judul" => "Komplain ".$jenis." Anda Telah Ditolak!",
             "nama_user" => $pengaju,
             "isi" => "Maaf! Komplain ".$jenis." yang Anda ajukan belum bisa kami terima.<br><br>
                     <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>

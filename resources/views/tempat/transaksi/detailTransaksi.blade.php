@@ -418,11 +418,13 @@
                     <a href="/tempat/kerusakan/detailKerusakan/{{$htrans->first()->id_htrans}}" class="btn btn-warning me-2">Ajukan Kerusakan Alat</a>
                     {{-- <button class="btn btn-warning me-2">Ajukan Kerusakan Alat</button> --}}
                 @endif
-                <button class="btn btn-primary">Cetak Nota</button>
+                <form action="/tempat/transaksi/cetakNota" method="post">
+                    @csrf
+                    <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
+                    <button type="submit" class="btn btn-primary">Cetak Nota</button>
+                </form>
                 {{-- klo cetak nota diprint, maka status htrans berubah selesai --}}
             </div>
-
-            
         @endif
     @endif
 </div>

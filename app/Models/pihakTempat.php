@@ -39,6 +39,10 @@ class pihakTempat extends Model
         return pihakTempat::where('deleted_at',"=",null)->get();
     }
 
+    public function get_all_data_by_id($id){
+        return pihakTempat::where('deleted_at',"=",null)->where('id_tempat',"=", $id)->get();
+    }
+
     public function softDelete($data){
         $temp = pihakTempat::find($data["id"]);
         $temp->deleted_at = $data["tanggal"];

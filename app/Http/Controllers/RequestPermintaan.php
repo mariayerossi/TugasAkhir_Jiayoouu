@@ -575,6 +575,9 @@ class RequestPermintaan extends Controller
         $pen = new ModelsRequestPermintaan();
         $pen->updateStatus($data);
 
+        //total komisi tempat masuk saldo tempat
+        
+
         $permintaan = DB::table('request_permintaan')->where("id_permintaan","=",$id)->get()->first();
         $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();
         $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$permintaan->fk_id_pemilik)->get()->first();

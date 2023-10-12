@@ -13,6 +13,8 @@ use App\Models\pihakTempat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Models\notifikasiEmail;
+use DateTime;
 
 class KomplainTrans extends Controller
 {
@@ -60,6 +62,24 @@ class KomplainTrans extends Controller
         ];
         $trans = new htrans();
         $trans->updateStatus($data3);
+
+        //notif ke admin
+        $tanggalAwal = $tgl_komplain;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+
+        $dataNotif = [
+            "subject" => "Komplain Transaksi Baru",
+            "judul" => "Komplain Transaksi Baru dari ".Session::get("dataRole")->nama_user,
+            "nama_user" => "Admin",
+            "isi" => "Anda memiliki satu komplain transaksi baru:<br><br>
+                    <b>Diajukan oleh: ".Session::get("dataRole")->nama_user."</b><br>
+                    <b>Diajukan pada: ".$tanggalBaru."</b><br>
+                    <b>Jenis Komplain: ".$request->jenis."</b><br><br>
+                    Mohon segera masuk dan tangani komplain ini untuk meningkatkan kepuasan pengguna!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail("admin@gmail.com",$dataNotif);
 
         return redirect()->back()->with("success", "Berhasil Mengajukan Komplain!");
     }
@@ -125,7 +145,7 @@ class KomplainTrans extends Controller
                     $pemi = new pemilikAlat();
                     $pemi->updateSaldo($data2);
 
-                    $penanganan = "Pengembalian dana dari pemilik alat sebesar $request->jumlah";
+                    $penanganan = "Pengembalian dana dari pemilik alat sebesar $request->jumlah,";
                 }
                 else {
                     $saldoTempat = DB::table('pihak_tempat')->where("id_tempat","=",$array[0])->get()->first()->saldo_tempat;
@@ -142,7 +162,7 @@ class KomplainTrans extends Controller
                     $pemi = new pihakTempat();
                     $pemi->updateSaldo($data2);
 
-                    $penanganan = "Pengembalian dana dari pihak tempat sebesar $request->jumlah";
+                    $penanganan = "Pengembalian dana dari pihak tempat sebesar $request->jumlah,";
                 }
             }
             else {
@@ -167,13 +187,13 @@ class KomplainTrans extends Controller
                     $alat = new alatOlahraga();
                     $alat->softDelete($data3);
 
-                    $penanganan = "Hapus Alat";
+                    $penanganan .= "Hapus Alat,";
                 }
                 else if ($array[1] == "lapangan") {
                     $lapangan = new lapanganOlahraga();
                     $lapangan->softDelete($data3);
 
-                    $penanganan = "Hapus Lapangan";
+                    $penanganan .= "Hapus Lapangan,";
                 }
             }
             else {
@@ -198,13 +218,13 @@ class KomplainTrans extends Controller
                     $temp = new pihakTempat();
                     $temp->softDelete($data4);
 
-                    $penanganan = "Hapus Tempat";
+                    $penanganan .= "Hapus Tempat,";
                 }
                 else if ($array[1] == "pemilik") {
                     $pemi = new pemilikAlat();
                     $pemi->softDelete($data4);
 
-                    $penanganan = "Hapus Pemilik";
+                    $penanganan .= "Hapus Pemilik,";
                 }
             }
             else {
@@ -236,6 +256,26 @@ class KomplainTrans extends Controller
         $penang = new ModelsKomplainTrans();
         $penang->updatePenanganan($data7);
 
+        //notif ke cust
+        $komplain = DB::table('komplain_trans')->where("id_komplain_trans","=",$request->id_komplain)->get()->first();
+        $user = DB::table('user')->where("id_user","=",$komplain->fk_id_user)->get()->first();
+
+        $tanggalAwal = $komplain->waktu_komplain;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+
+        $dataNotif = [
+            "subject" => "🎉Komplain Transaksi Anda Telah Diterima!🎉",
+            "judul" => "Komplain Transaksi Anda Telah Diterima!",
+            "nama_user" => $user->nama_user,
+            "isi" => "Yeay! Komplain Transaksi yang Anda ajukan telah diterima Admin:<br><br>
+                    <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
+                    <b>Diajukan pada: ".$tanggalBaru."</b><br><br>
+                    Komplain ini telah disetujui Admin dengan penanganan berupa ".$penanganan."!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($user->email_user,$dataNotif);
+
         return redirect()->back()->with("success", "Berhasil menangani komplain!");
     }
 
@@ -246,6 +286,26 @@ class KomplainTrans extends Controller
         ];
         $komp = new ModelsKomplainTrans();
         $komp->updateStatus($data);
+
+        //notif ke cust
+        $komplain = DB::table('komplain_trans')->where("id_komplain_trans","=",$request->id)->get()->first();
+        $user = DB::table('user')->where("id_user","=",$komplain->fk_id_user)->get()->first();
+
+        $tanggalAwal = $komplain->waktu_komplain;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+
+        $dataNotif = [
+            "subject" => "😔Komplain Transaksi Anda Telah Ditolak!😔",
+            "judul" => "Komplain Transaksi Anda Telah Ditolak!",
+            "nama_user" => $user->nama_user,
+            "isi" => "Maaf! Komplain Transaksi yang Anda ajukan belum bisa kami terima.<br><br>
+                    <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
+                    <b>Diajukan pada: ".$tanggalBaru."</b><br><br>
+                    Kami menghargai umpan balik Anda! Kami akan berusaha lebih baik di masa depan. Terima kasih atas pengertiannya!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($user->email_user,$dataNotif);
 
         return redirect()->back()->with("success", "Berhasil menolak komplain!");
     }
