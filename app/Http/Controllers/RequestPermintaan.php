@@ -575,6 +575,9 @@ class RequestPermintaan extends Controller
         ];
         $pen = new ModelsRequestPermintaan();
         $pen->updateStatus($data);
+
+        //status alat menjadi aktif lagi
+        
         
         $permintaan = DB::table('request_permintaan')->where("id_permintaan","=",$id)->get()->first();
         $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();

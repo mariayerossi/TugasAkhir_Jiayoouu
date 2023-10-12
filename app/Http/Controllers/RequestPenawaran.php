@@ -644,6 +644,9 @@ class RequestPenawaran extends Controller
         $pen = new ModelsRequestPenawaran();
         $pen->updateStatus($data);
 
+        //status alat menjadi aktif lagi
+        
+
         $penawaran = DB::table('request_penawaran')->where("id_penawaran","=",$id)->get()->first();
         $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->fk_id_tempat)->get()->first();
         $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
