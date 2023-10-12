@@ -1244,6 +1244,10 @@ class Transaksi extends Controller
         if (!$dataDtrans->isEmpty()) {
             foreach ($dataDtrans as $key => $value) {
                 if ($value->fk_id_tempat == Session::get("dataRole")->id_tempat) {
+                    $extend_dtrans = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value->id_dtrans)->get()->first();
+                    if ($extend_dtrans != null) {
+                        $total_komisi_tempat += $extend_dtrans->total_komisi_tempat;
+                    }
                     $total_komisi_tempat += $value->total_komisi_tempat;
                 }
             }
@@ -1252,7 +1256,7 @@ class Transaksi extends Controller
         //subtotal lapangan masuk ke saldo tempat & total komisi tempat ditahan dulu
         //klo masa sewa sdh selesai baru dimasukin saldo tempat
         $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_tempat, "mysecretkey");
-        $saldo += (int)$dataHtrans->subtotal_lapangan + $total_komisi_tempat;
+        $saldo += (int)$dataHtrans->subtotal_lapangan + $extend->subtotal_lapangan + $total_komisi_tempat;
 
         //enkripsi kembali saldo
         $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
@@ -1274,12 +1278,14 @@ class Transaksi extends Controller
         if (!$dataDtrans->isEmpty()) {
             foreach ($dataDtrans as $key => $value) {
                 if ($value->fk_id_pemilik != null) {
+                    $extend_dtrans2 = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value->id_dtrans)->get()->first();
+
                     $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
                     // dd($value->total_komisi_pemilik);
 
                     $saldo2 = (int)$this->decodePrice($pemilik->saldo_pemilik, "mysecretkey");
                     // dd($saldo2);
-                    $saldo2 += (int)$value->total_komisi_pemilik;
+                    $saldo2 += (int)$value->total_komisi_pemilik + $extend_dtrans2->total_komisi_pemilik;
                     // dd($saldo2);
 
                     $enkrip2 = $this->encodePrice((string)$saldo2, "mysecretkey");

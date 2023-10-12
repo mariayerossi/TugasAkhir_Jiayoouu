@@ -7,6 +7,7 @@ use App\Models\requestPermintaan as ModelsRequestPermintaan;
 use DateInterval;
 use DateTime;
 use App\Models\notifikasiEmail;
+use App\Models\pihakTempat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -574,14 +575,42 @@ class RequestPermintaan extends Controller
         ];
         $pen = new ModelsRequestPermintaan();
         $pen->updateStatus($data);
-
-        //total komisi tempat masuk saldo tempat
         
-
         $permintaan = DB::table('request_permintaan')->where("id_permintaan","=",$id)->get()->first();
         $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();
         $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$permintaan->fk_id_pemilik)->get()->first();
         $alat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->req_id_alat)->get()->first();
+
+        //total komisi tempat (alat sewa) masuk saldo tempat
+        $trans = DB::table('dtrans')
+                ->select("htrans.fk_id_tempat", "dtrans.id_dtrans", "dtrans.total_komisi_tempat", "dtrans.fk_id_tempat as tempat")
+                ->join("htrans", "dtrans.fk_id_htrans","htrans.id_htrans")
+                ->where("fk_id_alat","=",$permintaan->req_id_alat)
+                ->get();
+        if (!$trans->isEmpty()) {
+            foreach ($trans as $key => $value) {
+                if ($value->fk_id_tempat == $permintaan->fk_id_tempat) {
+                    if ($value->tempat == null) {
+                        $extend_dtrans = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value->id_dtrans)->get()->first();
+
+                        $saldo = (int)$this->decodePrice($tempat->saldo_tempat, "mysecretkey");
+                        // dd($saldo2);
+                        $saldo += (int)$value->total_komisi_tempat + $extend_dtrans->total_komisi_tempat;
+                        // dd($saldo2);
+
+                        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+                        //update db
+                        $dataSaldo = [
+                            "id" => $value->fk_id_tempat,
+                            "saldo" => $enkrip
+                        ];
+                        $temp = new pihakTempat();
+                        $temp->updateSaldo($dataSaldo);
+                    }
+                }
+            }
+        }
         
         //notif email tempat
         $dataNotif = [
