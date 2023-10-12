@@ -63,7 +63,7 @@
 
 <div class="container">
     <div class="header">
-        {{-- <img src="{{ asset('assets/img/logo_white.png') }}" alt="Logo Perusahaan" style="width: 100px; display: block; margin: 0 auto;"> --}}
+        <img src="{{$message->embed(public_path().'/assets/img/logo_white.png')}}" width="40%">
         <h2>{{$judul}}</h2>
     </div>
     <div class="content">

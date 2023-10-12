@@ -10,6 +10,7 @@ use App\Models\sewaSendiri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Models\notifikasiEmail;
 
 class KerusakanAlat extends Controller
 {
@@ -55,7 +56,7 @@ class KerusakanAlat extends Controller
                                 ->where("req_id_alat","=",$dataTrans->fk_id_alat)
                                 ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
                                 ->get();
-                    if ($permintaan != null) {
+                    if (!$permintaan->isEmpty()) {
                         $id = $permintaan->first()->id_permintaan;
                         
                         $data3 = [
@@ -70,7 +71,7 @@ class KerusakanAlat extends Controller
                                 ->where("req_id_alat","=",$dataTrans->fk_id_alat)
                                 ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
                                 ->get();
-                        if ($penawaran != null) {
+                        if (!$penawaran->isEmpty()) {
                             $id = $penawaran->first()->id_penawaran;
                             
                             $data3 = [
@@ -100,6 +101,33 @@ class KerusakanAlat extends Controller
                     }
 
                     $cek = true;
+
+                    //notif ke pemilik klo alat miliknya rusak dan perlu diambil
+                    $dtrans = DB::table('dtrans')->where("id_dtrans","=",$id_dtrans)->get()->first();
+                    if ($dtrans->fk_id_pemilik != null) {
+                        $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dtrans->fk_id_pemilik)->get()->first();
+
+                        $sengaja = "";
+                        if ($unsur == "Ya") {
+                            $sengaja = "Setelah melakukan pengecekan, kami memastikan bahwa kerusakan ini terjadi karena unsur ketidaksengajaan. Oleh karena itu, tidak ada pihak yang akan dikenakan biaya ganti rugi atas kerusakan ini. Kami menghargai pengertian Anda dan mohon maaf atas ketidaknyamanan yang mungkin timbul.";
+                        }
+                        else {
+                            $sengaja = "Setelah melakukan pengecekan, kami menemukan bukti yang menunjukkan bahwa kerusakan ini terjadi karena adanya kesengajaan. Oleh karena itu, sesuai dengan peraturan dan ketentuan yang telah disepakati, akan ada biaya ganti rugi yang dikenakan kepada pihak yang bertanggung jawab.";
+                        }
+
+                        $dataNotif = [
+                            "subject" => "Pemberitahuan Kerusakan Alat Olahraga😢",
+                            "judul" => "Pemberitahuan Kerusakan Alat Olahraga",
+                            "nama_user" => $pemilik->nama_pemilik,
+                            "isi" => "Maaf! Alat olahraga yang anda sewakan mengalami kerusakan:<br><br>
+                                    <b>Nama Alat Olahraga: </b><br>
+                                    <b>Ganti Rugi Alat Olahraga: Rp </b><br><br>
+                                    ".$sengaja."<br><br>
+                                    Alat olahraga sudah bisa diambil di tempat olahraga! Terus sewakan alat olahragamu di Sportiva!"
+                        ];
+                        $e = new notifikasiEmail();
+                        $e->sendEmail("maria.yerossi@gmail.com", $dataNotif);
+                    }
                 }
                 else {
                     return redirect()->back()->with("error", "Foto tidak boleh kosong!");

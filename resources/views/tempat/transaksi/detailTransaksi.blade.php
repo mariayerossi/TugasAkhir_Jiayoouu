@@ -551,11 +551,11 @@
             });
         });
 
-        $(".form_rusak").hide();
-        $(".btn-warning").click(function(e) {
-            e.preventDefault();  // Menghentikan perilaku default (navigasi)
-            $(`.form_rusak`).show();
-        });
+        // $(".form_rusak").hide();
+        // $(".btn-warning").click(function(e) {
+        //     e.preventDefault();  // Menghentikan perilaku default (navigasi)
+        //     $(`.form_rusak`).show();
+        // });
     });
 </script>    
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
