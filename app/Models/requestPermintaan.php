@@ -98,6 +98,10 @@ class requestPermintaan extends Model
         return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat","=",$role)->count();
     }
 
+    public function get_all_data() {
+        return requestPermintaan::where('deleted_at',"=",null)->get();
+    }
+
     public function updateStatus($data)
     {
         $per = requestPermintaan::find($data["id"]);

@@ -213,55 +213,55 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        // DB::table('request_permintaan')->insert([
-        //     'req_harga_sewa' => 50000,
-        //     'req_lapangan' => 1,
-        //     'req_tanggal_mulai' => "2023-9-13",
-        //     'req_tanggal_selesai' => "2023-10-13",
-        //     'req_id_alat' => 1,
-        //     'fk_id_tempat' => 1,
-        //     'fk_id_pemilik' => 1,
-        //     'tanggal_minta' => date("Y-m-d H:i:s"),
-        //     'status_permintaan' => "Diterima",
-        //     'kode_mulai' => null,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
-
-        // DB::table('negosiasi')->insert([
-        //     'isi_negosiasi' => "halo kak! untuk harga sewa tidak bisa dipertimbangkan lagi?",
-        //     'waktu_negosiasi' => date("Y-m-d H:i:s"),
-        //     'fk_id_permintaan' => 1,
-        //     'fk_id_penawaran' => null,
-        //     'fk_id_pemilik' => 1,
-        //     'fk_id_tempat' => null,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
-
-        DB::table('request_penawaran')->insert([
-            'req_harga_sewa' => 40000,
+        DB::table('request_permintaan')->insert([
+            'req_harga_sewa' => 50000,
             'req_lapangan' => 1,
-            'req_tanggal_mulai' => "2023-09-13",
-            'req_tanggal_selesai' => "2023-11-13",
+            'req_tanggal_mulai' => "2023-9-13",
+            'req_tanggal_selesai' => "2023-10-13",
             'req_id_alat' => 1,
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
-            'tanggal_tawar' => date("Y-m-d H:i:s"),
-            'status_penawaran' => "Diterima",
-            'status_tempat' => "Setuju",
-            'status_pemilik' => "Setuju",
+            'tanggal_minta' => date("Y-m-d H:i:s"),
+            'status_permintaan' => "Diterima",
             'kode_mulai' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('negosiasi')->insert([
-            'isi_negosiasi' => "hai! saya mau menawarkan alat olahraga, monggo mungkin tertarik untuk menyewakannya",
+            'isi_negosiasi' => "halo kak! untuk harga sewa tidak bisa dipertimbangkan lagi?",
             'waktu_negosiasi' => date("Y-m-d H:i:s"),
-            'fk_id_permintaan' => null,
-            'fk_id_penawaran' => 1,
+            'fk_id_permintaan' => 1,
+            'fk_id_penawaran' => null,
             'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        // DB::table('request_penawaran')->insert([
+        //     'req_harga_sewa' => 40000,
+        //     'req_lapangan' => 1,
+        //     'req_tanggal_mulai' => "2023-09-13",
+        //     'req_tanggal_selesai' => "2023-11-13",
+        //     'req_id_alat' => 1,
+        //     'fk_id_tempat' => 1,
+        //     'fk_id_pemilik' => 1,
+        //     'tanggal_tawar' => date("Y-m-d H:i:s"),
+        //     'status_penawaran' => "Diterima",
+        //     'status_tempat' => "Setuju",
+        //     'status_pemilik' => "Setuju",
+        //     'kode_mulai' => null,
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // ]);
+
+        // DB::table('negosiasi')->insert([
+        //     'isi_negosiasi' => "hai! saya mau menawarkan alat olahraga, monggo mungkin tertarik untuk menyewakannya",
+        //     'waktu_negosiasi' => date("Y-m-d H:i:s"),
+        //     'fk_id_permintaan' => null,
+        //     'fk_id_penawaran' => 1,
+        //     'fk_id_pemilik' => 1,
+        //     'fk_id_tempat' => null,
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // ]);
 
         DB::table('sewa_sendiri')->insert([
             'req_lapangan' => 1,
@@ -313,24 +313,24 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('komplain_request')->insert([
-            'jenis_komplain' => "Alat tidak sesuai",
-            'keterangan_komplain' => "alat olahraga yang dikirim dan yang dijelaskan di detail beda jauh",
-            'fk_id_permintaan' => null,
-            'fk_id_penawaran' => 1,
-            'waktu_komplain' => date("Y-m-d H:i:s"),
-            'status_komplain' => "Menunggu",
-            'penanganan_komplain' => null,
-            'fk_id_pemilik' => null,
-            'fk_id_tempat' => 1,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
+        // DB::table('komplain_request')->insert([
+        //     'jenis_komplain' => "Alat tidak sesuai",
+        //     'keterangan_komplain' => "alat olahraga yang dikirim dan yang dijelaskan di detail beda jauh",
+        //     'fk_id_permintaan' => null,
+        //     'fk_id_penawaran' => 1,
+        //     'waktu_komplain' => date("Y-m-d H:i:s"),
+        //     'status_komplain' => "Menunggu",
+        //     'penanganan_komplain' => null,
+        //     'fk_id_pemilik' => null,
+        //     'fk_id_tempat' => 1,
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // ]);
 
-        DB::table('files_komplain_req')->insert([
-            'nama_file_komplain' => "bola_jelek.jpg",
-            'fk_id_komplain_req' => 1,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
+        // DB::table('files_komplain_req')->insert([
+        //     'nama_file_komplain' => "bola_jelek.jpg",
+        //     'fk_id_komplain_req' => 1,
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // ]);
 
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0002",

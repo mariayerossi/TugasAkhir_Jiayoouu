@@ -91,6 +91,10 @@ class requestPenawaran extends Model
         return requestPenawaran::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$role)->where("status_penawaran","!=","Dibatalkan")->where("status_penawaran","!=","Ditolak")->count();
     }
 
+    public function get_all_data() {
+        return requestPenawaran::where('deleted_at',"=",null)->get();
+    }
+
     public function updateStatus($data)
     {
         $pen = requestPenawaran::find($data["id"]);
