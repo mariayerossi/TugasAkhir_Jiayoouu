@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\htrans;
 use App\Models\requestPermintaan;
 use DateInterval;
 use DateTime;
@@ -268,6 +269,47 @@ class reminder extends Command
                                 Sudah selesai. Tunggu pemilik alat olahraga mengambil alatnya ya! Terima kasih telah mempercayai Sportiva! 😊"
                     ];
                     $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
+                }
+            }
+        }
+
+        //-----------------------------------------------------------------------------------------------
+
+        //transaksi
+        $trans = new htrans();
+        $dataTrans = $trans->get_all_data();
+        
+        if (!$dataTrans->isEmpty()) {
+            foreach ($dataTrans as $key => $value) {
+                date_default_timezone_set('Asia/Jakarta');
+                $sekarang = date('Y-m-d H:i:s');
+
+                $tanggal = $value->tanggal_sewa." ".$value->jam_sewa;
+                $sewa = new DateTime($tanggal);
+                $sewa->add(new DateInterval('P1D'));
+                $sew = $sewa->format('Y-m-d H:i:s');
+
+                if ($sew == $sekarang) {
+                    //kasih reminder ke cust
+                    $dataCust = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
+                    $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+
+                    $tanggalAwal2 = $value->tanggal_sewa;
+                    $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+
+                    $dataNotif = [
+                        "subject" => "🔔Ingat! Besok Hari Sewa Lapangan Olahraga🔔",
+                        "judul" => "Jangan Lupa datang besok ya!",
+                        "nama_user" => $dataCust->nama_user,
+                        "isi" => "Detail Sewa Lapangan:<br><br>
+                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
+                                <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
+                                Ingat datang tepat waktu ya karena kami tidak memberikan toleransi keterlambatan! 😊"
+                    ];
+                    $e = new notifikasiEmail();
+                    $e->sendEmail($dataCust->email_user, $dataNotif);
                 }
             }
         }
