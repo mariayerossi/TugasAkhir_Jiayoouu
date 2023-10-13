@@ -91,22 +91,7 @@
                         @php
                             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
                             $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
-                            $sewaSendiri = DB::table("sewa_sendiri")->where("req_id_alat","=",$item->fk_id_alat)->get()->first();
-                            $permintaan  = DB::table("request_permintaan")->where("req_id_alat","=",$item->fk_id_alat)->get()->first();
-                            $penawaran  = DB::table("request_penawaran")->where("req_id_alat","=",$item->fk_id_alat)->get()->first();
-
-                            $harga = 0;
-                            if ($permintaan != null) {
-                                $harga = $permintaan->req_harga_sewa;
-                            }
-                            else if ($penawaran != null) {
-                                $harga = $penawaran->req_harga_sewa;
-                            }
-                            else if ($sewaSendiri != null) {
-                                $harga = $dataAlat->komisi_alat;
-                            }
-
-                            $total_harga += $harga;
+                            $total_harga += $item->harga_sewa_alat;
                         @endphp
                         <a href="/customer/detailAlat/{{$dataAlat->id_alat}}">
                             <div class="card h-70 mb-3">
@@ -122,7 +107,7 @@
                                         <!-- Nama Alat -->
                                         <div class="col-8">
                                             <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                            <p class="card-text">Rp {{number_format($harga, 0, ',', '.')}} x {{$durasi}} Jam</p>
+                                            <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$durasi}} Jam</p>
                                         </div>
                                     </div>
                                 </div>

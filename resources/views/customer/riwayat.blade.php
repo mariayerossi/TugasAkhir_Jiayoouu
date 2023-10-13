@@ -151,6 +151,7 @@
                                             ->get()
                                             ->first();
                             @endphp
+                            {{-- <h3>{{$item->id_htrans}}</h3> --}}
                             <div class="d-flex justify-content-end">
                                 @if ($item->status_trans == "Selesai" && $komplain == null)
                                     <form id="ajukanKomplain" action="/customer/komplain/ajukanKomplain" method="post">
@@ -165,11 +166,11 @@
                                                 ->get();
                                     @endphp
                                     @if ($cek->isEmpty())
-                                        <form id="tambahWaktu" action="/customer/extend/detailTambahWaktu" method="get">
+                                        <form id="tambahWaktu" action="/customer/extend/detailTambahWaktu" method="get" data-id="{{$item->id_htrans}}">
                                             @csrf
                                             <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
-                                            <input type="hidden" name="durasi" id="durasi_jam">
-                                            <button type="submit" class="btn btn-primary me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert()">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
+                                            <input type="hidden" name="durasi" id="durasi_jam" data-id="{{$item->id_htrans}}">
+                                            <button type="submit" class="btn btn-primary me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert(this)">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
                                         </form>
                                     @elseif (!$cek->isEmpty())
                                         <h6 class="mt-4">Status Extend Waktu {{$cek->first()->status_extend}} Admin</h6>
@@ -332,8 +333,10 @@
 
         countElement.innerText = charCount + "/500";
     }
-    function showSweetAlert() {
-        event.preventDefault()
+    function showSweetAlert(button) {
+        event.preventDefault();
+        let transaksiId = button.getAttribute('data-id');
+        console.log(transaksiId);
         swal({
             title: "Extend Waktu Sewa",
             text: "Masukkan durasi jam:",
@@ -346,10 +349,11 @@
             if (inputValue === false) return false;
             if (inputValue === "" || isNaN(inputValue)) {
                 swal.showInputError("Anda harus memasukkan durasi jam yang valid!");
+                console.log(inputValue);
                 return false;
             }
-            document.getElementById("durasi_jam").value = inputValue;
-            document.getElementById("tambahWaktu").submit();
+            document.querySelector(`#durasi_jam[data-id="${transaksiId}"]`).value = inputValue;
+            document.querySelector(`#tambahWaktu[data-id="${transaksiId}"]`).submit();
         });
 
         setTimeout(function() {
