@@ -1322,7 +1322,7 @@ class Transaksi extends Controller
                     Terima kasih telah mempercayai layanan kami. Tetap Jaga Pola Sehat Anda bersama Sportiva! 😊"
         ];
         $e = new notifikasiEmail();
-        $e->sendEmail("maria.yerossi@gmail.com", $dataNotif);
+        $e->sendEmail($cust->email_user, $dataNotif);
 
         //cetak nota
         $trans = DB::table('htrans')
