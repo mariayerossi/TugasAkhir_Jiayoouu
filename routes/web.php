@@ -702,7 +702,7 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/terimaTransaksi", [Transaksi::class, "terimaTransaksi"]);
         Route::post("/tolakTransaksi", [Transaksi::class, "tolakTransaksi"]);
         Route::post("/konfirmasiDipakai", [Transaksi::class, "konfirmasiDipakai"]);
-        Route::post("/cetakNota", [Transaksi::class, "cetakNota"]);
+        Route::get("/cetakNota", [Transaksi::class, "cetakNota"]);
     });
 
     //bagian extend

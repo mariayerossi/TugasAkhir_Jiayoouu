@@ -418,13 +418,146 @@
                     <a href="/tempat/kerusakan/detailKerusakan/{{$htrans->first()->id_htrans}}" class="btn btn-warning me-2">Ajukan Kerusakan Alat</a>
                     {{-- <button class="btn btn-warning me-2">Ajukan Kerusakan Alat</button> --}}
                 @endif
-                <form action="/tempat/transaksi/cetakNota" method="post">
+                <form action="/tempat/transaksi/cetakNota" method="get">
                     @csrf
                     <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                     <button type="submit" class="btn btn-primary">Cetak Nota</button>
                 </form>
                 {{-- klo cetak nota diprint, maka status htrans berubah selesai --}}
             </div>
+        @endif
+    @elseif ($htrans->first()->status_trans == "Selesai")
+    @php
+            $extend = DB::table('extend_htrans')
+                    ->where("fk_id_htrans","=",$htrans->first()->id_htrans)
+                    ->get();
+        @endphp
+        @if (!$extend->isEmpty())
+            <div id="extend">
+                <hr style="height: 3px;
+                border: none;
+                background-color: black;">
+            <h3 class="text-center mb-5 mt-5">Permintaan Perpanjangan Waktu Sewa</h3>
+            @php
+                $tanggalAwal4 = $extend->first()->tanggal_extend;
+                $tanggalObjek4 = DateTime::createFromFormat('Y-m-d', $tanggalAwal4);
+                $tanggalBaru4 = $tanggalObjek4->format('d-m-Y');
+            @endphp
+
+            <div class="row mb-5 mt-4">
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <h6>Tanggal Sewa: {{$tanggalBaru4}}</h6>
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <h6>Jam Sewa: {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i:s') }} WIB - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i:s') }} WIB ({{$extend->first()->durasi_extend}} jam)</h6>
+                </div>
+            </div>
+
+            <h5>Lapangan yang Disewa</h5>
+            <a href="/tempat/lapangan/lihatDetailLapangan/{{$htrans->first()->fk_id_lapangan}}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row d-md-flex align-items-md-center">
+                            <!-- Gambar -->
+                            <div class="col-4">
+                                <div class="square-image-container">
+                                    <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="" class="img-fluid">
+                                </div>
+                            </div>
+                            
+                            <!-- Nama -->
+                            <div class="col-8">
+                                <h5 class="card-title truncate-text">{{$dataLapangan->nama_lapangan}}</h5>
+                                <!-- Contoh detail lain: -->
+                                <p class="card-text">Rp {{number_format($dataLapangan->harga_sewa_lapangan, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam</p>
+                                {{-- Anda bisa menambahkan detail lain di sini sesuai kebutuhan Anda --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <div class="d-flex justify-content-end mt-3 me-3">
+                <h5><b>Subtotal: Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</b></h5>
+            </div>
+
+            @php
+                $extendDtrans = DB::table('extend_dtrans')
+                        ->where("fk_id_extend_htrans","=",$extend->first()->id_extend_htrans)
+                        ->get();
+            @endphp
+
+            <div class="row mt-5">
+                <div class="col-md-6 col-sm-12">
+                    <h5>Alat Olahraga yang Disewa</h5>
+                    @if (!$dtrans->isEmpty())
+                        @foreach ($dtrans as $item)
+                            @php
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
+                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
+                                $cekSendiri = DB::table("sewa_sendiri")->where("req_id_alat","=",$item->fk_id_alat)->get()->first();
+                            @endphp
+                            @if ($cekSendiri != null)
+                                <a href="/tempat/alat/lihatDetail/{{$dataAlat->id_alat}}">
+                                    <div class="card h-70 mb-3">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <!-- Gambar Alat -->
+                                                <div class="col-4">
+                                                    <div class="square-image-container">
+                                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Nama Alat -->
+                                                <div class="col-8">
+                                                    <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                                    <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @else
+                                <a href="/tempat/detailAlatUmum/{{$dataAlat->id_alat}}">
+                                    <div class="card h-70 mb-3">
+                                        <div class="card-body">
+                                            <div class="row d-md-flex align-items-md-center">
+                                                <!-- Gambar Alat -->
+                                                <div class="col-4">
+                                                    <div class="square-image-container">
+                                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Nama Alat -->
+                                                <div class="col-8">
+                                                    <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                                    <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            @endif
+                        @endforeach
+                    @else
+                        <p>(Tidak ada alat olahraga yang disewa)</p>
+                    @endif
+                </div>
+            </div>
+            <div class="d-flex justify-content-end mt-3 me-3">
+                <h5><b>Subtotal: Rp {{number_format($extend->first()->subtotal_alat, 0, ',', '.')}}</b></h5>
+            </div>
+            <hr>
+            @if ($extend->first()->status_extend == "Dibatalkan" || $extend->first()->status_extend == "Ditolak")
+                <div class="d-flex justify-content-end mt-5 me-3">
+                    <h4><b style="color: red">Total: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h4>
+                </div>
+            @else 
+                <div class="d-flex justify-content-end mt-5 me-3">
+                    <h4><b>Total: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h4>
+                </div>
+            @endif
         @endif
     @endif
 </div>
