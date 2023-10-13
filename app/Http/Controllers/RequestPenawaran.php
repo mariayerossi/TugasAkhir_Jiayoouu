@@ -252,6 +252,9 @@ class RequestPenawaran extends Controller
 
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$dataReq->fk_id_tempat)->get()->first();
             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataReq->req_id_alat)->get()->first();
+            $pemilik = DB::table('alat_olahraga')->where("id_alat","=",$dataReq->req_id_alat)->get()->first()->fk_id_pemilik;
+            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$pemilik)->get()->first()->nama_pemilik;
+            $email_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$pemilik)->get()->first()->email_pemilik;
 
             $dataNotif = [
                 "subject" => "Detail Penawaran Alat Olahraga Anda Telah Dikonfirmasi",
@@ -264,6 +267,20 @@ class RequestPenawaran extends Controller
             ];
             $e = new notifikasiEmail();
             $e->sendEmail($tempat->email_tempat, $dataNotif);
+
+            //notif email ke pemilik
+            $dataNotif2 = [
+                "subject" => "Berhasil Mengkonfirmasi Detail. Segera Antarkan Alat Olahragamu!",
+                "judul" => "Berhasil Mengkonfirmasi Detail",
+                "nama_user" => $nama_pemilik,
+                "isi" => "Yeay! Anda berhasil mengkonfirmasi detail permintaan alat olahraga:<br><br>
+                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                        <b>Diminta oleh: ".$tempat->nama_tempat."</b><br><br>
+                        Mohon segera antarkan alat olahraga Anda dalam waktu 2 hari ke depan. Ingat! Jika Anda tidak mengantarkannya dalam waktu tersebut, permintaan akan otomatis dibatalkan.<br>
+                        Terima kasih atas kerjasama Anda!"
+            ];
+            $e2 = new notifikasiEmail();
+            $e2->sendEmail($email_pemilik,$dataNotif2);
 
             return redirect("/pemilik/penawaran/daftarPenawaran");
         }

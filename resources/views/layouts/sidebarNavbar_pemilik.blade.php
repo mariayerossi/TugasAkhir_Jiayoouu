@@ -190,13 +190,34 @@ Sportiva
                 <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
                 <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
             </a>
+            @php
+                function decodePrice($encodedPrice, $key) {
+                    $encodedPrice = base64_decode($encodedPrice);
+                    $decodedPrice = '';
+                    $priceLength = strlen($encodedPrice);
+                    $keyLength = strlen($key);
+
+                    for ($i = 0; $i < $priceLength; $i++) {
+                        $decodedPrice .= $encodedPrice[$i] ^ $key[$i % $keyLength];
+                    }
+
+                    return $decodedPrice;
+                }
+
+                $saldo = decodePrice(Session::get("dataRole")->saldo_pemilik, "mysecretkey");
+            @endphp
             <div class="coba">
                 <div class="profile-dropdown">
                     <img src="{{ asset('../assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
                     <div class="dropdown-content">
                         <h6 class="m-3">{{Session::get("dataRole")->nama_pemilik}}</h6>
+                        <h6 class="m-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+                                <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+                              </svg>: Rp {{ number_format($saldo, 0, ',', '.') }}
+                        </h6>
                         <hr>
-                        <a href="/editprofile">Profile</a>
+                        {{-- <a href="/editprofile">Profile</a> --}}
                         <a href="/pemilik/saldo/tarikSaldo">Tarik Saldo</a>
                         <a href="/logout">Logout</a>
                     </div>
