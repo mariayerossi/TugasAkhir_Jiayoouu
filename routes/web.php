@@ -753,6 +753,14 @@ Route::prefix("/tempat")->group(function(){
 Route::prefix("/customer")->group(function(){
     // Route::view("/beranda", "customer.beranda");
     Route::get("/beranda", [LapanganOlahraga::class, "cariLapangan"])->middleware([CekCustomer::class]);
+    Route::get("/editProfile", function () {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        $cust = new customer();
+        $cust->get_all_data_by_id(Session::get("dataRole")->id_user);
+        $param["cust"] = $cust->get_all_data_by_id(Session::get("dataRole")->id_user);
+        return view("customer.profile")->with($param);
+    });
     Route::get("/detailLapangan/{id}", function ($id) {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
