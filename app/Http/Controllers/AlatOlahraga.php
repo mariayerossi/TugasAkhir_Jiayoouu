@@ -213,7 +213,7 @@ class AlatOlahraga extends Controller
         // dd($search);
     
         if ($request->filled('kategori')) {
-            $query->where('kategori_alat', $request->kategori);
+            $query->where('fk_id_kategori', $request->kategori);
         }
         
         if ($request->filled('cari')) {

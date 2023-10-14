@@ -226,7 +226,7 @@ class LapanganOlahraga extends Controller
         }
     
         if ($request->filled('kategori')) {
-            $query->where('kategori_lapangan', $request->kategori);
+            $query->where('fk_id_kategori', $request->kategori);
         }
         
         if ($request->filled('cari')) {
@@ -271,7 +271,7 @@ class LapanganOlahraga extends Controller
         $query = DB::table('lapangan_olahraga')->where('lapangan_olahraga.deleted_at',"=",null)->where("lapangan_olahraga.status_lapangan","=","Aktif");
     
         if ($request->filled('kategori')) {
-            $query->where('lapangan_olahraga.kategori_lapangan',"=", $request->kategori);
+            $query->where('lapangan_olahraga.fk_id_kategori',"=", $request->kategori);
         }
         // dd($query->get());
         

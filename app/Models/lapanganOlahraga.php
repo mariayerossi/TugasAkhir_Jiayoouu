@@ -19,7 +19,7 @@ class lapanganOlahraga extends Model
     {
         $lapa = new lapanganOlahraga();
         $lapa->nama_lapangan = $data["nama"];
-        $lapa->kategori_lapangan = $data["kategori"];
+        $lapa->fk_id_kategori = $data["kategori"];
         $lapa->tipe_lapangan = $data["tipe"];
         $lapa->lokasi_lapangan = $data["lokasi"];
         $lapa->kota_lapangan = $data["kota"];
@@ -64,7 +64,7 @@ class lapanganOlahraga extends Model
     public function updateLapangan($data){
         $lapa = lapanganOlahraga::find($data["id"]);
         $lapa->nama_lapangan = $data["nama"];
-        $lapa->kategori_lapangan = $data["kategori"];
+        $lapa->fk_id_kategori = $data["kategori"];
         $lapa->tipe_lapangan = $data["tipe"];
         $lapa->lokasi_lapangan = $data["lokasi"];
         $lapa->kota_lapangan = $data["kota"];

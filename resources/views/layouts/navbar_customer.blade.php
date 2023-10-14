@@ -154,7 +154,7 @@ Sportiva
                             <option value="" disabled selected>Kategori</option> 
                             @if (!$kategori->isEmpty())
                                 @foreach ($kategori as $item)
-                                <option value="{{$item->nama_kategori}}">{{$item->nama_kategori}}</option>
+                                <option value="{{$item->id_kategori}}">{{$item->nama_kategori}}</option>
                                 @endforeach
                             @endif
                         </select>

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('alat_olahraga', function (Blueprint $table) {
             $table->integerIncrements('id_alat');
             $table->string('nama_alat');
-            $table->string('kategori_alat');
+            $table->unsignedInteger('fk_id_kategori');
             $table->string('deskripsi_alat', 500);
             $table->float('berat_alat');
             $table->string('ukuran_alat');
@@ -32,6 +32,9 @@ return new class extends Migration
             $table->foreign('fk_id_tempat')
                   ->references('id_tempat')
                   ->on('pihak_tempat');
+            $table->foreign('fk_id_kategori')
+                  ->references('id_kategori')
+                  ->on('kategori');
         });
     }
 

@@ -19,7 +19,7 @@ class alatOlahraga extends Model
     {
         $alat = new alatOlahraga();
         $alat->nama_alat = $data["nama"];
-        $alat->kategori_alat = $data["kategori"];
+        $alat->fk_id_kategori = $data["kategori"];
         $alat->kota_alat = $data["kota"];
         $alat->deskripsi_alat = $data["deskripsi"];
         $alat->berat_alat = $data["berat"];
@@ -70,7 +70,7 @@ class alatOlahraga extends Model
     public function updateAlat($data){
         $alat = alatOlahraga::find($data["id"]);
         $alat->nama_alat = $data["nama"];
-        $alat->kategori_alat = $data["kategori"];
+        $alat->fk_id_kategori = $data["kategori"];
         $alat->kota_alat = $data["kota"];
         $alat->deskripsi_alat = $data["deskripsi"];
         $alat->berat_alat = $data["berat"];

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('lapangan_olahraga', function (Blueprint $table) {
             $table->integerIncrements('id_lapangan');
             $table->string('nama_lapangan');
-            $table->string('kategori_lapangan');
+            $table->unsignedInteger('fk_id_kategori');
             $table->string('tipe_lapangan');
             $table->string('lokasi_lapangan');
             $table->string('kota_lapangan');
@@ -28,6 +28,9 @@ return new class extends Migration
             $table->foreign('pemilik_lapangan')
                   ->references('id_tempat')
                   ->on('pihak_tempat');
+            $table->foreign('fk_id_kategori')
+                  ->references('id_kategori')
+                  ->on('kategori');
         });
     }
 

@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Molten",
-            'kategori_alat' => "Basket",
+            'fk_id_kategori' => 1,
             'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
             Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
             *Bola Original Selalu ada Logo PERBASI & IBL
@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Basket Mario 1",
-            'kategori_lapangan' => "Basket",
+            'fk_id_kategori' => 1,
             'tipe_lapangan' => "Outdoor",
             'lokasi_lapangan' => "jln. ngagel tengah no.23, Surabaya",
             'kota_lapangan' => "Surabaya",
@@ -177,7 +177,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Futsal Specs",
-            'kategori_alat' => "Futsal",
+            'fk_id_kategori' => 2,
             'deskripsi_alat' => "BRAND : SPECSSS
             MODEL : FUTSAL
             MATERIAL : PVC, FOAM, POLYESTER FABRIC AND RUBBER
