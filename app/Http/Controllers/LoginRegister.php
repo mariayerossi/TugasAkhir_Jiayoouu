@@ -28,12 +28,13 @@ class LoginRegister extends Controller
     //Register User
     public function registerUser(Request $request){
         $request->validate([
-            "nama" => 'required|min:5',
+            "nama" => 'required|min:5|regex:/^[^0-9]*$/',
             "email" => 'required|email',
             "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
             "password" => 'required|min:8',
             "konfirmasi" => 'required|min:8'
         ], [
+            "nama.regex" => ":attribute tidak boleh mengandung angka!",
             "nama.required" => ":attribute lengkap tidak boleh kosong!",
             "required" => ":attribute tidak boleh kosong!",
             "nama.min" => ":attribute lengkap tidak valid!",
@@ -91,13 +92,14 @@ class LoginRegister extends Controller
     // Register Pemilik
     public function registerPemilik(Request $request){
         $request->validate([
-            "nama" => 'required|min:5',
+            "nama" => 'required|min:5|regex:/^[^0-9]*$/',
             "email" => 'required|email',
             "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
             "ktp" => 'required|max:5120',
             "password" => 'required|min:8',
             "konfirmasi" => 'required|min:8'
         ], [
+            "nama.regex" => ":attribute tidak boleh mengandung angka!",
             "nama.required" => ":attribute lengkap tidak boleh kosong!",
             "required" => ":attribute tidak boleh kosong!",
             "nama.min" => ":attribute lengkap tidak valid!",
@@ -165,7 +167,7 @@ class LoginRegister extends Controller
     public function registerTempat(Request $request){
         $request->validate([
             "nama" => 'required|min:5',
-            "pemilik" => 'required|min:5',
+            "pemilik" => 'required|min:5|regex:/^[^0-9]*$/',
             "email" => 'required|email',
             "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
             "alamat" => 'required|min:10',
@@ -174,6 +176,7 @@ class LoginRegister extends Controller
             "password" => 'required|min:8',
             "konfirmasi" => 'required|min:8'
         ], [
+            "pemilik.regex" => "nama pemilik tidak boleh mengandung angka!",
             "required" => ":attribute tidak boleh kosong!",
             "nama.required" => ":attribute tempat olahraga tidak boleh kosong!",
             "nama.min" => ":attribute tempat olahraga tidak valid!",
