@@ -271,7 +271,7 @@
 
             swal({
                 title: "Apakah anda yakin?",
-                text: "Pembatalan booking akan dikenakan denda sebesar 10% dari total transaksi.",
+                text: "Pembatalan booking akan dikenakan kompensasi sebesar 10% dari total transaksi.",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
