@@ -135,15 +135,192 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan Basket Mario 2",
+            'fk_id_kategori' => 1,
+            'tipe_lapangan' => "Outdoor",
+            'lokasi_lapangan' => "jln. kupang jaya no.35, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 100000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
         DB::table('files_lapangan')->insert([
             'nama_file_lapangan' => "lapangan_basket2.jpg",
-            'fk_id_lapangan' => 1,
+            'fk_id_lapangan' => 2,
             'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan Basket YukSport",
+            'fk_id_kategori' => 1,
+            'tipe_lapangan' => "Outdoor",
+            'lokasi_lapangan' => "jln. mayjend sungkono no.103, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 100000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s")
         ]);
 
         DB::table('files_lapangan')->insert([
             'nama_file_lapangan' => "lapangan_basket3.jpg",
-            'fk_id_lapangan' => 1,
+            'fk_id_lapangan' => 3,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan Futsal City Arena",
+            'fk_id_kategori' => 2,
+            'tipe_lapangan' => "Outdoor",
+            'lokasi_lapangan' => "jln. darmo indah no.48, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 200000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_futsal1.jpg",
+            'fk_id_lapangan' => 4,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan Goal Zone Futsal",
+            'fk_id_kategori' => 2,
+            'tipe_lapangan' => "Outdoor",
+            'lokasi_lapangan' => "jln. citraland no.95, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 200000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_futsal2.jpg",
+            'fk_id_lapangan' => 5,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan Futsalindo Center",
+            'fk_id_kategori' => 2,
+            'tipe_lapangan' => "Outdoor",
+            'lokasi_lapangan' => "jln. bengawan no.19, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 200000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_futsal3.jpg",
+            'fk_id_lapangan' => 6,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan Basket Nusantara Court",
+            'fk_id_kategori' => 1,
+            'tipe_lapangan' => "Indoor",
+            'lokasi_lapangan' => "jln. kartini no.27, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 200000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_basket4.jpg",
+            'fk_id_lapangan' => 7,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan LigaPlay Futsal",
+            'fk_id_kategori' => 1,
+            'tipe_lapangan' => "Indoor",
+            'lokasi_lapangan' => "jln. mana aja deh no.27, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 200000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 1,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_futsal4.jpg",
+            'fk_id_lapangan' => 8,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
