@@ -210,7 +210,7 @@ Sportiva
                         <hr>
                         <a href="/customer/editProfile">Profile</a>
                         <a href="/customer/saldo/topupSaldo">Top Up Saldo</a>
-                        <a href="">Ulasan</a>
+                        {{-- <a href="">Ulasan</a> --}}
                         <a href="/logout">Logout</a>
                     </div>
                 </div>
