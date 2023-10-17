@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\alatOlahraga;
 use App\Models\dtrans;
 use App\Models\htrans;
+use App\Models\komplainRequest;
+use App\Models\komplainTrans;
 use App\Models\lapanganOlahraga;
 use DateTime;
 use Illuminate\Http\Request;
@@ -1219,5 +1221,63 @@ class Laporan extends Controller
         $pdf = PDF::loadview('admin.laporan.laporanTempat_pdf',['data'=>$data]);
         // return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
+    }
+
+    public function berandaAdmin() {
+        $req = new komplainRequest();
+        $param["jumlahKomplainReq"] = $req->count_all_data_admin();
+        $komtrans = new komplainTrans();
+        $param["jumlahKomplainTrans"] = $komtrans->count_all_data_admin();
+        $trans = new htrans();
+        $param["jumlahTransaksi"] = $trans->count_all_data_admin();
+
+        $coba = DB::table('htrans')
+                ->select(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan as pendapatan_lapangan",
+                    DB::raw('SUM(dtrans.pendapatan_website_alat) as pendapatan_alat'),
+                    DB::raw('COUNT(dtrans.id_dtrans) as jumlah_alat'),
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan",
+                    "extend_htrans.pendapatan_website_lapangan as lapangan_ext",
+                    DB::raw('SUM(extend_dtrans.pendapatan_website_alat) as alat_ext')
+                )
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->where("htrans.status_trans","!=","Dibatalkan")
+                ->where("htrans.status_trans","!=","Ditolak")
+                ->groupBy(
+                    "htrans.kode_trans",
+                    "htrans.pendapatan_website_lapangan",
+                    "htrans.tanggal_trans",
+                    "lapangan_olahraga.nama_lapangan",
+                    "extend_htrans.pendapatan_website_lapangan"
+                )
+                ->get();
+        // dd($coba);
+
+        $monthlyIncome = [];
+        for ($i=1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        foreach ($coba as $data) {
+            $bulan = date('m', strtotime($data->tanggal_trans));
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += ($data->pendapatan_lapangan + $data->pendapatan_alat) + ($data->lapangan_ext + $data->alat_ext);
+            }
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+        $param["monthlyIncome"] = $monthlyIncomeData;
+
+        return view("admin.beranda")->with($param);
     }
 }

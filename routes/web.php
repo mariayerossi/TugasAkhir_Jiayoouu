@@ -82,15 +82,16 @@ Route::get("/logout", [LoginRegister::class, "logout"]);
 // HALAMAN ADMIN
 // -------------------------------
 Route::prefix("/admin")->group(function(){
-    Route::get("/beranda", function () {
-        $req = new ModelsKomplainRequest();
-        $param["jumlahKomplainReq"] = $req->count_all_data_admin();
-        $komtrans = new ModelsKomplainTrans();
-        $param["jumlahKomplainTrans"] = $komtrans->count_all_data_admin();
-        $trans = new ModelsHtrans();
-        $param["jumlahTransaksi"] = $trans->count_all_data_admin();
-        return view("admin.beranda")->with($param);
-    })->middleware([CekAdmin::class]);
+    // Route::get("/beranda", function () {
+    //     $req = new ModelsKomplainRequest();
+    //     $param["jumlahKomplainReq"] = $req->count_all_data_admin();
+    //     $komtrans = new ModelsKomplainTrans();
+    //     $param["jumlahKomplainTrans"] = $komtrans->count_all_data_admin();
+    //     $trans = new ModelsHtrans();
+    //     $param["jumlahTransaksi"] = $trans->count_all_data_admin();
+    //     return view("admin.beranda")->with($param);
+    // })->middleware([CekAdmin::class]);
+    Route::get("/beranda", [Laporan::class, "berandaAdmin"])->middleware([CekAdmin::class]);
     Route::get("/registrasi_tempat", function () {
         $reg = new registerTempat();
         $param["register"] = $reg->get_all_data();

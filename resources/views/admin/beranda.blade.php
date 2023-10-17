@@ -46,8 +46,8 @@
     var dataPendapatan = {
        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
        datasets: [{
-          label: 'Pendapatan',
-          data: [5000, 7500, 6500, 8200, 7000, 8500, 6000, 5500, 7000, 7500, 8000, 7000],
+          label: 'Total Pendapatan',
+          data: @json($monthlyIncome),
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
           borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 1,

@@ -129,7 +129,7 @@
         data: {
             labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
             datasets: [{
-                label: 'Jumlah Sewa',
+                label: 'Total Pendapatan',
                 data: @json($monthlyIncome),
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
