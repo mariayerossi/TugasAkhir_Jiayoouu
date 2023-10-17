@@ -65,12 +65,13 @@ class Transaksi extends Controller
 
         //kasi pengecekan apakah ada tgl dan jam sama yg sdh dibooking
         $cek = DB::table('htrans')
-                ->select("jam_sewa", "durasi_sewa")
+                ->select("jam_sewa", "durasi_sewa", "tanggal_sewa")
+                ->whereDate("tanggal_sewa", $request->tanggal)
+                ->where("fk_id_lapangan","=",$request->id_lapangan)
                 ->where("status_trans","=","Diterima")
                 ->orWhere("status_trans","=","Berlangsung")
-                ->where("tanggal_sewa", "=", $request->tanggal)
-                ->where("fk_id_lapangan","=",$request->id_lapangan)
                 ->get();
+                dd($cek);
 
         if (!$cek->isEmpty()) {
             $conflict = false;
