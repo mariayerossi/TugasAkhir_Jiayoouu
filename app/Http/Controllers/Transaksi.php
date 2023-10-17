@@ -65,22 +65,29 @@ class Transaksi extends Controller
 
         //kasi pengecekan apakah ada tgl dan jam sama yg sdh dibooking
         $cek = DB::table('htrans')
-                ->select("jam_sewa", "durasi_sewa", "tanggal_sewa")
-                ->whereDate("tanggal_sewa", $request->tanggal)
+                ->select("htrans.jam_sewa", "htrans.durasi_sewa", "htrans.tanggal_sewa", "extend_htrans.jam_sewa as jam_ext","extend_htrans.durasi_extend")
+                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                ->whereDate("htrans.tanggal_sewa", $request->tanggal)
                 ->where("fk_id_lapangan","=",$request->id_lapangan)
-                ->where("status_trans","=","Diterima")
-                ->orWhere("status_trans","=","Berlangsung")
+                ->where(function($query) {
+                    $query->where("htrans.status_trans", "=", "Diterima")
+                          ->orWhere("htrans.status_trans", "=", "Berlangsung");
+                })
                 ->get();
-                dd($cek);
+                // dd($cek);
 
         if (!$cek->isEmpty()) {
             $conflict = false;
             foreach ($cek as $value) {
                 $booking_jam_selesai = date('H:i', strtotime("+$value->durasi_sewa hour", strtotime($value->jam_sewa)));
+                $booking_jam_selesai_ext = date('H:i', strtotime("+$value->durasi_extend hour", strtotime($value->jam_ext)));
                 
                 if (($request->mulai >= $value->jam_sewa && $request->mulai < $booking_jam_selesai) || 
                     ($request->selesai > $value->jam_sewa && $request->selesai <= $booking_jam_selesai) ||
-                    ($request->mulai <= $value->jam_sewa && $request->selesai >= $booking_jam_selesai)) {
+                    ($request->mulai <= $value->jam_sewa && $request->selesai >= $booking_jam_selesai) ||
+                    ($request->mulai >= $value->jam_ext && $request->mulai < $booking_jam_selesai_ext) || 
+                    ($request->selesai > $value->jam_ext && $request->selesai <= $booking_jam_selesai_ext) ||
+                    ($request->mulai <= $value->jam_ext && $request->selesai >= $booking_jam_selesai_ext)) {
                     
                     $conflict = true;
                     break;

@@ -312,10 +312,15 @@
     </div>
     @php
         $dataJadwal = DB::table('htrans')
-                        ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
-                        ->where("status_trans","=","Diterima")
-                        ->orWhere("status_trans","=","Berlangsung")
+                        ->select("htrans.tanggal_sewa","htrans.status_trans","htrans.jam_sewa","htrans.durasi_sewa","extend_htrans.durasi_extend", "extend_htrans.status_extend")
+                        ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                        ->where("htrans.fk_id_lapangan","=",$lapangan->first()->id_lapangan)
+                        ->where(function($query) {
+                            $query->where("htrans.status_trans", "=", "Diterima")
+                                ->orWhere("htrans.status_trans", "=", "Berlangsung");
+                        })
                         ->get();
+                        // dd($dataJadwal);
     @endphp
     <div class="row mt-4 mb-4">
         <div class="col-md-6 col-sm-12">
@@ -342,9 +347,9 @@
                                 <td>{{$tanggalBaru}}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->jam_sewa)->format('H:i:s') }} - {{ \Carbon\Carbon::parse($item->jam_sewa)->addHours($item->durasi_sewa)->format('H:i:s') }}</td>
                                 <td>Telah Dibooking</td>
-                            @else
+                            @elseif ($item->status_trans == "Berlangsung" || $item->status_extend == "Diterima")
                                 <td style="background-color:gold">{{$tanggalBaru}}</td>
-                                <td style="background-color:gold">{{ \Carbon\Carbon::parse($item->jam_sewa)->format('H:i:s') }} - {{ \Carbon\Carbon::parse($item->jam_sewa)->addHours($item->durasi_sewa)->format('H:i:s') }}</td>
+                                <td style="background-color:gold">{{ \Carbon\Carbon::parse($item->jam_sewa)->format('H:i:s') }} - {{ \Carbon\Carbon::parse($item->jam_sewa)->addHours($item->durasi_sewa + $item->durasi_extend)->format('H:i:s') }}</td>
                                 <td style="background-color:gold">Sedang Dipakai</td>
                             @endif
                         </tr>
