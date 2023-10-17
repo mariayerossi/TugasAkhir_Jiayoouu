@@ -33,25 +33,25 @@
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
-          <a class="nav-link active" id="baru-tab" data-toggle="tab" href="#baru" role="tab" aria-controls="baru" aria-selected="true">Baru</a>
+          <a class="nav-link active" id="baru-tab" data-toggle="tab" href="#baru" role="tab" aria-controls="baru" aria-selected="true">Baru ({{$baru->count()}})</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="berlangsung-tab" data-toggle="tab" href="#berlangsung" role="tab" aria-controls="berlangsung" aria-selected="true">Berlangsung</a>
+            <a class="nav-link" id="berlangsung-tab" data-toggle="tab" href="#berlangsung" role="tab" aria-controls="berlangsung" aria-selected="true">Berlangsung ({{$berlangsung->count()}})</a>
           </li>
         <li class="nav-item">
-          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima</a>
+          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima ({{$diterima->count()}})</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Ditolak</a>
+            <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Ditolak ({{$ditolak->count()}})</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="selesai-tab" data-toggle="tab" href="#selesai" role="tab" aria-controls="selesai" aria-selected="false">Selesai</a>
+            <a class="nav-link" id="selesai-tab" data-toggle="tab" href="#selesai" role="tab" aria-controls="selesai" aria-selected="false">Selesai ({{$selesai->count()}})</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="dibatalkan-tab" data-toggle="tab" href="#dibatalkan" role="tab" aria-controls="dibatalkan" aria-selected="false">Dibatalkan</a>
+            <a class="nav-link" id="dibatalkan-tab" data-toggle="tab" href="#dibatalkan" role="tab" aria-controls="dibatalkan" aria-selected="false">Dibatalkan ({{$dibatalkan->count()}})</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="dikomplain-tab" data-toggle="tab" href="#dikomplain" role="tab" aria-controls="dikomplain" aria-selected="false">Dikomplain</a>
+            <a class="nav-link" id="dikomplain-tab" data-toggle="tab" href="#dikomplain" role="tab" aria-controls="dikomplain" aria-selected="false">Dikomplain ({{$dikomplain->count()}})</a>
         </li>
     </ul>
 
