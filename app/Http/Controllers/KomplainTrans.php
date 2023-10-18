@@ -232,10 +232,10 @@ class KomplainTrans extends Controller
             }
         }
 
-        //status transaksi menjadi ditolak
+        //status transaksi menjadi dibatalkan
         $data5 = [
             "id" => $request->id_htrans,
-            "status" => "Ditolak"
+            "status" => "Dibatalkan"
         ];
         $trans = new htrans();
         $trans->updateStatus($data5);

@@ -208,7 +208,7 @@ Sportiva
                               </svg>: Rp {{ number_format($saldo, 0, ',', '.') }}
                         </h6>
                         <hr>
-                        <a href="/customer/editProfile">Profile</a>
+                        {{-- <a href="/customer/editProfile">Profile</a> --}}
                         <a href="/customer/saldo/topupSaldo">Top Up Saldo</a>
                         {{-- <a href="">Ulasan</a> --}}
                         <a href="/logout">Logout</a>
@@ -235,7 +235,7 @@ Sportiva
             </h6>
             <a href="/customer/saldo/topupSaldo" class="ms-5">Top Up Saldo</a>
             <hr>
-            <a href="/customer/editProfile" class="ms-3"><i class="bi bi-pencil-square me-2"></i>Edit Profile</a>
+            {{-- <a href="/customer/editProfile" class="ms-3"><i class="bi bi-pencil-square me-2"></i>Edit Profile</a> --}}
             <a href="/logout" class="ms-3"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
             <hr>
             <a href="/customer/daftarKeranjang" class="ms-3"><i class="bi bi-cart2 me-2"></i>Keranjang</a>

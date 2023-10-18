@@ -153,7 +153,7 @@
                             @endphp
                             {{-- <h3>{{$item->id_htrans}}</h3> --}}
                             <div class="d-flex justify-content-end">
-                                @if ($item->status_trans == "Selesai" && $komplain == null)
+                                @if ($item->status_trans == "Diterima" && $komplain == null)
                                     <form id="ajukanKomplain" action="/customer/komplain/ajukanKomplain" method="post">
                                         @csrf
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
@@ -177,11 +177,17 @@
                                     @endif
                                 @elseif ($item->status_trans == "Dikomplain")
                                     <div class="mt-3">
-                                        <h4 class="card-title"><b>Komplain Anda telah dikirim!</b></h4>
                                         @if ($komplain->status_komplain == "Menunggu")
+                                            <h4 class="card-title"><b>Komplain Anda telah dikirim!</b></h4>
                                             <p class="card-text">Komplain kamu menunggu konfirmasi admin</p>
-                                        @else
-                                            <p class="card-text">Komplain kamu sudah {{$komplain->first()->status_komplain}} oleh admin</p>
+                                        @elseif ($komplain->status_komplain == "Ditolak")
+                                            <h4 class="card-title"><b>Komplain Anda Ditolak!</b></h4>
+                                        @endif
+                                    </div>
+                                @elseif ($item->status_trans == "Dibatalkan" && $komplain != null)
+                                    <div class="mt-3">
+                                        @if ($komplain->status_komplain != "Menunggu")
+                                            <h4 class="card-title"><b>Komplain Anda telah {{$komplain->status_komplain}}!</b></h4>
                                         @endif
                                     </div>
                                 @elseif ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")

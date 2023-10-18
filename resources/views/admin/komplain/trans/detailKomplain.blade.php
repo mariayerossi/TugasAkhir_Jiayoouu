@@ -119,7 +119,7 @@
     </div>
     @php
         $dataHtrans = DB::table('htrans')
-                    ->select("files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan", "htrans.kode_trans", "pihak_tempat.id_tempat","pihak_tempat.nama_tempat")
+                    ->select("files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan", "htrans.kode_trans", "pihak_tempat.id_tempat","pihak_tempat.nama_tempat","pihak_tempat.email_tempat","pihak_tempat.telepon_tempat")
                     ->where("id_htrans","=",$komplain->first()->fk_id_htrans)
                     ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
                     ->join("pihak_tempat","lapangan_olahraga.pemilik_lapangan","=","pihak_tempat.id_tempat")
@@ -153,6 +153,9 @@
             </div>
         </div>
     </a>
+    <h5 class="mt-5 mb-3">Kontak Pihak Tempat Olahraga</h5>
+    <h6>Email: {{$dataHtrans->email_tempat}}</h6>
+    <h6>No. Telepon: {{$dataHtrans->telepon_tempat}}</h6>
 
     {{-- blm mari --}}
     <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
@@ -194,39 +197,52 @@
             <div class="row mb-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                 </div>
-                <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel4">
-                    <h6>dan dipotong dari saldo wallet milik</h6>
-                </div>
-                <div class="col-md-7 col-sm-12" id="pengembalianInput4">
-                    <select class="form-control" name="akun_dikembalikan">
-                        <option value="" disabled selected>Masukkan pemilik saldo wallet</option>
-                        <option value="{{$tempat->id_tempat}}-tempat">{{$tempat->nama_tempat}}</option>
-                        @if (!$pemilik->isEmpty())
-                            @foreach ($pemilik as $item)
-                                <option value="{{$item->id_pemilik}}-pemilik">{{$item->nama_pemilik}}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
+                @if (strpos($komplain->first()->jenis_komplain, 'alat') !== false)
+                    <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel4">
+                        <h6>dan dipotong dari saldo wallet milik</h6>
+                    </div>
+                    <div class="col-md-7 col-sm-12" id="pengembalianInput4">
+                        <select class="form-control" name="akun_dikembalikan">
+                            <option value="" disabled selected>Masukkan pemilik alat olahraga</option>
+                            @if (!$pemilik->isEmpty())
+                                @foreach ($pemilik as $item)
+                                    <option value="{{$item->id_pemilik}}-pemilik">{{$item->nama_pemilik}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                @else
+                    <div class="col-md-10 col-sm-10 mt-2" id="pengembalianLabel4">
+                        <h6>dan dipotong dari saldo wallet milik {{$tempat->nama_tempat}}</h6>
+                    </div>
+                    <input type="hidden" name="akun_dikembalikan" value="{{$tempat->id_tempat}}-tempat">
+                @endif
             </div>
             <div class="row mb-5 mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                     <input type="checkbox" name="pengembalianCheckbox" id="pengembalianCheckbox" onchange="toggleInput()">
                 </div>
-                <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
-                    <h6>Penghapusan Produk</h6>
-                </div>
-                <div class="col-md-7 col-sm-12" id="pengembalianInput">
-                    <select class="form-control" name="produk">
-                        <option value="" disabled selected>Masukkan produk yang akan dihapus</option>
-                        <option value="{{$lapangan->id_lapangan}}-lapangan">{{$lapangan->nama_lapangan}}</option>
-                        @if (!$alat->isEmpty())
-                            @foreach ($alat as $item)
-                                <option value="{{$item->id_alat}}-alat">{{$item->nama_alat}}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
+                @if (strpos($komplain->first()->jenis_komplain, 'alat') !== false)
+                    <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
+                        <h6>Penghapusan Produk</h6>
+                    </div>
+                    <div class="col-md-7 col-sm-12" id="pengembalianInput">
+                        <select class="form-control" name="produk">
+                            <option value="" disabled selected>Masukkan alat olahraga yang akan dihapus</option>
+                            <option value="{{$lapangan->id_lapangan}}-lapangan">{{$lapangan->nama_lapangan}}</option>
+                            @if (!$alat->isEmpty())
+                                @foreach ($alat as $item)
+                                    <option value="{{$item->id_alat}}-alat">{{$item->nama_alat}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                @else
+                    <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
+                        <h6>Penghapusan Produk</h6>
+                    </div>
+                    <input type="hidden" name="akun_dikembalikan" value="{{$tempat->id_tempat}}-tempat">
+                @endif
             </div>
             <div class="row mb-5 mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
@@ -309,6 +325,7 @@
             }
         });
     }
+
     toggleInput();
     toggleInput2();
     toggleInput3();
@@ -317,14 +334,23 @@
         var label = document.getElementById("pengembalianLabel");
         var inputGroup = document.getElementById("pengembalianInput");
 
-        if (checkbox.checked) {
-            label.style.opacity = "1";
-            inputGroup.style.opacity = "1";
-            inputGroup.querySelector('select').disabled = false;
-        } else {
-            label.style.opacity = "0.5";
-            inputGroup.style.opacity = "0.5";
-            inputGroup.querySelector('select').disabled = true;
+        if (inputGroup) {
+            if (checkbox.checked) {
+                label.style.opacity = "1";
+                inputGroup.style.opacity = "1";
+                inputGroup.querySelector('select').disabled = false;
+            } else {
+                label.style.opacity = "0.5";
+                inputGroup.style.opacity = "0.5";
+                inputGroup.querySelector('select').disabled = true;
+            }
+        }
+        else {
+            if (checkbox.checked) {
+                label.style.opacity = "1";
+            } else {
+                label.style.opacity = "0.5";
+            }
         }
     }
     function toggleInput2() {
@@ -332,14 +358,23 @@
         var label = document.getElementById("pengembalianLabel2");
         var inputGroup = document.getElementById("pengembalianInput2");
 
-        if (checkbox.checked) {
-            label.style.opacity = "1";
-            inputGroup.style.opacity = "1";
-            inputGroup.querySelector('select').disabled = false;
-        } else {
-            label.style.opacity = "0.5";
-            inputGroup.style.opacity = "0.5";
-            inputGroup.querySelector('select').disabled = true;
+        if (inputGroup) {
+            if (checkbox.checked) {
+                label.style.opacity = "1";
+                inputGroup.style.opacity = "1";
+                inputGroup.querySelector('select').disabled = false;
+            } else {
+                label.style.opacity = "0.5";
+                inputGroup.style.opacity = "0.5";
+                inputGroup.querySelector('select').disabled = true;
+            }
+        }
+        else {
+            if (checkbox.checked) {
+                label.style.opacity = "1";
+            } else {
+                label.style.opacity = "0.5";
+            }
         }
     }
     function toggleInput3() {
@@ -349,20 +384,31 @@
         var label2 = document.getElementById("pengembalianLabel4");
         var inputGroup2 = document.getElementById("pengembalianInput4");
 
-        if (checkbox.checked) {
-            label.style.opacity = "1";
-            inputGroup.style.opacity = "1";
-            inputGroup.querySelector('input').disabled = false;
-            label2.style.opacity = "1";
-            inputGroup2.style.opacity = "1";
-            inputGroup2.querySelector('select').disabled = false;
-        } else {
-            label.style.opacity = "0.5";
-            inputGroup.style.opacity = "0.5";
-            inputGroup.querySelector('input').disabled = true;
-            label2.style.opacity = "0.5";
-            inputGroup2.style.opacity = "0.5";
-            inputGroup2.querySelector('select').disabled = true;
+        if (inputGroup2) {
+            if (checkbox.checked) {
+                label.style.opacity = "1";
+                inputGroup.style.opacity = "1";
+                inputGroup.querySelector('input').disabled = false;
+                label2.style.opacity = "1";
+                inputGroup2.style.opacity = "1";
+                inputGroup2.querySelector('select').disabled = false;
+            } else {
+                label.style.opacity = "0.5";
+                inputGroup.style.opacity = "0.5";
+                inputGroup.querySelector('input').disabled = true;
+                label2.style.opacity = "0.5";
+                inputGroup2.style.opacity = "0.5";
+                inputGroup2.querySelector('select').disabled = true;
+            }
+        }
+        else {
+            if (checkbox.checked) {
+                label.style.opacity = "1";
+                label2.style.opacity = "1";
+            } else {
+                label.style.opacity = "0.5";
+                label2.style.opacity = "0.5";
+            }
         }
     }
     function formatNumber(input) {

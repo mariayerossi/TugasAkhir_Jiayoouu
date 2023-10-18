@@ -604,23 +604,42 @@
 
         $("#tolakTrans").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
+
+            swal({
+                title: "Apakah Anda yakin?",
+                text: "Anda akan menolak transaksi ini.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ya, Tolak!",
+                cancelButtonText: "Tidak!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    // Jika user mengklik "Ya", submit form
+                    var formData = $("#tolakTransaksiForm").serialize(); // Mengambil data dari form
     
-            var formData = $("#tolakTransaksiForm").serialize(); // Mengambil data dari form
-    
-            $.ajax({
-                url: "/tempat/transaksi/tolakTransaksi",
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    window.location.reload();
-                    // alert('Berhasil Diterima!');
-                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
-                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                    $.ajax({
+                        url: "/tempat/transaksi/tolakTransaksi",
+                        type: "POST",
+                        data: formData,
+                        success: function(response) {
+                            window.location.reload();
+                            // alert('Berhasil Diterima!');
+                            // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                            // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                        }
+                    });
+                } else {
+                    swal.close(); // Tutup SweetAlert jika user memilih "Tidak"
                 }
             });
+
+            return false; // Mengembalikan false untuk mencegah submission form
         });
 
         $('#konfirmasiDipakai').on('submit', function(event) {
@@ -666,22 +685,41 @@
 
         $("#tolakExtendForm").on('submit', function(event) {
             event.preventDefault(); // Mencegah perilaku default form
-    
-            var formData = $("#tolakExtendForm").serialize(); // Mengambil data dari form
-            // console.log(formData)
-            
-            $.ajax({
-                url: $(this).attr('action'),
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                    window.location.reload();
-                    // alert('Berhasil Diterima!');
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert(errorThrown);
+
+            swal({
+                title: "Apakah Anda yakin?",
+                text: "Anda akan menolak extend waktu ini.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ya, Tolak!",
+                cancelButtonText: "Tidak!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    // Jika user mengklik "Ya", submit form
+                    var formData = $("#tolakExtendForm").serialize(); // Mengambil data dari form
+                    // console.log(formData)
+                    
+                    $.ajax({
+                        url: $(this).attr('action'),
+                        type: "POST",
+                        data: formData,
+                        success: function(response) {
+                            window.location.reload();
+                            // alert('Berhasil Diterima!');
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                    });
+                } else {
+                    swal.close(); // Tutup SweetAlert jika user memilih "Tidak"
                 }
             });
+
+            return false; // Mengembalikan false untuk mencegah submission form
         });
 
         // $(".form_rusak").hide();
