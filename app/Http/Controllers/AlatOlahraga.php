@@ -331,6 +331,7 @@ class AlatOlahraga extends Controller
                         ->from('files_alat')
                         ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
+                ->where("deleted_at","=",null)
                 ->get();
         // dd($data);
 

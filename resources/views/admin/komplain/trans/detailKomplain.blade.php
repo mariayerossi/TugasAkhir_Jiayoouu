@@ -197,7 +197,7 @@
             <div class="row mb-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                 </div>
-                @if (strpos($komplain->first()->jenis_komplain, 'alat') !== false)
+                @if (strpos($komplain->first()->jenis_komplain, 'Alat') !== false)
                     <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel4">
                         <h6>dan dipotong dari saldo wallet milik</h6>
                     </div>
@@ -222,14 +222,13 @@
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                     <input type="checkbox" name="pengembalianCheckbox" id="pengembalianCheckbox" onchange="toggleInput()">
                 </div>
-                @if (strpos($komplain->first()->jenis_komplain, 'alat') !== false)
+                @if (strpos($komplain->first()->jenis_komplain, 'Alat') !== false)
                     <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
-                        <h6>Penghapusan Produk</h6>
+                        <h6>Penghapusan Alat Olahraga</h6>
                     </div>
                     <div class="col-md-7 col-sm-12" id="pengembalianInput">
                         <select class="form-control" name="produk">
                             <option value="" disabled selected>Masukkan alat olahraga yang akan dihapus</option>
-                            <option value="{{$lapangan->id_lapangan}}-lapangan">{{$lapangan->nama_lapangan}}</option>
                             @if (!$alat->isEmpty())
                                 @foreach ($alat as $item)
                                     <option value="{{$item->id_alat}}-alat">{{$item->nama_alat}}</option>
@@ -238,30 +237,36 @@
                         </select>
                     </div>
                 @else
-                    <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
-                        <h6>Penghapusan Produk</h6>
+                    <div class="col-md-10 col-sm-10 mt-2" id="pengembalianLabel">
+                        <h6>Penghapusan Lapangan Olahraga {{$lapangan->nama_lapangan}}</h6>
                     </div>
-                    <input type="hidden" name="akun_dikembalikan" value="{{$tempat->id_tempat}}-tempat">
+                    <input type="hidden" name="produk" value="{{$lapangan->id_lapangan}}-lapangan">
                 @endif
             </div>
             <div class="row mb-5 mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                     <input type="checkbox" name="pengembalianCheckbox2" id="pengembalianCheckbox2" onchange="toggleInput2()">
                 </div>
-                <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel2">
-                    <h6>Penonaktifkan akun</h6>
-                </div>
-                <div class="col-md-7 col-sm-12" id="pengembalianInput2">
-                    <select class="form-control" name="akun">
-                        <option value="" disabled selected>Masukkan akun yang akan dinonaktifkan</option>
-                        <option value="{{$tempat->id_tempat}}-tempat">{{$tempat->nama_tempat}}</option>
-                        @if (!$pemilik->isEmpty())
-                            @foreach ($pemilik as $item)
-                                <option value="{{$item->id_pemilik}}-pemilik">{{$item->nama_pemilik}}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
+                @if (strpos($komplain->first()->jenis_komplain, 'Alat') !== false)
+                    <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel2">
+                        <h6>Penonaktifkan Akun Pemilik Alat</h6>
+                    </div>
+                    <div class="col-md-7 col-sm-12" id="pengembalianInput2">
+                        <select class="form-control" name="akun">
+                            <option value="" disabled selected>Masukkan akun pemilik alat olahraga</option>
+                            @if (!$pemilik->isEmpty())
+                                @foreach ($pemilik as $item)
+                                    <option value="{{$item->id_pemilik}}-pemilik">{{$item->nama_pemilik}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                @else
+                    <div class="col-md-10 col-sm-10 mt-2" id="pengembalianLabel2">
+                        <h6>Penonaktifkan Akun Pihak Tempat {{$tempat->nama_tempat}}</h6>
+                    </div>
+                    <input type="hidden" name="akun" value="{{$tempat->id_tempat}}-tempat">
+                @endif
             </div>
             <input type="hidden" name="user" value="{{$komplain->first()->fk_id_user}}">
             <input type="hidden" name="id_htrans" value="{{$komplain->first()->fk_id_htrans}}">
