@@ -280,6 +280,7 @@ class KomplainTrans extends Controller
     }
 
     public function tolakKomplain(Request $request) {
+        // dd($request->alasan);
         $data = [
             "id" => $request->id,
             "status" => "Ditolak"
