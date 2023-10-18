@@ -184,23 +184,28 @@
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                     <input type="checkbox" name="pengembalianCheckbox" id="pengembalianCheckbox" onchange="toggleInput()">
                 </div>
-                <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel">
-                    <h6>Penghapusan Produk</h6>
-                </div>
-                <div class="col-md-7 col-sm-12" id="pengembalianInput">
+                @if (strpos($komplain->first()->jenis_komplain, 'Alat') !== false)
+                    <div class="col-md-11 col-sm-10 mt-2" id="pengembalianLabel">
+                        <h6>Penghapusan Alat Olahraga {{$dataAlat->nama_alat}}</h6>
+                    </div>
+                    <input type="hidden" name="produk" value="{{$dataAlat->id_alat}}-alat">
+                @else
+                    <div class="col-md-11 col-sm-10 mt-2" id="pengembalianLabel">
+                        <h6>Penghapusan Lapangan Olahraga {{$dataLapangan->nama_lapangan}}</h6>
+                    </div>
+                    <input type="hidden" name="produk" value="{{$dataLapangan->id_lapangan}}-lapangan">
+                @endif
+                {{-- <div class="col-md-7 col-sm-12" id="pengembalianInput">
                     <select class="form-control" name="produk">
                         <option value="" disabled selected>Masukkan produk yang akan dihapus</option>
                         <option value="{{$dataAlat->id_alat}}-alat" {{ old('produk') == $dataAlat->id_alat ? 'selected' : '' }}>{{$dataAlat->nama_alat}}</option>
                         <option value="{{$dataLapangan->id_lapangan}}-lapangan" {{ old('produk') == $dataLapangan->id_lapangan ? 'selected' : '' }}>{{$dataLapangan->nama_lapangan}}</option>
                     </select>
-                </div>
+                </div> --}}
             </div>
             <div class="row mb-5 mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                     <input type="checkbox" name="pengembalianCheckbox2" id="pengembalianCheckbox2" onchange="toggleInput2()">
-                </div>
-                <div class="col-md-4 col-sm-10 mt-2" id="pengembalianLabel2">
-                    <h6>Penonaktifkan akun</h6>
                 </div>
                 @php
                     if ($komplain->first()->fk_id_permintaan == "Permintaan") {
@@ -218,13 +223,24 @@
                         $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
                     }
                 @endphp
-                <div class="col-md-7 col-sm-12" id="pengembalianInput2">
+                @if (strpos($komplain->first()->jenis_komplain, 'Alat') !== false)
+                    <div class="col-md-11 col-sm-10 mt-2" id="pengembalianLabel2">
+                        <h6>Penonaktifkan Akun Pemilik Alat Olahraga {{$nama_pemilik}}</h6>
+                    </div>
+                    <input type="hidden" name="akun" value="{{$id_pemilik}}-pemilik">
+                @else
+                    <div class="col-md-11 col-sm-10 mt-2" id="pengembalianLabel2">
+                        <h6>Penonaktifkan Akun Tempat Olahraga {{$nama_tempat}}</h6>
+                    </div>
+                    <input type="hidden" name="akun" value="{{$id_tempat}}-tempat">
+                @endif
+                {{-- <div class="col-md-7 col-sm-12" id="pengembalianInput2">
                     <select class="form-control" name="akun">
                         <option value="" disabled selected>Masukkan akun yang akan dinonaktifkan</option>
                         <option value="{{$id_tempat}}-tempat" {{ old('akun') == $id_tempat ? 'selected' : '' }}>{{$nama_tempat}}</option>
                         <option value="{{$id_pemilik}}-pemilik" {{ old('akun') == $id_pemilik ? 'selected' : '' }}>{{$nama_pemilik}}</option>
                     </select>
-                </div>
+                </div> --}}
             </div>
             @if ($komplain->first()->fk_id_permintaan != null)
                 <input type="hidden" name="id_permintaan" value="{{$komplain->first()->fk_id_permintaan}}">
@@ -298,31 +314,31 @@
     function toggleInput() {
         var checkbox = document.getElementById("pengembalianCheckbox");
         var label = document.getElementById("pengembalianLabel");
-        var inputGroup = document.getElementById("pengembalianInput");
+        // var inputGroup = document.getElementById("pengembalianInput");
 
         if (checkbox.checked) {
             label.style.opacity = "1";
-            inputGroup.style.opacity = "1";
-            inputGroup.querySelector('select').disabled = false;
+            // inputGroup.style.opacity = "1";
+            // inputGroup.querySelector('select').disabled = false;
         } else {
             label.style.opacity = "0.5";
-            inputGroup.style.opacity = "0.5";
-            inputGroup.querySelector('select').disabled = true;
+            // inputGroup.style.opacity = "0.5";
+            // inputGroup.querySelector('select').disabled = true;
         }
     }
     function toggleInput2() {
         var checkbox = document.getElementById("pengembalianCheckbox2");
         var label = document.getElementById("pengembalianLabel2");
-        var inputGroup = document.getElementById("pengembalianInput2");
+        // var inputGroup = document.getElementById("pengembalianInput2");
 
         if (checkbox.checked) {
             label.style.opacity = "1";
-            inputGroup.style.opacity = "1";
-            inputGroup.querySelector('select').disabled = false;
+            // inputGroup.style.opacity = "1";
+            // inputGroup.querySelector('select').disabled = false;
         } else {
             label.style.opacity = "0.5";
-            inputGroup.style.opacity = "0.5";
-            inputGroup.querySelector('select').disabled = true;
+            // inputGroup.style.opacity = "0.5";
+            // inputGroup.querySelector('select').disabled = true;
         }
     }
     function formatNumber(input) {
