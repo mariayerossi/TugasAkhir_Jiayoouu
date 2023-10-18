@@ -1259,10 +1259,18 @@ class Transaksi extends Controller
             }
         }
 
+        $extend_subtotal = 0;
+        $extend_total = 0;
+        if ($extend != null) {
+            $extend_subtotal = $extend->subtotal_lapangan;
+            $extend_total = $extend->total;
+        }
+
         //subtotal lapangan masuk ke saldo tempat & total komisi tempat ditahan dulu
         //klo masa sewa sdh selesai baru dimasukin saldo tempat
         $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_tempat, "mysecretkey");
-        $saldo += (int)$dataHtrans->subtotal_lapangan + $extend->subtotal_lapangan + $total_komisi_tempat;
+        // dd($extend->subtotal_lapangan);
+        $saldo += (int)$dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat;
 
         //enkripsi kembali saldo
         $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
@@ -1291,7 +1299,11 @@ class Transaksi extends Controller
 
                     $saldo2 = (int)$this->decodePrice($pemilik->saldo_pemilik, "mysecretkey");
                     // dd($saldo2);
-                    $saldo2 += (int)$value->total_komisi_pemilik + $extend_dtrans2->total_komisi_pemilik;
+                    $extend_total_komisi = 0;
+                    if ($extend_dtrans2 != null) {
+                        $extend_total_komisi = $extend_dtrans2->total_komisi_pemilik;
+                    }
+                    $saldo2 += (int)$value->total_komisi_pemilik + $extend_total_komisi;
                     // dd($saldo2);
 
                     $enkrip2 = $this->encodePrice((string)$saldo2, "mysecretkey");
@@ -1326,7 +1338,7 @@ class Transaksi extends Controller
             "isi" => "Yeay! Transaksi Anda telah selesai:<br><br>
                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
-                    <b>Total Transaksi: Rp ".number_format($dataHtrans->total_trans + $extend->total, 0, ',', '.')."</b><br><br>
+                    <b>Total Transaksi: Rp ".number_format($dataHtrans->total_trans + $extend_total, 0, ',', '.')."</b><br><br>
                     Terima kasih telah mempercayai layanan kami. Tetap Jaga Pola Sehat Anda bersama Sportiva! 😊"
         ];
         $e = new notifikasiEmail();

@@ -129,5 +129,8 @@
 </body>
 <script type="text/javascript">
     window.print();
+    setTimeout(function(){
+        window.history.back();
+    }, 1000);
 </script>
 </html>
