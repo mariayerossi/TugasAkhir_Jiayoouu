@@ -60,7 +60,7 @@ class Transaksi extends Controller
         $date_selesai = new DateTime($request->selesai);
         
         if ($date_selesai <= $date_mulai) {
-            return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
+            return redirect()->back()->with("error", "Jam sewa tidak sesuai!");
         }
 
         //kasi pengecekan apakah ada tgl dan jam sama yg sdh dibooking
