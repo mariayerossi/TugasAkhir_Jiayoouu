@@ -323,6 +323,7 @@ class LapanganOlahraga extends Controller
                         ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
                 }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
                 ->where("lapangan_olahraga.pemilik_lapangan", "=", $role)
+                ->where("lapangan_olahraga.deleted_at","=",null)
                 ->get();
         // dd($data);
 
@@ -342,6 +343,7 @@ class LapanganOlahraga extends Controller
                         ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
                 }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
                 ->where("lapangan_olahraga.status_lapangan", "=", "Aktif")
+                ->where("lapangan_olahraga.deleted_at","=",null)
                 ->get();
                 // dd($data);
         $param["lapangan"] = $data;
@@ -365,6 +367,7 @@ class LapanganOlahraga extends Controller
                         ->from('files_lapangan')
                         ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
                 }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->where("lapangan_olahraga.deleted_at","=",null)
                 ->get();
         $param["lapangan"] = $data;
         

@@ -434,9 +434,13 @@
             if (checkbox.checked) {
                 label.style.opacity = "1";
                 label2.style.opacity = "1";
+                inputGroup.style.opacity = "1";
+                inputGroup.querySelector('input').disabled = false;
             } else {
                 label.style.opacity = "0.5";
                 label2.style.opacity = "0.5";
+                inputGroup.style.opacity = "0.5";
+                inputGroup.querySelector('input').disabled = true;
             }
         }
     }

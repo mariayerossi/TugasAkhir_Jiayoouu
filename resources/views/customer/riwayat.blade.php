@@ -182,6 +182,7 @@
                                             <p class="card-text">Komplain kamu menunggu konfirmasi admin</p>
                                         @elseif ($komplain->status_komplain == "Ditolak")
                                             <h4 class="card-title"><b>Komplain Anda Ditolak!</b></h4>
+                                            <p class="card-text">Alasan Ditolak: {{$komplain->alasan_komplain}}</p>
                                         @endif
                                     </div>
                                 @elseif ($item->status_trans == "Dibatalkan" && $komplain != null)

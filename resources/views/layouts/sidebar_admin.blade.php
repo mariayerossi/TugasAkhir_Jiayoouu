@@ -86,6 +86,32 @@ Sportiva
             background-color: #007466;
             color: white;
         }
+        .float-back-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: #007466; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+            z-index: 1100;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: none; /* default akan disembunyikan */
+        }
+
+        .float-back-button:hover {
+            background-color: #005744;
+        }
+
+        /* Tampilkan tombol hanya pada tampilan desktop */
+        @media (min-width: 768px) {
+            .float-back-button {
+                display: block; /* Menampilkan tombol saat layar lebih besar dari 767px */
+            }
+        }
     </style>
     
     <div id="sidebar">
@@ -141,6 +167,7 @@ Sportiva
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-justify" viewBox="0 0 16 16" onclick="toggleNav()" style="cursor: pointer">
             <path fill-rule="evenodd" d="M2 12.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
         </svg>
+        <button class="float-back-button mt-3" onclick="goBack()"><i class="bi bi-arrow-90deg-left"></i></button>
 
         <!-- Konten utama Anda -->
         @yield('content')
@@ -207,5 +234,8 @@ Sportiva
                 }
             });
         });
+        function goBack() {
+            window.history.back();
+        }
     </script>
 </body>

@@ -145,8 +145,35 @@ Sportiva
         .dropdown-content.active {
             display: block;
         }
+        /* CSS untuk tombol */
+        .float-back-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: #007466; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+            z-index: 1100;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: none; /* default akan disembunyikan */
+        }
+
+        .float-back-button:hover {
+            background-color: #005744;
+        }
+
+        /* Tampilkan tombol hanya pada tampilan desktop */
+        @media (min-width: 768px) {
+            .float-back-button {
+                display: block; /* Menampilkan tombol saat layar lebih besar dari 767px */
+            }
+        }
     </style>
-    
+
     <div id="sidebar">
         <a href="/tempat/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
         <a href="/tempat/cariAlat"><i class="bi bi-search me-3"></i>Cari Alat Olahraga</a>
@@ -233,6 +260,7 @@ Sportiva
                 </div>
             </div>
         </nav>
+        <button class="float-back-button mt-3" onclick="goBack()"><i class="bi bi-arrow-90deg-left"></i></button>
 
         <!-- Konten utama Anda -->
         @yield('content')
@@ -310,6 +338,8 @@ Sportiva
                 });
             }
         });
+        function goBack() {
+            window.history.back();
+        }
     </script>
-    
 </body>

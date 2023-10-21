@@ -273,6 +273,7 @@ class AlatOlahraga extends Controller
                         ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("alat_olahraga.fk_id_tempat", "=", $role)
+                ->where("alat_olahraga.deleted_at","=",null)
                 ->get();
         // dd($data);
 
@@ -291,6 +292,7 @@ class AlatOlahraga extends Controller
                         ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("alat_olahraga.fk_id_pemilik", "=", $role)
+                ->where("alat_olahraga.deleted_at","=",null)
                 ->get();
         // dd($data);
 
@@ -331,7 +333,7 @@ class AlatOlahraga extends Controller
                         ->from('files_alat')
                         ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
-                ->where("deleted_at","=",null)
+                ->where("alat_olahraga.deleted_at","=",null)
                 ->get();
         // dd($data);
 
@@ -352,6 +354,7 @@ class AlatOlahraga extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("alat_olahraga.fk_id_pemilik","!=",null)
                 ->where("alat_olahraga.status_alat", "=", "Aktif")
+                ->where("alat_olahraga.deleted_at","=",null)
                 ->get();
         // dd($data);
 

@@ -288,6 +288,12 @@ class KomplainTrans extends Controller
         $komp = new ModelsKomplainTrans();
         $komp->updateStatus($data);
 
+        $data2 = [
+            "id" => $request->id,
+            "alasan" => $request->alasan
+        ];
+        $komp->updateAlasan($data2);
+
         //notif ke cust
         $komplain = DB::table('komplain_trans')->where("id_komplain_trans","=",$request->id)->get()->first();
         $user = DB::table('user')->where("id_user","=",$komplain->fk_id_user)->get()->first();

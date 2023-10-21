@@ -131,6 +131,31 @@ Sportiva
                 width: 700px;
             }
         }
+        /* CSS untuk tombol */
+        .float-back-button {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background-color: #007466; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+            z-index: 1100;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: none; /* default akan disembunyikan */
+        }
+
+        .float-back-button:hover {
+            background-color: #005744;
+        }
+        @media (min-width: 768px) {
+            .float-back-button {
+                display: block; /* Menampilkan tombol saat layar lebih besar dari 767px */
+            }
+        }
     </style>
     
     <div id="main">
@@ -216,6 +241,7 @@ Sportiva
                 </div>
             </div>
         </nav>
+        <button class="float-back-button mt-3" onclick="goBack()"><i class="bi bi-arrow-90deg-left"></i></button>
         <div class="sidebar">
             <!-- Logo dan profil Anda -->
             <div class="logo-container">
@@ -282,6 +308,9 @@ Sportiva
                 sidebar.classList.remove('active');
             }
         });
+        function goBack() {
+            window.history.back();
+        }
     </script>
     
 </body>
