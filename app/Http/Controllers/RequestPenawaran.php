@@ -85,7 +85,6 @@ class RequestPenawaran extends Controller
         $dataAlat = $alat->get_all_data_by_id($dataReq->req_id_alat)->first();
         if ($dataAlat->status_alat == "Aktif") {
             if ($dataReq->status_penawaran == "Menunggu") {
-                //(BELOM) KASIH PENGECEKAN APAKAH TANGGAL MULAI DAN SELESAI NULL TIDAK, KASIH PENGECEKAN APAKAH TANGGAL SELESAI LEBIH BESAR DARI TANGGAL SELESAI?
 
                 //cek dulu apakah harga sewa dan tanggal masih null atau tidak
                 if ($dataReq->req_harga_sewa != null) {
