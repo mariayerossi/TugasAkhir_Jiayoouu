@@ -80,4 +80,11 @@ class komplainRequest extends Model
         $komp->penanganan_komplain = $data["penanganan"];
         $komp->save();
     }
+
+    public function updateAlasan($data)
+    {
+        $komp = komplainRequest::find($data["id"]);
+        $komp->alasan_komplain = $data["alasan"];
+        $komp->save();
+    }
 }

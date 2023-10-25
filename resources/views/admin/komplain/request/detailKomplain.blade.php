@@ -305,7 +305,31 @@
             closeOnConfirm: false
         }, function(isConfirm) {
             if (isConfirm) {
-                window.location.href = "/admin/komplain/request/tolakKomplain/{{$komplain->first()->id_komplain_req}}";
+                swal({
+                    title: "Alasan Komplain Ditolak",
+                    text: "Masukkan alasan ditolak:",
+                    type: "input",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    animation: "slide-from-top",
+                    inputPlaceholder: "Alasan..."
+                }, function(inputValue){
+                    if (inputValue === false) return false;
+                    if (inputValue === "") {
+                        swal.showInputError("Anda harus memasukkan alasan yang valid!");
+                        console.log(inputValue);
+                        return false;
+                    }
+                    window.location.href = "/admin/komplain/request/tolakKomplain/{{$komplain->first()->id_komplain_req}}?alasan=" + encodeURIComponent(inputValue);
+                });
+
+                setTimeout(function() {
+                    // Mengubah tipe input menjadi number setelah SweetAlert muncul
+                    var input = document.querySelector(".sweet-alert input");
+                    if (input) {
+                        input.type = "text";
+                    }
+                }, 1);
             }
         });
     }

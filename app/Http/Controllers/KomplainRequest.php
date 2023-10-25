@@ -300,6 +300,12 @@ class KomplainRequest extends Controller
         $komp = new ModelsKomplainRequest();
         $komp->updateStatus($data);
 
+        $data2 = [
+            "id" => $request->id,
+            "alasan" => $request->alasan
+        ];
+        $komp->updateAlasan($data2);
+
         //notif pemilik/tempat
         $komplain = DB::table('komplain_request')->where("id_komplain_req","=",$request->id)->get()->first();
         $pengaju = "";

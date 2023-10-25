@@ -380,10 +380,14 @@ display: block;
                         
                         <!-- Nama Alat -->
                         <div class="col-8 d-flex flex-column justify-content-center">
-                            <h4 class="card-title"><b>Komplain Anda telah dikirim!</b></h4>
                             @if ($komplain->first()->status_komplain == "Menunggu")
+                                <h4 class="card-title"><b>Komplain Anda telah dikirim!</b></h4>
                                 <p class="card-text">Komplain kamu menunggu konfirmasi admin</p>
-                            @else
+                            @elseif ($komplain->first()->status_komplain == "Ditolak")
+                                <h4 class="card-title"><b>Maaf, Komplain Anda telah Ditolak!</b></h4>
+                                <p class="card-text">Komplain kamu sudah {{$komplain->first()->status_komplain}} oleh admin karena {{$komplain->first()->alasan_komplain}}</p>
+                            @elseif ($komplain->first()->status_komplain == "Diterima")
+                                <h4 class="card-title"><b>Yeay, Komplain Anda telah Diterima!</b></h4>
                                 <p class="card-text">Komplain kamu sudah {{$komplain->first()->status_komplain}} oleh admin</p>
                             @endif
                         </div>
