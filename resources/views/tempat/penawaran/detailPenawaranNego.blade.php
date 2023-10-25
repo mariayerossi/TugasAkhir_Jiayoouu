@@ -124,6 +124,7 @@
                     @csrf
                     <div class="input-group">
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                        <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
                         <input type="number" min="0" name="harga_sewa" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}" class="form-control">
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-primary">Edit Harga</button>
@@ -157,6 +158,7 @@
                         @csrf
                         <div class="input-group">
                             <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                            <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
                             <input type="date" name="tanggal_mulai" value="{{ old('tanggal_mulai') ?? $penawaran->first()->req_tanggal_mulai }}" class="form-control">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary">Edit Tanggal</button>
@@ -185,6 +187,7 @@
                         @csrf
                         <div class="input-group">
                             <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                            <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
                             <input type="date" name="tanggal_selesai" value="{{ old('tanggal_selesai') ?? $penawaran->first()->req_tanggal_selesai }}" class="form-control">
                             <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary">Edit Tanggal</button>

@@ -179,12 +179,17 @@ class RequestPenawaran extends Controller
             "required" => "harga sewa tidak boleh kosong!"
         ]);
 
-        $data = [
-            "id" => $request->id_penawaran,
-            "harga" => $request->harga_sewa
-        ];
-        $pen = new ModelsRequestPenawaran();
-        $pen->updateHargaSewa($data);
+        if ($request->status_penawaran == "Menunggu") {
+            $data = [
+                "id" => $request->id_penawaran,
+                "harga" => $request->harga_sewa
+            ];
+            $pen = new ModelsRequestPenawaran();
+            $pen->updateHargaSewa($data);
+        }
+        else {
+            return redirect()->back()->with("error", "Gagal mengedit harga sewa! Status penawaran telah $request->status_penawaran");
+        }
 
         return redirect()->back()->with("success", "Berhasil mengedit harga sewa!");
     }
@@ -196,12 +201,17 @@ class RequestPenawaran extends Controller
             "required" => "tanggal mulai peminjaman tidak boleh kosong!"
         ]);
 
-        $data = [
-            "id" => $request->id_penawaran,
-            "tanggal" => $request->tanggal_mulai
-        ];
-        $pen = new ModelsRequestPenawaran();
-        $pen->updateTanggalMulai($data);
+        if ($request->status_penawaran == "Menunggu") {
+            $data = [
+                "id" => $request->id_penawaran,
+                "tanggal" => $request->tanggal_mulai
+            ];
+            $pen = new ModelsRequestPenawaran();
+            $pen->updateTanggalMulai($data);
+        }
+        else {
+            return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran");
+        }
 
         return redirect()->back()->with("success", "Berhasil mengedit tanggal mulai sewa!");
     }
@@ -213,12 +223,17 @@ class RequestPenawaran extends Controller
             "required" => "tanggal mulai peminjaman tidak boleh kosong!"
         ]);
 
-        $data = [
-            "id" => $request->id_penawaran,
-            "tanggal" => $request->tanggal_selesai
-        ];
-        $pen = new ModelsRequestPenawaran();
-        $pen->updateTanggalSelesai($data);
+        if ($request->status_penawaran == "Menunggu") {
+            $data = [
+                "id" => $request->id_penawaran,
+                "tanggal" => $request->tanggal_selesai
+            ];
+            $pen = new ModelsRequestPenawaran();
+            $pen->updateTanggalSelesai($data);
+        }
+        else {
+            return redirect()->back()->with("error", "Gagal mengedit tanggal selesai sewa! Status penawaran telah $request->status_penawaran");
+        }
 
         return redirect()->back()->with("success", "Berhasil mengedit tanggal selesai sewa!");
     }
