@@ -201,7 +201,7 @@
                         <h6>Tanggal Sewa</h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                        <input type="date" name="tanggal" id="tanggal" class="form-control" value="{{old("tanggal") ?? $tanggal}}">
+                        <input type="date" name="tanggal" id="tanggal" class="form-control" value="{{old('tanggal') ?? $tanggal}}">
                     </div>
                 </div>
                 <div class="row">
@@ -209,10 +209,10 @@
                         <h6>Jam Sewa</h6>
                     </div>
                     <div class="col-md-4 col-12 mt-2 mt-md-0 mb-3">
-                        <input type="time" name="mulai" id="mulai" class="form-control" onchange="forceHourOnly(this)" value="{{old("mulai") ?? $mulai}}">
+                        <input type="time" name="mulai" id="mulai" class="form-control" onchange="forceHourOnly(this)" value="{{old('mulai') ?? $mulai}}">
                     </div>
                     <div class="col-md-4 col-12 mt-2 mt-md-0 mb-3">
-                        <input type="time" name="selesai" id="selesai" class="form-control" onchange="forceHourOnly(this)" value="{{old("selesai") ?? $selesai}}">
+                        <input type="time" name="selesai" id="selesai" class="form-control" onchange="forceHourOnly(this)" value="{{old('selesai') ?? $selesai}}">
                     </div>
                 </div>
                 @if (Session::has("sewaAlat"))

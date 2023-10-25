@@ -111,7 +111,7 @@
                         <h6>Tanggal Pinjam</h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                        <input type="date" name="tgl_mulai" id="" class="form-control">
+                        <input type="date" name="tgl_mulai" id="" class="form-control" value="{{old('tgl_mulai')}}">
                     </div>
                 </div>
                 <div class="row">
@@ -119,7 +119,7 @@
                         <h6>Tanggal Kembali</h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                        <input type="date" name="tgl_selesai" id="" class="form-control">
+                        <input type="date" name="tgl_selesai" id="" class="form-control" value="{{old('tgl_selesai')}}">
                     </div>
                 </div>
                 <div class="row">
@@ -131,7 +131,7 @@
                             <option value="" disabled selected>Pilih Lapangan</option>
                             @if (!$lapangan->isEmpty())
                                 @foreach ($lapangan as $item)
-                                <option value="{{$item->id_lapangan}}-{{$item->kota_lapangan}}" {{ old('lapangan') == $item->nama_lapangan ? 'selected' : '' }}>{{$item->nama_lapangan}} - {{$item->kota_lapangan}}</option>
+                                <option value="{{$item->id_lapangan}}-{{$item->kota_lapangan}}" {{ old('lapangan') == $item->id_lapangan ? 'selected' : '' }}>{{$item->nama_lapangan}} - {{$item->kota_lapangan}}</option>
                                 @endforeach
                             @endif
                         </select>

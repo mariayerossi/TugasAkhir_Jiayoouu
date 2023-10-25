@@ -39,7 +39,10 @@ class RequestPermintaan extends Controller
         $date_selesai = new DateTime($request->tgl_selesai);
         
         if ($date_selesai <= $date_mulai) {
-            return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
+            return redirect()->back()->withInput()->with("error", "Tanggal kembali tidak sesuai!");
+        }
+        else if ($date_mulai < new DateTime($tgl_minta) || $date_selesai < new DateTime($tgl_minta)) {
+            return redirect()->back()->withInput()->with("error", "Tanggal tidak valid!");
         }
         else {
             $data = [
@@ -383,6 +386,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_tempat", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Menunggu")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["baru"] = $baru;
 
@@ -397,6 +401,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_tempat", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Diterima")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["diterima"] = $diterima;
 
@@ -411,6 +416,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_tempat", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Disewakan")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["disewakan"] = $disewakan;
 
@@ -425,6 +431,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_tempat", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Ditolak")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["ditolak"] = $ditolak;
 
@@ -439,6 +446,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_tempat", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Selesai")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["selesai"] = $selesai;
 
@@ -453,6 +461,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_tempat", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Dibatalkan")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["dibatalkan"] = $dibatalkan;
 
@@ -467,6 +476,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_tempat", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Dikomplain")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["dikomplain"] = $dikomplain;
 
@@ -488,6 +498,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_pemilik", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Menunggu")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
                 // dd($baru);
         $param["baru"] = $baru;
@@ -504,6 +515,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_pemilik", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Diterima")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["diterima"] = $diterima;
 
@@ -519,6 +531,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_pemilik", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Disewakan")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["disewakan"] = $disewakan;
 
@@ -534,6 +547,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_pemilik", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Ditolak")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["ditolak"] = $ditolak;
 
@@ -549,6 +563,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_pemilik", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Selesai")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["selesai"] = $selesai;
 
@@ -564,6 +579,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_pemilik", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Dibatalkan")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["dibatalkan"] = $dibatalkan;
 
@@ -579,6 +595,7 @@ class RequestPermintaan extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_permintaan.fk_id_pemilik", "=", $role)
                 ->where("request_permintaan.status_permintaan","=","Dikomplain")
+                ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
         $param["dikomplain"] = $dikomplain;
 

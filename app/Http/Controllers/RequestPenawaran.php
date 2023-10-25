@@ -201,13 +201,18 @@ class RequestPenawaran extends Controller
             "required" => "tanggal mulai peminjaman tidak boleh kosong!"
         ]);
 
+        date_default_timezone_set("Asia/Jakarta");
+        $tgl_minta = date("Y-m-d H:i:s");
+
         if ($request->status_penawaran == "Menunggu") {
-            $data = [
-                "id" => $request->id_penawaran,
-                "tanggal" => $request->tanggal_mulai
-            ];
-            $pen = new ModelsRequestPenawaran();
-            $pen->updateTanggalMulai($data);
+            if (new DateTime($request->tanggal_mulai) < new DateTime($tgl_minta)) {
+                $data = [
+                    "id" => $request->id_penawaran,
+                    "tanggal" => $request->tanggal_mulai
+                ];
+                $pen = new ModelsRequestPenawaran();
+                $pen->updateTanggalMulai($data);
+            }
         }
         else {
             return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran");
@@ -223,13 +228,18 @@ class RequestPenawaran extends Controller
             "required" => "tanggal mulai peminjaman tidak boleh kosong!"
         ]);
 
+        date_default_timezone_set("Asia/Jakarta");
+        $tgl_minta = date("Y-m-d H:i:s");
+
         if ($request->status_penawaran == "Menunggu") {
-            $data = [
-                "id" => $request->id_penawaran,
-                "tanggal" => $request->tanggal_selesai
-            ];
-            $pen = new ModelsRequestPenawaran();
-            $pen->updateTanggalSelesai($data);
+            if (new DateTime($request->tanggal_selesai) < new DateTime($tgl_minta)) {
+                $data = [
+                    "id" => $request->id_penawaran,
+                    "tanggal" => $request->tanggal_selesai
+                ];
+                $pen = new ModelsRequestPenawaran();
+                $pen->updateTanggalSelesai($data);
+            }
         }
         else {
             return redirect()->back()->with("error", "Gagal mengedit tanggal selesai sewa! Status penawaran telah $request->status_penawaran");
@@ -457,6 +467,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_pemilik", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Menunggu")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         // dd($baru);
         $param["baru"] = $baru;
@@ -473,6 +484,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_pemilik", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Diterima")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["diterima"] = $diterima;
 
@@ -488,6 +500,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_pemilik", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Disewakan")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["disewakan"] = $disewakan;
 
@@ -503,6 +516,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_pemilik", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Ditolak")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["ditolak"] = $ditolak;
 
@@ -518,6 +532,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_pemilik", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Selesai")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["selesai"] = $selesai;
 
@@ -533,6 +548,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_pemilik", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Dibatalkan")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["dibatalkan"] = $dibatalkan;
 
@@ -548,6 +564,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_pemilik", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Dikomplain")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["dikomplain"] = $dikomplain;
 
@@ -569,6 +586,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_tempat", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Menunggu")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["baru"] = $baru;
 
@@ -584,6 +602,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_tempat", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Diterima")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["diterima"] = $diterima;
 
@@ -599,6 +618,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_tempat", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Disewakan")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["disewakan"] = $disewakan;
 
@@ -614,6 +634,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_tempat", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Ditolak")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["ditolak"] = $ditolak;
 
@@ -629,6 +650,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_tempat", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Selesai")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["selesai"] = $selesai;
 
@@ -644,6 +666,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_tempat", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Dibatalkan")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["dibatalkan"] = $dibatalkan;
 
@@ -659,6 +682,7 @@ class RequestPenawaran extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->where("request_penawaran.fk_id_tempat", "=", $role)
                 ->where("request_penawaran.status_penawaran","=","Dikomplain")
+                ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
         $param["dikomplain"] = $dikomplain;
 

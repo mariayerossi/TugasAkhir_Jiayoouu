@@ -157,7 +157,7 @@
                             <option value="" disabled selected>Pilih Alat Olahraga</option>
                             @if (!$alat->isEmpty())
                                 @foreach ($alat as $item)
-                                <option value="{{$item->id_alat}}-{{$item->kota_alat}}" {{ old('alat') == $item->nama_alat ." - ". $item->kota_alat ? 'selected' : '' }}>{{$item->nama_alat}} - {{$item->kota_alat}}</option>
+                                <option value="{{$item->id_alat}}-{{$item->kota_alat}}" {{ old('alat') == $item->id_alat ." - ". $item->kota_alat ? 'selected' : '' }}>{{$item->nama_alat}} - {{$item->kota_alat}}</option>
                                 @endforeach
                             @endif
                         </select>

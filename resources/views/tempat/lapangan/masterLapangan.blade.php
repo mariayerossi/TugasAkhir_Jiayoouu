@@ -32,7 +32,7 @@
                     <option value="" disabled selected>Masukkan Kategori Lapangan Olahraga</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
-                        <option value="{{$item->nama_kategori}}" {{ old('kategori') == $item->nama_kategori ? 'selected' : '' }}>{{$item->nama_kategori}}</option>
+                        <option value="{{$item->id_kategori}}" {{ old('kategori') == $item->id_kategori ? 'selected' : '' }}>{{$item->nama_kategori}}</option>
                         @endforeach
                     @endif
                 </select>

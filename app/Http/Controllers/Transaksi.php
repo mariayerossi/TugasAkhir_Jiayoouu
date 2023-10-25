@@ -56,11 +56,28 @@ class Transaksi extends Controller
             "selesai.required" => "jam selesai sewa tidak boleh kosong!"
         ]);
 
+        $date_now = new DateTime();
+
         $date_mulai = new DateTime($request->mulai);
         $date_selesai = new DateTime($request->selesai);
+        $tanggal = new DateTime($request->tanggal);
         
         if ($date_selesai <= $date_mulai) {
             return redirect()->back()->with("error", "Jam sewa tidak sesuai!");
+        }
+
+        if ($tanggal < $date_now) {
+            return redirect()->back()->with("error", "Tanggal sewa tidak sesuai!");
+        }
+        
+        // Cek apakah waktu mulai lebih awal dari waktu saat ini
+        if ($date_mulai < $date_now) {
+            return redirect()->back()->with("error", "Waktu mulai sewa tidak sesuai!");
+        }
+        
+        // Cek apakah waktu selesai lebih awal dari waktu saat ini
+        if ($date_selesai < $date_now) {
+            return redirect()->back()->with("error", "Waktu selesai sewa tidak sesuai!");
         }
 
         //kasi pengecekan apakah ada tgl dan jam sama yg sdh dibooking
