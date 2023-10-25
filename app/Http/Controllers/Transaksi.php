@@ -715,7 +715,7 @@ class Transaksi extends Controller
         $date_selesai = new DateTime($request->selesai);
         
         if ($date_selesai <= $date_mulai) {
-            return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
+            return redirect()->back()->withInput()->with("error", "Tanggal kembali tidak sesuai!");
         }
 
         date_default_timezone_set("Asia/Jakarta");
@@ -725,7 +725,7 @@ class Transaksi extends Controller
         $date_selesai_full = new DateTime($request->tanggal . ' ' . $request->selesai);
 
         if ($date_mulai_full <= $date_now || $date_selesai_full <= $date_now) {
-            return redirect()->back()->with("error", "Tanggal atau waktu booking tidak valid!");
+            return redirect()->back()->withInput()->with("error", "Tanggal atau waktu booking tidak valid!");
         }
 
         $start_time = strtotime($request->mulai);

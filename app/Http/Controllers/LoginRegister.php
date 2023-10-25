@@ -59,7 +59,7 @@ class LoginRegister extends Controller
             $data3 = $tempat->cek_email_tempat($request->email);
 
             if (!$data1->isEmpty() || !$data2->isEmpty() || !$data3->isEmpty()) {
-                return redirect()->back()->with("error", "Email sudah pernah digunakan!");
+                return redirect()->back()->withInput()->with("error", "Email sudah pernah digunakan!");
             }
             else {
                 //enkripsi saldo user
@@ -85,7 +85,7 @@ class LoginRegister extends Controller
             }
         }
         else {
-            return redirect()->back()->with("error", "Konfirmasi password salah!");
+            return redirect()->back()->withInput()->with("error", "Konfirmasi password salah!");
         }
     }
 
@@ -126,7 +126,7 @@ class LoginRegister extends Controller
             $data3 = $tempat->cek_email_tempat($request->email);
             
             if (!$data1->isEmpty() || !$data2->isEmpty() || !$data3->isEmpty()) {
-                return redirect()->back()->with("error", "Email sudah pernah digunakan!");
+                return redirect()->back()->withInput()->with("error", "Email sudah pernah digunakan!");
             }
             else {
                 //enkripsi saldo pemilik
@@ -159,7 +159,7 @@ class LoginRegister extends Controller
             }
         }
         else {
-            return redirect()->back()->with("error", "Konfirmasi password salah!");
+            return redirect()->back()->withInput()->with("error", "Konfirmasi password salah!");
         }
     }
 
@@ -209,7 +209,7 @@ class LoginRegister extends Controller
             $data3 = $tempat->cek_email_tempat($request->email);
 
             if (!$data1->isEmpty() || !$data2->isEmpty() || !$data3->isEmpty()) {
-                return redirect()->back()->with("error", "Email sudah pernah digunakan!");
+                return redirect()->back()->withInput()->with("error", "Email sudah pernah digunakan!");
             }
             else {
                 //enkripsi saldo tempat
@@ -248,7 +248,7 @@ class LoginRegister extends Controller
             }
         }
         else {
-            return redirect()->back()->with("error", "Konfirmasi password salah!");
+            return redirect()->back()->withInput()->with("error", "Konfirmasi password salah!");
         }
     }
 
@@ -279,7 +279,7 @@ class LoginRegister extends Controller
                     Session::put("dataRole", $dataUser->first());
                     return redirect('/customer/beranda');
                 } else {
-                    return redirect()->back()->with("error", "Password salah!");
+                    return redirect()->back()->withInput()->with("error", "Password salah!");
                 }
             }
 
@@ -293,7 +293,7 @@ class LoginRegister extends Controller
                     Session::put("dataRole", $dataPemilik->first());
                     return redirect('/pemilik/beranda');
                 } else {
-                    return redirect()->back()->with("error", "Password salah!");
+                    return redirect()->back()->withInput()->with("error", "Password salah!");
                 }
             }
 
@@ -306,11 +306,11 @@ class LoginRegister extends Controller
                     Session::put("dataRole", $dataTempat->first());
                     return redirect('/tempat/beranda');
                 } else {
-                    return redirect()->back()->with("error", "Password salah!");
+                    return redirect()->back()->withInput()->with("error", "Password salah!");
                 }
             }
             else {
-                return redirect()->back()->with("error", "Akun tidak ditemukan! Silahkan register terlebih dahulu!");
+                return redirect()->back()->withInput()->with("error", "Akun tidak ditemukan! Silahkan register terlebih dahulu!");
             }
         }
     }

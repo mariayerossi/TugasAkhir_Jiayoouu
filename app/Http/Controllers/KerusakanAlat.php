@@ -132,7 +132,7 @@ class KerusakanAlat extends Controller
                     }
                 }
                 else {
-                    return redirect()->back()->with("error", "Foto tidak boleh kosong!");
+                    return redirect()->back()->withInput()->with("error", "Foto tidak boleh kosong!");
                 }
             }
         }
@@ -141,7 +141,7 @@ class KerusakanAlat extends Controller
             return redirect()->back()->with("success", "Berhasil mengajukan kerusakan alat olahraga!");
         }
         else {
-            return redirect()->back()->with("error", "Gagal mengajukan kerusakan alat olahraga!");
+            return redirect()->back()->withInput()->with("error", "Gagal mengajukan kerusakan alat olahraga!");
         }
     }
 
