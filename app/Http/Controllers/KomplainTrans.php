@@ -309,6 +309,7 @@ class KomplainTrans extends Controller
             "isi" => "Maaf! Komplain Transaksi yang Anda ajukan belum bisa kami terima.<br><br>
                     <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
                     <b>Diajukan pada: ".$tanggalBaru."</b><br><br>
+                    Komplain kami tolak karena ".$request->alasan."<br>
                     Kami menghargai umpan balik Anda! Kami akan berusaha lebih baik di masa depan. Terima kasih atas pengertiannya!"
         ];
         $e = new notifikasiEmail();
