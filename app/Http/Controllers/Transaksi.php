@@ -56,28 +56,25 @@ class Transaksi extends Controller
             "selesai.required" => "jam selesai sewa tidak boleh kosong!"
         ]);
 
-        $date_now = new DateTime();
-
         $date_mulai = new DateTime($request->mulai);
         $date_selesai = new DateTime($request->selesai);
-        $tanggal = new DateTime($request->tanggal);
         
         if ($date_selesai <= $date_mulai) {
             return redirect()->back()->with("error", "Jam sewa tidak sesuai!");
         }
 
-        if ($tanggal < $date_now) {
-            return redirect()->back()->with("error", "Tanggal sewa tidak sesuai!");
+        date_default_timezone_set("Asia/Jakarta");
+        $skrg = date("Y-m-d H:i:s");
+        $date_now = new DateTime($skrg); // ini adalah tanggal dan waktu saat ini
+        $date_mulai_full = new DateTime($request->tanggal . ' ' . $request->mulai);
+        $date_selesai_full = new DateTime($request->tanggal . ' ' . $request->selesai);
+
+        if ($date_mulai_full <= $date_now || $date_selesai_full <= $date_now) {
+            return redirect()->back()->with("error", "Tanggal atau waktu booking tidak valid!");
         }
-        
-        // Cek apakah waktu mulai lebih awal dari waktu saat ini
-        if ($date_mulai < $date_now) {
-            return redirect()->back()->with("error", "Waktu mulai sewa tidak sesuai!");
-        }
-        
-        // Cek apakah waktu selesai lebih awal dari waktu saat ini
-        if ($date_selesai < $date_now) {
-            return redirect()->back()->with("error", "Waktu selesai sewa tidak sesuai!");
+
+        if ($date_selesai <= $date_mulai) {
+            return redirect()->back()->with("error", "Jam sewa tidak sesuai!");
         }
 
         //kasi pengecekan apakah ada tgl dan jam sama yg sdh dibooking
@@ -719,6 +716,16 @@ class Transaksi extends Controller
         
         if ($date_selesai <= $date_mulai) {
             return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
+        }
+
+        date_default_timezone_set("Asia/Jakarta");
+        $skrg = date("Y-m-d H:i:s");
+        $date_now = new DateTime($skrg); // ini adalah tanggal dan waktu saat ini
+        $date_mulai_full = new DateTime($request->tanggal . ' ' . $request->mulai);
+        $date_selesai_full = new DateTime($request->tanggal . ' ' . $request->selesai);
+
+        if ($date_mulai_full <= $date_now || $date_selesai_full <= $date_now) {
+            return redirect()->back()->with("error", "Tanggal atau waktu booking tidak valid!");
         }
 
         $start_time = strtotime($request->mulai);
