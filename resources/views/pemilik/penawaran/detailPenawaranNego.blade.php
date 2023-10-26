@@ -245,6 +245,16 @@ display: block;
                 </div>
             </div>
         </div>
+    @elseif ($penawaran->first()->status_penawaran == "Dibatalkan")
+        <div class="row justify-content-end mb-3">
+            <div class="col-12 col-md-6">
+                <form action="/pemilik/penawaran/tawarLagi" method="post">
+                    @csrf
+                    <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                    <button type="submit" class="btn btn-success w-100">Tawarkan Lagi!</button>
+                </form>
+            </div>
+        </div>
     @endif
 
     @if ($penawaran->first()->status_penawaran == "Selesai" && $penawaran->first()->status_alat == null)

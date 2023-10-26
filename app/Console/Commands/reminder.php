@@ -354,7 +354,7 @@ class reminder extends Command
                                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                     <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
                                     <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
-                                    Segera Terima Transaksi ini ya! jika tidak diterima sampai 3 jam sebelum jam sewa transaksi ini akan dibatalkan😊"
+                                    Segera Terima Transaksi ini ya! Apabila tidak diterima hingga 3 jam sebelum waktu penyewaan, transaksi ini akan dibatalkan. 😊"
                         ];
                         $e = new notifikasiEmail();
                         $e->sendEmail($dataTemp->email_tempat, $dataNotif2);
@@ -366,7 +366,7 @@ class reminder extends Command
                 $sewa2->sub(new DateInterval('PT3H')); // mengurangkan 3 jam
                 $sew2 = $sewa2->format('Y-m-d H:i:s');
 
-                if ($value->status_trans == "Menunggu") {
+                if ($sew2 == $sekarang && $value->status_trans == "Menunggu") {
                     //status trans berubah menjadi "dibatalkan" dan total transaksi kembali ke saldo cust
                     $cust = new customer();
                     $saldo = (int)$this->decodePrice($cust->get_all_data_by_id($value->fk_id_user)->first()->saldo_user, "mysecretkey");
@@ -384,12 +384,12 @@ class reminder extends Command
                     $cust = new customer();
                     $cust->updateSaldo($dataSaldo);
 
-                    // $data = [
-                    //     "id" => $value->id_htrans,
-                    //     "status" => "Dibatalkan"
-                    // ];
-                    // $trans = new htrans();
-                    // $trans->updateStatus($data);
+                    $data = [
+                        "id" => $value->id_htrans,
+                        "status" => "Dibatalkan"
+                    ];
+                    $trans = new htrans();
+                    $trans->updateStatus($data);
 
                     //kasih notif pembatalan transaksi ke customer
                     $tanggalAwal3 = $value->tanggal_sewa;
@@ -406,7 +406,7 @@ class reminder extends Command
                                 Telah dibatalkan, dana anda telah kami kembalikan ke saldo wallet! Terus jaga kesehatanmu bersama Sportiva! 😊"
                     ];
                     $e2 = new notifikasiEmail();
-                    $e2->sendEmail("maria.yerossi@gmail.com", $dataNotif3);
+                    $e2->sendEmail($cust->get_all_data_by_id($value->fk_id_user)->first()->email_user, $dataNotif3);
                 }
             }
         }

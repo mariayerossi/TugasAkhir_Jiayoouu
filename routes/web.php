@@ -413,6 +413,8 @@ Route::prefix("/pemilik")->group(function(){
         Route::post("/confirmKodeMulai", [RequestPenawaran::class, "confirmKodeMulai"]);
         Route::post("/confirmKodeSelesai", [RequestPenawaran::class, "confirmKodeSelesai"]);
 
+        Route::post("/tawarLagi", [RequestPenawaran::class, "tawarLagi"]);
+
         //Bagian negosiasi
         Route::prefix("/negosiasi")->group(function(){
             Route::post("tambahNego", [Negosiasi::class, "tambahNegoPenawaran"]);
