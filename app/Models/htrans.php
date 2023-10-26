@@ -95,6 +95,10 @@ class htrans extends Model
         return htrans::where('deleted_at',"=",null)->count();
     }
 
+    public function count_all_data_tempat($role){
+        return htrans::where('deleted_at',"=",null)->where("fk_id_tempat","=",$role)->count();
+    }
+
     public function updateStatus($data){
         $trans = htrans::find($data["id"]);
         $trans->status_trans = $data["status"];

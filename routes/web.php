@@ -474,8 +474,8 @@ Route::prefix("/pemilik")->group(function(){
 Route::prefix("/tempat")->group(function(){
     Route::get("/beranda", function () {
         $role = Session::get("dataRole")->id_tempat;
-        $lapa = new ModelsLapanganOlahraga();
-        $param["jumlahLapangan"] = $lapa->count_all_data($role);
+        $trans = new ModelsHtrans();
+        $param["jumlahTransaksi"] = $trans->count_all_data_tempat($role);
         $minta = new ModelsRequestPermintaan();
         $param["jumlahPermintaan"] = $minta->count_all_data_tempat($role);
         $tawar = new ModelsRequestPenawaran();

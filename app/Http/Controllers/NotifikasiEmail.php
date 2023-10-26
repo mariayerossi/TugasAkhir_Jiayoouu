@@ -18,6 +18,6 @@ class NotifikasiEmail extends Controller
         ];
         // Mail::to("maria.yerossi@gmail.com")->send(new notifEmail($data));
         $e = new ModelsNotifikasiEmail();
-        $e->sendEmail("maria.yerossi@gmail.com",$dataNotif);
+        $e->sendEmail("maria_y20@mhs.istts.ac.id",$dataNotif);
     }
 }

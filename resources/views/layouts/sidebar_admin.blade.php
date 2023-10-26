@@ -116,7 +116,7 @@ Sportiva
     
     <div id="sidebar">
         {{-- logo --}}
-        <a href="" class="logo d-flex align-items-center">
+        <a href="/admin/beranda" class="logo d-flex align-items-center">
             <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
             <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
         </a>
