@@ -32,10 +32,7 @@ class RequestPenawaran extends Controller
             "id_tempat" => $request->id_tempat,
             "id_pemilik" => $request->id_pemilik,
             "tgl_tawar" => $tgl_tawar,
-            "status" => "Menunggu",
-            "harga" => null,
-            "mulai" => null,
-            "selesai" => null
+            "status" => "Menunggu"
         ];
         $req = new ModelsRequestPenawaran();
         $req->insertPenawaran($data);

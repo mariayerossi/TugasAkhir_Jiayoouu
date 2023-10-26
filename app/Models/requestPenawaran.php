@@ -24,9 +24,6 @@ class requestPenawaran extends Model
         $req->fk_id_pemilik = $data["id_pemilik"];
         $req->tanggal_tawar = $data["tgl_tawar"];
         $req->status_penawaran = $data["status"];
-        $req->req_harga_sewa = $data["harga"];
-        $req->req_tanggal_mulai = $data["mulai"];
-        $req->req_tanggal_selesai = $data["selesai"];
         $req->save();
     }
 
