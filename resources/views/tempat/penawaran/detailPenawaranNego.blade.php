@@ -110,102 +110,82 @@
             </a>
         </div>
     </div>
-    <div class="row mb-3 mt-3">
-        <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
-            @if ($penawaran->first()->req_harga_sewa != null)
-                <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}</p>
-            @else
-                <p>(Anda belum mengisi harga sewa)</p>
-            @endif
+    <form action="/tempat/penawaran/terimaPenawaran" method="post">
+        @csrf
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6 col-sm-12 mb-3">
+                <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
+                @if ($penawaran->first()->req_harga_sewa != null)
+                    <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}</p>
+                @endif
 
-            @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null)
-                <form action="/tempat/penawaran/editHargaSewa" method="post">
-                    @csrf
+                @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null && $penawaran->first()->req_harga_sewa == null)
                     <div class="input-group">
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
                         <input type="number" min="0" name="harga_sewa" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}" class="form-control">
-                        <div class="input-group-append">
+                        {{-- <div class="input-group-append">
                             <button type="submit" class="btn btn-primary">Edit Harga</button>
-                        </div>
+                        </div> --}}
                     </div>
-                </form>
-            @else
-                <p class="card-text">(Tidak dapat mengedit harga sewa, penawaran telah {{$penawaran->first()->status_penawaran}})</p>
-            @endif
-        </div>
-
-        <div class="col-md-6 col-sm-12 mb-3">
-        </div>
-        
-        <div class="row mb-3 mt-3">
-            <div class="col-md-6 col-sm-12 mb-3">
-                <h6>Tanggal Mulai Dipinjam:</h6>
-                @if ($penawaran->first()->req_tanggal_mulai == null)
-                    <p>(Anda belum mengisi tanggal peminjaman alat)</p>
-                @else
-                    @php
-                        $tanggalAwal2 = $penawaran->first()->req_tanggal_mulai;
-                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
-                    @endphp
-                    <p>{{$tanggalBaru2}}</p>
                 @endif
+            </div>
 
-                @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null)
-                    <form action="/tempat/penawaran/editTanggalMulai" method="post">
-                        @csrf
+            <div class="col-md-6 col-sm-12 mb-3">
+            </div>
+            
+            <div class="row mb-3 mt-3">
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <h6>Tanggal Mulai Dipinjam:</h6>
+                    @if ($penawaran->first()->req_tanggal_mulai != null)
+                        @php
+                            $tanggalAwal2 = $penawaran->first()->req_tanggal_mulai;
+                            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                        @endphp
+                        <p>{{$tanggalBaru2}}</p>
+                    @endif
+
+                    @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null && $penawaran->first()->req_tanggal_mulai == null)
                         <div class="input-group">
                             <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                             <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
                             <input type="date" name="tanggal_mulai" value="{{ old('tanggal_mulai') ?? $penawaran->first()->req_tanggal_mulai }}" class="form-control">
-                            <div class="input-group-append">
+                            {{-- <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary">Edit Tanggal</button>
-                            </div>
+                            </div> --}}
                         </div>
-                    </form>
-                @else
-                    <p class="card-text">(Tidak dapat mengedit tanggal mulai dipinjam, penawaran telah {{$penawaran->first()->status_penawaran}})</p>
-                @endif
-            </div>
-            <div class="col-md-6 col-sm-12 mb-3">
-                <h6>Tanggal Selesai Dipinjam:</h6>
-                @if ($penawaran->first()->req_tanggal_selesai == null)
-                    <p>(Anda belum mengisi tanggal pengembalian alat)</p>
-                @else
-                    @php
-                        $tanggalAwal3 = $penawaran->first()->req_tanggal_selesai;
-                        $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
-                        $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
-                    @endphp
-                    <p>{{$tanggalBaru3}}</p>
-                @endif
+                    @endif
+                </div>
+                <div class="col-md-6 col-sm-12 mb-3">
+                    <h6>Tanggal Selesai Dipinjam:</h6>
+                    @if ($penawaran->first()->req_tanggal_selesai != null)
+                        @php
+                            $tanggalAwal3 = $penawaran->first()->req_tanggal_selesai;
+                            $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+                            $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+                        @endphp
+                        <p>{{$tanggalBaru3}}</p>
+                    @endif
 
-                @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null)
-                    <form action="/tempat/penawaran/editTanggalSelesai" method="post">
-                        @csrf
+                    @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null && $penawaran->first()->req_tanggal_selesai == null)
                         <div class="input-group">
                             <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                             <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
                             <input type="date" name="tanggal_selesai" value="{{ old('tanggal_selesai') ?? $penawaran->first()->req_tanggal_selesai }}" class="form-control">
-                            <div class="input-group-append">
+                            {{-- <div class="input-group-append">
                                 <button type="submit" class="btn btn-primary">Edit Tanggal</button>
-                            </div>
+                            </div> --}}
                         </div>
-                    </form>
-                @else
-                    <p class="card-text">(Tidak dapat mengedit tanggal selesai dipinjam, penawaran telah {{$penawaran->first()->status_penawaran}})</p>
-                @endif
+                    @endif
+                </div>
             </div>
         </div>
-    </div>
     @if ($penawaran->first()->status_penawaran == "Menunggu")
         <div class="container">
             <div class="row justify-content-end mb-3">
                 <div class="col-12 col-md-6">
-                    <form action="/tempat/penawaran/terimaPenawaran" method="post">
-                        @csrf
+                    
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <hr>
                         @if ($penawaran->first()->status_tempat != "Setuju")
@@ -215,10 +195,10 @@
                             <span style="font-size: 14px">Penawaran telah disetujui, tunggu konfirmasi dari pemilik alat olahraga</span>
                             <button type="submit" disabled class="btn btn-success w-100">Terima</button>
                         @endif
-                    </form>
                     <hr>
                 </div>
             </div>
+    </form>
             <div class="row justify-content-end">
                 <div class="col-12 col-md-3 mb-3">
                     <a href="" class="btn btn-secondary w-100">Negosiasi</a>

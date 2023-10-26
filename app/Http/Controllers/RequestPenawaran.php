@@ -87,16 +87,66 @@ class RequestPenawaran extends Controller
             if ($dataReq->status_penawaran == "Menunggu") {
 
                 //cek dulu apakah harga sewa dan tanggal masih null atau tidak
-                if ($dataReq->req_harga_sewa != null) {
-                    if ($dataReq->req_tanggal_mulai != null && $dataReq->req_tanggal_selesai != null) {
+                if ($request->harga_sewa != null) {
+                    //update harga sewa
+                    $dataH = [
+                        "id" => $request->id_penawaran,
+                        "harga" => $request->harga_sewa
+                    ];
+                    $pen = new ModelsRequestPenawaran();
+                    $pen->updateHargaSewa($dataH);
+
+                    if ($request->tanggal_mulai != null && $request->tanggal_selesai != null) {
                         //cek apakah tanggal awal lbh awal dari tanggal berakhir?
-                        $date_mulai = new DateTime($dataReq->req_tanggal_mulai);
-                        $date_selesai = new DateTime($dataReq->req_tanggal_selesai);
+                        $date_mulai = new DateTime($request->tanggal_mulai);
+                        $date_selesai = new DateTime($request->tanggal_selesai);
                         
                         if ($date_selesai <= $date_mulai) {
                             return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
                         }
                         else {
+                            //update tanggal mulai
+                            date_default_timezone_set("Asia/Jakarta");
+                            $tgl_minta = date("Y-m-d H:i:s");
+
+                            if ($request->status_penawaran == "Menunggu") {
+                                if (new DateTime($request->tanggal_mulai) > new DateTime($tgl_minta)) {
+                                    $data = [
+                                        "id" => $request->id_penawaran,
+                                        "tanggal" => $request->tanggal_mulai
+                                    ];
+                                    $pen = new ModelsRequestPenawaran();
+                                    $pen->updateTanggalMulai($data);
+                                }
+                                else {
+                                    return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
+                                }
+                            }
+                            else {
+                                return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran");
+                            }
+
+                            //update tanggal selesai
+                            date_default_timezone_set("Asia/Jakarta");
+                            $tgl_minta = date("Y-m-d H:i:s");
+
+                            if ($request->status_penawaran == "Menunggu") {
+                                if (new DateTime($request->tanggal_selesai) > new DateTime($tgl_minta)) {
+                                    $data = [
+                                        "id" => $request->id_penawaran,
+                                        "tanggal" => $request->tanggal_selesai
+                                    ];
+                                    $pen = new ModelsRequestPenawaran();
+                                    $pen->updateTanggalSelesai($data);
+                                }
+                                else {
+                                    return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
+                                }
+                            }
+                            else {
+                                return redirect()->back()->with("error", "Gagal mengedit tanggal selesai sewa! Status penawaran telah $request->status_penawaran");
+                            }
+
                             $data = [
                                 "id" => $request->id_penawaran,
                                 "status" => "Setuju"
@@ -205,13 +255,16 @@ class RequestPenawaran extends Controller
         $tgl_minta = date("Y-m-d H:i:s");
 
         if ($request->status_penawaran == "Menunggu") {
-            if (new DateTime($request->tanggal_mulai) < new DateTime($tgl_minta)) {
+            if (new DateTime($request->tanggal_mulai) > new DateTime($tgl_minta)) {
                 $data = [
                     "id" => $request->id_penawaran,
                     "tanggal" => $request->tanggal_mulai
                 ];
                 $pen = new ModelsRequestPenawaran();
                 $pen->updateTanggalMulai($data);
+            }
+            else {
+                return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
             }
         }
         else {
@@ -232,13 +285,16 @@ class RequestPenawaran extends Controller
         $tgl_minta = date("Y-m-d H:i:s");
 
         if ($request->status_penawaran == "Menunggu") {
-            if (new DateTime($request->tanggal_selesai) < new DateTime($tgl_minta)) {
+            if (new DateTime($request->tanggal_selesai) > new DateTime($tgl_minta)) {
                 $data = [
                     "id" => $request->id_penawaran,
                     "tanggal" => $request->tanggal_selesai
                 ];
                 $pen = new ModelsRequestPenawaran();
                 $pen->updateTanggalSelesai($data);
+            }
+            else {
+                return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
             }
         }
         else {

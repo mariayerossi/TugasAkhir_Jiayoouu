@@ -314,11 +314,12 @@ class reminder extends Command
                 $sewa->add(new DateInterval('P1D'));
                 $sew = $sewa->format('Y-m-d H:i:s');
 
+                $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->fk_id_lapangan)->get()->first();
+
                 if ($sew == $sekarang) {
                     if ($value->status_trans == "Diterima") {
                         //kasih reminder ke cust
                         $dataCust = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
-                        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
                         $tanggalAwal2 = $value->tanggal_sewa;
                         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
@@ -340,7 +341,6 @@ class reminder extends Command
                     else if ($value->status_trans == "Menunggu") {
                         //kasih reminder ke pihak tempat klo hrs segera diterima
                         $dataTemp = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
-                        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
                         $tanggalAwal2 = $value->tanggal_sewa;
                         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
@@ -366,12 +366,12 @@ class reminder extends Command
                 $sewa2->sub(new DateInterval('PT3H')); // mengurangkan 3 jam
                 $sew2 = $sewa2->format('Y-m-d H:i:s');
 
-                if ($sew2 == $sekarang && $value->status_trans == "Menunggu") {
+                if ($value->status_trans == "Menunggu") {
                     //status trans berubah menjadi "dibatalkan" dan total transaksi kembali ke saldo cust
                     $cust = new customer();
                     $saldo = (int)$this->decodePrice($cust->get_all_data_by_id($value->fk_id_user)->first()->saldo_user, "mysecretkey");
 
-                    $saldo += $trans->total_trans;
+                    $saldo += $value->total_trans;
 
                     //enkripsi kembali saldo
                     $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
@@ -384,27 +384,29 @@ class reminder extends Command
                     $cust = new customer();
                     $cust->updateSaldo($dataSaldo);
 
-                    $data = [
-                        "id" => $value->id_htrans,
-                        "status" => "Dibatalkan"
-                    ];
-                    $trans = new htrans();
-                    $trans->updateStatus($data);
+                    // $data = [
+                    //     "id" => $value->id_htrans,
+                    //     "status" => "Dibatalkan"
+                    // ];
+                    // $trans = new htrans();
+                    // $trans->updateStatus($data);
 
                     //kasih notif pembatalan transaksi ke customer
-                    $dataLapangan2 = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+                    $tanggalAwal3 = $value->tanggal_sewa;
+                    $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+                    $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
                     $dataNotif3 = [
-                        "subject" => "😔Booking Lapangan ".$dataLapangan2->nama_lapangan." Telah Dibatalkan!😔",
-                        "judul" => "Yah! Booking Lapangan ".$dataLapangan2->nama_lapangan." Telah Dibatalkan",
+                        "subject" => "😔Booking Lapangan ".$dataLapangan->nama_lapangan." Telah Dibatalkan!😔",
+                        "judul" => "Yah! Booking Lapangan ".$dataLapangan->nama_lapangan." Telah Dibatalkan",
                         "nama_user" => $cust->get_all_data_by_id($value->fk_id_user)->first()->nama_user,
                         "isi" => "Detail Sewa Lapangan:<br><br>
-                                <b>Nama Lapangan Olahraga: ".$dataLapangan2->nama_lapangan."</b><br>
-                                <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
+                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                <b>Tanggal Sewa: ".$tanggalBaru3."</b><br>
                                 <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
                                 Telah dibatalkan, dana anda telah kami kembalikan ke saldo wallet! Terus jaga kesehatanmu bersama Sportiva! 😊"
                     ];
-                    $e = new notifikasiEmail();
-                    $e->sendEmail("maria.yerossi@gmail.com", $dataNotif3);
+                    $e2 = new notifikasiEmail();
+                    $e2->sendEmail("maria.yerossi@gmail.com", $dataNotif3);
                 }
             }
         }
