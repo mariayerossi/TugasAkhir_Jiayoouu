@@ -123,7 +123,12 @@
                     <div class="input-group">
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
-                        <input type="number" min="0" name="harga_sewa" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}" class="form-control">
+                        {{-- <input type="text" class="form-control" min="0" name="harga_sewa" oninput="formatNumber(this)" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}"> --}}
+                        <!-- Input yang terlihat oleh pengguna -->
+                        <input type="text" class="form-control" placeholder="Masukkan Harga Sewa" oninput="formatNumber(this)" value="{{old('harga_sewa')}}">
+
+                        <!-- Input tersembunyi untuk kirim ke server -->
+                        <input type="hidden" name="harga_sewa" id="actual" value="{{old('harga_sewa')}}">
                         {{-- <div class="input-group-append">
                             <button type="submit" class="btn btn-primary">Edit Harga</button>
                         </div> --}}
@@ -398,6 +403,21 @@
     @endif
 </div>
 <script>
+    function formatNumber(input) {
+        let value = input.value;
+        value = value.replace(/\D/g, '');
+        let numberValue = parseInt(value, 10);
+        
+        if (!isNaN(numberValue)) {
+            // Update input yang terlihat oleh pengguna dengan format yang sudah diformat
+            input.value = numberValue.toLocaleString('id-ID');
+            // Update input tersembunyi dengan angka murni
+            document.getElementById('actual').value = numberValue;
+        } else {
+            input.value = '';
+            document.getElementById('actual').value = '';
+        }
+    }
     function generateCode() {
         const currentDate = new Date();
         const month = ("0" + (currentDate.getMonth() + 1)).slice(-2);
