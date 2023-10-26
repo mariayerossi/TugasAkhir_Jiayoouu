@@ -119,16 +119,16 @@
                     <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}</p>
                 @endif
 
-                @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null && $penawaran->first()->req_harga_sewa == null)
+                @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
                     <div class="input-group">
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
                         {{-- <input type="text" class="form-control" min="0" name="harga_sewa" oninput="formatNumber(this)" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}"> --}}
                         <!-- Input yang terlihat oleh pengguna -->
-                        <input type="text" class="form-control" placeholder="Masukkan Harga Sewa" oninput="formatNumber(this)" value="{{old('harga_sewa')}}">
+                        <input type="text" class="form-control" placeholder="Masukkan Harga Sewa" oninput="formatNumber(this)" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}">
 
                         <!-- Input tersembunyi untuk kirim ke server -->
-                        <input type="hidden" name="harga_sewa" id="actual" value="{{old('harga_sewa')}}">
+                        <input type="hidden" name="harga_sewa" id="actual" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}">
                         {{-- <div class="input-group-append">
                             <button type="submit" class="btn btn-primary">Edit Harga</button>
                         </div> --}}
@@ -151,7 +151,7 @@
                         <p>{{$tanggalBaru2}}</p>
                     @endif
 
-                    @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null && $penawaran->first()->req_tanggal_mulai == null)
+                    @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
                         <div class="input-group">
                             <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                             <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
@@ -173,7 +173,7 @@
                         <p>{{$tanggalBaru3}}</p>
                     @endif
 
-                    @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null && $penawaran->first()->req_tanggal_selesai == null)
+                    @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
                         <div class="input-group">
                             <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                             <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">

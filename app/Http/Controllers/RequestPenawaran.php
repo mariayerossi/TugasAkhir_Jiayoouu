@@ -32,7 +32,10 @@ class RequestPenawaran extends Controller
             "id_tempat" => $request->id_tempat,
             "id_pemilik" => $request->id_pemilik,
             "tgl_tawar" => $tgl_tawar,
-            "status" => "Menunggu"
+            "status" => "Menunggu",
+            "harga" => null,
+            "mulai" => null,
+            "selesai" => null
         ];
         $req = new ModelsRequestPenawaran();
         $req->insertPenawaran($data);
@@ -75,6 +78,41 @@ class RequestPenawaran extends Controller
         else {
             return redirect()->back()->with("error", "Gagal membatalkan penawaran! status alat sudah $status");
         }
+    }
+
+    public function tawarLagi(Request $request) {
+        $req = new ModelsRequestPenawaran();
+        $dataReq = $req->get_all_data_by_id($request->id_penawaran)->first();
+
+        date_default_timezone_set("Asia/Jakarta");
+        $tgl_tawar = date("Y-m-d H:i:s");
+
+        $data = [
+            "id" => $request->id_penawaran,
+            "status" => "Menunggu"
+        ];
+        $per = new ModelsRequestPenawaran();
+        $per->updateTawarLagi($data);
+
+        //kasih notif ke pihak tempat klo ada penawaran alat ditawar lagi
+        $email_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$dataReq->fk_id_tempat)->get()->first()->email_tempat;
+        $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$dataReq->fk_id_tempat)->get()->first()->nama_tempat;
+        $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$dataReq->req_id_alat)->get()->first()->nama_alat;
+        $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$dataReq->req_id_alat)->get()->first()->komisi_alat;
+        // dd($email_tempat);
+        $dataNotif = [
+            "subject" => "Penawaran Alat Olahraga Diajukan Kembali",
+            "judul" => "Penawaran Alat Olahraga Diajukan Kembali",
+            "nama_user" => $nama_tempat,
+            "isi" => "Anda memiliki satu penawaran alat olahraga yang diajukan kembali oleh pemilik:<br><br>
+                    <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
+                    <b>Komisi Pemilik Alat : Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
+                    Silahkan Konfirmasi Penawaran!"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($email_tempat,$dataNotif);
+
+        return redirect()->back()->with("success", "Berhasil Menawarkan Alat!");
     }
 
     public function terimaPenawaran(Request $request) {

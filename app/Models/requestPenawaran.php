@@ -24,6 +24,9 @@ class requestPenawaran extends Model
         $req->fk_id_pemilik = $data["id_pemilik"];
         $req->tanggal_tawar = $data["tgl_tawar"];
         $req->status_penawaran = $data["status"];
+        $req->req_harga_sewa = $data["harga"];
+        $req->req_tanggal_mulai = $data["mulai"];
+        $req->req_tanggal_selesai = $data["selesai"];
         $req->save();
     }
 
@@ -99,6 +102,15 @@ class requestPenawaran extends Model
     {
         $pen = requestPenawaran::find($data["id"]);
         $pen->status_penawaran = $data["status"];
+        $pen->save();
+    }
+
+    public function updateTawarLagi($data)
+    {
+        $pen = requestPenawaran::find($data["id"]);
+        $pen->status_penawaran = $data["status"];
+        $pen->status_pemilik = null;
+        $pen->status_tempat = null;
         $pen->save();
     }
 
