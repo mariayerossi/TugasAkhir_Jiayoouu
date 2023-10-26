@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\customer;
 use App\Models\htrans;
 use App\Models\requestPermintaan;
 use DateInterval;
@@ -27,6 +28,30 @@ class reminder extends Command
      */
     protected $description = 'Command description';
 
+    private function encodePrice($price, $key) {
+        $encodedPrice = '';
+        $priceLength = strlen($price);
+        $keyLength = strlen($key);
+    
+        for ($i = 0; $i < $priceLength; $i++) {
+            $encodedPrice .= $price[$i] ^ $key[$i % $keyLength];
+        }
+    
+        return base64_encode($encodedPrice);
+    }
+
+    private function decodePrice($encodedPrice, $key) {
+        $encodedPrice = base64_decode($encodedPrice);
+        $decodedPrice = '';
+        $priceLength = strlen($encodedPrice);
+        $keyLength = strlen($key);
+    
+        for ($i = 0; $i < $priceLength; $i++) {
+            $decodedPrice .= $encodedPrice[$i] ^ $key[$i % $keyLength];
+        }
+    
+        return $decodedPrice;
+    }
     /**
      * Execute the console command.
      */
@@ -290,26 +315,96 @@ class reminder extends Command
                 $sew = $sewa->format('Y-m-d H:i:s');
 
                 if ($sew == $sekarang) {
-                    //kasih reminder ke cust
-                    $dataCust = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
-                    $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+                    if ($value->status_trans == "Diterima") {
+                        //kasih reminder ke cust
+                        $dataCust = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
+                        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
-                    $tanggalAwal2 = $value->tanggal_sewa;
-                    $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                        $tanggalAwal2 = $value->tanggal_sewa;
+                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
 
-                    $dataNotif = [
-                        "subject" => "🔔Ingat! Besok Hari Sewa Lapangan Olahraga🔔",
-                        "judul" => "Jangan Lupa datang besok ya!",
-                        "nama_user" => $dataCust->nama_user,
+                        $dataNotif = [
+                            "subject" => "🔔Ingat! Besok Hari Sewa Lapangan Olahraga🔔",
+                            "judul" => "Jangan Lupa datang besok ya!",
+                            "nama_user" => $dataCust->nama_user,
+                            "isi" => "Detail Sewa Lapangan:<br><br>
+                                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                    <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
+                                    <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
+                                    Ingat datang tepat waktu ya karena kami tidak memberikan toleransi keterlambatan! 😊"
+                        ];
+                        $e = new notifikasiEmail();
+                        $e->sendEmail($dataCust->email_user, $dataNotif);
+                    }
+                    else if ($value->status_trans == "Menunggu") {
+                        //kasih reminder ke pihak tempat klo hrs segera diterima
+                        $dataTemp = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+                        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+
+                        $tanggalAwal2 = $value->tanggal_sewa;
+                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+
+                        $dataNotif2 = [
+                            "subject" => "🔔Jangan Lupa Terima Transaksi Lapangan!🔔",
+                            "judul" => "Jangan Lupa Terima Transaksi Lapangan!",
+                            "nama_user" => $dataTemp->nama_tempat,
+                            "isi" => "Detail Sewa Lapangan:<br><br>
+                                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                    <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
+                                    <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
+                                    Segera Terima Transaksi ini ya! jika tidak diterima sampai 3 jam sebelum jam sewa transaksi ini akan dibatalkan😊"
+                        ];
+                        $e = new notifikasiEmail();
+                        $e->sendEmail($dataTemp->email_tempat, $dataNotif2);
+                    }
+                }
+
+                $tanggal2 = $value->tanggal_sewa." ".$value->jam_sewa;
+                $sewa2 = new DateTime($tanggal2);
+                $sewa2->sub(new DateInterval('PT3H')); // mengurangkan 3 jam
+                $sew2 = $sewa2->format('Y-m-d H:i:s');
+
+                if ($sew2 == $sekarang && $value->status_trans == "Menunggu") {
+                    //status trans berubah menjadi "dibatalkan" dan total transaksi kembali ke saldo cust
+                    $cust = new customer();
+                    $saldo = (int)$this->decodePrice($cust->get_all_data_by_id($value->fk_id_user)->first()->saldo_user, "mysecretkey");
+
+                    $saldo += $trans->total_trans;
+
+                    //enkripsi kembali saldo
+                    $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+                    //update db user
+                    $dataSaldo = [
+                        "id" => $value->fk_id_user,
+                        "saldo" => $enkrip
+                    ];
+                    $cust = new customer();
+                    $cust->updateSaldo($dataSaldo);
+
+                    $data = [
+                        "id" => $value->id_htrans,
+                        "status" => "Dibatalkan"
+                    ];
+                    $trans = new htrans();
+                    $trans->updateStatus($data);
+
+                    //kasih notif pembatalan transaksi ke customer
+                    $dataLapangan2 = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+                    $dataNotif3 = [
+                        "subject" => "😔Booking Lapangan ".$dataLapangan2->nama_lapangan." Telah Dibatalkan!😔",
+                        "judul" => "Yah! Booking Lapangan ".$dataLapangan2->nama_lapangan." Telah Dibatalkan",
+                        "nama_user" => $cust->get_all_data_by_id($value->fk_id_user)->first()->nama_user,
                         "isi" => "Detail Sewa Lapangan:<br><br>
-                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                <b>Nama Lapangan Olahraga: ".$dataLapangan2->nama_lapangan."</b><br>
                                 <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
                                 <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
-                                Ingat datang tepat waktu ya karena kami tidak memberikan toleransi keterlambatan! 😊"
+                                Telah dibatalkan, dana anda telah kami kembalikan ke saldo wallet! Terus jaga kesehatanmu bersama Sportiva! 😊"
                     ];
                     $e = new notifikasiEmail();
-                    $e->sendEmail($dataCust->email_user, $dataNotif);
+                    $e->sendEmail("maria.yerossi@gmail.com", $dataNotif3);
                 }
             }
         }
