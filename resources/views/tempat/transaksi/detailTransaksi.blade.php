@@ -248,7 +248,7 @@
                 </div>
             </form>
         </div>
-        <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+        {{-- <div class="d-flex justify-content-end mt-5 me-3 mb-5">
             <form id="konfirmasiDipakai" action="/tempat/transaksi/konfirmasiDipakai" method="post">
                 @csrf
                 <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
@@ -256,7 +256,7 @@
                     <button type="submit" class="btn btn-danger w-100">Batalkan Sewa</button>
                 </div>
             </form>
-        </div>
+        </div> --}}
     {{-- ---------------------------------------------------------------------------------------------- --}}
     @elseif ($htrans->first()->status_trans == "Berlangsung")
         @php

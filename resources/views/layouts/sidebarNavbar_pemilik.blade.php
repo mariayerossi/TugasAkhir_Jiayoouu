@@ -183,7 +183,7 @@ Sportiva
             <div class="sidebar-dropdown-content">
                 {{-- <a href="/pemilik/masterAlat">Tambah Alat</a> --}}
                 <a href="/pemilik/daftarAlat">Daftar Alat</a>
-                <a href="/pemilik/disewakan/daftarDisewakan">Sedang Disewakan</a>
+                <a href="/pemilik/disewakan/daftarDisewakan">Transaksi Alat</a>
                 <!-- Add other sports or categories here -->
             </div>
         </div>
