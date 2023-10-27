@@ -32,6 +32,14 @@ class RequestPermintaan extends Controller
 
         $harga = intval(str_replace(".", "", $request->harga));
 
+        $alat = new alatOlahraga();
+        $komisi_alat = $alat->get_all_data_by_id($request->id_alat)->first()->komisi_alat;
+
+        //cek apakah request harga lebih kecil dari komisi
+        if ((int)$harga <= (int)$komisi_alat) {
+            return redirect()->back()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
+        }
+
         date_default_timezone_set("Asia/Jakarta");
         $tgl_minta = date("Y-m-d H:i:s");
 
@@ -63,7 +71,7 @@ class RequestPermintaan extends Controller
             $email_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->email_pemilik;
             $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->nama_pemilik;
             $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->nama_alat;
-            $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->komisi_alat;
+            // $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->komisi_alat;
 
             $dataNotif = [
                 "subject" => "Permintaan Alat Olahraga Baru",
