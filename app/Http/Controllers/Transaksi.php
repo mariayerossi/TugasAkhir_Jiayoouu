@@ -1366,31 +1366,41 @@ class Transaksi extends Controller
         $dataHtrans = DB::table('htrans')->where("id_htrans","=",$extend->fk_id_htrans)->get()->first();
 
         //kasih pengecekan slot uda dipesan blm
-        $cek = DB::table('htrans')
-                ->select("htrans.jam_sewa", "htrans.durasi_sewa", "htrans.tanggal_sewa", "extend_htrans.jam_sewa as jam_ext","extend_htrans.durasi_extend")
-                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
-                ->whereDate("htrans.tanggal_sewa", $dataHtrans->tanggal_sewa)
-                ->where("fk_id_lapangan","=",$dataHtrans->fk_id_lapangan)
-                ->where(function($query) {
-                    $query->where("htrans.status_trans", "=", "Diterima")
-                          ->orWhere("htrans.status_trans", "=", "Berlangsung");
-                })
-                ->get();
-                // dd($cek);
-        $selesai = date('H:i', strtotime("+$dataHtrans->durasi_sewa hour", strtotime($dataHtrans->jam_sewa)));
+        $htrans = DB::table('htrans')
+                ->select("htrans.id_htrans","htrans.kode_trans","lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan","files_lapangan.nama_file_lapangan","lapangan_olahraga.harga_sewa_lapangan","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa")
+                ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->where("htrans.id_htrans","=",$dataHtrans->id_htrans)
+                ->get()
+                ->first();
+        
+        $jam_sewa = $htrans->jam_sewa;
+        $durasi_sewa = $htrans->durasi_sewa;
+        $booking_jam_selesai1 = date('H:i', strtotime("+$durasi_sewa hour", strtotime($jam_sewa)));
 
+        $booking_jam_selesai2 = date('H:i', strtotime("+$extend->durasi_extend hour", strtotime($booking_jam_selesai1)));
+
+        $cek = DB::table('htrans')
+                ->select("jam_sewa", "durasi_sewa")
+                ->where("status_trans","=","Diterima")
+                ->orWhere("status_trans","=","Berlangsung")
+                ->where("tanggal_sewa", "=", $htrans->tanggal_sewa)
+                ->where("fk_id_lapangan","=",$htrans->id_lapangan)
+                ->get();
+
+        //kasi pengecekan apakah tanggal dan jamnya bertubrukan
         if (!$cek->isEmpty()) {
             $conflict = false;
             foreach ($cek as $value) {
-                $booking_jam_selesai = date('H:i', strtotime("+$value->durasi_sewa hour", strtotime($value->jam_sewa)));
-                $booking_jam_selesai_ext = date('H:i', strtotime("+$value->durasi_extend hour", strtotime($value->jam_ext)));
+                $booking_jam_selesai3 = date('H:i', strtotime("+$value->durasi_sewa hour", strtotime($value->jam_sewa)));
                 
-                if (($dataHtrans->jam_sewa >= $value->jam_sewa && $dataHtrans->jam_sewa < $booking_jam_selesai) || 
-                    ($selesai > $value->jam_sewa && $selesai <= $booking_jam_selesai) ||
-                    ($dataHtrans->jam_sewa <= $value->jam_sewa && $selesai >= $booking_jam_selesai) ||
-                    ($dataHtrans->jam_sewa >= $value->jam_ext && $dataHtrans->jam_sewa < $booking_jam_selesai_ext) || 
-                    ($selesai > $value->jam_ext && $selesai <= $booking_jam_selesai_ext) ||
-                    ($dataHtrans->jam_sewa <= $value->jam_ext && $selesai >= $booking_jam_selesai_ext)) {
+                if (($booking_jam_selesai1 >= $value->jam_sewa && $booking_jam_selesai1 < $booking_jam_selesai3) || 
+                    ($booking_jam_selesai2 > $value->jam_sewa && $booking_jam_selesai2 <= $booking_jam_selesai3) ||
+                    ($booking_jam_selesai1 <= $value->jam_sewa && $booking_jam_selesai2 >= $booking_jam_selesai3)) {
                     
                     $conflict = true;
                     break;
@@ -1399,7 +1409,8 @@ class Transaksi extends Controller
 
             if ($conflict) {
                 // Ada konflik dengan booking yang ada
-                return response()->json(['success' => false, 'message' => 'Maaf, slot ini sudah dibooking!']);
+                // return back()->with('error', 'Maaf, slot ini sudah dibooking di jam '.$value->jam_sewa.'!');
+                return response()->json(['success' => false, 'message' => 'Maaf, slot ini sudah dibooking di jam '.$value->jam_sewa.'!']);
             }
         }
 
