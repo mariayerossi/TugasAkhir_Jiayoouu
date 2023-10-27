@@ -155,7 +155,11 @@
     @endphp
     {{-- detail request --}}
     <h5>Detail Request</h5>
-    <a href="/admin/request/detailRequest/{{$komplain->first()->jenis_request}}/{{$id_request}}">
+    @if ($komplain->first()->fk_id_permintaan != null)
+        <a href="/admin/request/detailRequest/Permintaan/{{$id_request}}">
+    @elseif ($komplain->first()->fk_id_penawaran != null)
+        <a href="/admin/request/detailRequest/Penawaran/{{$id_request}}">
+    @endif
         <div class="card h-70">
             <div class="card-body">
                 <div class="row">
@@ -260,7 +264,7 @@
         @if ($komplain->first()->penanganan_komplain != null)
             <div class="row mb-5 mt-4">
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <h6>Penanganan: {{$komplain->first()->penanganan_komplain}} dan Pembatalan Request oleh admin</h6>
+                    <h6>Penanganan: {{$komplain->first()->penanganan_komplain}}</h6>
                 </div>
                 
                 <div class="col-md-6 col-sm-12 mb-3">

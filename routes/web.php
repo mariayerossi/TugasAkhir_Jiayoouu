@@ -233,7 +233,7 @@ Route::prefix("/admin")->group(function(){
     });
 
     Route::prefix("/request")->group(function(){
-        Route::get("/detailRequest/{jenis}/{id}", function ($jenis, $id) {
+        Route::get("/detailRequest/{P}/{id}", function ($jenis, $id) {
             if ($jenis == "Permintaan") {
                 $req = new ModelsRequestPermintaan();
             }

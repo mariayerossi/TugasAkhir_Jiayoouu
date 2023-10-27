@@ -30,15 +30,15 @@ class komplainTrans extends Model
     }
 
     public function get_all_data_by_admin_baru(){
-        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Menunggu")->get();
+        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Menunggu")->orderBy("waktu_komplain","desc")->get();
     }
 
     public function get_all_data_by_admin_diterima(){
-        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Diterima")->get();
+        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Diterima")->orderBy("waktu_komplain","desc")->get();
     }
 
     public function get_all_data_by_admin_ditolak(){
-        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Ditolak")->get();
+        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Ditolak")->orderBy("waktu_komplain","desc")->get();
     }
 
     public function get_all_data_by_id($id){

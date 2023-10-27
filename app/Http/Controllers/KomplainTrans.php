@@ -232,6 +232,8 @@ class KomplainTrans extends Controller
             }
         }
 
+        $penanganan .= "Pembatal";
+
         //status transaksi menjadi dibatalkan
         $data5 = [
             "id" => $request->id_htrans,

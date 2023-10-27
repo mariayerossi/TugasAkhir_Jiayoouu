@@ -393,7 +393,7 @@
                                 <p class="card-text">Komplain kamu sudah {{$komplain->first()->status_komplain}} oleh admin karena {{$komplain->first()->alasan_komplain}}</p>
                             @elseif ($komplain->first()->status_komplain == "Diterima")
                                 <h4 class="card-title"><b>Yeay, Komplain Anda telah Diterima!</b></h4>
-                                <p class="card-text">Komplain kamu sudah {{$komplain->first()->status_komplain}} oleh admin</p>
+                                <p class="card-text">Komplain kamu sudah {{$komplain->first()->status_komplain}} oleh admin dengan penanganan {{$komplain->first()->penanganan_komplain}}</p>
                             @endif
                         </div>
                     </div>

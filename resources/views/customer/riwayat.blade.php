@@ -187,8 +187,8 @@
                                     </div>
                                 @elseif ($item->status_trans == "Dibatalkan" && $komplain != null)
                                     <div class="mt-3">
-                                        @if ($komplain->status_komplain != "Menunggu")
-                                            <h4 class="card-title"><b>Komplain Anda telah {{$komplain->status_komplain}}!</b></h4>
+                                        @if ($komplain->status_komplain == "Diterima")
+                                            <h4 class="card-title"><b>Yeay! Komplain Anda telah {{$komplain->status_komplain}}!</b></h4>
                                         @endif
                                     </div>
                                 @elseif ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")

@@ -202,19 +202,21 @@ class KomplainRequest extends Controller
                     $temp = new pihakTempat();
                     $temp->softDelete($data);
 
-                    $penanganan .= "Hapus Tempat";
+                    $penanganan .= "Hapus Tempat,";
                 }
                 else if ($array[1] == "pemilik") {
                     $pemi = new pemilikAlat();
                     $pemi->softDelete($data);
 
-                    $penanganan .= "Hapus Pemilik";
+                    $penanganan .= "Hapus Pemilik,";
                 }
             }
             else {
                 return redirect()->back()->with("error", "akun yang akan dinonaktifkan tidak boleh kosong!");
             }
         }
+
+        $penanganan .= "Pembatalan Request";
 
         $data2 = [
             "id" => $request->id_request,

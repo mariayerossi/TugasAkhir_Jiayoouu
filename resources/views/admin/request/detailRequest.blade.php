@@ -93,7 +93,7 @@
 
         <!-- Detail Lapangan -->
         <div class="col-md-6 col-sm-12">
-            <h5>Lapangan Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Lokasi penggunaan alat olahraga"></i></h5>
+            <h5>Lokasi Penggunaan Alat</h5>
             @if ($dataLapangan->deleted_at == null)<a href="/admin/lapangan/detailLapanganUmum/{{$dataLapangan->id_lapangan}}">@endif
                 <div class="card h-70">
                     <div class="card-body">
@@ -122,14 +122,7 @@
         </div>
 
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Permintaan Durasi Pinjam: <i class="bi bi-info-circle" data-toggle="tooltip" title="Durasi peminjaman alat olahraga oleh pihak pengelola tempat olahraga"></i></h6>
-            @if ($request->first()->req_durasi == "12")
-                <p>1 Tahun</p>
-            @elseif($request->first()->req_durasi == "24")
-                <p>2 Tahun</p>
-            @else
-                <p>{{$request->first()->req_durasi}} Bulan</p>
-            @endif
+            
         </div>
     </div>
 
