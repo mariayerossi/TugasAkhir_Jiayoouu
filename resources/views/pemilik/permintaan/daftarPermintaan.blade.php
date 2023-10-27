@@ -38,7 +38,7 @@
           <a class="nav-link active" id="baru-tab" data-toggle="tab" href="#baru" role="tab" aria-controls="baru" aria-selected="true">Permintaan Baru ({{$baru->count()}})</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima ({{$diterima->count()}})</a>
+          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diantar ({{$diterima->count()}})</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="disewakan-tab" data-toggle="tab" href="#disewakan" role="tab" aria-controls="disewakan" aria-selected="false">Disewakan ({{$disewakan->count()}})</a>
@@ -127,7 +127,7 @@
                                         <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
                                     </div>
                                 </td>
-                                <td>Permintaan {{$item->nama_alat}} sudah <span style="color:rgb(0, 145, 0)">Diterima</span></td>
+                                <td>Permintaan {{$item->nama_alat}} sudah <span style="color:rgb(0, 145, 0)">Diterima</span> dan sedang diantar</td>
                                 @php
                                     $tanggalAwal = $item->tanggal_minta;
                                     $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);

@@ -248,6 +248,7 @@
                 </div>
             </form>
         </div>
+        {{-- uda pilihan dibawah ini kudu minta konfirmasi customer --}}
         <div class="d-flex justify-content-end mt-5 me-3">
             <h6>Terjadi Kendala Dalam Booking?</h6>
         </div>

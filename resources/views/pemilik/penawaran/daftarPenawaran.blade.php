@@ -37,7 +37,7 @@
           <a class="nav-link active" id="baru-tab" data-toggle="tab" href="#baru" role="tab" aria-controls="baru" aria-selected="true">Penawaran Baru ({{$baru->count()}})</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima ({{$diterima->count()}})</a>
+          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diantar ({{$diterima->count()}})</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" id="disewakan-tab" data-toggle="tab" href="#disewakan" role="tab" aria-controls="disewakan" aria-selected="false">Disewakan ({{$disewakan->count()}})</a>
@@ -130,7 +130,7 @@
                                 </td>
                                 <td>Penawaran {{$item->nama_alat}} kepada {{$item->nama_tempat}}</td>
                                 <td>{{$tanggalBaru}}</td>
-                                <td><span style="color:rgb(0, 145, 0)">Diterima</span></td>
+                                <td><span style="color:rgb(0, 145, 0)">Diterima</span> dan sedang diantar</td>
                                 <td><a href="/pemilik/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach

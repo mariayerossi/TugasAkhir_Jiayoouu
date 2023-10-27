@@ -414,7 +414,15 @@
                                                 @endforeach
                                             @endif
 
-                                            <button type="submit" class="btn btn-success btn-sm" @if($disableButton) disabled @endif><i class="bi bi-plus-lg"></i></button>
+                                            @if ($disableButton)
+                                            <button type="button" class="btn btn-light btn-sm active">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                                  </svg>
+                                            </button>
+                                            @else
+                                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
+                                            @endif
                                         </form>
                                     </div>
                                 </div>
@@ -460,7 +468,15 @@
                                                 @endforeach
                                             @endif
 
-                                            <button type="submit" class="btn btn-success btn-sm" @if($disableButton) disabled @endif><i class="bi bi-plus-lg"></i></button>
+                                            @if ($disableButton)
+                                            <button type="button" class="btn btn-light btn-sm active">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                                  </svg>
+                                            </button>
+                                            @else
+                                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
+                                            @endif
                                         </form>
                                     </div>
                                 </div>
@@ -506,7 +522,15 @@
                                                 @endforeach
                                             @endif
 
-                                            <button type="submit" class="btn btn-success btn-sm" @if($disableButton) disabled @endif><i class="bi bi-plus-lg"></i></button>
+                                            @if ($disableButton)
+                                            <button type="button" class="btn btn-light btn-sm active">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                                    <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                                                  </svg>
+                                            </button>
+                                            @else
+                                            <button type="submit" class="btn btn-success btn-sm"><i class="bi bi-plus-lg"></i></button>
+                                            @endif
                                         </form>
                                     </div>
                                 </div>
@@ -605,12 +629,33 @@
                 data: form.serialize(),
                 success: function(response) {
                     // handle response dari server jika sukses
-                    location.reload(); // contoh: reload halaman
+                    swal({
+                        title: 'Success!',
+                        text: response.message,
+                        type: 'success',
+                        showConfirmButton: false
+                    });
+
+                    setTimeout(() => {
+                        location.reload();
+                    }, 5000); // Setelah 5 detik
+
                 },
                 error: function(xhr) {
                     // handle error
                     console.error(xhr.responseText);
                 }
+            });
+        });
+
+        $('.btn-light').on('click', function(e) {
+            e.preventDefault();
+            swal({
+            title: "error!",
+            text: "Alat Olahraga sudah dipilih!",
+            type: "error",
+            timer: 1500,  // Menampilkan selama 20 detik
+            showConfirmButton: false
             });
         });
 

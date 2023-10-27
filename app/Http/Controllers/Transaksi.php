@@ -550,7 +550,7 @@ class Transaksi extends Controller
     
         Session::put("sewaAlat", $data);
         
-        return response()->json(['status' => 'success', 'message' => 'Data berhasil ditambahkan']);
+        return response()->json(['status' => 'success', 'message' => 'Alat berhasil ditambahkan! Cek bagian Atur Tanggal dan Jam Booking untuk melihat daftar alat yang dibooking']);
     }
 
     public function deleteAlat($urutan) {
