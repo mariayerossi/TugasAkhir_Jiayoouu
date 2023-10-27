@@ -41,7 +41,11 @@
 
                     <!-- Amount input -->
                     <div class="form-outline mb-4">
-                        <input type="number" name="jumlah" class="form-control form-control-lg" placeholder="Masukkan Nominal..." id="">
+                        <!-- Input yang terlihat oleh pengguna -->
+                        <input type="text" class="form-control" id="jumlahDisplay" placeholder="Masukkan Nominal yang Ingin Ditop up..." oninput="formatNumber(this)">
+
+                        <!-- Input tersembunyi untuk kirim ke server -->
+                        <input type="hidden" name="jumlah" id="jumlahActual">
                         <label class="form-label" for="jumlah">Nominal Top Up</label>
                     </div>
 
@@ -53,4 +57,21 @@
         </div>
     </div>
 </section>
+<script>
+    function formatNumber(input) {
+        let value = input.value;
+        value = value.replace(/\D/g, '');
+        let numberValue = parseInt(value, 10);
+        
+        if (!isNaN(numberValue)) {
+            // Update input yang terlihat oleh pengguna dengan format yang sudah diformat
+            input.value = numberValue.toLocaleString('id-ID');
+            // Update input tersembunyi dengan angka murni
+            document.getElementById('jumlahActual').value = numberValue;
+        } else {
+            input.value = '';
+            document.getElementById('jumlahActual').value = '';
+        }
+    }
+</script>
 @endsection
