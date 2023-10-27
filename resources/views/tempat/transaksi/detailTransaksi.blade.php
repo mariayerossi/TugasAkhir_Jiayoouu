@@ -611,10 +611,29 @@
                 type: "POST",
                 data: formData,
                 success: function(response) {
-                    window.location.reload();
-                    // alert('Berhasil Diterima!');
-                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
-                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                    if (response.success) {
+                        swal({
+                            title: 'Success!',
+                            text: response.message,
+                            type: 'success',
+                            showConfirmButton: false
+                        });
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000); // Setelah 5 detik
+                    } else if (!response.success) {
+                        swal({
+                            title: 'Error!',
+                            text: response.message,
+                            type: 'error',
+                            showConfirmButton: false
+                        });
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
@@ -694,8 +713,29 @@
                 type: "POST",
                 data: formData,
                 success: function(response) {
-                    window.location.reload();
-                    // alert('Berhasil Diterima!');
+                    if (response.success) {
+                        swal({
+                            title: 'Success!',
+                            text: response.message,
+                            type: 'success',
+                            showConfirmButton: false
+                        });
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000); // Setelah 5 detik
+                    } else if (!response.success) {
+                        swal({
+                            title: 'Error!',
+                            text: response.message,
+                            type: 'error',
+                            showConfirmButton: false
+                        });
+
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     alert(errorThrown);

@@ -354,7 +354,7 @@ class reminder extends Command
                                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                     <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
                                     <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
-                                    Segera Terima Transaksi ini ya! Apabila tidak diterima hingga 3 jam sebelum waktu penyewaan, transaksi ini akan dibatalkan. 😊"
+                                    Segera Terima Transaksi ini ya! Apabila tidak diterima hingga 2 jam sebelum waktu penyewaan, transaksi ini akan dibatalkan. 😊"
                         ];
                         $e = new notifikasiEmail();
                         $e->sendEmail($dataTemp->email_tempat, $dataNotif2);
@@ -363,7 +363,7 @@ class reminder extends Command
 
                 $tanggal2 = $value->tanggal_sewa." ".$value->jam_sewa;
                 $sewa2 = new DateTime($tanggal2);
-                $sewa2->sub(new DateInterval('PT3H')); // mengurangkan 3 jam
+                $sewa2->sub(new DateInterval('PT2H')); // mengurangkan 2 jam
                 $sew2 = $sewa2->format('Y-m-d H:i:s');
 
                 if ($sew2 == $sekarang && $value->status_trans == "Menunggu") {

@@ -79,14 +79,14 @@
         <div class="d-flex justify-content-end mt-3 me-3">
             <h5><b>Subtotal: Rp {{number_format($trans->harga_sewa_lapangan * $durasi, 0, ',', '.')}}</b></h5>
         </div>
+        @php
+            $total_harga = 0;
+        @endphp
         
         <div class="row mt-5">
             <div class="col-md-6 col-sm-12">
                 <h5>Alat Olahraga yang Disewa</h5>
                 @if (!$dtrans->isEmpty())
-                    @php
-                        $total_harga = 0;
-                    @endphp
                     @foreach ($dtrans as $item)
                         @php
                             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
@@ -138,6 +138,8 @@
                 <a href="javascript:history.back()" class="btn btn-danger me-3" type="submit">Cancel</a>
                 <form action="/customer/extend/tambahWaktu" method="post">
                     @csrf
+                    <input type="hidden" name="id_lapangan" value="{{$trans->id_lapangan}}">
+                    <input type="hidden" name="tanggal" value="{{$trans->tanggal_sewa}}">
                     <input type="hidden" name="id_htrans" value="{{$trans->id_htrans}}">
                     <input type="hidden" name="jam" value="{{$jam_mulai}}">
                     <input type="hidden" name="durasi" value="{{$durasi}}">
