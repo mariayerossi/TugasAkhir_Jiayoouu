@@ -705,6 +705,7 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/terimaTransaksi", [Transaksi::class, "terimaTransaksi"]);
         Route::post("/tolakTransaksi", [Transaksi::class, "tolakTransaksi"]);
         Route::post("/konfirmasiDipakai", [Transaksi::class, "konfirmasiDipakai"]);
+        // ???
         Route::post("/batalTrans", [Transaksi::class, "batalTrans"]);
         Route::post("/KonfbatalTrans", [Transaksi::class, "KonfbatalTrans"]);
         Route::get("/cetakNota", [Transaksi::class, "cetakNota"])->middleware([CekTempat::class]);

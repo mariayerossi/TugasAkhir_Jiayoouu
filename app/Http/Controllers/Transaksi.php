@@ -994,6 +994,7 @@ class Transaksi extends Controller
     }
 
     public function batalTrans(Request $request) {
+        //???
         $id = $request->id_htrans;
 
         //cek apakah tanggal sewa dan jam sewa sdh lewat atau belom
