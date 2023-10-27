@@ -21,6 +21,9 @@
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Daftar Alat Olahraga</h3>
+    <div class="d-flex justify-content-end mb-4">
+        <a href="/pemilik/masterAlat" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Alat</a>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>

@@ -27,7 +27,7 @@
 		@endif
 	</center>
 
-	<h4><b>Rp Rp {{ number_format($data->sum("pendapatan_lapangan") + $data->sum("pendapatan_alat") + $data->sum("lapangan_ext") + $data->sum("alat_ext"), 0, ',', '.') }}</b></h4>
+	<h4><b>Total Pendapatan: Rp {{ number_format($data->sum("pendapatan_lapangan") + $data->sum("pendapatan_alat") + $data->sum("lapangan_ext") + $data->sum("alat_ext"), 0, ',', '.') }}</b></h4>
  
 	<table class='table table-bordered'>
 		<thead>

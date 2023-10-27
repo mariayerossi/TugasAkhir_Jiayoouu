@@ -36,11 +36,11 @@
           <a class="nav-link active" id="baru-tab" data-toggle="tab" href="#baru" role="tab" aria-controls="baru" aria-selected="true">Baru ({{$baru->count()}})</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Konfirmasi ({{$diterima->count()}})</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" id="berlangsung-tab" data-toggle="tab" href="#berlangsung" role="tab" aria-controls="berlangsung" aria-selected="true">Berlangsung ({{$berlangsung->count()}})</a>
           </li>
-        <li class="nav-item">
-          <a class="nav-link" id="diterima-tab" data-toggle="tab" href="#diterima" role="tab" aria-controls="diterima" aria-selected="false">Diterima ({{$diterima->count()}})</a>
-        </li>
         <li class="nav-item">
             <a class="nav-link" id="ditolak-tab" data-toggle="tab" href="#ditolak" role="tab" aria-controls="ditolak" aria-selected="false">Ditolak ({{$ditolak->count()}})</a>
         </li>
@@ -183,7 +183,7 @@
                                     $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
                                 @endphp
                                 <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
-                                <td><span style="color:rgb(0, 145, 0)">Diterima</span></td>
+                                <td><span style="color:rgb(0, 145, 0)">Diterima dan Menunggu Konfirmasi Kedatangan</span></td>
                                 <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach

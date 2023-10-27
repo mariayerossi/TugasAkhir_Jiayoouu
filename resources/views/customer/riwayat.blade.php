@@ -97,7 +97,7 @@
                                         <h6 style="color: rgb(255, 145, 0)">{{$item->status_trans}}</h6>
                                     @endif
                                 </div>
-                                <p class="card-text"><strong>{{$item->kode_trans}}</strong></p>
+                                <p class="card-text"><strong>Kode Transaksi: {{$item->kode_trans}}</strong></p>
                                 <h5 class="card-title"><b>{{$item->nama_lapangan}}</b></h5>
                                 @php
                                     $tanggalAwal2 = $item->tanggal_sewa;
@@ -191,11 +191,13 @@
                                             <h4 class="card-title"><b>Yeay! Komplain Anda telah {{$komplain->status_komplain}}!</b></h4>
                                         @endif
                                     </div>
-                                @elseif ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")
+                                @endif
+
+                                @if ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")
                                     <form id="batalTransaksiForm" action="/customer/transaksi/batalBooking" method="post">
                                         @csrf
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
-                                        <button type="submit" class="btn btn-danger">Batal Booking <i class="bi bi-x-lg"></i></button>
+                                        <button type="submit" class="btn btn-danger ms-3">Batal Booking <i class="bi bi-x-lg"></i></button>
                                     </form>
                                 @endif
                             </div>

@@ -181,9 +181,9 @@ Sportiva
         <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
-                <a href="/pemilik/masterAlat">Tambah Alat</a>
+                {{-- <a href="/pemilik/masterAlat">Tambah Alat</a> --}}
                 <a href="/pemilik/daftarAlat">Daftar Alat</a>
-                <a href="/pemilik/disewakan/daftarDisewakan">Alat Disewakan</a>
+                <a href="/pemilik/disewakan/daftarDisewakan">Sedang Disewakan</a>
                 <!-- Add other sports or categories here -->
             </div>
         </div>

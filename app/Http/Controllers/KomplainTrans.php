@@ -69,7 +69,7 @@ class KomplainTrans extends Controller
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
 
         $dataNotif = [
-            "subject" => "Komplain Transaksi Baru",
+            "subject" => "❗❗ Komplain Transaksi Baru ❗❗",
             "judul" => "Komplain Transaksi Baru dari ".Session::get("dataRole")->nama_user,
             "nama_user" => "Admin",
             "isi" => "Anda memiliki satu komplain transaksi baru:<br><br>

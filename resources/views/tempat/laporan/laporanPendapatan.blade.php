@@ -1,3 +1,4 @@
+
 @extends('layouts.sidebarNavbar_tempat')
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
@@ -44,7 +45,7 @@
         <h6 class="text-center mb-5">{{$tanggalBaru}} - {{$tanggalBaru3}}</h6>
     @endif
     <div class="d-flex justify-content-end mb-2">
-        <h2><b>Rp {{ number_format(($trans->sum('subtotal_lapangan') + $trans->sum('total_komisi') - $trans->sum("pendapatan_website_lapangan")) + ($trans->sum("subtotal_ext") + $trans->sum('komisi_extend') - $trans->sum("pendapatan_ext")), 0, ',', '.') }}</b></h2>
+        <h2><b>Total Pendapatan: Rp {{ number_format(($trans->sum('subtotal_lapangan') + $trans->sum('total_komisi') - $trans->sum("pendapatan_website_lapangan")) + ($trans->sum("subtotal_ext") + $trans->sum('komisi_extend') - $trans->sum("pendapatan_ext")), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
         <a href="/tempat/laporan/pendapatan/CetakPDF/{{$tanggal_mulai}}/{{$tanggal_selesai}}" class="btn btn-primary" target="_blank">Cetak PDF</a>

@@ -27,7 +27,7 @@
 		@endif
 	</center>
 
-	<h4><b>Total: Rp {{ number_format(($disewakan->sum('total_komisi_pemilik') - $disewakan->sum("pendapatan_website_alat")) + ($disewakan->sum('komisi_extend') - $disewakan->sum('pendapatan_extend')), 0, ',', '.') }}</b></h4>
+	<h4><b>Total Pendapatan: Rp {{ number_format(($disewakan->sum('total_komisi_pemilik') - $disewakan->sum("pendapatan_website_alat")) + ($disewakan->sum('komisi_extend') - $disewakan->sum('pendapatan_extend')), 0, ',', '.') }}</b></h4>
  
 	@if (!$data->isEmpty())
         {{-- Pertama-tama, kelompokkan data berdasarkan nama alat --}}

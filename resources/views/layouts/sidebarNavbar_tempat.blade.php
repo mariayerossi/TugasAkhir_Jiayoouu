@@ -178,20 +178,20 @@ Sportiva
         <a href="/tempat/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
         <a href="/tempat/cariAlat"><i class="bi bi-search me-3"></i>Cari Alat Olahraga</a>
         <div class="sidebar-dropdown">
-            <a href="#"><i class="bi bi-house-add me-3"></i>Lapangan Olahraga <i class="bi bi-caret-down-fill"></i></a>
-            <div class="sidebar-dropdown-content">
+            <a href="/tempat/lapangan/daftarLapangan"><i class="bi bi-house-add me-3"></i>Daftar Lapangan</a>
+            {{-- <div class="sidebar-dropdown-content">
                 <a href="/tempat/lapangan/masterLapangan">Tambah Lapangan</a>
                 <a href="/tempat/lapangan/daftarLapangan">Daftar Lapangan</a>
                 <!-- Add other sports or categories here -->
-            </div>
+            </div> --}}
         </div>
         <div class="sidebar-dropdown">
-            <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
-            <div class="sidebar-dropdown-content">
+            <a href="/tempat/alat/daftarAlat"><i class="bi bi-dribbble me-3"></i>Daftar Alat Olahraga</i></a>
+            {{-- <div class="sidebar-dropdown-content">
                 <a href="/tempat/alat/masterAlat">Tambah Alat</a>
                 <a href="/tempat/alat/daftarAlat">Daftar Alat</a>
                 <!-- Add other sports or categories here -->
-            </div>
+            </div> --}}
         </div>
         <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-collection me-3"></i>Daftar Request <i class="bi bi-caret-down-fill"></i></a>

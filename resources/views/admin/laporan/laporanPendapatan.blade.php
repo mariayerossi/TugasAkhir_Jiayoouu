@@ -44,7 +44,7 @@
         <h6 class="text-center mb-5">{{$tanggalBaru}} - {{$tanggalBaru3}}</h6>
     @endif
     <div class="d-flex justify-content-end mb-2">
-        <h2><b>Rp {{ number_format($trans->sum("pendapatan_lapangan") + $trans->sum("pendapatan_alat") + $trans->sum("lapangan_ext") + $trans->sum("alat_ext"), 0, ',', '.') }}</b></h2>
+        <h2><b>Total Pendapatan: Rp {{ number_format($trans->sum("pendapatan_lapangan") + $trans->sum("pendapatan_alat") + $trans->sum("lapangan_ext") + $trans->sum("alat_ext"), 0, ',', '.') }}</b></h2>
     </div>
     <div class="d-flex justify-content-end mb-5">
         <a href="/admin/laporan/pendapatan/CetakPDF/{{$tanggal_mulai}}/{{$tanggal_selesai}}" class="btn btn-primary" target="_blank">Cetak PDF</a>

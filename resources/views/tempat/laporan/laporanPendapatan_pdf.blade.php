@@ -27,7 +27,7 @@
 		@endif
 	</center>
 
-	<h4><b>Total: Rp {{ number_format(($data->sum('subtotal_lapangan') + $trans->sum('total_komisi') - $data->sum("pendapatan_website_lapangan")) + ($data->sum("subtotal_ext") + $data->sum('komisi_extend') - $data->sum("pendapatan_ext")), 0, ',', '.') }}</b></h4>
+	<h4><b>Total Pendapatan: Rp {{ number_format(($data->sum('subtotal_lapangan') + $trans->sum('total_komisi') - $data->sum("pendapatan_website_lapangan")) + ($data->sum("subtotal_ext") + $data->sum('komisi_extend') - $data->sum("pendapatan_ext")), 0, ',', '.') }}</b></h4>
  
 	<table class='table table-bordered'>
 		<thead>
