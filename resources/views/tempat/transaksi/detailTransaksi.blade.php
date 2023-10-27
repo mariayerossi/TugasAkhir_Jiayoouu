@@ -248,15 +248,25 @@
                 </div>
             </form>
         </div>
-        {{-- <div class="d-flex justify-content-end mt-5 me-3 mb-5">
-            <form id="konfirmasiDipakai" action="/tempat/transaksi/konfirmasiDipakai" method="post">
+        <div class="d-flex justify-content-end mt-5 me-3">
+            <h6>Terjadi Kendala Dalam Booking?</h6>
+        </div>
+        <div class="d-flex justify-content-end me-3 mb-5">
+            <form class="me-3" id="editTrans" action="/tempat/transaksi/editTrans" method="post">
                 @csrf
                 <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                 <div class="input-group-append">
-                    <button type="submit" class="btn btn-danger w-100">Batalkan Sewa</button>
+                    <button type="submit" class="btn btn-warning w-100">Edit Transaksi <i class="bi bi-pencil-square"></i></button>
                 </div>
             </form>
-        </div> --}}
+            <form id="batalTrans" action="" method="post">
+                @csrf
+                <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-danger w-100">Batalkan Transaksi <i class="bi bi-x-lg"></i></button>
+                </div>
+            </form>
+        </div>
     {{-- ---------------------------------------------------------------------------------------------- --}}
     @elseif ($htrans->first()->status_trans == "Berlangsung")
         @php
@@ -729,6 +739,47 @@
             });
 
             return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#batalTrans").on('submit', function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            swal({
+                title: "Apakah anda yakin?",
+                text: "Pembatalan booking akan dikenakan kompensasi sebesar 10% dari total transaksi.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Lanjutkan",
+                cancelButtonText: "Batalkan",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    var formData = $("#batalTrans").serialize(); // Mengambil data dari form
+    
+                    $.ajax({
+                        url: "/tempat/transaksi/KonfbatalTrans",
+                        type: "POST",
+                        data: formData,
+                        success: function(response) {
+                            if (response.success) {
+                                swal("Success!", response.message, "success");
+                            }
+                            else {
+                                swal("Error!", response.message, "error");
+                            }
+                            window.location.reload();
+                            // alert('Berhasil Diterima!');
+                            // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                            // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                        }
+                    });
+                }
+            });
         });
 
         // $(".form_rusak").hide();

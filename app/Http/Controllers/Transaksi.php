@@ -961,6 +961,110 @@ class Transaksi extends Controller
         $trans = new htrans();
         $trans->updateStatus($data);
 
+        //kasih notif ke pihak tempat
+        $namaTempat = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->nama_tempat;
+        $emailTempat = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->email_tempat;
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$id)->get();
+
+        $dtransStr = "";
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+            }
+        }
+        $tanggalAwal = $trans->tanggal_sewa;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y');
+
+        $dataNotif = [
+            "subject" => "⚠️Transaksi Dibatalkan Customer!⚠️",
+            "judul" => "Transaksi Dibatalkan Customer!",
+            "nama_user" => $namaTempat,
+            "isi" => "Maaf! Transaksi Anda Tidak Dapat Dilanjutkan oleh Custoner:<br><br>
+                    <b>Nama Lapangan Olahraga: ".$trans->nama_lapangan."</b><br>
+                    ".$dtransStr."<br>
+                    <b>Tanggal Transaksi: ".$tanggalBaru." ".$trans->jam_sewa."</b><br><br>
+                    Jangan khawatir! Dana Kompensasi telah kami tambahkan ke saldo wallet Anda! 😊"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($emailTempat, $dataNotif);
+
+        return response()->json(['success' => true, 'message' => 'Berhasil Dibatalkan!']);
+    }
+
+    public function batalTrans(Request $request) {
+        $id = $request->id_htrans;
+
+        //cek apakah tanggal sewa dan jam sewa sdh lewat atau belom
+        $trans = DB::table('htrans')
+                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans", "htrans.fk_id_tempat")
+                ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->where("htrans.id_htrans", "=", $id)
+                ->get()->first();
+
+        // if ($trans->status_trans == "Diterima") {
+        //     $now = Carbon::now('Asia/Jakarta');
+        //     $sewaDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $trans->tanggal_sewa . ' ' . $trans->jam_sewa, 'Asia/Jakarta');
+
+        //     if ($sewaDateTime->lte($now)) {
+        //         //sudah lewat
+        //         return response()->json(['success' => false, 'message' => 'Waktu sewa sudah lewat! Tidak bisa membatalkan booking.']);
+        //     }
+        // }
+
+        //pengembalian dana
+        $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+
+        //pemotongan denda 10%
+        $denda = 0.10;
+        $total_denda = $trans->total_trans * $denda;
+
+        $saldo += $trans->total_trans - $total_denda;
+
+        //enkripsi kembali saldo
+        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+        //update db user
+        $dataSaldo = [
+            "id" => Session::get("dataRole")->id_user,
+            "saldo" => $enkrip
+        ];
+        $cust = new customer();
+        $cust->updateSaldo($dataSaldo);
+
+        //update session role
+        $user = new customer();
+        $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
+        Session::forget("dataRole");
+        Session::put("dataRole", $isiUser->first());
+
+        //total_denda masuk ke saldo pihak tempat
+        $saldoTempatAwal = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->saldo_tempat;
+        $saldoTempat = (int)$this->decodePrice($saldoTempatAwal, "mysecretkey");
+
+        $saldoTempat += $total_denda;
+        $saldoAkhir = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+
+        $dataSaldoTempat = [
+            "id" => $trans->fk_id_tempat,
+            "saldo" => $saldoAkhir
+        ];
+        $temp = new pihakTempat();
+        $temp->updateSaldo($dataSaldoTempat);
+
+        $data = [
+            "id" => $request->id_htrans,
+            "status" => "Dibatalkan"
+        ];
+        $trans = new htrans();
+        $trans->updateStatus($data);
+
         return response()->json(['success' => true, 'message' => 'Berhasil Dibatalkan!']);
     }
 
