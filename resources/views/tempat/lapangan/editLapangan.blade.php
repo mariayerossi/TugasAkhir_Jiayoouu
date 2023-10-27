@@ -42,7 +42,7 @@
                     <option value="" disabled selected>Masukkan Kategori Lapangan Olahraga</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
-                        <option value="{{$item->nama_kategori}}" {{ old('kategori') ?? $lapangan->first()->kategori_lapangan == $item->nama_kategori ? 'selected' : '' }}>{{$item->nama_kategori}}</option>
+                        <option value="{{$item->id_kategori}}" {{ old('kategori') ?? $lapangan->first()->fk_id_kategori == $item->id_kategori ? 'selected' : '' }}>{{$item->nama_kategori}}</option>
                         @endforeach
                     @endif
                 </select>
@@ -154,7 +154,12 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">Rp</div>
                     </div>
-                    <input type="number" class="form-control" min="0" name="harga" placeholder="Masukkan Harga Sewa Olahraga" oninput="formatNumber(this)" value="{{old('harga') ?? $lapangan->first()->harga_sewa_lapangan}}">
+                    {{-- <input type="number" class="form-control" min="0" name="harga" placeholder="Masukkan Harga Sewa Olahraga" oninput="formatNumber(this)" value="{{old('harga') ?? $lapangan->first()->harga_sewa_lapangan}}"> --}}
+                    <!-- Input yang terlihat oleh pengguna -->
+                    <input type="text" class="form-control" id="sewaDisplay" placeholder="Masukkan Harga Sewa Lapangan Olahraga" oninput="formatNumber(this)" value="{{old('harga') ?? $lapangan->first()->harga_sewa_lapangan}}">
+
+                    <!-- Input tersembunyi untuk kirim ke server -->
+                    <input type="hidden" name="harga" id="sewaActual" value="{{old('harga') ?? $lapangan->first()->harga_sewa_lapangan}}">
                 </div>
             </div>
         </div>
@@ -272,17 +277,19 @@
 <script>
     
     function formatNumber(input) {
-        // Mengambil value dari input
         let value = input.value;
-
-        // Menghapus semua titik dan karakter non-numerik lainnya
         value = value.replace(/\D/g, '');
-
-        // Memformat ulang sebagai angka dengan pemisah ribuan titik
-        value = parseFloat(value).toLocaleString('id-ID');
-
-        // Mengembalikan format yang sudah diubah ke input
-        input.value = value;
+        let numberValue = parseInt(value, 10);
+        
+        if (!isNaN(numberValue)) {
+            // Update input yang terlihat oleh pengguna dengan format yang sudah diformat
+            input.value = numberValue.toLocaleString('id-ID');
+            // Update input tersembunyi dengan angka murni
+            document.getElementById('sewaActual').value = numberValue;
+        } else {
+            input.value = '';
+            document.getElementById('sewaActual').value = '';
+        }
     }
 
     document.getElementById('toggleSwitch').addEventListener('click', function() {

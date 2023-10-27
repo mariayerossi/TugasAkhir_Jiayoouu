@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 class AlatOlahraga extends Controller
 {
     public function tambahAlat(Request $request){
+        // dd($request->komisi." - ".$request->ganti);
         $request->validate([
             "alat" => 'required|min:5|max:255',
             "kategori" => 'required',

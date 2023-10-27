@@ -176,17 +176,25 @@ class LapanganOlahraga extends Controller
         }
 
         $index = 1;
-        // Asumsikan Anda memiliki model "Jadwal"
+        $prevJamTutup = null;
+        $prevHari = null; // variabel untuk menyimpan hari dari field sebelumnya
+
         while ($request->has("hari$index") && $request->has("buka$index") && $request->has("tutup$index")) {
             $hari = $request->input("hari$index");
             $jamBuka = $request->input("buka$index");
             $jamTutup = $request->input("tutup$index");
 
             // Pengecekan apakah jam buka lebih awal dari jam tutup
-            if (strtotime($jamBuka) >= strtotime($jamTutup)) {
-                return redirect()->back()->with('error', 'Jam buka harus lebih awal daripada jam tutup!');
+            if ($prevHari === $hari && $prevJamTutup !== null && strtotime($jamBuka) <= strtotime($prevJamTutup)) {
+                return redirect()->back()->with('error', 'Jam buka dari field berikutnya harus lebih dari jam tutup dari field sebelumnya!');
             }
             
+            // Tambahkan pengecekan apakah jam buka dari field saat ini sama dengan jam tutup dari field sebelumnya
+            // Hanya berlaku jika hari masih sama dengan hari sebelumnya
+            if ($prevHari === $hari && $prevJamTutup !== null && strtotime($jamBuka) === strtotime($prevJamTutup)) {
+                return redirect()->back()->with('error', 'Jam buka dari field berikutnya tidak boleh sama dengan jam tutup dari field sebelumnya jika hari sama!');
+            }
+
             $slot2 = slotWaktu::where('id_slot', $request->id_slot.$index)->first();
             if ($slot2) {
                 $data3 = [
@@ -209,9 +217,10 @@ class LapanganOlahraga extends Controller
                 $slot->insertSlot($data4);
             }
 
+            $prevJamTutup = $jamTutup; // Simpan nilai jam tutup dari field saat ini
+            $prevHari = $hari; // Simpan nilai hari dari field saat ini untuk digunakan pada iterasi berikutnya
             $index++; // Pergi ke set input berikutnya
         }
-    
         return redirect()->back()->with("success", "Berhasil Mengubah Detail Lapangan!");
     }
 

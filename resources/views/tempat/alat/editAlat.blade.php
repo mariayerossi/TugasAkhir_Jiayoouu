@@ -42,7 +42,7 @@
                     <option value="" disabled selected>Masukkan Kategori Alat Olahraga</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
-                        <option value="{{$item->id_kategori}}" {{ old('kategori') ?? $alat->first()->fk_id_ketegori == $item->id_kategori ? 'selected' : '' }}>{{$item->nama_kategori}}</option>
+                        <option value="{{$item->id_kategori}}" {{ old('kategori') ?? $alat->first()->fk_id_kategori == $item->id_kategori ? 'selected' : '' }}>{{$item->nama_kategori}}</option>
                         @endforeach
                     @endif
                 </select>
@@ -155,7 +155,11 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">Rp</div>
                     </div>
-                    <input type="number" class="form-control" min="0" name="komisi" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber(this)" value="{{old('komisi') ?? $alat->first()->komisi_alat}}">
+                    <!-- Input yang terlihat oleh pengguna -->
+                    <input type="text" class="form-control" id="komisiDisplay" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber2(this)" value="{{old('komisi') ?? $alat->first()->komisi_alat}}">
+
+                    <!-- Input tersembunyi untuk kirim ke server -->
+                    <input type="hidden" name="komisi" id="komisiActual" value="{{old('komisi') ?? $alat->first()->komisi_alat}}">
                 </div>
             </div>
         </div>
@@ -168,7 +172,11 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">Rp</div>
                     </div>
-                    <input type="number" class="form-control" min="0" name="ganti" placeholder="Masukkan Jumlah Ganti Rugi" oninput="formatNumber(this)" value="{{old('ganti') ?? $alat->first()->ganti_rugi_alat}}">
+                    <!-- Input yang terlihat oleh pengguna -->
+                    <input type="text" class="form-control" id="gantiDisplay" placeholder="Masukkan Jumlah Ganti Rugi" oninput="formatNumber(this)" value="{{old('ganti') ?? $alat->first()->ganti_rugi_alat}}">
+
+                    <!-- Input tersembunyi untuk kirim ke server -->
+                    <input type="hidden" name="ganti" id="gantiActual" value="{{old('ganti') ?? $alat->first()->ganti_rugi_alat}}">
                 </div>
                 <span class="ml-2 ms-2" style="font-size: 13px">uang ganti rugi yang peminjam bayar jika peminjam merusak alat olahraga</span>
             </div>
@@ -205,18 +213,49 @@
 </div>
 <script>
     
+    // function formatNumber(input) {
+    //     // Mengambil value dari input
+    //     let value = input.value;
+
+    //     // Menghapus semua titik dan karakter non-numerik lainnya
+    //     value = value.replace(/\D/g, '');
+
+    //     // Memformat ulang sebagai angka dengan pemisah ribuan titik
+    //     value = parseFloat(value).toLocaleString('id-ID');
+
+    //     // Mengembalikan format yang sudah diubah ke input
+    //     input.value = value;
+    // }
+
     function formatNumber(input) {
-        // Mengambil value dari input
         let value = input.value;
-
-        // Menghapus semua titik dan karakter non-numerik lainnya
         value = value.replace(/\D/g, '');
-
-        // Memformat ulang sebagai angka dengan pemisah ribuan titik
-        value = parseFloat(value).toLocaleString('id-ID');
-
-        // Mengembalikan format yang sudah diubah ke input
-        input.value = value;
+        let numberValue = parseInt(value, 10);
+        
+        if (!isNaN(numberValue)) {
+            // Update input yang terlihat oleh pengguna dengan format yang sudah diformat
+            input.value = numberValue.toLocaleString('id-ID');
+            // Update input tersembunyi dengan angka murni
+            document.getElementById('gantiActual').value = numberValue;
+        } else {
+            input.value = '';
+            document.getElementById('gantiActual').value = '';
+        }
+    }
+    function formatNumber2(input) {
+        let value = input.value;
+        value = value.replace(/\D/g, '');
+        let numberValue = parseInt(value, 10);
+        
+        if (!isNaN(numberValue)) {
+            // Update input yang terlihat oleh pengguna dengan format yang sudah diformat
+            input.value = numberValue.toLocaleString('id-ID');
+            // Update input tersembunyi dengan angka murni
+            document.getElementById('komisiActual').value = numberValue;
+        } else {
+            input.value = '';
+            document.getElementById('komisiActual').value = '';
+        }
     }
 
     document.getElementById('toggleSwitch').addEventListener('click', function() {

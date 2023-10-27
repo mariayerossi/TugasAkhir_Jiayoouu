@@ -122,7 +122,11 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">Rp</div>
                     </div>
-                    <input type="number" class="form-control" min="0" name="komisi" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber(this)" value="{{old('komisi')}}">
+                    <!-- Input yang terlihat oleh pengguna -->
+                    <input type="text" class="form-control" id="komisiDisplay" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber2(this)" value="{{old('komisi')}}">
+
+                    <!-- Input tersembunyi untuk kirim ke server -->
+                    <input type="hidden" name="komisi" id="komisiActual" value="{{old('komisi')}}">
                 </div>
             </div>
         </div>
@@ -190,7 +194,21 @@
             document.getElementById('gantiActual').value = '';
         }
     }
-
+    function formatNumber2(input) {
+        let value = input.value;
+        value = value.replace(/\D/g, '');
+        let numberValue = parseInt(value, 10);
+        
+        if (!isNaN(numberValue)) {
+            // Update input yang terlihat oleh pengguna dengan format yang sudah diformat
+            input.value = numberValue.toLocaleString('id-ID');
+            // Update input tersembunyi dengan angka murni
+            document.getElementById('komisiActual').value = numberValue;
+        } else {
+            input.value = '';
+            document.getElementById('komisiActual').value = '';
+        }
+    }
 
     document.getElementById('toggleSwitch').addEventListener('click', function() {
         // Mengganti SVG menjadi toggle off
