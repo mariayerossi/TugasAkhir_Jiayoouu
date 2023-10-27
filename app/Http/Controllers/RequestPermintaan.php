@@ -37,7 +37,7 @@ class RequestPermintaan extends Controller
 
         //cek apakah request harga lebih kecil dari komisi
         if ((int)$harga <= (int)$komisi_alat) {
-            return redirect()->back()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
+            return redirect()->back()->withInput()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
         }
 
         date_default_timezone_set("Asia/Jakarta");
@@ -115,6 +115,16 @@ class RequestPermintaan extends Controller
             "required"=> "Harga sewa alat olahraga tidak boleh kosong!"
         ]);
         $req = new ModelsRequestPermintaan();
+        $fk = $req->get_all_data_by_id($request->id_permintaan)->first()->req_id_alat;
+
+        $alat = new alatOlahraga();
+        $komisi_alat = $alat->get_all_data_by_id($fk)->first()->komisi_alat;
+
+        //cek apakah request harga lebih kecil dari komisi
+        if ((int)$request->harga_sewa <= (int)$komisi_alat) {
+            return redirect()->back()->withInput()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
+        }
+
         $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
 
         if ($status == "Menunggu") {
