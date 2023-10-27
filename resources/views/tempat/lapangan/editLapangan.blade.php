@@ -156,7 +156,7 @@
                     </div>
                     {{-- <input type="number" class="form-control" min="0" name="harga" placeholder="Masukkan Harga Sewa Olahraga" oninput="formatNumber(this)" value="{{old('harga') ?? $lapangan->first()->harga_sewa_lapangan}}"> --}}
                     <!-- Input yang terlihat oleh pengguna -->
-                    <input type="text" class="form-control" id="sewaDisplay" placeholder="Masukkan Harga Sewa Lapangan Olahraga" oninput="formatNumber(this)" value="{{old('harga') ?? $lapangan->first()->harga_sewa_lapangan}}">
+                    <input type="text" class="form-control" id="sewaDisplay" placeholder="Masukkan Harga Sewa Lapangan Olahraga" oninput="formatNumber(this)" value="{{number_format(old('harga') ?? $lapangan->first()->harga_sewa_lapangan, 0, ',', '.')}}">
 
                     <!-- Input tersembunyi untuk kirim ke server -->
                     <input type="hidden" name="harga" id="sewaActual" value="{{old('harga') ?? $lapangan->first()->harga_sewa_lapangan}}">

@@ -156,7 +156,7 @@
                         <div class="input-group-text">Rp</div>
                     </div>
                     <!-- Input yang terlihat oleh pengguna -->
-                    <input type="text" class="form-control" id="komisiDisplay" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber2(this)" value="{{old('komisi') ?? $alat->first()->komisi_alat}}">
+                    <input type="text" class="form-control" id="komisiDisplay" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber2(this)" value="{{number_format(old('komisi') ?? $alat->first()->komisi_alat, 0, ',', '.')}}">
 
                     <!-- Input tersembunyi untuk kirim ke server -->
                     <input type="hidden" name="komisi" id="komisiActual" value="{{old('komisi') ?? $alat->first()->komisi_alat}}">
@@ -173,7 +173,7 @@
                         <div class="input-group-text">Rp</div>
                     </div>
                     <!-- Input yang terlihat oleh pengguna -->
-                    <input type="text" class="form-control" id="gantiDisplay" placeholder="Masukkan Jumlah Ganti Rugi" oninput="formatNumber(this)" value="{{old('ganti') ?? $alat->first()->ganti_rugi_alat}}">
+                    <input type="text" class="form-control" id="gantiDisplay" placeholder="Masukkan Jumlah Ganti Rugi" oninput="formatNumber(this)" value="{{number_format(old('ganti') ?? $alat->first()->ganti_rugi_alat, 0, ',', '.')}}">
 
                     <!-- Input tersembunyi untuk kirim ke server -->
                     <input type="hidden" name="ganti" id="gantiActual" value="{{old('ganti') ?? $alat->first()->ganti_rugi_alat}}">

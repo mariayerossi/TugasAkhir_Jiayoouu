@@ -85,7 +85,11 @@ display: block;
                                         @csrf
                                         <div class="input-group">
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
-                                            <input type="number" min="0" name="harga_komisi" value="{{$dataAlat->komisi_alat}}" class="form-control">
+                                            <!-- Input yang terlihat oleh pengguna -->
+                                            <input type="text" class="form-control" id="komisiDisplay" oninput="formatNumber(this)" value="{{number_format($dataAlat->komisi_alat, 0, ',', '.')}}">
+
+                                            <!-- Input tersembunyi untuk kirim ke server -->
+                                            <input type="hidden" name="harga_komisi" id="komisiActual" value="{{$dataAlat->komisi_alat}}">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-primary"id="submitBtn">Edit Harga</button>
                                             </div>
@@ -408,6 +412,21 @@ display: block;
     @endif
 </div>
 <script>
+    function formatNumber(input) {
+        let value = input.value;
+        value = value.replace(/\D/g, '');
+        let numberValue = parseInt(value, 10);
+        
+        if (!isNaN(numberValue)) {
+            // Update input yang terlihat oleh pengguna dengan format yang sudah diformat
+            input.value = numberValue.toLocaleString('id-ID');
+            // Update input tersembunyi dengan angka murni
+            document.getElementById('komisiActual').value = numberValue;
+        } else {
+            input.value = '';
+            document.getElementById('komisiActual').value = '';
+        }
+    }
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
         
