@@ -356,7 +356,7 @@
             inputPlaceholder: "Durasi jam"
         }, function(inputValue){
             if (inputValue === false) return false;
-            if (inputValue === "" || isNaN(inputValue)) {
+            if (inputValue === "" || isNaN(inputValue) || parseInt(inputValue) <= 0) {
                 swal.showInputError("Anda harus memasukkan durasi jam yang valid!");
                 console.log(inputValue);
                 return false;

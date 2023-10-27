@@ -723,7 +723,7 @@
                     // console.log(formData)
                     
                     $.ajax({
-                        url: $(this).attr('action'),
+                        url: "/tempat/extend/tolakExtend",
                         type: "POST",
                         data: formData,
                         success: function(response) {

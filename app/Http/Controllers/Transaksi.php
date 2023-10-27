@@ -312,10 +312,10 @@ class Transaksi extends Controller
         }
 
         //hapus session sewaAlat
-        if (Session::has("sewaAlat")) {
+        if (Session::has("sewaAlat") && Session::get("sewaAlat") != null) {
             $sewaAlat = Session::get("sewaAlat");
             foreach ($sewaAlat as $key => $item) {
-                if ($item['lapangan'] == "1") {
+                if ($item['lapangan'] == $request->id_lapangan) {
                     // 3. Hapus item tersebut dari array
                     unset($sewaAlat[$key]);
                 }
@@ -324,10 +324,10 @@ class Transaksi extends Controller
         }
 
         //hapus session cart
-        if (Session::has("cart")) {
+        if (Session::has("cart") && Session::get("cart") != null) {
             $cart = Session::get("cart");
             foreach ($cart as $key => $item) {
-                if ($item['lapangan'] == "1") {
+                if ($item['lapangan'] == $request->id_lapangan && $item['tanggal'] == $request->tanggal && $item['mulai'] == $request->mulai) {
                     // 3. Hapus item tersebut dari array
                     unset($cart[$key]);
                 }
