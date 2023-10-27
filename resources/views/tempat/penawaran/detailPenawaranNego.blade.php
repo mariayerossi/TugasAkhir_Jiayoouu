@@ -125,7 +125,7 @@
                         <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
                         {{-- <input type="text" class="form-control" min="0" name="harga_sewa" oninput="formatNumber(this)" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}"> --}}
                         <!-- Input yang terlihat oleh pengguna -->
-                        <input type="text" class="form-control" placeholder="Masukkan Harga Sewa" oninput="formatNumber(this)" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}">
+                        <input type="text" class="form-control" placeholder="Masukkan Harga Sewa" oninput="formatNumber(this)" value="{{number_format(old('harga_sewa') ?? $penawaran->first()->req_harga_sewa, 0, ',', '.')}}">
 
                         <!-- Input tersembunyi untuk kirim ke server -->
                         <input type="hidden" name="harga_sewa" id="actual" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}">
@@ -190,7 +190,7 @@
         <div class="container">
             <div class="row justify-content-end mb-3">
                 <div class="col-12 col-md-6">
-                    
+                        <input type="hidden" name="komisi" value="{{$dataAlat->komisi_alat}}">
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <hr>
                         @if ($penawaran->first()->status_tempat != "Setuju")

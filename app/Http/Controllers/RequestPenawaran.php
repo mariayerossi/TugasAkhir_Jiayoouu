@@ -123,6 +123,11 @@ class RequestPenawaran extends Controller
 
                 //cek dulu apakah harga sewa dan tanggal masih null atau tidak
                 if ($request->harga_sewa != null) {
+                    //cek apakah request harga lebih kecil dari komisi
+                    if ((int)$request->harga_sewa <= (int)$request->komisi) {
+                        return redirect()->back()->withInput()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
+                    }
+
                     //update harga sewa
                     $dataH = [
                         "id" => $request->id_penawaran,
@@ -137,7 +142,7 @@ class RequestPenawaran extends Controller
                         $date_selesai = new DateTime($request->tanggal_selesai);
                         
                         if ($date_selesai <= $date_mulai) {
-                            return redirect()->back()->with("error", "Tanggal kembali tidak sesuai!");
+                            return redirect()->back()->withInput()->with("error", "Tanggal kembali tidak sesuai!");
                         }
                         else {
                             //update tanggal mulai
@@ -154,11 +159,11 @@ class RequestPenawaran extends Controller
                                     $pen->updateTanggalMulai($data);
                                 }
                                 else {
-                                    return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
+                                    return redirect()->back()->withInput()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
                                 }
                             }
                             else {
-                                return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran");
+                                return redirect()->back()->withInput()->with("error", "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran");
                             }
 
                             //update tanggal selesai
@@ -175,11 +180,11 @@ class RequestPenawaran extends Controller
                                     $pen->updateTanggalSelesai($data);
                                 }
                                 else {
-                                    return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
+                                    return redirect()->back()->withInput()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
                                 }
                             }
                             else {
-                                return redirect()->back()->with("error", "Gagal mengedit tanggal selesai sewa! Status penawaran telah $request->status_penawaran");
+                                return redirect()->back()->withInput()->with("error", "Gagal mengedit tanggal selesai sewa! Status penawaran telah $request->status_penawaran");
                             }
 
                             $data = [
@@ -207,7 +212,7 @@ class RequestPenawaran extends Controller
                         }
                     }
                     else {
-                        return redirect()->back()->with("error", "Masukkan tanggal mulai dan tanggal selesai terlebih dahulu!");
+                        return redirect()->back()->withInput()->with("error", "Masukkan tanggal mulai dan tanggal selesai terlebih dahulu!");
                     }
                 }
                 else {
