@@ -51,7 +51,7 @@
                     </div>
                 @else
                     <tr>
-                        <td colspan="4" class="text-center">Tidak Ada Data</td>
+                        <td colspan="7" class="text-center">Tidak Ada Data</td>
                     </tr>
                 @endif
             </tbody>

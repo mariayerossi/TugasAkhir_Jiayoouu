@@ -55,7 +55,7 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nama_alat}}</td>
-                        <td>{{$item->kategori_alat}}</td>
+                        <td>{{$item->nama_kategori}}</td>
                         @if ($item->harga_permintaan != null)
                             <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td>
                             <td>Alat Sewaan</td>

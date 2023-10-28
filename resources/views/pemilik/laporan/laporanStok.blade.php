@@ -55,7 +55,7 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nama_alat}}</td>
-                        <td>{{$item->kategori_alat}}</td>
+                        <td>{{$item->nama_kategori}}</td>
                         <td>{{$item->totalRequest}} Kali</td>
                         @if ($item->status_alat == "Aktif")
                             <td style="color: green">{{$item->status_alat}}</td>

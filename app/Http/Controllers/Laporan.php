@@ -169,13 +169,14 @@ class Laporan extends Controller
         // $alat = new alatOlahraga();
         // $allData = $alat->get_all_data($role, "Pemilik");
         $allData = DB::table('alat_olahraga')
-                    ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'),"alat_olahraga.kategori_alat","alat_olahraga.status_alat")
+                    ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'),"alat_olahraga.status_alat","kategori.nama_kategori")
                     ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
                     ->leftJoin("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                    ->join("kategori","alat_olahraga.fk_id_kategori","=","kategori.id_kategori")
                     ->where("alat_olahraga.fk_id_pemilik","=",$role)
                     ->where("htrans.status_trans","!=","Dibatalkan")
                     ->where("htrans.status_trans","!=","Ditolak")
-                    ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "alat_olahraga.kategori_alat", "alat_olahraga.status_alat")
+                    ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "alat_olahraga.status_alat","kategori.nama_kategori")
                     ->get();
 
         // dd($allData);
@@ -604,10 +605,11 @@ class Laporan extends Controller
     public function laporanStokTempat() {
         $role = Session::get("dataRole")->id_tempat;
         $allData = DB::table('alat_olahraga')
-                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "alat_olahraga.kategori_alat")
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "kategori.nama_kategori")
                 ->leftJoin("request_permintaan", "alat_olahraga.id_alat", "=", "request_permintaan.req_id_alat")
                 ->leftJoin("request_penawaran", "alat_olahraga.id_alat", "=", "request_penawaran.req_id_alat")
                 ->leftJoin("sewa_sendiri", "alat_olahraga.id_alat", "=", "sewa_sendiri.req_id_alat")
+                ->join("kategori","alat_olahraga.fk_id_kategori","=","kategori.id_kategori")
                 ->orWhere(function ($query) use ($role) {
                     $query->where("request_permintaan.fk_id_tempat", "=", $role)
                         ->where("request_permintaan.status_permintaan", "=", "Disewakan");
