@@ -72,6 +72,16 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('kategori')->insert([
+            "nama_kategori" => "Voli",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('kategori')->insert([
+            "nama_kategori" => "Tenis",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Molten",
             'fk_id_kategori' => 1,
@@ -97,7 +107,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_alat')->insert([
-            'nama_file_alat' => "bola_basket1.jpg",
+            'nama_file_alat' => "bola_basket3.jpg",
             'fk_id_alat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -105,6 +115,96 @@ class DatabaseSeeder extends Seeder
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_basket2.jpg",
             'fk_id_alat' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Futsal Ortuseigt",
+            'fk_id_kategori' => 2,
+            'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
+            Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
+            *Bola Original Selalu ada Logo PERBASI & IBL
+            
+            INFO PRODUK :
+            COVER MATERIAL : RUBBER (Karet)
+            CONSTRUCTION : Molded
+            SIZE : 6 ( B6G2010 )
+            BLADDER : Butyl
+            REMARK : FIBA APPROVED ( REKOMENDASI BUAT OUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            'berat_alat' => "20.5",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 10000,
+            'ganti_rugi_alat' => 100000,
+            'kota_alat' => "Surabaya",
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_futsal5.jpg",
+            'fk_id_alat' => 2,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Voli Molten",
+            'fk_id_kategori' => 3,
+            'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
+            Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
+            *Bola Original Selalu ada Logo PERBASI & IBL
+            
+            INFO PRODUK :
+            COVER MATERIAL : RUBBER (Karet)
+            CONSTRUCTION : Molded
+            SIZE : 6 ( B6G2010 )
+            BLADDER : Butyl
+            REMARK : FIBA APPROVED ( REKOMENDASI BUAT OUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            'berat_alat' => "20.5",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 15000,
+            'ganti_rugi_alat' => 100000,
+            'kota_alat' => "Bandung",
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_voli2.jpg",
+            'fk_id_alat' => 3,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Raket Tenis VCORE PRO 100",
+            'fk_id_kategori' => 4,
+            'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
+            Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
+            *Bola Original Selalu ada Logo PERBASI & IBL
+            
+            INFO PRODUK :
+            COVER MATERIAL : RUBBER (Karet)
+            CONSTRUCTION : Molded
+            SIZE : 6 ( B6G2010 )
+            BLADDER : Butyl
+            REMARK : FIBA APPROVED ( REKOMENDASI BUAT OUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            'berat_alat' => "300",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 20000,
+            'ganti_rugi_alat' => 100000,
+            'kota_alat' => "Bandung",
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "raket_tenis1.jpg",
+            'fk_id_alat' => 4,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 

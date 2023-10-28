@@ -60,8 +60,8 @@
                     @endif
                 </select>
             </div>
-            <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan...">
-            <input type="text" name="cariPemilik" class="form-control" placeholder="Cari Tempat Olahraga...">
+            <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan dan Tempat Olahraga...">
+            {{-- <input type="text" name="cariPemilik" class="form-control" placeholder="Cari Tempat Olahraga..."> --}}
             <div class="input-group-append">
                 <button class="btn btn-success" type="submit">
                     <i class="bi bi-search"></i>

@@ -270,6 +270,7 @@
         </div>
         <button type="button" class="btn btn-primary mb-3" onclick="addTimeInput()">Add</button>
         <div class="d-flex justify-content-end">
+            <a href="javascript:history.back()" class="btn btn-outline-primary me-3">Batal</a>
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
     </form>

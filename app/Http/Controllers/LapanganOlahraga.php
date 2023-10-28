@@ -228,27 +228,36 @@ class LapanganOlahraga extends Controller
     {
         // $search = $request->input("cari");
         if (Session::get("role") == "admin") {
-            $query = DB::table('lapangan_olahraga')->where('deleted_at',"=",null);
+            $query = DB::table('lapangan_olahraga')->where('lapangan_olahraga.deleted_at',"=",null);
         }
         else {
-            $query = DB::table('lapangan_olahraga')->where('deleted_at',"=",null)->where("status_lapangan","=","Aktif");
+            $query = DB::table('lapangan_olahraga')->where('lapangan_olahraga.deleted_at',"=",null)->where("lapangan_olahraga.status_lapangan","=","Aktif");
         }
     
         if ($request->filled('kategori')) {
-            $query->where('fk_id_kategori', $request->kategori);
+            $query->where('lapangan_olahraga.fk_id_kategori', $request->kategori);
         }
         
         if ($request->filled('cari')) {
-            $query->where('nama_lapangan', 'like', '%' . $request->cari . '%');
+            // $query->where('nama_lapangan', 'like', '%' . $request->cari . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('lapangan_olahraga.nama_lapangan', 'like', '%' . $request->cari . '%')
+                  ->orWhereExists(function ($subQuery) use ($request) {
+                      $subQuery->select(DB::raw(1))
+                               ->from('pihak_tempat')
+                               ->whereColumn('lapangan_olahraga.pemilik_lapangan', 'pihak_tempat.id_tempat')
+                               ->where('pihak_tempat.nama_tempat', 'like', '%' . $request->cari . '%');
+                  });
+            });
         }
 
-        if ($request->filled('cariPemilik')) {
-            $query = DB::table('lapangan_olahraga')
-            ->where('lapangan_olahraga.deleted_at',"=",null)
-            ->join('pihak_tempat', 'lapangan_olahraga.pemilik_lapangan', '=', 'pihak_tempat.id_tempat')
-            ->where('pihak_tempat.nama_tempat', 'like', '%' . $request->cariPemilik . '%');
-            // dd($query->get());
-        }
+        // if ($request->filled('cariPemilik')) {
+        //     $query = DB::table('lapangan_olahraga')
+        //     ->where('lapangan_olahraga.deleted_at',"=",null)
+        //     ->join('pihak_tempat', 'lapangan_olahraga.pemilik_lapangan', '=', 'pihak_tempat.id_tempat')
+        //     ->where('pihak_tempat.nama_tempat', 'like', '%' . $request->cariPemilik . '%');
+        //     // dd($query->get());
+        // }
         
         $hasil = $query
                 ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
@@ -286,7 +295,7 @@ class LapanganOlahraga extends Controller
         
         if ($request->filled('cari')) {
             $query->where(function ($q) use ($request) {
-                $q->where('nama_lapangan', 'like', '%' . $request->cari . '%')
+                $q->where('lapangan_olahraga.nama_lapangan', 'like', '%' . $request->cari . '%')
                   ->orWhereExists(function ($subQuery) use ($request) {
                       $subQuery->select(DB::raw(1))
                                ->from('pihak_tempat')
