@@ -557,7 +557,7 @@
                         ->where("fk_id_user","=",Session::get("dataRole")->id_user)
                         ->get();
     @endphp
-    @if (!$cekStatus->isEmpty() && $cekRating->isEmpty())
+    @if (!$cekStatus->isEmpty() || $cekRating->isEmpty())
         <div class="row mt-5">
             <div class="col-12">
                 <h4>Beri Ulasan</h4>
