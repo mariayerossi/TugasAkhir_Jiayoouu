@@ -445,7 +445,24 @@ class reminder extends Command
 
                 //----------------------------------------------------------------------
                 //jika status masih "diterima" sampai waktu jam selesai tiba (cust tidak datang), status trans otomatis selesai dan dana masuk ke saldo tempat
-                
+                $jam_sewa = $value->tanggal_sewa." ".$value->jam_sewa;
+                $$value->durasi_sewa = 3;  // Misalnya durasi sewa adalah 3 jam
+
+                // Membuat objek DateTime dari jam_sewa
+                $waktuMulai = new DateTime($jam_sewa);
+
+                // Menambahkan durasi_sewa ke waktuMulai
+                $waktuMulai->add(new DateInterval('PT' . $durasi_sewa . 'H'));
+
+                // Mendapatkan jam_selesai_sewa
+                $jam_selesai_sewa = $waktuMulai->format('Y-m-d H:i:s');
+
+                $sewa4 = new DateTime($jam_selesai_sewa);
+                $sew4 = $sewa4->format('Y-m-d H:i:s');
+
+                if ($sew4 == $sekarang) {
+                    # code...
+                }
             }
         }
     }
