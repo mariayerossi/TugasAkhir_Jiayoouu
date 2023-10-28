@@ -1548,6 +1548,7 @@ class Transaksi extends Controller
         // dd($extend->subtotal_lapangan);
         $saldo += (int)$dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat;
 
+        // dd($dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat);
         //enkripsi kembali saldo
         $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
 

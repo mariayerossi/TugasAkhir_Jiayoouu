@@ -119,7 +119,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('alat_olahraga')->insert([
-            "nama_alat" => "Bola Futsal Ortuseigt",
+            "nama_alat" => "Bola Futsal Ortuseight",
             'fk_id_kategori' => 2,
             'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
             Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
@@ -480,13 +480,13 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal1.jpg",
-            'fk_id_alat' => 2,
+            'fk_id_alat' => 5,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal2.jpg",
-            'fk_id_alat' => 2,
+            'fk_id_alat' => 5,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -542,7 +542,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('sewa_sendiri')->insert([
             'req_lapangan' => 1,
-            'req_id_alat' => 2,
+            'req_id_alat' => 5,
             'fk_id_tempat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -579,7 +579,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('dtrans')->insert([
             'fk_id_htrans' => 1,
-            'fk_id_alat' => 2,
+            'fk_id_alat' => 5,
             'harga_sewa_alat' => 25000,
             'subtotal_alat' => 50000,
             'total_komisi_pemilik' => null,
