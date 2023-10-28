@@ -309,6 +309,7 @@ class reminder extends Command
                 date_default_timezone_set('Asia/Jakarta');
                 $sekarang = date('Y-m-d H:i:s');
 
+                //reminder ke cust bahwa besok waktu booking
                 $tanggal = $value->tanggal_sewa." ".$value->jam_sewa;
                 $sewa = new DateTime($tanggal);
                 $sewa->add(new DateInterval('P1D'));
@@ -361,6 +362,9 @@ class reminder extends Command
                     }
                 }
 
+                //--------------------------------------------------------------------------------
+
+                //otomatis membatalkan transaksi jika sampai 2 jam sblm trans blm diterima pihak tempat
                 $tanggal2 = $value->tanggal_sewa." ".$value->jam_sewa;
                 $sewa2 = new DateTime($tanggal2);
                 $sewa2->sub(new DateInterval('PT2H')); // mengurangkan 2 jam
@@ -408,6 +412,40 @@ class reminder extends Command
                     $e2 = new notifikasiEmail();
                     $e2->sendEmail($cust->get_all_data_by_id($value->fk_id_user)->first()->email_user, $dataNotif3);
                 }
+
+                //---------------------------------------------------------------------
+
+                //jika status masih "diterima" sampai 1 jam setelah jam mulai tiba kasih reminder ke cust (1 jam setelah jam sewa)
+                $tanggal3 = $value->tanggal_sewa." ".$value->jam_sewa;
+                $sewa3 = new DateTime($tanggal3);
+                $sewa3->add(new DateInterval('PT1H'));
+                $sew3 = $sewa3->format('Y-m-d H:i:s');
+
+                if ($sew3 == $sekarang) {
+                    //kasih reminder ke cust
+                    $dataCust = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
+
+                    $tanggalAwal3 = $value->tanggal_sewa;
+                    $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+                    $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+
+                    $dataNotif = [
+                        "subject" => "🔔Anda Terlambat Datang ke Lapangan!🔔",
+                        "judul" => "Anda Terlambat Datang ke Lapangan!",
+                        "nama_user" => $dataCust->nama_user,
+                        "isi" => "Detail Sewa Lapangan:<br><br>
+                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
+                                <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
+                                Perhatian! Jika tidak datang sampai jam sewa selesai tiba, transaksi akan otomatis selesai. 😊"
+                    ];
+                    $e = new notifikasiEmail();
+                    $e->sendEmail($dataCust->email_user, $dataNotif);
+                }
+
+                //----------------------------------------------------------------------
+                //jika status masih "diterima" sampai waktu jam selesai tiba (cust tidak datang), status trans otomatis selesai dan dana masuk ke saldo tempat
+                
             }
         }
     }
