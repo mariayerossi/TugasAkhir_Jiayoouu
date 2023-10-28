@@ -725,6 +725,13 @@ Route::prefix("/tempat")->group(function(){
         })->middleware([CekTempat::class]);
         Route::post("/ajukanKerusakan", [KerusakanAlat::class, "ajukanKerusakan"]);
         Route::get("/daftarKerusakan", [KerusakanAlat::class, "daftarKerusakan"]);
+        Route::get("/detailKerusakan2", function () {
+            $htrans = new ModelsHtrans();
+            $param["htrans"] = $htrans->get_all_data_by_tempat(Session::get("dataRole")->id_tempat);
+            $param["dtrans"] = null;
+            return view("tempat.transaksi.detailKerusakan2")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::get("/tampilkan", [KerusakanAlat::class, "detailTrans"]);
     });
 
     //bagian laporan

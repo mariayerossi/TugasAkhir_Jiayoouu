@@ -10,41 +10,47 @@
         background-repeat: no-repeat;
         background-size: 70%; /* Mengurangi ukuran gambar */
     }
+    @media (min-width: 769px) {
+        .image-container {
+            margin-top: -80px;
+            margin-bottom: -50px; /* Contoh: menggeser ke atas sebanyak 50px */
+        }
+    }
     .square-image-container {
-    width: 100px;
-    height: 100px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.square-image-container img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-}
-.truncate-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    display: block;
-}
-@media (max-width: 768px) {
-    .container-fluid {
-        padding-left: 0;
-        padding-right: 0;
+    .square-image-container img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
     }
-    .square-image-container {
-        width: 60px;
-        height: 60px;
+    .truncate-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        display: block;
     }
-    .image-container {
-        background-size: 100%; /* Memperbesar gambar lapangan menjadi 100% */
+    @media (max-width: 768px) {
+        .container-fluid {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .square-image-container {
+            width: 60px;
+            height: 60px;
+        }
+        .image-container {
+            background-size: 100%; /* Memperbesar gambar lapangan menjadi 100% */
+        }
     }
-}
-.bi-star-fill {
+    .bi-star-fill {
         color: gold;
     }
     .carousel-control-prev, .carousel-control-next {

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\alatOlahraga;
+use App\Models\dtrans;
+use App\Models\htrans;
 use App\Models\kerusakanAlat as ModelsKerusakanAlat;
 use App\Models\requestPenawaran;
 use App\Models\requestPermintaan;
@@ -183,5 +185,17 @@ class KerusakanAlat extends Controller
             $param["rusak"] = $data;
             return view("admin.produk.daftarKerusakan")->with($param);
         }
+    }
+
+    public function detailTrans(Request $request) {
+        $htrans = new htrans();
+        $param["htrans"] = $htrans->get_all_data_by_tempat(Session::get("dataRole")->id_tempat);
+        $dtrans = new dtrans();
+        $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($request->id_htrans);
+        return view("tempat.transaksi.detailKerusakan2")->with($param);
+    }
+
+    public function detailKerusakan() {
+        return view("tempat.transaksi.detailKerusakan2");
     }
 }

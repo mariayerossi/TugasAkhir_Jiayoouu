@@ -10,6 +10,12 @@
         background-repeat: no-repeat;
         background-size: 70%; /* Mengurangi ukuran gambar */
     }
+    @media (min-width: 769px) {
+        .image-container {
+            margin-top: -80px;
+            margin-bottom: -50px; /* Contoh: menggeser ke atas sebanyak 50px */
+        }
+    }
     .square-image-container {
     width: 100px;
     height: 100px;

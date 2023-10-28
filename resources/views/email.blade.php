@@ -48,7 +48,7 @@
             display: inline-block;
             padding: 10px 20px;
             background-color: #00796b;
-            color: #ffffff;
+            color: #ffffff !important;
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s;
@@ -69,7 +69,7 @@
     <div class="content">
         <p><b>Halo {{$nama_user}},</b></p>
         <p>{!! $isi !!}</p>
-        {{-- <a href="#" class="btn">Baca Selengkapnya</a> --}}
+        {{-- <a href="{{$url}}" class="btn" style="margin: 20px auto; display: block; text-align: center;">{{$button}}</a> --}}
     </div>
     <div class="footer">
         <p>Terima kasih telah menggunakan layanan kami. Jika Anda memiliki pertanyaan atau membutuhkan bantuan, silakan hubungi kami.</p>
