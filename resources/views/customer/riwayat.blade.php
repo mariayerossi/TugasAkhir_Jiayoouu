@@ -70,7 +70,9 @@
                         <div class="col-md-3">
                             <div class="card-image-container">
                                 <div class="square-wrapper">
-                                    <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="" class="img-fluid">
+                                    <a href="/customer/detailLapangan/{{$item->id_lapangan}}">
+                                        <img src="{{ asset('upload/' . $item->nama_file_lapangan) }}" alt="" class="img-fluid">
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -121,6 +123,7 @@
                                 <div class="d-flex flex-row flex-wrap">
                                 @if (!$dtrans->isEmpty())
                                     @foreach ($dtrans as $item2)
+                                    <a href="/customer/detailAlat/{{$item2->id_alat}}">
                                         <div class="card tiny-card h-70 mb-1 mr-1">
                                             <div class="card-body">
                                                 <div class="row">
@@ -138,6 +141,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </a>
                                     @endforeach
                                 @endif
                                 </div>

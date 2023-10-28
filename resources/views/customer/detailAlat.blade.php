@@ -136,7 +136,7 @@
                         ->where("fk_id_user","=",Session::get("dataRole")->id_user)
                         ->get();
     @endphp
-    @if (!$cekStatus->isEmpty() && $cekRating->isEmpty())
+    @if (!$cekStatus->isEmpty())
         <div class="row mt-5">
             <div class="col-12">
                 <h4>Beri Ulasan</h4>
@@ -167,6 +167,7 @@
                         ->select("user.nama_user", "rating_alat.review", "rating_alat.rating")
                         ->join("user", "rating_alat.fk_id_user","=","user.id_user")
                         ->where("fk_id_alat","=",$alat->first()->id_alat)
+                        ->orderBy("rating_alat.id_rating_alat","desc")
                         ->get();
             @endphp
             @if (!$rating->isEmpty())
