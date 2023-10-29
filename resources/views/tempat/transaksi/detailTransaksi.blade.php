@@ -799,7 +799,7 @@
                     var formData = $("#batalTrans").serialize(); // Mengambil data dari form
     
                     $.ajax({
-                        url: "/tempat/transaksi/KonfbatalTrans",
+                        url: "/tempat/transaksi/batalTrans",
                         type: "POST",
                         data: formData,
                         success: function(response) {

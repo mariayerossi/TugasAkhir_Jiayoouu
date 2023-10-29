@@ -1041,13 +1041,14 @@ class Transaksi extends Controller
     }
 
     public function batalTrans(Request $request) {
-        //???
         $id = $request->id_htrans;
 
         //cek apakah tanggal sewa dan jam sewa sdh lewat atau belom
         $trans = DB::table('htrans')
-                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans", "htrans.fk_id_tempat")
+                ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans", "htrans.fk_id_tempat", "user.saldo_user","user.nama_user","pihak_tempat.saldo_tempat","htrans.fk_id_user","pihak_tempat.email_tempat")
                 ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                ->join("user","htrans.fk_id_user","=","user.id_user")
+                ->join("pihak_tempat","htrans.fk_id_tempat","=","pihak_tempat.id_tempat")
                 ->joinSub(function($query) {
                     $query->select("fk_id_lapangan", "nama_file_lapangan")
                         ->from('files_lapangan')
@@ -1056,55 +1057,75 @@ class Transaksi extends Controller
                 ->where("htrans.id_htrans", "=", $id)
                 ->get()->first();
 
-        // if ($trans->status_trans == "Diterima") {
-        //     $now = Carbon::now('Asia/Jakarta');
-        //     $sewaDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $trans->tanggal_sewa . ' ' . $trans->jam_sewa, 'Asia/Jakarta');
-
-        //     if ($sewaDateTime->lte($now)) {
-        //         //sudah lewat
-        //         return response()->json(['success' => false, 'message' => 'Waktu sewa sudah lewat! Tidak bisa membatalkan booking.']);
-        //     }
-        // }
-
         //pengembalian dana
-        $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+        $saldoTemp = (int)$this->decodePrice($trans->saldo_tempat, "mysecretkey");
 
-        //pemotongan denda 5f%
-        $denda = 0.05;
+        $saldo = (int)$this->decodePrice($trans->saldo_user, "mysecretkey");
+
+        //pemotongan denda 10% dari tempat
+        $denda = 0.10;
         $total_denda = $trans->total_trans * $denda;
 
-        $saldo += $trans->total_trans - $total_denda;
+        if ($saldoTemp < $total_denda) {
+            return response()->json(['success' => false, 'message' => 'Gagal Membatalkan Transaksi! Kompensasi tidak dapat diberikan!']);
+        }
+
+        $saldoTemp -= $total_denda;
+
+        $saldo += $trans->total_trans + $total_denda;
 
         //enkripsi kembali saldo
         $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+        $enkripTemp = $this->encodePrice((string)$saldoTemp, "mysecretkey");
 
         //update db user
         $dataSaldo = [
-            "id" => Session::get("dataRole")->id_user,
+            "id" => $trans->fk_id_user,
             "saldo" => $enkrip
         ];
         $cust = new customer();
         $cust->updateSaldo($dataSaldo);
 
-        //update session role
-        $user = new customer();
-        $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
-        Session::forget("dataRole");
-        Session::put("dataRole", $isiUser->first());
-
-        //total_denda masuk ke saldo pihak tempat
-        $saldoTempatAwal = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->saldo_tempat;
-        $saldoTempat = (int)$this->decodePrice($saldoTempatAwal, "mysecretkey");
-
-        $saldoTempat += $total_denda;
-        $saldoAkhir = $this->encodePrice((string)$saldoTempat, "mysecretkey");
-
-        $dataSaldoTempat = [
+        //update db tempat
+        $dataSaldo2 = [
             "id" => $trans->fk_id_tempat,
-            "saldo" => $saldoAkhir
+            "saldo" => $enkripTemp
         ];
         $temp = new pihakTempat();
-        $temp->updateSaldo($dataSaldoTempat);
+        $temp->updateSaldo($dataSaldo2);
+
+        //update session tempat
+        $isiTemp = $temp->get_all_data_by_id($trans->fk_id_tempat);
+        Session::forget("dataRole");
+        Session::put("dataRole", $isiTemp->first());
+
+        //kasih notif ke cust
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$id)->get();
+
+        $dtransStr = "";
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+            }
+        }
+
+        $tanggalAwal = $trans->tanggal_sewa;
+        $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
+        $tanggalBaru = $tanggalObjek->format('d-m-Y');
+
+        $dataNotif = [
+            "subject" => "⚠️Transaksi Dibatalkan Pihak Pengelola Tempat Olahraga!⚠️",
+            "judul" => "Transaksi Dibatalkan Pihak Pengelola Tempat Olahraga!",
+            "nama_user" => $trans->nama_user,
+            "isi" => "Maaf! Transaksi Anda Tidak Dapat Dilanjutkan oleh Pihak Pengelola Tempat Olahraga:<br><br>
+                    <b>Nama Lapangan Olahraga: ".$trans->nama_lapangan."</b><br>
+                    ".$dtransStr."<br>
+                    <b>Tanggal Transaksi: ".$tanggalBaru." ".$trans->jam_sewa."</b><br><br>
+                    Jangan khawatir! Dana Kompensasi telah kami tambahkan ke saldo wallet Anda! 😊"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail($trans->email_tempat, $dataNotif);
 
         $data = [
             "id" => $request->id_htrans,
@@ -1514,10 +1535,48 @@ class Transaksi extends Controller
         //kasih pengecekan
         $dataDtrans = DB::table('dtrans')->where("id_dtrans","=",$request->id_dtrans)->get()->first();
         $dataHtrans = DB::table('htrans')->where("id_htrans","=",$dataDtrans->fk_id_htrans)->get()->first();
+        $dataCust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
 
         if ($dataHtrans->status_trans == "Diterima") {
             //kembalikan uang alat ke cust
-            
+            $saldo = (int)$this->decodePrice($dataCust->saldo_user, "mysecretkey");
+            $saldo += $dataDtrans->subtotal_alat;
+            $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+            //update ke db
+            $dataSaldo = [
+                "id" => $dataCust->id_user,
+                "saldo" => $enkrip
+            ];
+            $cust = new customer();
+            $cust->updateSaldo($dataSaldo);
+
+            //notif email ke cust
+            $dataDtransAll = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+            $dtransStr = "";
+            if (!$dataDtransAll->isEmpty()) {
+                foreach ($dataDtransAll as $key => $value) {
+                    $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                    $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+                }
+            }
+
+            $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
+            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataDtrans->fk_id_alat)->get()->first();
+
+            $dataNotif = [
+                "subject" => "⚠️Transaksi Anda Telah Diubah!⚠️",
+                "judul" => "Transaksi Anda Telah Diubah!",
+                "nama_user" => $dataCust->nama_user,
+                "isi" => "Detail Transaksi<br><br>
+                        <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                        ".$dtransStr."<br><br>
+                        <b>Alat Olahraga ".$dataAlat->nama_alat."</b><br>
+                        Telah diubah! Jangan khawatir, dana sudah kami kembalikan ke saldo wallet anda!<br>
+                        Terima kasih telah mempercayai layanan kami. Tetap Jaga Pola Sehat Anda bersama Sportiva! 😊"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($dataCust->email_user, $dataNotif);
 
             //delete
             $data = [
@@ -1525,6 +1584,8 @@ class Transaksi extends Controller
             ];
             $dt = new dtrans();
             $dt->deleteDtrans($data);
+
+            return response()->json(['success' => true, 'message' => 'Transaksi berhasil diedit dan dana berhasil dikembalikan ke customer!']);
         }
     }
 

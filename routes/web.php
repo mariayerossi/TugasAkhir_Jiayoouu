@@ -716,6 +716,7 @@ Route::prefix("/tempat")->group(function(){
         })->middleware([CekTempat::class]);
         
         Route::post("/hapusAlat", [Transaksi::class, "hapusAlat"]);
+        Route::post("/batalTrans", [Transaksi::class, "batalTrans"]);
     });
 
     //bagian extend

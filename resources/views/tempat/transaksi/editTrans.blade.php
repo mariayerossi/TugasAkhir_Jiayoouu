@@ -231,7 +231,7 @@
 
         swal({
             title: "Apakah anda yakin ingin membatalkan alat yang sudah dipesan?",
-            text: "",
+            text: "dana akan dikembalikan kepada customer",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
