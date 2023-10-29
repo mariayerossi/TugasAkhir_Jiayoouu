@@ -67,7 +67,7 @@ class RequestPermintaan extends Controller
             $per = new ModelsRequestPermintaan();
             $per->insertPermintaan($data);
 
-            //notif email
+            //notif email ke pemilik
             $email_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->email_pemilik;
             $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->nama_pemilik;
             $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->nama_alat;
@@ -77,13 +77,15 @@ class RequestPermintaan extends Controller
                 "subject" => "Permintaan Alat Olahraga Baru",
                 "judul" => "Permintaan Alat Olahraga Baru",
                 "nama_user" => $nama_pemilik,
+                "url" => "https://sportiva.my.id/pemilik/permintaan/daftarPermintaan",
+                "button" => "Terima Permintaan",
                 "isi" => "Anda memiliki satu permintaan alat olahraga baru:<br><br>
                         <b>Nama Alat Olahraga: ".$nama_alat."</b><br>
                         <b>Komisi Pemilik Alat: Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
                         Silahkan Konfirmasi Permintaan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail($email_pemilik,$dataNotif);
+            $e->sendEmail("maria_y20@mhs.istts.ac.id",$dataNotif);
     
             return redirect()->back()->with("success", "Berhasil Mengirim Request!");
         }
