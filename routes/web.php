@@ -705,10 +705,17 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/terimaTransaksi", [Transaksi::class, "terimaTransaksi"]);
         Route::post("/tolakTransaksi", [Transaksi::class, "tolakTransaksi"]);
         Route::post("/konfirmasiDipakai", [Transaksi::class, "konfirmasiDipakai"]);
-        // ???
-        Route::post("/batalTrans", [Transaksi::class, "batalTrans"]);
-        Route::post("/KonfbatalTrans", [Transaksi::class, "KonfbatalTrans"]);
         Route::get("/cetakNota", [Transaksi::class, "cetakNota"])->middleware([CekTempat::class]);
+
+        Route::get("/tampilanEditTransaksi/{id}", function ($id) {
+            $htrans = new ModelsHtrans();
+            $param["htrans"] = $htrans->get_all_data_by_id($id);
+            $dtrans = new ModelsDtrans();
+            $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
+            return view("tempat.transaksi.editTrans")->with($param);
+        })->middleware([CekTempat::class]);
+        
+        Route::post("/hapusAlat", [Transaksi::class, "hapusAlat"]);
     });
 
     //bagian extend

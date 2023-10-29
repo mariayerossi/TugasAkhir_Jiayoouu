@@ -962,8 +962,8 @@ class Transaksi extends Controller
         //pengembalian dana
         $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
 
-        //pemotongan denda 10%
-        $denda = 0.10;
+        //pemotongan denda 5%
+        $denda = 0.05;
         $total_denda = $trans->total_trans * $denda;
 
         $saldo += $trans->total_trans - $total_denda;
@@ -1067,8 +1067,8 @@ class Transaksi extends Controller
         //pengembalian dana
         $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
 
-        //pemotongan denda 10%
-        $denda = 0.10;
+        //pemotongan denda 5f%
+        $denda = 0.05;
         $total_denda = $trans->total_trans * $denda;
 
         $saldo += $trans->total_trans - $total_denda;
@@ -1506,6 +1506,16 @@ class Transaksi extends Controller
         $e->sendEmail($cust->email_user, $dataNotif);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
+    }
+
+    public function hapusAlat(Request $request) {
+        //kasih pengecekan
+        $dataDtrans = DB::table('dtrans')->where("id_dtrans","=",$request->id_dtrans)->get()->first();
+        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$dataDtrans->fk_id_htrans)->get()->first();
+
+        if ($dataHtrans->status_trans == "Diterima") {
+            
+        }
     }
 
     public function cetakNota(Request $request) {

@@ -272,7 +272,7 @@
                     <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
                 </div>
             </div>
-            <div class="row konfirmasiBatal mb-5" data-id="{{$item->id_htrans}}">
+            {{-- <div class="row konfirmasiBatal mb-5" data-id="{{$item->id_htrans}}">
                 <div class="col-md-12">
                     <form action="/customer/komplain/ajukanKomplain" method="post" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);background-color:white">
                         @csrf
@@ -285,7 +285,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> --}}
         @endforeach
     @endif
 </div>
@@ -298,7 +298,7 @@
 
             swal({
                 title: "Apakah anda yakin?",
-                text: "Pembatalan booking akan dikenakan kompensasi sebesar 10% dari total transaksi.",
+                text: "Pembatalan booking akan dikenakan kompensasi sebesar 5% dari total transaksi.",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",

@@ -253,14 +253,13 @@
             <h6>Terjadi Kendala Dalam Booking?</h6>
         </div>
         <div class="d-flex justify-content-end me-3 mb-5">
-            <form class="me-3" id="editTrans" action="/tempat/transaksi/editTrans" method="post">
+            <form class="me-3" id="editTrans" action="/tempat/transaksi/tampilanEditTransaksi/{{$htrans->first()->id_htrans}}" method="get">
                 @csrf
-                <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                 <div class="input-group-append">
                     <button type="submit" class="btn btn-warning w-100">Edit Transaksi <i class="bi bi-pencil-square"></i></button>
                 </div>
             </form>
-            <form id="batalTrans" action="" method="post">
+            <form id="batalTrans" action="/tempat/transaksi/batalTrans" method="post">
                 @csrf
                 <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                 <div class="input-group-append">

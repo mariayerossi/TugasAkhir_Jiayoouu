@@ -279,7 +279,7 @@ class reminder extends Command
                         $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
                     }
                 }
-                else if ($value->status_penawaran == "Disewakan" && $value->req_tanggal_selesai." 12:00:00" != $sekarang) {
+                else if ($value->status_penawaran == "Disewakan" && $value->req_tanggal_selesai." 12:00:00" == $sekarang) {
                     //MASA SEWA ALAT SUDAH SELESAI
                     // $data3 = [
                     //     "id" => $value->id_penawaran,
@@ -474,14 +474,14 @@ class reminder extends Command
                     $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
 
                     $dataNotif = [
-                        "subject" => "🔔Anda Terlambat Datang ke Lapangan!🔔",
-                        "judul" => "Anda Terlambat Datang ke Lapangan!",
+                        "subject" => "🔔Halo! Anda Terlambat Datang ke Lapangan!🔔",
+                        "judul" => "Jangan Lupa Datang ya!",
                         "nama_user" => $dataCust->nama_user,
                         "isi" => "Detail Sewa Lapangan:<br><br>
                                 <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                 <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
                                 <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
-                                Perhatian! Jika tidak datang sampai jam sewa selesai tiba, transaksi akan otomatis selesai. 😊"
+                                Perhatian! Jika tidak datang sampai jam akhir sewa, transaksi akan otomatis selesai dan dana tidak dapat dikembalikan. 😊"
                     ];
                     $e = new notifikasiEmail();
                     $e->sendEmail($dataCust->email_user, $dataNotif);

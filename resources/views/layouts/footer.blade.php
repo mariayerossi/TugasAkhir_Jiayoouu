@@ -21,14 +21,14 @@
           
         </div>
 
-        <div class="col-lg-2 col-6 footer-links">
+        {{-- <div class="col-lg-2 col-6 footer-links">
           <h4>Tautan yang Berguna</h4>
           <ul>
             <li><a href="#hero">Beranda</a></li>
             <li><a href="#about">Tentang Kami</a></li>
             <li><a href="#produk">Produk</a></li>
           </ul>
-        </div>
+        </div> --}}
 
         <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
           <h4>Hubungi Kami</h4>
