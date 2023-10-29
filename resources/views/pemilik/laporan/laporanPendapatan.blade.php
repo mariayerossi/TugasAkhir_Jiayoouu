@@ -49,26 +49,27 @@
         <a href="/pemilik/laporan/pendapatan/CetakPDF/{{$tanggal_mulai}}/{{$tanggal_selesai}}" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
-    <div class="mb-5 flex-column flex-md-row">
+    <div class="mb-5">
         @include("layouts.message")
-        <div class="mb-2 d-flex justify-content-between align-items-center flex-wrap">
-            <span class="mr-2">Tampilkan berdasarkan:</span>
-            
+        <div class="mb-3">
             <form action="/pemilik/laporan/pendapatan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-center">
                 @csrf
+                <h5 class="mb-2 mb-md-0 me-md-5">Tampilkan berdasarkan:</h5>
                 <!-- Input date untuk tanggal mulai -->
-                <div class="form-group mr-2 mb-2 mb-md-0">
-                    <label for="tanggal_mulai" class="mb-0">Mulai:</label>
+                <div class="form-group d-flex flex-column flex-md-row mr-3 mb-2 mb-md-0">
                     <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control form-control-sm">
                 </div>
 
+                <div class="mt-2 mt-md-0 me-3 ms-3">
+                    <i class="bi bi-dash-lg"></i>
+                </div>
+    
                 <!-- Input date untuk tanggal selesai -->
-                <div class="form-group mr-2 mb-5 mb-md-0">
-                    <label for="tanggal_selesai" class="mb-0">Selesai:</label>
+                <div class="form-group d-flex flex-column flex-md-row mr-3 mb-2 mb-md-0">
                     <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control form-control-sm">
                 </div>
-                
-                <div class="mt-2 mt-md-0">
+    
+                <div class="mt-2 mt-md-0 ms-3">
                     <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
             </form>

@@ -52,31 +52,30 @@
 
     <div class="mb-5">
         @include("layouts.message")
-    
         <div class="mb-3">
-            
-            <form action="/admin/laporan/pendapatan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-end justify-content-end">
+            <form action="/admin/laporan/pendapatan/fiturPendapatan" method="get" class="d-flex flex-column flex-md-row align-items-center">
                 @csrf
-                <h5 class="d-block me-5">Tampilkan berdasarkan:</h5>
+                <h5 class="mb-2 mb-md-0 me-md-5">Tampilkan berdasarkan:</h5>
                 <!-- Input date untuk tanggal mulai -->
-                <div class="form-group d-flex flex-column mr-3 mb-2 mb-md-0">
-                    <label for="tanggal_mulai" class="mb-1">Mulai:</label>
+                <div class="form-group d-flex flex-column flex-md-row mr-3 mb-2 mb-md-0">
                     <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="form-control form-control-sm">
+                </div>
+
+                <div class="mt-2 mt-md-0 me-3 ms-3">
+                    <i class="bi bi-dash-lg"></i>
                 </div>
     
                 <!-- Input date untuk tanggal selesai -->
-                <div class="form-group d-flex flex-column mr-3 mb-2 mb-md-0">
-                    <label for="tanggal_selesai" class="mb-1">Selesai:</label>
+                <div class="form-group d-flex flex-column flex-md-row mr-3 mb-2 mb-md-0">
                     <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="form-control form-control-sm">
                 </div>
     
-                <div>
-                    <button type="submit" class="btn btn-primary mt-2 mt-md-0">Filter</button>
+                <div class="mt-2 mt-md-0 ms-3">
+                    <button type="submit" class="btn btn-primary">Filter</button>
                 </div>
             </form>
         </div>
     </div>
-    
 
     {{-- grafik --}}
     <div class="mt-5 mb-5">
