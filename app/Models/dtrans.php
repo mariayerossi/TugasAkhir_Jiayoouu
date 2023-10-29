@@ -37,4 +37,15 @@ class dtrans extends Model
     public function get_all_data_by_pemilik($id){
         return dtrans::where('deleted_at',"=",null)->where("fk_id_pemilik", "=", $id)->get();
     }
+
+    public function softDelete($data){
+        $dtrans = dtrans::find($data["id"]);
+        $dtrans->deleted_at = $data["tanggal"];
+        $dtrans->save();
+    }
+
+    public function deleteDtrans($data){
+        $dtrans = dtrans::find($data["id"]);
+        $dtrans->delete();
+    }
 }

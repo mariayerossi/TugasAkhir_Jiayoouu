@@ -69,7 +69,7 @@
     <div class="content">
         <p><b>Halo {{$nama_user}},</b></p>
         <p>{!! $isi !!}</p>
-        <a href="{{$url}}" class="btn" style="margin: 20px auto; display: block; text-align: center;">{{$button}}</a>
+        {{-- <a href="{{$url}}" class="btn" style="margin: 20px auto; display: block; text-align: center;">{{$button}}</a> --}}
     </div>
     <div class="footer">
         <p>Terima kasih telah menggunakan layanan kami. Jika Anda memiliki pertanyaan atau membutuhkan bantuan, silakan hubungi kami.</p>

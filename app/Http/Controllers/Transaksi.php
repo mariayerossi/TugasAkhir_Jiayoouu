@@ -965,8 +965,9 @@ class Transaksi extends Controller
         //pemotongan denda 5%
         $denda = 0.05;
         $total_denda = $trans->total_trans * $denda;
+        // dd((int)$total_denda);
 
-        $saldo += $trans->total_trans - $total_denda;
+        $saldo += $trans->total_trans - (int)$total_denda;
 
         //enkripsi kembali saldo
         $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
@@ -999,12 +1000,6 @@ class Transaksi extends Controller
         $temp = new pihakTempat();
         $temp->updateSaldo($dataSaldoTempat);
 
-        $data = [
-            "id" => $request->id_htrans,
-            "status" => "Dibatalkan"
-        ];
-        $trans = new htrans();
-        $trans->updateStatus($data);
 
         //kasih notif ke pihak tempat
         $namaTempat = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->nama_tempat;
@@ -1034,6 +1029,13 @@ class Transaksi extends Controller
         ];
         $e = new notifikasiEmail();
         $e->sendEmail($emailTempat, $dataNotif);
+
+        $data = [
+            "id" => $request->id_htrans,
+            "status" => "Dibatalkan"
+        ];
+        $trans = new htrans();
+        $trans->updateStatus($data);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Dibatalkan!']);
     }
@@ -1514,7 +1516,15 @@ class Transaksi extends Controller
         $dataHtrans = DB::table('htrans')->where("id_htrans","=",$dataDtrans->fk_id_htrans)->get()->first();
 
         if ($dataHtrans->status_trans == "Diterima") {
+            //kembalikan uang alat ke cust
             
+
+            //delete
+            $data = [
+                "id" => $request->id_dtrans
+            ];
+            $dt = new dtrans();
+            $dt->deleteDtrans($data);
         }
     }
 
@@ -1562,7 +1572,7 @@ class Transaksi extends Controller
         //enkripsi kembali saldo
         $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
 
-        //update db user
+        //update db tempat
         $dataSaldo = [
             "id" => Session::get("dataRole")->id_tempat,
             "saldo" => $enkrip
