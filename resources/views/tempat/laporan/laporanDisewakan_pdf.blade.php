@@ -10,6 +10,9 @@
 		table tr th{
 			font-size: 9pt;
 		}
+        h4 {
+            margin-top: 50px
+        }
 	</style>
 	<center>
 		<h2>Laporan Alat Olahraga yang Disewakan</h2>

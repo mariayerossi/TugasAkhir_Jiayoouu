@@ -10,6 +10,9 @@
 		table tr th{
 			font-size: 9pt;
 		}
+        h4 {
+            margin-top: 50px
+        }
 	</style>
 	<center>
 		<h2>Laporan Pendapatan</h2>
@@ -27,7 +30,7 @@
 		@endif
 	</center>
 
-	<h4><b>Total Pendapatan: Rp {{ number_format(($disewakan->sum('total_komisi_pemilik') - $disewakan->sum("pendapatan_website_alat")) + ($disewakan->sum('komisi_extend') - $disewakan->sum('pendapatan_extend')), 0, ',', '.') }}</b></h4>
+	<h4><b>Total Pendapatan: Rp {{ number_format(($data->sum('total_komisi_pemilik') - $data->sum("pendapatan_website_alat")) + ($data->sum('komisi_extend') - $data->sum('pendapatan_extend')), 0, ',', '.') }}</b></h4>
  
 	@if (!$data->isEmpty())
         {{-- Pertama-tama, kelompokkan data berdasarkan nama alat --}}

@@ -11,7 +11,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Favicons -->
-  <link rel="shortcut icon" href="/logo2.ico">
+  <link rel="shortcut icon" href="{{asset('/logo2.ico')}}">
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

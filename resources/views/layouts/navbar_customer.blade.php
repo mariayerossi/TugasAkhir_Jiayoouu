@@ -224,7 +224,7 @@ Sportiva
                     $saldo = decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
                 @endphp
                 <div class="profile-dropdown ms-3">
-                    <img src="{{ asset('../assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
+                    <img src="{{ asset('assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
                     <div class="dropdown-content">
                         <h6 class="m-3">{{Session::get("dataRole")->nama_user}}</h6>
                         <h6 class="m-3">
@@ -251,7 +251,7 @@ Sportiva
                 </a>
             </div>
             <div class="d-flex align-items-center ms-3">
-                <img src="{{ asset('../assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
+                <img src="{{ asset('assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
                 <h5 class="m-3">{{Session::get("dataRole")->nama_user}}</h5>
             </div>
             <h6 style="margin-left: 70px">

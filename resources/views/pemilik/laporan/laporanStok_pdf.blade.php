@@ -10,6 +10,9 @@
 		table tr th{
 			font-size: 9pt;
 		}
+        h4 {
+            margin-top: 50px
+        }
 	</style>
 	<center>
 		<h2>Laporan Stok Alat Olahraga</h2>
@@ -33,7 +36,7 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nama_alat}}</td>
-                        <td>{{$item->kategori_alat}}</td>
+                        <td>{{$item->nama_kategori}}</td>
                         <td>{{$item->totalRequest}} Kali</td>
                         @if ($item->status_alat == "Aktif")
                             <td style="color: green">{{$item->status_alat}}</td>

@@ -41,7 +41,7 @@ Sportiva
 
   <!-- ======= Hero Section ======= -->
   <section id="hero" class="hero">
-    <img src="assets/img/home2-bg.jpg" alt="" data-aos="fade-in">
+    <img src="{{asset('assets/img/home2-bg.jpg')}}" alt="" data-aos="fade-in">
     <div class="container position-relative">
       <div class="row gy-5" data-aos="fade-in">
         <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center text-center text-lg-start">
@@ -70,7 +70,7 @@ Sportiva
         <div class="row gy-4">
           <div class="col-lg-6">
             <h3>Keuntungan menggunakan Sportiva</h3>
-            <img src="assets/img/about.jpg" class="img-fluid rounded-4 mb-4" alt="">
+            <img src="{{asset('assets/img/about.jpg')}}" class="img-fluid rounded-4 mb-4" alt="">
             <p>Kami berkomitmen untuk memberikan pengalaman terbaik kepada pelanggan kami. Dengan menggunakan platform Sportiva, Anda dapat dengan mudah menemukan, memesan, dan membayar alat olahraga dan lapangan sesuai dengan preferensi Anda.</p>
             <p>Nikmati kemudahan peminjaman alat olahraga dan lapangan olahraga dengan Sportiva. Mari bergabung bersama kami dalam menjalani gaya hidup sehat dan aktif. Bersiaplah untuk mengalami kepuasan dan kegembiraan dalam setiap momen olahraga Anda.</p>
           </div>
@@ -99,7 +99,7 @@ Sportiva
         <div class="row gy-4 align-items-center">
 
           <div class="col-lg-6">
-            <img src="assets/img/home1-img.svg" alt="" class="img-fluid">
+            <img src="{{asset('assets/img/home1-img.svg')}}" alt="" class="img-fluid">
           </div>
 
           <div class="col-lg-6">
@@ -267,7 +267,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/futsal1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/futsal1.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/futsal1.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/futsal1.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Lapangan Sepak Bola</a></h4>
                   <p>Lokasi Persewaan : Jakarta Selatan<br>Luas Lapangan : 30m x 15m</p>
@@ -277,7 +277,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-alat">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/badminton1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/badminton1.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/badminton1.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/badminton1.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Raket Badminton</a></h4>
                   <p>Lokasi Persewaan : Semarang<br>Berat Alat : 85g</p>
@@ -287,7 +287,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/basketball1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/basketball1.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/basketball1.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/basketball1.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Lapangan Basket</a></h4>
                   <p>Lokasi Persewaan : Suarabaya<br>Luas Lapangan : 29m x 15m</p>
@@ -297,7 +297,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/tenis1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/tenis1.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/tenis1.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/tenis1.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Lapangan Tenis</a></h4>
                   <p>Lokasi Persewaan : Jakarta Utara<br>Luas Lapangan : 23m x 10m</p>
@@ -307,7 +307,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-alat">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/basketball2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/basketball2.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/basketball2.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/basketball2.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Bola Basket Molten</a></h4>
                   <p>Lokasi Persewaan : Bandung<br>Berat Alat : 600g</p>
@@ -317,7 +317,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/badminton2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/badminton2.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/badminton2.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/badminton2.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Lapangan Badminton</a></h4>
                   <p>Lokasi Persewaan : Bali<br>Luas Lapangan : 13m x 6m</p>
@@ -327,7 +327,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/voli1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/voli1.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/voli1.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/voli1.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Lapangan Voli</a></h4>
                   <p>Lokasi Persewaan : Surabaya<br>Luas Lapangan : 18m x 9m</p>
@@ -337,7 +337,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-alat">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/voli2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/voli2.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/voli2.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/voli2.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Bola Voli</a></h4>
                   <p>Lokasi Persewaan : Solo<br>Berat Alat : 260g</p>
@@ -347,7 +347,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/basketball3.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/basketball3.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/basketball3.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/basketball3.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Lapangan Basket</a></h4>
                   <p>Lokasi Persewaan : Jakarta Barat<br>Luas Lapangan : 28m x 15m</p>
@@ -357,7 +357,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/lari1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/lari1.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/lari1.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/lari1.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Lapangan Olahraga Lari</a></h4>
                   <p>Lokasi Persewaan : Jakarta Pusat<br>Luas Lapangan : 200m x 10m</p>
@@ -367,7 +367,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/futsal2.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/futsal2.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/futsal2.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/futsal2.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Lapangan Sepak Bola</a></h4>
                   <p>Lokasi Persewaan : Sidoarjo<br>Luas Lapangan : 30m x 15m</p>
@@ -377,7 +377,7 @@ Sportiva
 
             <div class="col-xl-4 col-md-6 portfolio-item filter-lapangan">
               <div class="portfolio-wrap">
-                <a href="assets/img/produk/golf1.jpg" data-gallery="portfolio-gallery-app" class="glightbox"><img src="assets/img/produk/golf1.jpg" class="img-fluid" alt=""></a>
+                <a href="{{asset('assets/img/produk/golf1.jpg')}}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{asset('assets/img/produk/golf1.jpg')}}" class="img-fluid" alt=""></a>
                 <div class="portfolio-info">
                   <h4><a href="portfolio-details.html" title="More Details">Lapangan Golf</a></h4>
                   <p>Lokasi Persewaan : Semarang<br>Luas Lapangan : 2.500m x 100m</p>
@@ -462,16 +462,16 @@ Sportiva
   <div id="preloader"></div>
 
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{asset('assets/vendor/aos/aos.js')}}"></script>
+  <script src="{{asset('assets/vendor/glightbox/js/glightbox.min.js')}}"></script>
+  <script src="{{asset('assets/vendor/purecounter/purecounter_vanilla.js')}}"></script>
+  <script src="{{asset('assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
+  <script src="{{asset('assets/vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
+  <script src="{{asset('assets/vendor/php-email-form/validate.js')}}"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="{{asset('assets/js/main.js')}}"></script>
 
   <script>
     //untuk dropdown navbar di mobile :)

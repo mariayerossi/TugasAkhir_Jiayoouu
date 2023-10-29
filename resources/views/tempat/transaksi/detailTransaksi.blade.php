@@ -441,7 +441,7 @@
                 <form action="/tempat/transaksi/cetakNota" method="get">
                     @csrf
                     <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
-                    <button type="submit" class="btn btn-primary">Cetak Nota</button>
+                    <button type="submit" class="btn btn-primary">Konfirmasi Selesai dan Cetak Nota</button>
                 </form>
                 {{-- klo cetak nota diprint, maka status htrans berubah selesai --}}
             </div>
