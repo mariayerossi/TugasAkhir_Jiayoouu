@@ -150,7 +150,12 @@ class reminder extends Command
                     $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
                     $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
-                    $transaksi = DB::table('dtrans')->where("fk_id_alat","=",$value->req_id_alat)->get();
+                    $transaksi = DB::table('dtrans')
+                                ->select("dtrans.total_komisi_tempat")
+                                ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                ->where("htrans.status_trans","=","Selesai")
+                                ->get();
                     $total = 0;
                     if (!$transaksi->isEmpty()) {
                         foreach ($transaksi as $key => $value) {
@@ -281,17 +286,22 @@ class reminder extends Command
                 }
                 else if ($value->status_penawaran == "Disewakan" && $value->req_tanggal_selesai." 12:00:00" == $sekarang) {
                     //MASA SEWA ALAT SUDAH SELESAI
-                    // $data3 = [
-                    //     "id" => $value->id_penawaran,
-                    //     "status" => "Selesai"
-                    // ];
-                    // $pen->updateStatus($data3);
+                    $data3 = [
+                        "id" => $value->id_penawaran,
+                        "status" => "Selesai"
+                    ];
+                    $pen->updateStatus($data3);
 
                     //tambahkan seluruh komisi tempat ke saldo
                     $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
                     $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
-                    $transaksi = DB::table('dtrans')->where("fk_id_alat","=",$value->req_id_alat)->get();
+                    $transaksi = DB::table('dtrans')
+                                ->select("dtrans.total_komisi_tempat")
+                                ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                ->where("htrans.status_trans","=","Selesai")
+                                ->get();
                     $total = 0;
                     if (!$transaksi->isEmpty()) {
                         foreach ($transaksi as $key => $value2) {

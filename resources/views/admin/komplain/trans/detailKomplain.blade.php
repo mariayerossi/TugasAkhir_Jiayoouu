@@ -183,7 +183,7 @@
         @endphp
         <form action="/admin/komplain/trans/terimaKomplain" method="POST">
             @csrf
-            <div class="row mt-5">
+            {{-- <div class="row mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                     <input type="checkbox" name="pengembalianCheckbox3" id="pengembalianCheckbox3" onchange="toggleInput3()">
                 </div>
@@ -217,7 +217,7 @@
                     </div>
                     <input type="hidden" name="akun_dikembalikan" value="{{$tempat->id_tempat}}-tempat">
                 @endif
-            </div>
+            </div> --}}
             <div class="row mb-5 mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                     <input type="checkbox" name="pengembalianCheckbox" id="pengembalianCheckbox" onchange="toggleInput()">
@@ -281,7 +281,7 @@
         @if ($komplain->first()->penanganan_komplain != null)
             <div class="row mb-5 mt-4">
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <h6>Penanganan: {{$komplain->first()->penanganan_komplain}} dan Pembatalan Transaksi oleh admin</h6>
+                    <h6>Penanganan: {{$komplain->first()->penanganan_komplain}}</h6>
                 </div>
                 
                 <div class="col-md-6 col-sm-12 mb-3">

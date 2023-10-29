@@ -232,7 +232,27 @@ class KomplainTrans extends Controller
             }
         }
 
-        $penanganan .= "Pembatal";
+        $penanganan .= "Pembatalan Transaksi oleh Admin";
+
+        //pengembalian dana ke cust
+        $htrans = DB::table('htrans')->where("id_htrans","=",$request->id_htrans)->get()->first();
+        $komplain = DB::table('komplain_trans')->where("id_komplain_trans","=",$request->id_komplain)->get()->first();
+        $user = DB::table('user')->where("id_user","=",$komplain->fk_id_user)->get()->first();
+
+        $saldo = (int)$this->decodePrice($user->saldo_user, "mysecretkey");
+        $saldo += (int)$htrans->total_trans;
+        // dd($saldo);
+
+        //enkripsi kembali saldo
+        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+        //update db user
+        $dataSaldo = [
+            "id" => $user->id_user,
+            "saldo" => $enkrip
+        ];
+        $cust = new customer();
+        $cust->updateSaldo($dataSaldo);
 
         //status transaksi menjadi dibatalkan
         $data5 = [
@@ -259,9 +279,6 @@ class KomplainTrans extends Controller
         $penang->updatePenanganan($data7);
 
         //notif ke cust
-        $komplain = DB::table('komplain_trans')->where("id_komplain_trans","=",$request->id_komplain)->get()->first();
-        $user = DB::table('user')->where("id_user","=",$komplain->fk_id_user)->get()->first();
-
         $tanggalAwal = $komplain->waktu_komplain;
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
@@ -277,6 +294,32 @@ class KomplainTrans extends Controller
         ];
         $e = new notifikasiEmail();
         $e->sendEmail($user->email_user,$dataNotif);
+
+        //notif ke tempat
+        $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$htrans->fk_id_tempat)->get()->first();
+        $lap = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->fk_id_lapangan)->get()->first();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$htrans->id_htrans)->get();
+
+        $dtransStr = "";
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+            }
+        }
+
+        $dataNotif2 = [
+            "subject" => "⚠️Komplain dari Customer Telah Diterima Admin!⚠️",
+            "judul" => "Komplain Transaksi dari Customer Telah Diterima Admin!",
+            "nama_user" => $tempat->nama_tempat,
+            "isi" => "Komplain Transaksi dari:<br><br>
+                    <b>Kode Transaksi: ".$htrans->kode_trans."</b><br>
+                    <b>Lapangan Olahraga: ".$lap->nama_lapangan."</b><br>
+                    ".$dtransStr."<br><br>
+                    Komplain ini telah disetujui Admin dan dana transaksi telah dikembalikan sepenuhnya kepada customer!"
+        ];
+        $e2 = new notifikasiEmail();
+        $e2->sendEmail($tempat->email_tempat,$dataNotif2);
 
         return redirect()->back()->with("success", "Berhasil menangani komplain!");
     }
