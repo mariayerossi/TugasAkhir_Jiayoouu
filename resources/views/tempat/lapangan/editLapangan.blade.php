@@ -192,6 +192,7 @@
         <div id="inputContainer" class="mb-5 mt-3">
             @if (!$slot->isEmpty())
                 @foreach ($slot as $item)
+
                     <input type="hidden" name="id_slot{{$loop->iteration}}" value="{{$item->id_slot}}">
                     <div class="row mb-3">
                         <div class="col">
@@ -360,7 +361,7 @@
         const colHari = document.createElement('div');
         colHari.className = 'col';
         colHari.innerHTML = `
-        <input type="hidden" name="id_slot${counter}" value="${counter}">
+        <input type="hidden" name="id_slot${counter}" value="null">
             <select id="hari${counter}" name="hari${counter}" class="form-select">
                 <option value="" disabled selected>Masukkan Hari</option>
                 <option value="Senin">Senin</option>
