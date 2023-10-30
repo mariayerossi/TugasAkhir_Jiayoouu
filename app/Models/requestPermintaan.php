@@ -28,6 +28,8 @@ class requestPermintaan extends Model
         $req->tanggal_minta = $data["tgl_minta"];
         $req->status_permintaan = $data["status"];
         $req->save();
+
+        return $req->id_permintaan;
     }
 
     public function get_all_data_by_id($id){

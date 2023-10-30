@@ -63,9 +63,11 @@ class Negosiasi extends Controller
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();
 
             $dataNotif = [
-                "subject" => "Negosiasi Permintaan Baru",
+                "subject" => "✨Negosiasi Permintaan Baru!✨",
                 "judul" => "Negosiasi Permintaan Baru Dari ".$user,
                 "nama_user" => $tempat->nama_tempat,
+                "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$request->permintaan,
+                "button" => "Lihat Negosiasi",
                 "isi" => "Anda menerima notifikasi ini karena ada sebuah negosiasi baru yang sangat menarik di Sportiva. Berikut detailnya:<br><br>
                         <b>Permintaan Alat: ".$alat->nama_alat."</b><br>
                         <b>Pengirim Negosiasi: ".$user."</b><br>
@@ -88,9 +90,11 @@ class Negosiasi extends Controller
             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$permintaan->fk_id_pemilik)->get()->first();
 
             $dataNotif = [
-                "subject" => "Negosiasi Permintaan Baru",
+                "subject" => "✨Negosiasi Permintaan Baru!✨",
                 "judul" => "Negosiasi Permintaan Baru Dari ".$user,
                 "nama_user" => $pemilik->nama_pemilik,
+                "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$request->permintaan,
+                "button" => "Lihat Negosiasi",
                 "isi" => "Anda menerima notifikasi ini karena ada sebuah negosiasi baru yang sangat menarik di Sportiva. Berikut detailnya:<br><br>
                         <b>Permintaan Alat: ".$alat->nama_alat."</b><br>
                         <b>Pengirim Negosiasi: ".$user."</b><br>
@@ -159,9 +163,11 @@ class Negosiasi extends Controller
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->fk_id_tempat)->get()->first();
 
             $dataNotif = [
-                "subject" => "Negosiasi Penawaran Baru",
+                "subject" => "✨Negosiasi Penawaran Baru!✨",
                 "judul" => "Negosiasi Penawaran Baru Dari ".$user,
                 "nama_user" => $tempat->nama_tempat,
+                "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$request->penawaran,
+                "button" => "Lihat Negosiasi",
                 "isi" => "Anda menerima notifikasi ini karena ada sebuah negosiasi baru yang sangat menarik di Sportiva. Berikut detailnya:<br><br>
                         <b>Penawaran Alat: ".$alat->nama_alat."</b><br>
                         <b>Pengirim Negosiasi: ".$user."</b><br>
@@ -184,9 +190,11 @@ class Negosiasi extends Controller
             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
 
             $dataNotif = [
-                "subject" => "Negosiasi Penawaran Baru",
+                "subject" => "✨Negosiasi Penawaran Baru!✨",
                 "judul" => "Negosiasi Penawaran Baru Dari ".$user,
                 "nama_user" => $pemilik->nama_pemilik,
+                "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$request->penawaran,
+                "button" => "Lihat Negosiasi",
                 "isi" => "Anda menerima notifikasi ini karena ada sebuah negosiasi baru yang sangat menarik di Sportiva. Berikut detailnya:<br><br>
                         <b>Penawaran Alat: ".$alat->nama_alat."</b><br>
                         <b>Pengirim Negosiasi: ".$user."</b><br>

@@ -832,6 +832,7 @@ Route::prefix("/customer")->group(function(){
     Route::get("/hapusKeranjang/{urutan}", [Transaksi::class, "hapusKeranjang"]);
 
     Route::get("/daftarRiwayat", [Transaksi::class, "daftarRiwayat"])->middleware([CekCustomer::class]);
+    Route::get("/daftarKomplain", [KomplainTrans::class, "daftarKomplain"])->middleware([CekCustomer::class]);
 
     Route::prefix("/saldo")->group(function(){
         Route::post("/topup", [Saldo::class, "topup"]);

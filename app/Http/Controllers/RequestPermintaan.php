@@ -65,7 +65,7 @@ class RequestPermintaan extends Controller
                 "status" => "Menunggu"
             ];
             $per = new ModelsRequestPermintaan();
-            $per->insertPermintaan($data);
+            $id = $per->insertPermintaan($data);
 
             //notif email ke pemilik
             $email_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->email_pemilik;
@@ -74,18 +74,18 @@ class RequestPermintaan extends Controller
             // $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->komisi_alat;
 
             $dataNotif = [
-                "subject" => "Permintaan Alat Olahraga Baru",
+                "subject" => "✨Permintaan Alat Olahraga Baru!✨",
                 "judul" => "Permintaan Alat Olahraga Baru",
                 "nama_user" => $nama_pemilik,
-                "url" => "https://sportiva.my.id/pemilik/permintaan/daftarPermintaan",
-                "button" => "Terima Permintaan",
+                "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$id,
+                "button" => "Lihat dan Terima Permintaan",
                 "isi" => "Anda memiliki satu permintaan alat olahraga baru:<br><br>
                         <b>Nama Alat Olahraga: ".$nama_alat."</b><br>
                         <b>Komisi Pemilik Alat: Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
                         Silahkan Konfirmasi Permintaan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail("maria_y20@mhs.istts.ac.id",$dataNotif);
+            $e->sendEmail($email_pemilik, $dataNotif);
     
             return redirect()->back()->with("success", "Berhasil Mengirim Request!");
         }
@@ -96,6 +96,25 @@ class RequestPermintaan extends Controller
         $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
 
         if ($status == "Menunggu") {
+            $per = $req->get_all_data_by_id($request->id_permintaan)->first();
+
+            $temp = DB::table('pihak_tempat')->where("id_tempat","=",$per->fk_id_tempat)->get()->first();
+            $alat = DB::table('alat_olahraga')->where("id_alat","=",$per->req_id_alat)->get()->first();
+
+            $dataNotif = [
+                "subject" => "🔔Permintaan Alat Olahraga Telah Dibatalkan Pemilik Alat!🔔",
+                "judul" => "Permintaan Alat Olahraga Telah Dibatalkan Pemilik Alat",
+                "nama_user" => $temp->nama_tempat,
+                "url" => "https://sportiva.my.id/tempat/cariAlat",
+                "button" => "Lihat dan Temukan Alat Olahraga Menarik Lainnya",
+                "isi" => "Permintaan alat olahraga:<br><br>
+                        <b>Nama Alat Olahraga  : ".$alat->nama_alat."</b><br>
+                        <b>Komisi Pemilik Alat : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        Telah dibatalkan! Cari dan temukan alat olahraga lain untuk disewakan!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($temp->email_tempat,$dataNotif);
+
             $data = [
                 "id" => $request->id_permintaan,
                 "status" => "Dibatalkan"
@@ -179,9 +198,11 @@ class RequestPermintaan extends Controller
 
                 //notif email ke pihak tempat
                 $dataNotif = [
-                    "subject" => "Permintaan Alat Olahraga Diterima",
+                    "subject" => "🎉Permintaan Alat Olahraga Diterima!🎉",
                     "judul" => "Permintaan Alat Olahraga Diterima",
                     "nama_user" => $nama_tempat,
+                    "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$request->id_permintaan,
+                    "button" => "Lihat Detail Permintaan",
                     "isi" => "Yeay! Anda memiliki satu permintaan alat olahraga yang telah diterima:<br><br>
                             <b>Nama Alat Olahraga: ".$nama_alat."</b><br>
                             <b>Komisi Pemilik Alat: Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
@@ -192,9 +213,11 @@ class RequestPermintaan extends Controller
 
                 //notif email ke pemilik
                 $dataNotif2 = [
-                    "subject" => "Berhasil Menerima Permintaan. Segera Antarkan Alat Olahragamu!",
+                    "subject" => "🎉Berhasil Menerima Permintaan. Segera Antarkan Alat Olahragamu!🎉",
                     "judul" => "Permintaan Alat Olahraga Berhasil Anda Diterima",
                     "nama_user" => $nama_pemilik,
+                    "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$request->id_permintaan,
+                    "button" => "Lihat Detail Permintaan",
                     "isi" => "Yeay! Anda berhasil menerima permintaan alat olahraga:<br><br>
                             <b>Nama Alat Olahraga: ".$nama_alat."</b><br>
                             <b>Diminta oleh: ".$nama_tempat."</b><br><br>
@@ -237,9 +260,11 @@ class RequestPermintaan extends Controller
 
             //notif email ke pihak tempat
             $dataNotif = [
-                "subject" => "Permintaan Alat Olahraga Diterima",
-                "judul" => "Permintaan Alat Olahraga Diterima",
+                "subject" => "😔Permintaan Alat Olahraga Ditolak!😔",
+                "judul" => "Permintaan Alat Olahraga Ditolak",
                 "nama_user" => $nama_tempat,
+                "url" => "https://sportiva.my.id/tempat/cariAlat",
+                "button" => "Lihat dan Temukan Alat Olahraga Menarik Lainnya",
                 "isi" => "Sayang sekali! Anda memiliki satu permintaan alat olahraga yang ditolak:<br><br>
                         <b>Nama Alat Olahraga: ".$nama_alat."</b><br>
                         <b>Komisi Pemilik Alat: Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
@@ -308,9 +333,11 @@ class RequestPermintaan extends Controller
 
             //notif tempat
             $dataNotif = [
-                "subject" => "Permintaan Alat Olahraga Telah Dikonfirmasi",
+                "subject" => "🎉Permintaan Alat Olahraga Telah Dikonfirmasi!🎉",
                 "judul" => "Permintaan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $tempat->nama_tempat,
+                "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$request->id,
+                "button" => "Lihat Detail Permintaan",
                 "isi" => "Selamat! Permintaan alat olahraga telah mendapatkan konfirmasi:<br><br>
                         <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga: Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
@@ -321,9 +348,11 @@ class RequestPermintaan extends Controller
 
             //notif pemilik
             $dataNotif2 = [
-                "subject" => "Permintaan Alat Olahraga Telah Dikonfirmasi",
+                "subject" => "🎉Permintaan Alat Olahraga Telah Dikonfirmasi!🎉",
                 "judul" => "Permintaan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $pemilik->nama_pemilik,
+                "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$request->id,
+                "button" => "Lihat Detail Permintaan",
                 "isi" => "Selamat! Permintaan alat olahraga Anda telah mendapatkan konfirmasi:<br><br>
                         <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga: Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
@@ -361,9 +390,11 @@ class RequestPermintaan extends Controller
 
             //notif tempat
             $dataNotif = [
-                "subject" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
+                "subject" => "🎉Pengambilan Alat Olahraga Telah Dikonfirmasi!🎉",
                 "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $tempat->nama_tempat,
+                "url" => "https://sportiva.my.id/tempat/cariAlat",
+                "button" => "Lihat dan Temukan Alat Olahraga Menarik Lainnya",
                 "isi" => "Alat olahraga telah dikonfirmasi pengambilannya:<br><br>
                         <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga: Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
@@ -374,9 +405,11 @@ class RequestPermintaan extends Controller
 
             //notif pemilik
             $dataNotif2 = [
-                "subject" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
+                "subject" => "🎉Pengambilan Alat Olahraga Telah Dikonfirmasi!🎉",
                 "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $pemilik->nama_pemilik,
+                "url" => "https://sportiva.my.id/pemilik/cariLapangan",
+                "button" => "Lihat dan Temukan Lapangan Olahraga Menarik Lainnya",
                 "isi" => "Alat olahraga anda yang telah dikonfirmasi pengambilannya:<br><br>
                         <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga: Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>

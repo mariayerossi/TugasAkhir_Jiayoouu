@@ -124,6 +124,8 @@ class Saldo extends Controller
             "subject" => "🎉Top Up Sebesar Rp ".number_format($request->jumlah, 0, ',', '.')." Berhasil!🎉",
             "judul" => "Yeay! Top Up Sebesar Rp ".number_format($request->jumlah, 0, ',', '.')." Berhasil!",
             "nama_user" => Session::get("dataRole")->nama_user,
+            "url" => "https://sportiva.my.id/customer/beranda",
+            "button" => "Cari dan Temukan Lapangan Olahraga yang Menarik",
             "isi" => "Top up saldo dengan detail:<br><br>
                     <b>Nominal Top up: Rp ".number_format($request->jumlah, 0, ',', '.')."</b><br>
                     <b>Tanggal Top up: ".$tanggalBaru."</b><br><br>

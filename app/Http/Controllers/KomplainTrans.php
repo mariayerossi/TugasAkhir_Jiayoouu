@@ -6,6 +6,7 @@ use App\Models\alatOlahraga;
 use App\Models\customer;
 use App\Models\filesKomplainTrans;
 use App\Models\htrans;
+use App\Models\kategori;
 use App\Models\komplainTrans as ModelsKomplainTrans;
 use App\Models\lapanganOlahraga;
 use App\Models\pemilikAlat;
@@ -72,6 +73,8 @@ class KomplainTrans extends Controller
             "subject" => "❗❗ Komplain Transaksi Baru ❗❗",
             "judul" => "Komplain Transaksi Baru dari ".Session::get("dataRole")->nama_user,
             "nama_user" => "Admin",
+            "url" => "https://sportiva.my.id/admin/komplain/trans/detailKomplain/".$id,
+            "button" => "Lihat Detail Komplain",
             "isi" => "Anda memiliki satu komplain transaksi baru:<br><br>
                     <b>Diajukan oleh: ".Session::get("dataRole")->nama_user."</b><br>
                     <b>Diajukan pada: ".$tanggalBaru."</b><br>
@@ -287,6 +290,8 @@ class KomplainTrans extends Controller
             "subject" => "🎉Komplain Transaksi Anda Telah Diterima!🎉",
             "judul" => "Komplain Transaksi Anda Telah Diterima!",
             "nama_user" => $user->nama_user,
+            "url" => "https://sportiva.my.id/customer/daftarKomplain",
+            "button" => "Lihat Komplain",
             "isi" => "Yeay! Komplain Transaksi yang Anda ajukan telah diterima Admin:<br><br>
                     <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
                     <b>Diajukan pada: ".$tanggalBaru."</b><br><br>
@@ -312,6 +317,8 @@ class KomplainTrans extends Controller
             "subject" => "⚠️Komplain dari Customer Telah Diterima Admin!⚠️",
             "judul" => "Komplain Transaksi dari Customer Telah Diterima Admin!",
             "nama_user" => $tempat->nama_tempat,
+            "url" => "https://sportiva.my.id/tempat/transaksi/detailTransaksi/".$request->id_htrans,
+            "button" => "Lihat Transaksi",
             "isi" => "Komplain Transaksi dari:<br><br>
                     <b>Kode Transaksi: ".$htrans->kode_trans."</b><br>
                     <b>Lapangan Olahraga: ".$lap->nama_lapangan."</b><br>
@@ -351,6 +358,8 @@ class KomplainTrans extends Controller
             "subject" => "😔Komplain Transaksi Anda Telah Ditolak!😔",
             "judul" => "Komplain Transaksi Anda Telah Ditolak!",
             "nama_user" => $user->nama_user,
+            "url" => "https://sportiva.my.id/customer/daftarKomplain",
+            "button" => "Lihat Komplain",
             "isi" => "Maaf! Komplain Transaksi yang Anda ajukan belum bisa kami terima.<br><br>
                     <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
                     <b>Diajukan pada: ".$tanggalBaru."</b><br><br>
@@ -361,5 +370,25 @@ class KomplainTrans extends Controller
         $e->sendEmail($user->email_user,$dataNotif);
 
         return redirect()->back()->with("success", "Berhasil menolak komplain!");
+    }
+
+    public function daftarKomplain() {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        
+        $komplain = DB::table('komplain_trans')
+                    ->select("komplain_trans.id_komplain_trans","htrans.kode_trans","files_komplain_trans.nama_file_komplain","komplain_trans.jenis_komplain","komplain_trans.keterangan_komplain","komplain_trans.waktu_komplain","komplain_trans.status_komplain","komplain_trans.penanganan_komplain","komplain_trans.alasan_komplain")
+                    ->join("htrans","komplain_trans.fk_id_htrans","=","htrans.id_htrans")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_komplain_trans", "nama_file_komplain")
+                            ->from('files_komplain_trans')
+                            ->whereRaw('id_file_komplain_trans = (select min(id_file_komplain_trans) from files_komplain_trans as f2 where f2.fk_id_komplain_trans = files_komplain_trans.fk_id_komplain_trans)');
+                    }, 'files_komplain_trans', 'komplain_trans.id_komplain_trans', '=', 'files_komplain_trans.fk_id_komplain_trans')
+                    ->where("komplain_trans.fk_id_user","=",Session::get("dataRole")->id_user)
+                    ->orderBy("komplain_trans.waktu_komplain","desc")
+                    ->get();
+        
+        $param["komplain"] = $komplain;
+        return view("customer.daftarKomplain")->with($param);
     }
 }
