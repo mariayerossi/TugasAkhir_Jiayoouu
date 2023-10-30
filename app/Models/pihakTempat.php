@@ -32,6 +32,7 @@ class pihakTempat extends Model
         $tempat->npwp_tempat = $data["npwp"];
         $tempat->password_tempat = $data["password"];
         $tempat->saldo_tempat = $data["saldo"];
+        $tempat->email_verified_at = $data["veri"];
         $tempat->save();
     }
 

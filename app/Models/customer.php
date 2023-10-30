@@ -25,6 +25,8 @@ class customer extends Model
         $user->saldo_user = $data["saldo"];
         $user->email_verified_at = null;
         $user->save();
+
+        return $user->id_user;
     }
 
     public function cek_email_user($isi){

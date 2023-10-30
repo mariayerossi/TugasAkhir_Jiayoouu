@@ -70,7 +70,9 @@ Route::view("/registerTempat", "tempat.registerTempat")->middleware([Guest::clas
 Route::view("/registerPemilik", "pemilik.registerPemilik")->middleware([Guest::class]);
 
 //verifikasi
-
+Route::get("/verifikasiUser/{id}", [LoginRegister::class, "verifikasiUser"]);
+Route::get("/verifikasiPemilik/{id}", [LoginRegister::class, "verifikasiPemilik"]);
+Route::get("/verifikasiTempat/{id}", [LoginRegister::class, "verifikasiTempat"]);
 
 // -------------------------------
 // PROSES LOGIN REGISTER

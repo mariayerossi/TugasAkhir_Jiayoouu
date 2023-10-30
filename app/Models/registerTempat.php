@@ -27,16 +27,30 @@ class registerTempat extends Model
         $reg->npwp_tempat_reg = $data["npwp"];
         $reg->password_tempat_reg = $data["password"];
         $reg->saldo_tempat_reg = $data["saldo"];
+        $reg->email_verified_at = null;
         $reg->save();
+
+        return $reg->id_register;
     }
 
     public function get_all_data(){
-        return registerTempat::where('deleted_at',"=",null)->get();
+        return registerTempat::where('deleted_at',"=",null)->where("email_verified_at","!=",null)->get();
     }
 
     public function deleteRegister($data)
     {
         $reg = registerTempat::find($data["id"]);
         $reg->delete();
+    }
+
+    public function cek_email_tempat($isi)
+    {
+        return registerTempat::where('deleted_at',"=",null)->where('email_tempat_reg',"=", $isi)->get();
+    }
+
+    public function verifikasiEmail($data){
+        $reg = registerTempat::find($data["id"]);
+        $reg->email_verified_at = $data["tanggal"];
+        $reg->save();
     }
 }

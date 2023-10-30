@@ -29,7 +29,10 @@ class pemilikAlat extends Model
         $pemilik->ktp_pemilik = $data["ktp"];
         $pemilik->password_pemilik = $data["password"];
         $pemilik->saldo_pemilik = $data["saldo"];
+        $pemilik->email_verified_at = null;
         $pemilik->save();
+
+        return $pemilik->id_pemilik;
     }
 
     public function get_all_data(){
@@ -45,6 +48,12 @@ class pemilikAlat extends Model
     public function updateSaldo($data){
         $pemi = pemilikAlat::find($data["id"]);
         $pemi->saldo_pemilik = $data["saldo"];
+        $pemi->save();
+    }
+
+    public function verifikasiEmail($data){
+        $pemi = pemilikAlat::find($data["id"]);
+        $pemi->email_verified_at = $data["tanggal"];
         $pemi->save();
     }
 }
