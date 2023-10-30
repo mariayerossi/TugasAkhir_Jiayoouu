@@ -419,7 +419,7 @@ Sportiva
                 <i class="icon bi bi-envelope flex-shrink-0"></i>
                 <div>
                   <h3>Email</h3>
-                  <p>sportiva.id@gmail.com</p>
+                  <p>booking@sportiva.my.id</p>
                 </div>
               </div>
             </div><!-- End Info Item -->
