@@ -1286,6 +1286,28 @@ class Laporan extends Controller
         }
         $param["monthlyIncome"] = $monthlyIncomeData;
 
+        // Inisialisasi pendapatan tahunan untuk 5 tahun terakhir
+        $currentYear = date('Y');
+        $yearlyIncome = [
+            $currentYear - 4 => 0,
+            $currentYear - 3 => 0,
+            $currentYear - 2 => 0,
+            $currentYear - 1 => 0,
+            $currentYear => 0
+        ];
+
+        // Menghitung pendapatan tahunan
+        foreach ($coba as $data) {
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if (isset($yearlyIncome[$year])) {
+                $yearlyIncome[$year] += ($data->pendapatan_lapangan + $data->pendapatan_alat) + ($data->lapangan_ext + $data->alat_ext);
+            }
+        }
+
+        // Mengkonversi $yearlyIncome ke array biasa
+        $yearlyIncomeData = array_values($yearlyIncome);
+        $param["yearlyIncome"] = $yearlyIncomeData;
+
         return view("admin.beranda")->with($param);
     }
 }
