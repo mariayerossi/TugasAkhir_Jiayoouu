@@ -38,7 +38,7 @@ class customer extends Model
     }
 
     public function get_all_data(){
-        return customer::where('deleted_at',"=",null)->get();
+        return customer::where('deleted_at',"=",null)->where("email_verified_at","!=",null)->get();
     }
 
     public function count_all_data_admin(){

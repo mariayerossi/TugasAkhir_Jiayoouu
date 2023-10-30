@@ -37,7 +37,7 @@ class pihakTempat extends Model
     }
 
     public function get_all_data(){
-        return pihakTempat::where('deleted_at',"=",null)->get();
+        return pihakTempat::where('deleted_at',"=",null)->where("email_verified_at","!=",null)->get();
     }
 
     public function get_all_data_by_id($id){
