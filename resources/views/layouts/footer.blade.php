@@ -37,7 +37,7 @@
             Jawa Timur<br>
             Indonesia <br><br>
             <strong>Telepon:</strong> +62 8237 5976<br>
-            <strong>Email:</strong> sportiva.id@gmail.com<br>
+            <strong>Email:</strong> booking@sportiva.my.id<br>
           </p>
 
         </div>
