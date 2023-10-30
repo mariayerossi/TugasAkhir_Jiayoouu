@@ -17,14 +17,14 @@
         height: 100%;
     }
     .chart-container {
-        width: 70%;   /* Atur lebar sesuai keinginan */
-        height: 400px; /* Atur tinggi sesuai keinginan */
+        width: 100%;   /* Atur lebar sesuai keinginan */
+        height: 300px; /* Atur tinggi sesuai keinginan */
         margin: 0 auto; /* opsional: untuk mengatur grafik agar berada di tengah */
     }
     @media (max-width: 768px) {  /* angka 768px adalah titik putus umum untuk tablet, Anda bisa menyesuaikannya */
         .chart-container {
             width: 100%;   /* Di mobile, sebaiknya gunakan 100% agar mengisi seluruh lebar */
-            height: 250px; /* Tinggi yang lebih kecil untuk mobile */
+            height: 200px; /* Tinggi yang lebih kecil untuk mobile */
         }
     }
 </style>
@@ -77,11 +77,20 @@
     </div>
     
     {{-- grafik --}}
-    <div class="mt-5 mb-5">
-        <h4>Grafik Pendapatan per Bulan</h4>
-        <div class="chart-container">
-            <canvas id="incomeChart"></canvas>
+    <div class="row mt-5 mb-5">
+        <div class="col-md-6">
+            <h4>Grafik Pendapatan per Bulan</h4>
+            <div class="chart-container">
+                <canvas id="incomeChart"></canvas>
+            </div>
         </div>
+    
+        <div class="col-md-6">
+            <h4>Grafik Pendapatan 5 Tahun Terakhir</h4>
+            <div class="chart-container">
+                <canvas id="yearlyIncomeChart"></canvas>
+            </div>
+        </div>    
     </div>
 
     @if (!$disewakan->isEmpty())
@@ -134,7 +143,7 @@
 <script>
     var ctx = document.getElementById('incomeChart').getContext('2d');
     var incomeChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
             datasets: [{
@@ -155,5 +164,43 @@
             }
         }
     });
+
+    var currentYear = new Date().getFullYear();
+    var yearlyCtx = document.getElementById('yearlyIncomeChart').getContext('2d');
+    var yearlyIncomeChart = new Chart(yearlyCtx, {
+        type: 'bar',
+        data: {
+            labels: [currentYear-4, currentYear-3, currentYear-2, currentYear-1, currentYear],
+            datasets: [{
+                label: 'Pendapatan Tahunan',
+                data: @json($yearlyIncome), // Pastikan Anda sudah mengirim data pendapatan tahunan ke view
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
 </script>
 @endsection

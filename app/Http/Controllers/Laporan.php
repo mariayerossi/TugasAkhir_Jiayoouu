@@ -57,6 +57,27 @@ class Laporan extends Controller
             $monthlyIncomeData[] = $income;
         }
 
+        $currentYear = date('Y');
+        $yearlyIncome = [
+            $currentYear - 4 => 0,
+            $currentYear - 3 => 0,
+            $currentYear - 2 => 0,
+            $currentYear - 1 => 0,
+            $currentYear => 0
+        ];
+
+        // Menghitung pendapatan tahunan
+        foreach ($coba as $data) {
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if (isset($yearlyIncome[$year])) {
+                $yearlyIncome[$year] += ($data->total_komisi_pemilik - $data->pendapatan_website_alat) + ($data->komisi_extend - $data->pendapatan_extend);
+            }
+        }
+
+        // Mengkonversi $yearlyIncome ke array biasa
+        $yearlyIncomeData = array_values($yearlyIncome);
+        $param["yearlyIncome"] = $yearlyIncomeData;
+
         $param["disewakan"] = $coba;
         $param["tanggal_mulai"] = null;
         $param["tanggal_selesai"] = null;
@@ -117,6 +138,27 @@ class Laporan extends Controller
         foreach ($monthlyIncome as $income) {
             $monthlyIncomeData[] = $income;
         }
+
+        $currentYear = date('Y');
+        $yearlyIncome = [
+            $currentYear - 4 => 0,
+            $currentYear - 3 => 0,
+            $currentYear - 2 => 0,
+            $currentYear - 1 => 0,
+            $currentYear => 0
+        ];
+
+        // Menghitung pendapatan tahunan
+        foreach ($coba as $data) {
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if (isset($yearlyIncome[$year])) {
+                $yearlyIncome[$year] += ($data->total_komisi_pemilik - $data->pendapatan_website_alat) + ($data->komisi_extend - $data->pendapatan_extend);
+            }
+        }
+
+        // Mengkonversi $yearlyIncome ke array biasa
+        $yearlyIncomeData = array_values($yearlyIncome);
+        $param["yearlyIncome"] = $yearlyIncomeData;
 
         $param["disewakan"] = $coba;
         $param["tanggal_mulai"] = $startDate;
@@ -423,6 +465,28 @@ class Laporan extends Controller
             $monthlyIncomeData[] = $income;
         }
 
+        // Inisialisasi pendapatan tahunan untuk 5 tahun terakhir
+        $currentYear = date('Y');
+        $yearlyIncome = [
+            $currentYear - 4 => 0,
+            $currentYear - 3 => 0,
+            $currentYear - 2 => 0,
+            $currentYear - 1 => 0,
+            $currentYear => 0
+        ];
+
+        // Menghitung pendapatan tahunan
+        foreach ($coba as $data) {
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if (isset($yearlyIncome[$year])) {
+                $yearlyIncome[$year] += ($data->subtotal_lapangan + $data->total_komisi - $data->pendapatan_website_lapangan) + ($data->subtotal_ext + $data->komisi_extend - $data->pendapatan_ext);
+            }
+        }
+
+        // Mengkonversi $yearlyIncome ke array biasa
+        $yearlyIncomeData = array_values($yearlyIncome);
+        $param["yearlyIncome"] = $yearlyIncomeData;
+
         $param["trans"] = $coba;
         $param["tanggal_mulai"] = null;
         $param["tanggal_selesai"] = null;
@@ -504,6 +568,28 @@ class Laporan extends Controller
         foreach ($monthlyIncome as $income) {
             $monthlyIncomeData[] = $income;
         }
+
+        // Inisialisasi pendapatan tahunan untuk 5 tahun terakhir
+        $currentYear = date('Y');
+        $yearlyIncome = [
+            $currentYear - 4 => 0,
+            $currentYear - 3 => 0,
+            $currentYear - 2 => 0,
+            $currentYear - 1 => 0,
+            $currentYear => 0
+        ];
+
+        // Menghitung pendapatan tahunan
+        foreach ($allData as $data) {
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if (isset($yearlyIncome[$year])) {
+                $yearlyIncome[$year] += ($data->subtotal_lapangan + $data->total_komisi - $data->pendapatan_website_lapangan) + ($data->subtotal_ext + $data->komisi_extend - $data->pendapatan_ext);
+            }
+        }
+
+        // Mengkonversi $yearlyIncome ke array biasa
+        $yearlyIncomeData = array_values($yearlyIncome);
+        $param["yearlyIncome"] = $yearlyIncomeData;
 
         $param["trans"] = $allData;
         $param["tanggal_mulai"] = $startDate;
@@ -902,6 +988,27 @@ class Laporan extends Controller
         foreach ($monthlyIncome as $income) {
             $monthlyIncomeData[] = $income;
         }
+
+        $currentYear = date('Y');
+        $yearlyIncome = [
+            $currentYear - 4 => 0,
+            $currentYear - 3 => 0,
+            $currentYear - 2 => 0,
+            $currentYear - 1 => 0,
+            $currentYear => 0
+        ];
+
+        // Menghitung pendapatan tahunan
+        foreach ($coba as $data) {
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if (isset($yearlyIncome[$year])) {
+                $yearlyIncome[$year] += ($data->pendapatan_lapangan + $data->pendapatan_alat) + ($data->lapangan_ext + $data->alat_ext);
+            }
+        }
+
+        // Mengkonversi $yearlyIncome ke array biasa
+        $yearlyIncomeData = array_values($yearlyIncome);
+        $param["yearlyIncome"] = $yearlyIncomeData;
 
         $param["trans"] = $coba;
         $param["tanggal_mulai"] = null;
