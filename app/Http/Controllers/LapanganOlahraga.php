@@ -238,29 +238,6 @@ class LapanganOlahraga extends Controller
                 $slot->insertSlot($data4);
             }
 
-            // $slot2 = DB::table('slot_waktu')->where('id_slot',"=", $request->input("id_slot$index"))->get();
-            // // dd($slot2);
-            // if (!$slot2->isEmpty()) {
-            //     $data3 = [
-            //         "id" => $request->input("id_slot$index"),
-            //         "hari" => $request->input("hari$index"),
-            //         "buka" => $jamBuka,
-            //         "tutup" => $jamTutup
-            //     ];
-            //     $slot = new slotWaktu();
-            //     $slot->updateSlot($data3);
-            // }
-            // else {
-            //     $data4 = [
-            //         "hari" => $request->input("hari$index"),
-            //         "buka" => $jamBuka,
-            //         "tutup" => $jamTutup,
-            //         "lapangan" => $request->id
-            //     ];
-            //     $slot = new slotWaktu();
-            //     $slot->insertSlot($data4);
-            // }
-
             $index++; // Pergi ke set input berikutnya
         }
         return redirect()->back()->with("success", "Berhasil Mengubah Detail Lapangan!");
