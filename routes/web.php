@@ -69,6 +69,9 @@ Route::view("/login", "login")->middleware([Guest::class]);
 Route::view("/registerTempat", "tempat.registerTempat")->middleware([Guest::class]);
 Route::view("/registerPemilik", "pemilik.registerPemilik")->middleware([Guest::class]);
 
+//verifikasi
+
+
 // -------------------------------
 // PROSES LOGIN REGISTER
 // -------------------------------

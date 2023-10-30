@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             'telepon_user' => "082374822343",
             'password_user' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_user' => "XElDVVNCVQ==",//1 jt
+            'email_verified_at' => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 

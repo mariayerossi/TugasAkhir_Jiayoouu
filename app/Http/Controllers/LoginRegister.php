@@ -89,6 +89,10 @@ class LoginRegister extends Controller
         }
     }
 
+    public function verifikasiUser() {
+        
+    }
+
     // Register Pemilik
     public function registerPemilik(Request $request){
         $request->validate([

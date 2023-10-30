@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('telepon_user',15);
             $table->string('password_user',255);
             $table->string('saldo_user',255);
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

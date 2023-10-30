@@ -23,6 +23,7 @@ class customer extends Model
         $user->telepon_user = $data["telepon"];
         $user->password_user = $data["password"];
         $user->saldo_user = $data["saldo"];
+        $user->email_verified_at = null;
         $user->save();
     }
 
@@ -45,6 +46,12 @@ class customer extends Model
     public function updateSaldo($data){
         $user = customer::find($data["id"]);
         $user->saldo_user = $data["saldo"];
+        $user->save();
+    }
+
+    public function verifikasiEmail($data){
+        $user = customer::find($data["id"]);
+        $user->email_verified_at = $data["tanggal"];
         $user->save();
     }
 }
