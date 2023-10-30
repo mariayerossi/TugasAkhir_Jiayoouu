@@ -342,7 +342,7 @@ class Transaksi extends Controller
         //notif ke tempat
         $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_tempat)->get()->first();
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$request->id_lapangan)->get()->first();
-        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$id)->get();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$id)->where("deleted_at","=",null)->get();
 
         $dtransStr = "";
         if (!$dataDtrans->isEmpty()) {
@@ -856,7 +856,7 @@ class Transaksi extends Controller
         $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
 
-        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->where("deleted_at","=",null)->get();
 
         $dtransStr = "";
         if (!$dataDtrans->isEmpty()) {
@@ -912,7 +912,7 @@ class Transaksi extends Controller
         $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
 
-        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->where("deleted_at","=",null)->get();
 
         $dtransStr = "";
         if (!$dataDtrans->isEmpty()) {
@@ -1010,7 +1010,7 @@ class Transaksi extends Controller
         //kasih notif ke pihak tempat
         $namaTempat = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->nama_tempat;
         $emailTempat = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->email_tempat;
-        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$id)->get();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$id)->where("deleted_at","=",null)->get();
 
         $dtransStr = "";
         if (!$dataDtrans->isEmpty()) {
@@ -1108,7 +1108,7 @@ class Transaksi extends Controller
         Session::put("dataRole", $isiTemp->first());
 
         //kasih notif ke cust
-        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$id)->get();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$id)->where("deleted_at","=",null)->get();
 
         $dtransStr = "";
         if (!$dataDtrans->isEmpty()) {
@@ -1166,6 +1166,7 @@ class Transaksi extends Controller
 
         $dataDtrans = DB::table('dtrans')
                 ->where("dtrans.fk_id_htrans","=",$request->id_htrans)
+                ->where("deleted_at","=",null)
                 ->get();
         
         $jam_sewa = $htrans->jam_sewa;
@@ -1272,6 +1273,7 @@ class Transaksi extends Controller
         $dtrans = DB::table('dtrans')
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_htrans","=",$request->id_htrans)
+                ->where("deleted_at","=",null)
                 ->get();
         // dd($dtrans);
 
@@ -1460,7 +1462,7 @@ class Transaksi extends Controller
         $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
 
-        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->where("deleted_at","=",null)->get();
 
         $dtransStr = "";
         if (!$dataDtrans->isEmpty()) {
@@ -1518,7 +1520,7 @@ class Transaksi extends Controller
         $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
 
-        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->where("deleted_at","=",null)->get();
 
         $dtransStr = "";
         if (!$dataDtrans->isEmpty()) {
@@ -1549,11 +1551,29 @@ class Transaksi extends Controller
 
     public function hapusAlat(Request $request) {
         //kasih pengecekan
-        $dataDtrans = DB::table('dtrans')->where("id_dtrans","=",$request->id_dtrans)->get()->first();
+        $dataDtrans = DB::table('dtrans')->where("id_dtrans","=",$request->id_dtrans)->where("deleted_at","=",null)->get()->first();
         $dataHtrans = DB::table('htrans')->where("id_htrans","=",$dataDtrans->fk_id_htrans)->get()->first();
         $dataCust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
 
         if ($dataHtrans->status_trans == "Diterima") {
+            //ubah subtotal alat dan total di htrans
+            $sub = (int)$dataHtrans->subtotal_alat;
+            $sub -= $dataDtrans->subtotal_alat;
+            $data2 = [
+                "id" => $dataDtrans->fk_id_htrans,
+                "subtotal" => $sub
+            ];
+            $trans = new htrans();
+            $trans->updateSubtotalAlat($data2);
+            
+            $total = $dataHtrans->total_trans;
+            $total -= $dataDtrans->subtotal_alat;
+            $data3 = [
+                "id" => $dataDtrans->fk_id_htrans,
+                "total" => $total
+            ];
+            $trans->updateTotal($data3);
+
             //kembalikan uang alat ke cust
             $saldo = (int)$this->decodePrice($dataCust->saldo_user, "mysecretkey");
             $saldo += $dataDtrans->subtotal_alat;
@@ -1568,7 +1588,7 @@ class Transaksi extends Controller
             $cust->updateSaldo($dataSaldo);
 
             //notif email ke cust
-            $dataDtransAll = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get();
+            $dataDtransAll = DB::table('dtrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->where("deleted_at","=",null)->get();
             $dtransStr = "";
             if (!$dataDtransAll->isEmpty()) {
                 foreach ($dataDtransAll as $key => $value) {
@@ -1597,11 +1617,14 @@ class Transaksi extends Controller
             $e->sendEmail($dataCust->email_user, $dataNotif);
 
             //delete
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
             $data = [
-                "id" => $request->id_dtrans
+                "id" => $request->id_dtrans,
+                "tanggal" => $skrg
             ];
             $dt = new dtrans();
-            $dt->deleteDtrans($data);
+            $dt->softDelete($data);
 
             return response()->json(['success' => true, 'message' => 'Transaksi berhasil diedit dan dana berhasil dikembalikan ke customer!']);
         }
@@ -1618,7 +1641,7 @@ class Transaksi extends Controller
 
         $dataHtrans = DB::table('htrans')->where("id_htrans","=",$request->id_htrans)->get()->first();
         $extend = DB::table('extend_htrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get()->first();
-        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$request->id_htrans)->get();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$request->id_htrans)->where("deleted_at","=",null)->get();
 
         //total komisi dari alat miliknya sendiri
         $total_komisi_tempat = 0;
@@ -1742,6 +1765,7 @@ class Transaksi extends Controller
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("htrans.id_htrans","=",$request->id_htrans)
+                ->where("deleted_at","=",null)
                 ->get();
         // dd($trans);
 

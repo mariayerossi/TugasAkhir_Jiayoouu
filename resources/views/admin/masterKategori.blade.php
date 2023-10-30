@@ -26,7 +26,7 @@
                 <tr>
                     <th>Nomer</th>
                     <th>Nama Kategori</th>
-                    <th>Aksi</th>
+                    {{-- <th>Aksi</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +35,7 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$item->nama_kategori}}</td>
-                            <td><a href="/admin/hapusKategori/{{$item->id_kategori}}" class="btn btn-danger">Hapus</a></td>
+                            {{-- <td><a href="/admin/hapusKategori/{{$item->id_kategori}}" class="btn btn-danger">Hapus</a></td> --}}
                         </tr>
                     @endforeach
                 @else

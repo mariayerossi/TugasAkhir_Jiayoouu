@@ -104,4 +104,16 @@ class htrans extends Model
         $trans->status_trans = $data["status"];
         $trans->save();
     }
+
+    public function updateSubtotalAlat($data){
+        $trans = htrans::find($data["id"]);
+        $trans->subtotal_alat = $data["subtotal"];
+        $trans->save();
+    }
+
+    public function updateTotal($data){
+        $trans = htrans::find($data["id"]);
+        $trans->total_trans = $data["total"];
+        $trans->save();
+    }
 }

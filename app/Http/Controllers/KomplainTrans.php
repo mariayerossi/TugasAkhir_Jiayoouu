@@ -303,7 +303,7 @@ class KomplainTrans extends Controller
         //notif ke tempat
         $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$htrans->fk_id_tempat)->get()->first();
         $lap = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->fk_id_lapangan)->get()->first();
-        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$htrans->id_htrans)->get();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$htrans->id_htrans)->where("deleted_at","=",null)->get();
 
         $dtransStr = "";
         if (!$dataDtrans->isEmpty()) {
