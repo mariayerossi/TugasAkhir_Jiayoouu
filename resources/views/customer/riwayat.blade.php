@@ -78,8 +78,13 @@
                         </div>
                         <div class="col-md-9">
                             <div class="card-body">
+                                @php
+                                    $tanggalAwal1 = $item->tanggal_trans;
+                                    $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
+                                    $tanggalBaru1 = $tanggalObjek1->format('d-m-Y H:i:s');
+                                @endphp
                                 <div class="d-flex justify-content-end">
-                                    <h6><b>Tanggal Transaksi: {{$item->tanggal_trans}}</b></h6>
+                                    <h6><b>Tanggal Transaksi: {{$tanggalBaru1}}</b></h6>
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <h6>Status: </h6>
