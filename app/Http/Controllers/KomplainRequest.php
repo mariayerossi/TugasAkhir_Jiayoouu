@@ -137,9 +137,11 @@ class KomplainRequest extends Controller
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
 
         $dataNotif = [
-            "subject" => "Komplain ".$jenis." Baru",
+            "subject" => "❗❗ Komplain ".$jenis." Baru ❗❗",
             "judul" => "Komplain ".$jenis." Baru dari ".$namaUser,
             "nama_user" => "Admin",
+            "url" => "https://sportiva.my.id/admin/komplain/request/detailKomplain/".$id,
+            "button" => "Lihat Detail Komplain",
             "isi" => "Anda memiliki satu komplain ".$jenis." baru:<br><br>
                     <b>Diajukan oleh: ".$namaUser."</b><br>
                     <b>Diajukan pada: ".$tanggalBaru."</b><br>
@@ -251,20 +253,6 @@ class KomplainRequest extends Controller
 
         //notif pemilik/tempat
         $komplain = DB::table('komplain_request')->where("id_komplain_req","=",$request->id_komplain)->get()->first();
-        $pengaju = "";
-        $email = "";
-        if ($komplain->fk_id_pemilik != null) {
-            // yang mengajukan pemilik
-            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->fk_id_pemilik)->get()->first();
-            $pengaju = $pemilik->nama_pemilik;
-            $email = $pemilik->email_pemilik;
-        }
-        else {
-            //yang mengajukan tempat
-            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->fk_id_tempat)->get()->first();
-            $pengaju = $tempat->nama_tempat;
-            $email = $tempat->email_tempat;
-        }
 
         $jenis = "";
         if ($komplain->fk_id_permintaan != null) {
@@ -275,14 +263,44 @@ class KomplainRequest extends Controller
             $jenis = "Penawaran";
         }
 
+        $pengaju = "";
+        $email = "";
+        if ($komplain->fk_id_pemilik != null) {
+            // yang mengajukan pemilik
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->fk_id_pemilik)->get()->first();
+            $pengaju = $pemilik->nama_pemilik;
+            $email = $pemilik->email_pemilik;
+            if ($jenis == "Permintaan") {
+                $url = "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$komplain->fk_id_permintaan;
+            }
+            else {
+                $url = "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$komplain->fk_id_penawaran;
+            }
+        }
+        else {
+            //yang mengajukan tempat
+            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->fk_id_tempat)->get()->first();
+            $pengaju = $tempat->nama_tempat;
+            $email = $tempat->email_tempat;
+
+            if ($jenis == "Permintaan") {
+                $url = "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$komplain->fk_id_permintaan;
+            }
+            else {
+                $url = "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$komplain->fk_id_penawaran;
+            }
+        }
+
         $tanggalAwal = $komplain->waktu_komplain;
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
 
         $dataNotif = [
-            "subject" => "Komplain ".$jenis." Anda Telah Diterima!",
+            "subject" => "🎉Komplain ".$jenis." Anda Telah Diterima!🎉",
             "judul" => "Komplain ".$jenis." Anda Telah Diterima!",
             "nama_user" => $pengaju,
+            "url" => $url,
+            "button" => "Lihat Detail ".$jenis,
             "isi" => "Yeay! Komplain ".$jenis." yang Anda ajukan telah diterima Admin:<br><br>
                     <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
                     <b>Diajukan pada: ".$tanggalBaru."</b><br><br>
@@ -310,20 +328,6 @@ class KomplainRequest extends Controller
 
         //notif pemilik/tempat
         $komplain = DB::table('komplain_request')->where("id_komplain_req","=",$request->id)->get()->first();
-        $pengaju = "";
-        $email = "";
-        if ($komplain->fk_id_pemilik != null) {
-            // yang mengajukan pemilik
-            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->fk_id_pemilik)->get()->first();
-            $pengaju = $pemilik->nama_pemilik;
-            $email = $pemilik->email_pemilik;
-        }
-        else {
-            //yang mengajukan tempat
-            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->fk_id_tempat)->get()->first();
-            $pengaju = $tempat->nama_tempat;
-            $email = $tempat->email_tempat;
-        }
 
         $jenis = "";
         if ($komplain->fk_id_permintaan != null) {
@@ -334,14 +338,45 @@ class KomplainRequest extends Controller
             $jenis = "Penawaran";
         }
 
+        $pengaju = "";
+        $email = "";
+        if ($komplain->fk_id_pemilik != null) {
+            // yang mengajukan pemilik
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->fk_id_pemilik)->get()->first();
+            $pengaju = $pemilik->nama_pemilik;
+            $email = $pemilik->email_pemilik;
+
+            if ($jenis == "Permintaan") {
+                $url = "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$komplain->fk_id_permintaan;
+            }
+            else {
+                $url = "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$komplain->fk_id_penawaran;
+            }
+        }
+        else {
+            //yang mengajukan tempat
+            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->fk_id_tempat)->get()->first();
+            $pengaju = $tempat->nama_tempat;
+            $email = $tempat->email_tempat;
+
+            if ($jenis == "Permintaan") {
+                $url = "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$komplain->fk_id_permintaan;
+            }
+            else {
+                $url = "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$komplain->fk_id_penawaran;
+            }
+        }
+
         $tanggalAwal = $komplain->waktu_komplain;
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
 
         $dataNotif = [
-            "subject" => "Komplain ".$jenis." Anda Telah Ditolak!",
+            "subject" => "😔Komplain ".$jenis." Anda Telah Ditolak!😔",
             "judul" => "Komplain ".$jenis." Anda Telah Ditolak!",
             "nama_user" => $pengaju,
+            "url" => $url,
+            "button" => "Lihat Detail ".$jenis,
             "isi" => "Maaf! Komplain ".$jenis." yang Anda ajukan belum bisa kami terima.<br><br>
                     <b>Jenis Komplain: ".$komplain->jenis_komplain."</b><br>
                     <b>Diajukan pada: ".$tanggalBaru."</b><br><br>

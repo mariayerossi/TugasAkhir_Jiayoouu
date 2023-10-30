@@ -110,27 +110,31 @@ class KerusakanAlat extends Controller
                         $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dtrans->fk_id_pemilik)->get()->first();
 
                         $sengaja = "";
-                        if ($unsur == "Ya") {
+                        if ($unsur == "Tidak") {
                             $sengaja = "Setelah melakukan pengecekan, kami memastikan bahwa kerusakan ini terjadi karena unsur ketidaksengajaan. Oleh karena itu, tidak ada pihak yang akan dikenakan biaya ganti rugi atas kerusakan ini. Kami menghargai pengertian Anda dan mohon maaf atas ketidaknyamanan yang mungkin timbul.";
                         }
                         else {
-                            $sengaja = "Setelah melakukan pengecekan, kami menemukan bukti yang menunjukkan bahwa kerusakan ini terjadi karena adanya kesengajaan. Oleh karena itu, sesuai dengan peraturan dan ketentuan yang telah disepakati, akan ada biaya ganti rugi yang dikenakan kepada pihak yang bertanggung jawab.";
+                            $sengaja = "Setelah melakukan pengecekan, kami menemukan bukti yang menunjukkan bahwa kerusakan ini terjadi karena adanya kesengajaan. Oleh karena itu, sesuai dengan peraturan dan ketentuan yang telah disepakati, akan ada biaya ganti rugi yang dikenakan kepada pihak tempat olahraga yang bertanggung jawab.";
                         }
 
                         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dtrans->fk_id_alat)->get()->first();
 
                         $dataNotif = [
-                            "subject" => "Pemberitahuan Kerusakan Alat Olahraga😢",
+                            "subject" => "😢Pemberitahuan Kerusakan Alat Olahraga😢",
                             "judul" => "Pemberitahuan Kerusakan Alat Olahraga",
                             "nama_user" => $pemilik->nama_pemilik,
+                            "url" => "https://sportiva.my.id/pemilik/lihatDetail/".$dataAlat->id_alat,
+                            "button" => "Lihat Detail Alat",
                             "isi" => "Maaf! Alat olahraga yang anda sewakan mengalami kerusakan:<br><br>
                                     <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                     <b>Ganti Rugi Alat Olahraga: Rp ".number_format($dataAlat->ganti_rugi_alat, 0, ',', '.')."</b><br><br>
                                     ".$sengaja."<br><br>
-                                    Alat olahraga sudah bisa diambil di tempat olahraga! Terus sewakan alat olahragamu di Sportiva!"
+                                    Alat olahraga sudah bisa diambil di tempat olahraga:<br>
+                                    <b>".Session::get("dataRole")->nama_tempat."</b><br>
+                                    Terus sewakan alat olahragamu di Sportiva!"
                         ];
                         $e = new notifikasiEmail();
-                        $e->sendEmail("maria.yerossi@gmail.com", $dataNotif);
+                        $e->sendEmail("maria_y20@mhs.istts.ac.id", $dataNotif);
                     }
                 }
                 else {

@@ -15,7 +15,7 @@ class NotifikasiEmail extends Controller
             "judul" => "Penawaran Alat Olahraga Baru",
             "nama_user" => "Maria Yerossi",
             "isi" => "Anda memiliki 1 penawaran alat olahraga baru yang masih belum diterima.Silahkan terima penawaran!",
-            "url" => "http://127.0.0.1:8000/login/",
+            "url" => "https://sportiva.my.id/login/",
             "button" => "Login"
         ];
         // Mail::to("maria.yerossi@gmail.com")->send(new notifEmail($data));

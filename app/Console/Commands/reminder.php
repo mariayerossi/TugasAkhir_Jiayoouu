@@ -87,9 +87,11 @@ class reminder extends Command
                         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
                         $dataNotif = [
-                            "subject" => "Ingat! Besok Batas Akhir Pengantaran Alat Olahraga",
+                            "subject" => "⚠️Ingat! Besok Batas Akhir Pengantaran Alat Olahraga⚠️",
                             "judul" => "Besok Batas Akhir Pengantaran Alat Olahraga!",
                             "nama_user" => $dataPemilik->nama_pemilik,
+                            "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                            "button" => "Lihat Detail Permintaan",
                             "isi" => "Jangan Lupa ya! Besok adalah Batas Akhir Pengantaran Alat Olahraga:<br><br>
                                     <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                     <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -115,6 +117,8 @@ class reminder extends Command
                             "subject" => "😔Yah! Request Permintaan Dibatalkan!😔",
                             "judul" => "Request Permintaan Dibatalkan!",
                             "nama_user" => $dataPemilik->nama_pemilik,
+                            "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                            "button" => "Lihat Detail Permintaan",
                             "isi" => "Sayang sekali! Request Permintaan dari:<br><br>
                                     <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                     <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -130,6 +134,8 @@ class reminder extends Command
                             "subject" => "😔Yah! Request Permintaan Dibatalkan!😔",
                             "judul" => "Request Permintaan Dibatalkan!",
                             "nama_user" => $dataTempat->nama_tempat,
+                            "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                            "button" => "Lihat Detail Permintaan",
                             "isi" => "Sayang sekali! Request Permintaan dari:<br><br>
                                     <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                     <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -182,6 +188,8 @@ class reminder extends Command
                         "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
                         "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
                         "nama_user" => $dataPemilik->nama_pemilik,
+                        "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                        "button" => "Lihat Detail Permintaan",
                         "isi" => "Masa sewa alat dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                 <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -195,6 +203,8 @@ class reminder extends Command
                         "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
                         "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
                         "nama_user" => $dataTempat->nama_tempat,
+                        "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                        "button" => "Lihat Detail Permintaan",
                         "isi" => "Masa sewa alat dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                 <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -233,9 +243,11 @@ class reminder extends Command
                         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
                         $dataNotif = [
-                            "subject" => "Ingat! Besok Batas Akhir Pengantaran Alat Olahraga",
+                            "subject" => "⚠️Ingat! Besok Batas Akhir Pengantaran Alat Olahraga!⚠️",
                             "judul" => "Besok Batas Akhir Pengantaran Alat Olahraga!",
                             "nama_user" => $dataPemilik->nama_pemilik,
+                            "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                            "button" => "Lihat Detail Penawaran",
                             "isi" => "Jangan Lupa ya! Besok adalah Batas Akhir Pengantaran Alat Olahraga:<br><br>
                                     <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                     <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -261,6 +273,8 @@ class reminder extends Command
                             "subject" => "😔Yah! Request Penawaran Dibatalkan!😔",
                             "judul" => "Request Penawaran Dibatalkan!",
                             "nama_user" => $dataPemilik->nama_pemilik,
+                            "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                            "button" => "Lihat Detail Penawaran",
                             "isi" => "Sayang sekali! Request Penawaran dari:<br><br>
                                     <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                     <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -276,6 +290,8 @@ class reminder extends Command
                             "subject" => "😔Yah! Request Penawaran Dibatalkan!😔",
                             "judul" => "Request Penawaran Dibatalkan!",
                             "nama_user" => $dataTempat->nama_tempat,
+                            "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                            "button" => "Lihat Detail Penawaran",
                             "isi" => "Sayang sekali! Request Penawaran dari:<br><br>
                                     <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                     <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -328,6 +344,8 @@ class reminder extends Command
                         "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
                         "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
                         "nama_user" => $dataPemilik->nama_pemilik,
+                        "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                        "button" => "Lihat Detail Penawaran",
                         "isi" => "Masa sewa alat dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                 <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -342,6 +360,8 @@ class reminder extends Command
                         "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
                         "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
                         "nama_user" => $dataTempat->nama_tempat,
+                        "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                        "button" => "Lihat Detail Penawaran",
                         "isi" => "Masa sewa alat dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                 <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
@@ -384,6 +404,8 @@ class reminder extends Command
                             "subject" => "🔔Ingat! Besok Hari Sewa Lapangan Olahraga🔔",
                             "judul" => "Jangan Lupa datang besok ya!",
                             "nama_user" => $dataCust->nama_user,
+                            "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                            "button" => "Lihat Transaksi",
                             "isi" => "Detail Sewa Lapangan:<br><br>
                                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                     <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
@@ -405,6 +427,8 @@ class reminder extends Command
                             "subject" => "🔔Jangan Lupa Terima Transaksi Lapangan!🔔",
                             "judul" => "Jangan Lupa Terima Transaksi Lapangan!",
                             "nama_user" => $dataTemp->nama_tempat,
+                            "url" => "https://sportiva.my.id/tempat/transaksi/detailTransaksi/".$value->id_htrans,
+                            "button" => "Lihat Detail Transaksi",
                             "isi" => "Detail Sewa Lapangan:<br><br>
                                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                     <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
@@ -457,6 +481,8 @@ class reminder extends Command
                         "subject" => "😔Booking Lapangan ".$dataLapangan->nama_lapangan." Telah Dibatalkan!😔",
                         "judul" => "Yah! Booking Lapangan ".$dataLapangan->nama_lapangan." Telah Dibatalkan",
                         "nama_user" => $cust->get_all_data_by_id($value->fk_id_user)->first()->nama_user,
+                        "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                        "button" => "Lihat Transaksi",
                         "isi" => "Detail Sewa Lapangan:<br><br>
                                 <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                 <b>Tanggal Sewa: ".$tanggalBaru3."</b><br>
@@ -487,6 +513,8 @@ class reminder extends Command
                         "subject" => "🔔Halo! Anda Terlambat Datang ke Lapangan!🔔",
                         "judul" => "Jangan Lupa Datang ya!",
                         "nama_user" => $dataCust->nama_user,
+                        "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                        "button" => "Lihat Transaksi",
                         "isi" => "Detail Sewa Lapangan:<br><br>
                                 <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                 <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
@@ -613,6 +641,8 @@ class reminder extends Command
                         "subject" => "🎉Transaksi Anda Telah Selesai!🎉",
                         "judul" => "Transaksi Anda Telah Selesai!",
                         "nama_user" => $cust->nama_user,
+                        "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                        "button" => "Lihat Transaksi",
                         "isi" => "Yeay! Transaksi Anda telah selesai:<br><br>
                                 <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                 ".$dtransStr."<br>

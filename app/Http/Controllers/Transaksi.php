@@ -353,9 +353,11 @@ class Transaksi extends Controller
         }
 
         $dataNotif = [
-            "subject" => "Transaksi Persewaan Baru Menunggu Konfirmasi Anda!",
+            "subject" => "🔔Transaksi Persewaan Baru Menunggu Konfirmasi Anda!🔔",
             "judul" => "Transaksi Persewaan Baru Menunggu Konfirmasi Anda!",
             "nama_user" => $dataTempat->nama_tempat,
+            "url" => "https://sportiva.my.id/tempat/transaksi/detailTransaksi/".$id,
+            "button" => "Lihat Detail Transaksi",
             "isi" => "Anda baru saja menerima satu transaksi persewaan baru:<br><br>
                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
@@ -868,6 +870,8 @@ class Transaksi extends Controller
             "subject" => "🎉Transaksi Anda Telah Diterima!🎉",
             "judul" => "Transaksi Anda Telah Diterima Pihak Pengelola Tempat Olahraga!",
             "nama_user" => $cust->nama_user,
+            "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+            "button" => "Lihat Transaksi",
             "isi" => "Yeay! Transaksi Anda telah diterima:<br><br>
                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
@@ -922,6 +926,8 @@ class Transaksi extends Controller
             "subject" => "⚠️Transaksi Anda Ditolak!⚠️",
             "judul" => "Transaksi Anda Ditolak Pihak Pengelola Tempat Olahraga!",
             "nama_user" => $cust->nama_user,
+            "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+            "button" => "Lihat Transaksi",
             "isi" => "Maaf! Transaksi Anda Tidak Dapat Diproses:<br><br>
                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
@@ -1021,7 +1027,9 @@ class Transaksi extends Controller
             "subject" => "⚠️Transaksi Dibatalkan Customer!⚠️",
             "judul" => "Transaksi Dibatalkan Customer!",
             "nama_user" => $namaTempat,
-            "isi" => "Maaf! Transaksi Anda Tidak Dapat Dilanjutkan oleh Custoner:<br><br>
+            "url" => "https://sportiva.my.id/tempat/transaksi/detailTransaksi/".$request->id_htrans,
+            "button" => "Lihat Detail Transaksi",
+            "isi" => "Maaf! Transaksi Anda Tidak Dapat Dilanjutkan oleh Customer:<br><br>
                     <b>Nama Lapangan Olahraga: ".$trans->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
                     <b>Tanggal Transaksi: ".$tanggalBaru." ".$trans->jam_sewa."</b><br><br>
@@ -1118,6 +1126,8 @@ class Transaksi extends Controller
             "subject" => "⚠️Transaksi Dibatalkan Pihak Pengelola Tempat Olahraga!⚠️",
             "judul" => "Transaksi Dibatalkan Pihak Pengelola Tempat Olahraga!",
             "nama_user" => $trans->nama_user,
+            "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+            "button" => "Lihat Transaksi",
             "isi" => "Maaf! Transaksi Anda Tidak Dapat Dilanjutkan oleh Pihak Pengelola Tempat Olahraga:<br><br>
                     <b>Nama Lapangan Olahraga: ".$trans->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
@@ -1368,9 +1378,11 @@ class Transaksi extends Controller
         }
 
         $dataNotif = [
-            "subject" => "Extend Waktu Baru Menunggu Konfirmasi Anda!",
+            "subject" => "🔔Extend Waktu Baru Menunggu Konfirmasi Anda!🔔",
             "judul" => "Extend Waktu Baru Menunggu Konfirmasi Anda!",
             "nama_user" => $dataTempat->nama_tempat,
+            "url" => "https://sportiva.my.id/tempat/transaksi/detailTransaksi/".$request->id_htrans,
+            "button" => "Lihat Detail Transaksi",
             "isi" => "Anda baru saja menerima satu permintaan extend waktu baru:<br><br>
                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
@@ -1462,6 +1474,8 @@ class Transaksi extends Controller
             "subject" => "🎉Extend Waktu Anda Telah Diterima!🎉",
             "judul" => "Extend Waktu Anda Telah Diterima Pihak Pengelola Tempat Olahraga!",
             "nama_user" => $cust->nama_user,
+            "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+            "button" => "Lihat Transaksi",
             "isi" => "Yeay! Extend Waktu Anda telah diterima:<br><br>
                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
@@ -1518,6 +1532,8 @@ class Transaksi extends Controller
             "subject" => "⚠️Extend Waktu Anda Ditolak!⚠️",
             "judul" => "Extend Waktu Anda Ditolak Pihak Pengelola Tempat Olahraga!",
             "nama_user" => $cust->nama_user,
+            "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+            "button" => "Lihat Transaksi",
             "isi" => "Maaf! Extend Waktu Anda Tidak Dapat Diproses:<br><br>
                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
@@ -1568,6 +1584,8 @@ class Transaksi extends Controller
                 "subject" => "⚠️Transaksi Anda Telah Diubah!⚠️",
                 "judul" => "Transaksi Anda Telah Diubah!",
                 "nama_user" => $dataCust->nama_user,
+                "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                "button" => "Lihat Transaksi",
                 "isi" => "Detail Transaksi<br><br>
                         <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                         ".$dtransStr."<br><br>
@@ -1693,6 +1711,8 @@ class Transaksi extends Controller
             "subject" => "🎉Transaksi Anda Telah Selesai!🎉",
             "judul" => "Transaksi Anda Telah Selesai!",
             "nama_user" => $cust->nama_user,
+            "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+            "button" => "Lihat Transaksi",
             "isi" => "Yeay! Transaksi Anda telah selesai:<br><br>
                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
