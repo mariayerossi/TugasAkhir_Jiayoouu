@@ -275,16 +275,17 @@ Route::prefix("/admin")->group(function(){
 // HALAMAN PEMILIK ALAT
 // -------------------------------
 Route::prefix("/pemilik")->group(function(){
-    Route::get("/beranda", function () {
-        $id = Session::get("dataRole")->id_pemilik;
-        $alat = new ModelsAlatOlahraga();
-        $param["jumlahAlat"] = $alat->count_all_data($id);
-        $minta = new ModelsRequestPermintaan();
-        $param["jumlahPermintaan"] = $minta->count_all_data_pemilik($id);
-        $tawar = new ModelsRequestPenawaran();
-        $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($id);
-        return view("pemilik.beranda")->with($param);
-    })->middleware([CekPemilik::class]);
+    // Route::get("/beranda", function () {
+    //     $id = Session::get("dataRole")->id_pemilik;
+    //     $alat = new ModelsAlatOlahraga();
+    //     $param["jumlahAlat"] = $alat->count_all_data($id);
+    //     $minta = new ModelsRequestPermintaan();
+    //     $param["jumlahPermintaan"] = $minta->count_all_data_pemilik($id);
+    //     $tawar = new ModelsRequestPenawaran();
+    //     $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($id);
+    //     return view("pemilik.beranda")->with($param);
+    // })->middleware([CekPemilik::class]);
+    Route::get("/beranda", [Laporan::class, "berandaPemilik"])->middleware([CekPemilik::class]);
     Route::get("/masterAlat", function () {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
@@ -479,16 +480,17 @@ Route::prefix("/pemilik")->group(function(){
 // HALAMAN PIHAK TEMPAT
 // -------------------------------
 Route::prefix("/tempat")->group(function(){
-    Route::get("/beranda", function () {
-        $role = Session::get("dataRole")->id_tempat;
-        $trans = new ModelsHtrans();
-        $param["jumlahTransaksi"] = $trans->count_all_data_tempat($role);
-        $minta = new ModelsRequestPermintaan();
-        $param["jumlahPermintaan"] = $minta->count_all_data_tempat($role);
-        $tawar = new ModelsRequestPenawaran();
-        $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($role);
-        return view("tempat.beranda")->with($param);
-    })->middleware([CekTempat::class]);
+    // Route::get("/beranda", function () {
+    //     $role = Session::get("dataRole")->id_tempat;
+    //     $trans = new ModelsHtrans();
+    //     $param["jumlahTransaksi"] = $trans->count_all_data_tempat($role);
+    //     $minta = new ModelsRequestPermintaan();
+    //     $param["jumlahPermintaan"] = $minta->count_all_data_tempat($role);
+    //     $tawar = new ModelsRequestPenawaran();
+    //     $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($role);
+    //     return view("tempat.beranda")->with($param);
+    // })->middleware([CekTempat::class]);
+    Route::get("/beranda", [Laporan::class, "berandaTempat"])->middleware([CekTempat::class]);
     // Route::get("/cariAlat", function () {
     //     $kat = new kategori();
     //     $param["kategori"] = $kat->get_all_data();

@@ -8,6 +8,8 @@ use App\Models\htrans;
 use App\Models\komplainRequest;
 use App\Models\komplainTrans;
 use App\Models\lapanganOlahraga;
+use App\Models\requestPenawaran;
+use App\Models\requestPermintaan;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,8 +34,7 @@ class Laporan extends Controller
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->get();
         // dd($coba);
 
@@ -99,8 +100,7 @@ class Laporan extends Controller
             ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
             ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
             ->where("dtrans.fk_id_pemilik","=",$role)
-            ->where("htrans.status_trans","!=","Dibatalkan")
-            ->where("htrans.status_trans","!=","Ditolak")
+            ->where("htrans.status_trans","=","Selesai")
             ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
             ->get();
         
@@ -134,8 +134,7 @@ class Laporan extends Controller
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->get();
  
     	$pdf = PDF::loadview('pemilik.laporan.laporanPendapatan_pdf',['data'=>$data, 'tanggal_mulai'=>null, 'tanggal_selesai'=>null]);
@@ -153,8 +152,7 @@ class Laporan extends Controller
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_pemilik","=",$role)
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->whereBetween('htrans.tanggal_trans', [$request->mulai, $request->selesai])
                 ->get();
         // dd($request->mulai);
@@ -388,8 +386,7 @@ class Laporan extends Controller
             ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
             ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
             ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
-            ->where("htrans.status_trans","!=","Dibatalkan")
-            ->where("htrans.status_trans","!=","Ditolak")
+            ->where("htrans.status_trans","=","Selesai")
             ->where("htrans.fk_id_tempat", "=", $role)
             ->groupBy(
                 'htrans.id_htrans',
@@ -409,7 +406,6 @@ class Laporan extends Controller
             $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
         }
 
-        //blm mari
         foreach ($coba as $data) {
             // $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$data->id_htrans)->sum("total_komisi_tempat");
             // $dataExtendDtrans = DB::table('extend_dtrans')->where("fk_id_extend_htrans","=",$data->id_extend_htrans)->sum("total_komisi_tempat");
@@ -480,8 +476,7 @@ class Laporan extends Controller
                     ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                     ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
                     ->where("htrans.fk_id_tempat", "=", $role)
-                    ->where("htrans.status_trans","!=","Dibatalkan")
-                    ->where("htrans.status_trans","!=","Ditolak")
+                    ->where("htrans.status_trans","=","Selesai")
                     ->groupBy(
                         'htrans.id_htrans',
                         'htrans.kode_trans',
@@ -538,8 +533,7 @@ class Laporan extends Controller
                 ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->where("htrans.fk_id_tempat", "=", $role)
                 ->groupBy(
                     'htrans.id_htrans',
@@ -582,8 +576,7 @@ class Laporan extends Controller
             ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
             ->whereBetween('htrans.tanggal_trans', [$request->mulai, $request->selesai])
             ->where("htrans.fk_id_tempat", "=", $role)
-            ->where("htrans.status_trans","!=","Dibatalkan")
-            ->where("htrans.status_trans","!=","Ditolak")
+            ->where("htrans.status_trans","=","Selesai")
             ->groupBy(
                 'htrans.id_htrans',
                 'htrans.kode_trans',
@@ -880,8 +873,7 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->groupBy(
                     "htrans.kode_trans",
                     "htrans.pendapatan_website_lapangan",
@@ -952,8 +944,7 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->whereBetween('htrans.tanggal_trans', [$startDate, $endDate])
                 ->groupBy(
                     "htrans.kode_trans",
@@ -1007,8 +998,7 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->groupBy(
                     "htrans.kode_trans",
                     "htrans.pendapatan_website_lapangan",
@@ -1039,8 +1029,7 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->whereBetween('htrans.tanggal_trans', [$request->mulai, $request->selesai])
                 ->groupBy(
                     "htrans.kode_trans",
@@ -1254,8 +1243,7 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->groupBy(
                     "htrans.kode_trans",
                     "htrans.pendapatan_website_lapangan",
@@ -1309,5 +1297,162 @@ class Laporan extends Controller
         $param["yearlyIncome"] = $yearlyIncomeData;
 
         return view("admin.beranda")->with($param);
+    }
+
+    public function berandaPemilik() {
+        $id = Session::get("dataRole")->id_pemilik;
+        $alat = new alatOlahraga();
+        $param["jumlahAlat"] = $alat->count_all_data($id);
+        $minta = new requestPermintaan();
+        $param["jumlahPermintaan"] = $minta->count_all_data_pemilik($id);
+        $tawar = new requestPenawaran();
+        $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($id);
+
+        $coba = DB::table('htrans')
+                ->select("alat_olahraga.nama_alat","alat_olahraga.komisi_alat","htrans.durasi_sewa","htrans.tanggal_trans","dtrans.total_komisi_pemilik", "dtrans.pendapatan_website_alat", "extend_htrans.durasi_extend", "extend_dtrans.total_komisi_pemilik as komisi_extend","extend_dtrans.pendapatan_website_alat as pendapatan_extend")
+                ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                ->where("dtrans.fk_id_pemilik","=",$id)
+                ->where("htrans.status_trans","=","Selesai")
+                ->get();
+        // dd($coba);
+
+        $monthlyIncome = [];
+        for ($i=1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        foreach ($coba as $data) {
+            $bulan = date('m', strtotime($data->tanggal_trans));
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += ($data->total_komisi_pemilik - $data->pendapatan_website_alat) + ($data->komisi_extend - $data->pendapatan_extend);
+            }
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+        $param["monthlyIncome"] = $monthlyIncomeData;
+
+        // Inisialisasi pendapatan tahunan untuk 5 tahun terakhir
+        $currentYear = date('Y');
+        $yearlyIncome = [
+            $currentYear - 4 => 0,
+            $currentYear - 3 => 0,
+            $currentYear - 2 => 0,
+            $currentYear - 1 => 0,
+            $currentYear => 0
+        ];
+
+        // Menghitung pendapatan tahunan
+        foreach ($coba as $data) {
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if (isset($yearlyIncome[$year])) {
+                $yearlyIncome[$year] += ($data->total_komisi_pemilik - $data->pendapatan_website_alat) + ($data->komisi_extend - $data->pendapatan_extend);
+            }
+        }
+
+        // Mengkonversi $yearlyIncome ke array biasa
+        $yearlyIncomeData = array_values($yearlyIncome);
+        $param["yearlyIncome"] = $yearlyIncomeData;
+
+        return view("pemilik.beranda")->with($param);
+    }
+
+    public function berandaTempat() {
+        $role = Session::get("dataRole")->id_tempat;
+        $trans = new htrans();
+        $param["jumlahTransaksi"] = $trans->count_all_data_tempat($role);
+        $minta = new requestPermintaan();
+        $param["jumlahPermintaan"] = $minta->count_all_data_tempat($role);
+        $tawar = new requestPenawaran();
+        $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($role);
+
+        $coba = DB::table('htrans')
+            ->select(
+                'htrans.id_htrans',
+                "htrans.kode_trans",
+                DB::raw('SUM(dtrans.total_komisi_tempat) as total_komisi'),
+                'htrans.subtotal_lapangan',
+                'htrans.tanggal_trans',
+                DB::raw('COUNT(dtrans.id_dtrans) as alat'),
+                "lapangan_olahraga.nama_lapangan",
+                "htrans.pendapatan_website_lapangan",
+                DB::raw('SUM(extend_dtrans.total_komisi_tempat) as komisi_extend'),
+                'extend_htrans.subtotal_lapangan as subtotal_ext',
+                "extend_htrans.pendapatan_website_lapangan as pendapatan_ext",
+                'extend_htrans.id_extend_htrans'
+            )
+            ->leftJoin("dtrans", "htrans.id_htrans", "=", "dtrans.fk_id_htrans")
+            ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+            ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+            ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+            ->where("htrans.status_trans","=","Selesai")
+            ->where("htrans.fk_id_tempat", "=", $role)
+            ->groupBy(
+                'htrans.id_htrans',
+                'htrans.kode_trans',
+                'htrans.subtotal_lapangan',
+                'htrans.tanggal_trans',
+                "lapangan_olahraga.nama_lapangan",
+                "htrans.pendapatan_website_lapangan",
+                'extend_htrans.subtotal_lapangan',
+                "extend_htrans.pendapatan_website_lapangan",
+                'extend_htrans.id_extend_htrans'
+            )
+            ->get();
+        // dd($coba);
+        $monthlyIncome = [];
+        for ($i=1; $i <= 12; $i++) {
+            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
+        }
+
+        foreach ($coba as $data) {
+            // $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$data->id_htrans)->sum("total_komisi_tempat");
+            // $dataExtendDtrans = DB::table('extend_dtrans')->where("fk_id_extend_htrans","=",$data->id_extend_htrans)->sum("total_komisi_tempat");
+            // dd($data->id_extend_htrans);
+            $bulan = date('m', strtotime($data->tanggal_trans));
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if ($year == date('Y')) {
+                $monthlyIncome[(int)$bulan] += ($data->subtotal_lapangan + $data->total_komisi - $data->pendapatan_website_lapangan) + ($data->subtotal_ext + $data->komisi_extend - $data->pendapatan_ext);
+            }
+        }
+
+        // Mengkonversi $monthlyIncome ke array biasa
+        $monthlyIncomeData = [];
+        foreach ($monthlyIncome as $income) {
+            $monthlyIncomeData[] = $income;
+        }
+
+        $param["monthlyIncome"] = $monthlyIncomeData;
+
+        // Inisialisasi pendapatan tahunan untuk 5 tahun terakhir
+        $currentYear = date('Y');
+        $yearlyIncome = [
+            $currentYear - 4 => 0,
+            $currentYear - 3 => 0,
+            $currentYear - 2 => 0,
+            $currentYear - 1 => 0,
+            $currentYear => 0
+        ];
+
+        // Menghitung pendapatan tahunan
+        foreach ($coba as $data) {
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if (isset($yearlyIncome[$year])) {
+                $yearlyIncome[$year] += ($data->subtotal_lapangan + $data->total_komisi - $data->pendapatan_website_lapangan) + ($data->subtotal_ext + $data->komisi_extend - $data->pendapatan_ext);
+            }
+        }
+
+        // Mengkonversi $yearlyIncome ke array biasa
+        $yearlyIncomeData = array_values($yearlyIncome);
+        $param["yearlyIncome"] = $yearlyIncomeData;
+
+        return view("tempat.beranda")->with($param);
     }
 }
