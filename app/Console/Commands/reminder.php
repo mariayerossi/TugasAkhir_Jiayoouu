@@ -164,8 +164,8 @@ class reminder extends Command
                                 ->get();
                     $total = 0;
                     if (!$transaksi->isEmpty()) {
-                        foreach ($transaksi as $key => $value) {
-                            $total += $value->total_komisi_tempat;
+                        foreach ($transaksi as $key => $value2) {
+                            $total += $value2->total_komisi_tempat;
                         }
                     }
 
@@ -192,7 +192,7 @@ class reminder extends Command
                         "button" => "Lihat Detail Permintaan",
                         "isi" => "Masa sewa alat dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
-                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
                                 Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                     ];
                     $e = new notifikasiEmail();
@@ -207,7 +207,7 @@ class reminder extends Command
                         "button" => "Lihat Detail Permintaan",
                         "isi" => "Masa sewa alat dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
-                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
                                 Sudah selesai. Dana seluruh transaksi sudah masuk ke saldo wallet! Tunggu pemilik alat olahraga mengambil alatnya ya! Terima kasih telah mempercayai Sportiva! 😊"
                     ];
                     $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
@@ -348,7 +348,7 @@ class reminder extends Command
                         "button" => "Lihat Detail Penawaran",
                         "isi" => "Masa sewa alat dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
-                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
                                 Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                     ];
                     $e = new notifikasiEmail();
@@ -364,7 +364,7 @@ class reminder extends Command
                         "button" => "Lihat Detail Penawaran",
                         "isi" => "Masa sewa alat dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
-                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
                                 Sudah selesai. Tunggu pemilik alat olahraga mengambil alatnya ya! Terima kasih telah mempercayai Sportiva! 😊"
                     ];
                     $e->sendEmail($dataTempat->email_tempat, $dataNotif2);

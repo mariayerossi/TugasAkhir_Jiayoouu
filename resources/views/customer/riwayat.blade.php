@@ -120,7 +120,7 @@
                                                     ->whereRaw('id_file_alat = (select min(id_file_alat) from files_alat as f2 where f2.fk_id_alat = files_alat.fk_id_alat)');
                                             }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                                             ->where("dtrans.fk_id_htrans","=",$item->id_htrans)
-                                            ->where("deleted_at","=",null)
+                                            ->where("dtrans.deleted_at","=",null)
                                             ->get();
                                     // dd($dtrans);
                                 @endphp

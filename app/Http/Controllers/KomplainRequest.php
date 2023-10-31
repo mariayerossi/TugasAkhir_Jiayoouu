@@ -222,7 +222,7 @@ class KomplainRequest extends Controller
 
         $data2 = [
             "id" => $request->id_request,
-            "status" => "Ditolak"
+            "status" => "Dibatalkan"
         ];
 
         //pembatalan request otomatis
@@ -251,7 +251,7 @@ class KomplainRequest extends Controller
         $penang = new ModelsKomplainRequest();
         $penang->updatePenanganan($data4);
 
-        //notif pemilik/tempat
+        //notif pemilik/tempat yg mengajukan
         $komplain = DB::table('komplain_request')->where("id_komplain_req","=",$request->id_komplain)->get()->first();
 
         $jenis = "";
