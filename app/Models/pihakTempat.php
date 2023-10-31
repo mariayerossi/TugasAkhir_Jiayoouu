@@ -34,7 +34,7 @@ class pihakTempat extends Model
         $tempat->saldo_tempat = $data["saldo"];
         $tempat->norek_tempat = null;
         $tempat->nama_rek_tempat = null;
-        $tempat->nama_bank_tempat == null;
+        $tempat->nama_bank_tempat = null;
         $tempat->email_verified_at = $data["veri"];
         $tempat->save();
     }
