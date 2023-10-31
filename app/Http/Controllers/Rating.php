@@ -25,7 +25,7 @@ class Rating extends Controller
         $rate = new ratingLapangan();
         $rate->insertRating($data);
 
-        return response()->json(['success' => true, 'message' => 'Berhasil Mengirim Rating!']);
+        return response()->json(['success' => true, 'message' => 'Berhasil Menambah Rating!']);
     }
 
     public function tambahRatingAlat(Request $request) {
@@ -44,6 +44,6 @@ class Rating extends Controller
         $rate = new ratingAlat();
         $rate->insertRating($data);
 
-        return response()->json(['success' => true, 'message' => 'Berhasil Mengirim Rating!']);
+        return response()->json(['success' => true, 'message' => 'Berhasil Menambah Rating!']);
     }
 }

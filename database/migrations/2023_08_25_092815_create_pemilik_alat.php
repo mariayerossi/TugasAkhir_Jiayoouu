@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('ktp_pemilik',255);
             $table->string('password_pemilik',255);
             $table->string('saldo_pemilik',255);
+            $table->integer('norek_pemilik',20)->nullable();
+            $table->string('nama_rek_pemilik',255)->nullable();
+            $table->string('nama_bank_pemilik',255)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();

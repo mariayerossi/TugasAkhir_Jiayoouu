@@ -22,6 +22,9 @@ return new class extends Migration
             $table->string('npwp_tempat',255);
             $table->string('password_tempat',255);
             $table->string('saldo_tempat',255);
+            $table->integer('norek_tempat',20)->nullable();
+            $table->string('nama_rek_tempat',255)->nullable();
+            $table->string('nama_bank_tempat',255)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
