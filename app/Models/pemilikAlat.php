@@ -29,6 +29,9 @@ class pemilikAlat extends Model
         $pemilik->ktp_pemilik = $data["ktp"];
         $pemilik->password_pemilik = $data["password"];
         $pemilik->saldo_pemilik = $data["saldo"];
+        $pemilik->norek_pemilik = null;
+        $pemilik->nama_rek_pemilik = null;
+        $pemilik->nama_bank_pemilik == null;
         $pemilik->email_verified_at = null;
         $pemilik->save();
 

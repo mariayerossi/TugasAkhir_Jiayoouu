@@ -34,6 +34,9 @@ class DatabaseSeeder extends Seeder
             'ktp_pemilik' => "ktp_pemilik1.jpg",
             'password_pemilik' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_pemilik' => "VUlDVVNC",//800.000
+            'norek_pemilik' => null,
+            'nama_rek_pemilik' => null,
+            'nama_bank_pemilik' => null,
             'email_verified_at' => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -62,6 +65,9 @@ class DatabaseSeeder extends Seeder
             'npwp_tempat' => "npwp_tempat1.jpg",
             'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_tempat' => "VUlDVVNC",//800.000
+            'norek_tempat' => null,
+            'nama_rek_tempat' => null,
+            'nama_bank_tempat' => null,
             'email_verified_at' => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
         ]);
