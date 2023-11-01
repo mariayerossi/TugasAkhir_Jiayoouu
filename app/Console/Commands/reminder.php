@@ -510,161 +510,163 @@ class reminder extends Command
                 //---------------------------------------------------------------------
 
                 //jika status masih "diterima" sampai 1 jam setelah jam mulai tiba kasih reminder ke cust (1 jam setelah jam sewa)
-                $tanggal3 = $value->tanggal_sewa." ".$value->jam_sewa;
-                $sewa3 = new DateTime($tanggal3);
-                $sewa3->add(new DateInterval('PT1H'));
-                $sew3 = $sewa3->format('Y-m-d H:i:s');
+                if ($value->status_trans == "Diterima") {
+                    $tanggal3 = $value->tanggal_sewa." ".$value->jam_sewa;
+                    $sewa3 = new DateTime($tanggal3);
+                    $sewa3->add(new DateInterval('PT1H'));
+                    $sew3 = $sewa3->format('Y-m-d H:i:s');
 
-                if ($sew3 == $sekarang) {
-                    //kasih reminder ke cust
-                    $dataCust = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
+                    if ($sew3 == $sekarang) {
+                        //kasih reminder ke cust
+                        $dataCust = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
 
-                    $tanggalAwal3 = $value->tanggal_sewa;
-                    $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
-                    $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+                        $tanggalAwal3 = $value->tanggal_sewa;
+                        $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+                        $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
 
-                    $dataNotif = [
-                        "subject" => "🔔Halo! Anda Terlambat Datang ke Lapangan!🔔",
-                        "judul" => "Jangan Lupa Datang ya!",
-                        "nama_user" => $dataCust->nama_user,
-                        "url" => "https://sportiva.my.id/customer/daftarRiwayat",
-                        "button" => "Lihat Transaksi",
-                        "isi" => "Detail Sewa Lapangan:<br><br>
-                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
-                                <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
-                                <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
-                                Perhatian! Jika tidak datang sampai jam akhir sewa, transaksi akan otomatis selesai dan dana tidak dapat dikembalikan. 😊"
-                    ];
-                    $e = new notifikasiEmail();
-                    $e->sendEmail($dataCust->email_user, $dataNotif);
-                }
+                        $dataNotif = [
+                            "subject" => "🔔Halo! Anda Terlambat Datang ke Lapangan!🔔",
+                            "judul" => "Jangan Lupa Datang ya!",
+                            "nama_user" => $dataCust->nama_user,
+                            "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                            "button" => "Lihat Transaksi",
+                            "isi" => "Detail Sewa Lapangan:<br><br>
+                                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                    <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
+                                    <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
+                                    Perhatian! Jika tidak datang sampai jam akhir sewa, transaksi akan otomatis selesai dan dana tidak dapat dikembalikan. 😊"
+                        ];
+                        $e = new notifikasiEmail();
+                        $e->sendEmail($dataCust->email_user, $dataNotif);
+                    }
 
-                //----------------------------------------------------------------------
-                //jika status masih "diterima" sampai waktu jam selesai tiba (cust tidak datang), status trans otomatis selesai dan dana masuk ke saldo tempat
-                $jam_sewa = $value->tanggal_sewa." ".$value->jam_sewa;
-                $durasi_sewa = $value->durasi_sewa;  // Misalnya durasi sewa adalah 3 jam
+                    //----------------------------------------------------------------------
+                    //jika status masih "diterima" sampai waktu jam selesai tiba (cust tidak datang), status trans otomatis selesai dan dana masuk ke saldo tempat
+                    $jam_sewa = $value->tanggal_sewa." ".$value->jam_sewa;
+                    $durasi_sewa = $value->durasi_sewa;  // Misalnya durasi sewa adalah 3 jam
 
-                // Membuat objek DateTime dari jam_sewa
-                $waktuMulai = new DateTime($jam_sewa);
+                    // Membuat objek DateTime dari jam_sewa
+                    $waktuMulai = new DateTime($jam_sewa);
 
-                // Menambahkan durasi_sewa ke waktuMulai
-                $waktuMulai->add(new DateInterval('PT' . $durasi_sewa . 'H'));
+                    // Menambahkan durasi_sewa ke waktuMulai
+                    $waktuMulai->add(new DateInterval('PT' . $durasi_sewa . 'H'));
 
-                // Mendapatkan jam_selesai_sewa
-                $jam_selesai_sewa = $waktuMulai->format('Y-m-d H:i:s');
+                    // Mendapatkan jam_selesai_sewa
+                    $jam_selesai_sewa = $waktuMulai->format('Y-m-d H:i:s');
 
-                $sewa4 = new DateTime($jam_selesai_sewa);
-                $sew4 = $sewa4->format('Y-m-d H:i:s');
+                    $sewa4 = new DateTime($jam_selesai_sewa);
+                    $sew4 = $sewa4->format('Y-m-d H:i:s');
 
-                if ($sew4 == $sekarang) {
-                    $data = [
-                        "id" => $value->id_htrans,
-                        "status" => "Selesai"
-                    ];
-                    $trans = new htrans();
-                    $trans->updateStatus($data);
+                    if ($sew4 == $sekarang) {
+                        $data = [
+                            "id" => $value->id_htrans,
+                            "status" => "Selesai"
+                        ];
+                        $trans = new htrans();
+                        $trans->updateStatus($data);
 
-                    $dataTempat2 = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
-            
-                    $dataHtrans = DB::table('htrans')->where("id_htrans","=",$value->id_htrans)->get()->first();
-                    $extend = DB::table('extend_htrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get()->first();
-                    $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$value->id_htrans)->get();
-            
-                    //total komisi dari alat miliknya sendiri
-                    $total_komisi_tempat = 0;
-                    if (!$dataDtrans->isEmpty()) {
-                        foreach ($dataDtrans as $key => $value2) {
-                            if ($value2->fk_id_tempat == $value->fk_id_tempat) {
-                                $extend_dtrans = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value2->id_dtrans)->get()->first();
-                                if ($extend_dtrans != null) {
-                                    $total_komisi_tempat += $extend_dtrans->total_komisi_tempat;
+                        $dataTempat2 = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+                
+                        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$value->id_htrans)->get()->first();
+                        $extend = DB::table('extend_htrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get()->first();
+                        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$value->id_htrans)->get();
+                
+                        //total komisi dari alat miliknya sendiri
+                        $total_komisi_tempat = 0;
+                        if (!$dataDtrans->isEmpty()) {
+                            foreach ($dataDtrans as $key => $value2) {
+                                if ($value2->fk_id_tempat == $value->fk_id_tempat) {
+                                    $extend_dtrans = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value2->id_dtrans)->get()->first();
+                                    if ($extend_dtrans != null) {
+                                        $total_komisi_tempat += $extend_dtrans->total_komisi_tempat;
+                                    }
+                                    $total_komisi_tempat += $value2->total_komisi_tempat;
                                 }
-                                $total_komisi_tempat += $value2->total_komisi_tempat;
                             }
                         }
-                    }
-            
-                    $extend_subtotal = 0;
-                    $extend_total = 0;
-                    if ($extend != null) {
-                        $extend_subtotal = $extend->subtotal_lapangan;
-                        $extend_total = $extend->total;
-                    }
-            
-                    //subtotal lapangan masuk ke saldo tempat & total komisi tempat ditahan dulu
-                    //klo masa sewa sdh selesai baru dimasukin saldo tempat
-                    $saldo = (int)$this->decodePrice($dataTempat2->saldo_tempat, "mysecretkey");
-                    // dd($extend->subtotal_lapangan);
-                    $saldo += (int)$dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat;
-            
-                    //enkripsi kembali saldo
-                    $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
-            
-                    //update db user
-                    $dataSaldo = [
-                        "id" => $dataTempat2->id_tempat,
-                        "saldo" => $enkrip
-                    ];
-                    $temp = new pihakTempat();
-                    $temp->updateSaldo($dataSaldo);
-            
-                    // total komisi pemilik masuk ke saldo pemilik
-                    if (!$dataDtrans->isEmpty()) {
-                        foreach ($dataDtrans as $key => $value) {
-                            if ($value->fk_id_pemilik != null) {
-                                $extend_dtrans2 = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value->id_dtrans)->get()->first();
-            
-                                $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
-                                // dd($value->total_komisi_pemilik);
-            
-                                $saldo2 = (int)$this->decodePrice($pemilik->saldo_pemilik, "mysecretkey");
-                                // dd($saldo2);
-                                $extend_total_komisi = 0;
-                                if ($extend_dtrans2 != null) {
-                                    $extend_total_komisi = $extend_dtrans2->total_komisi_pemilik;
+                
+                        $extend_subtotal = 0;
+                        $extend_total = 0;
+                        if ($extend != null) {
+                            $extend_subtotal = $extend->subtotal_lapangan;
+                            $extend_total = $extend->total;
+                        }
+                
+                        //subtotal lapangan masuk ke saldo tempat & total komisi tempat ditahan dulu
+                        //klo masa sewa sdh selesai baru dimasukin saldo tempat
+                        $saldo = (int)$this->decodePrice($dataTempat2->saldo_tempat, "mysecretkey");
+                        // dd($extend->subtotal_lapangan);
+                        $saldo += (int)$dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat;
+                
+                        //enkripsi kembali saldo
+                        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+                
+                        //update db user
+                        $dataSaldo = [
+                            "id" => $dataTempat2->id_tempat,
+                            "saldo" => $enkrip
+                        ];
+                        $temp = new pihakTempat();
+                        $temp->updateSaldo($dataSaldo);
+                
+                        // total komisi pemilik masuk ke saldo pemilik
+                        if (!$dataDtrans->isEmpty()) {
+                            foreach ($dataDtrans as $key => $value) {
+                                if ($value->fk_id_pemilik != null) {
+                                    $extend_dtrans2 = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value->id_dtrans)->get()->first();
+                
+                                    $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
+                                    // dd($value->total_komisi_pemilik);
+                
+                                    $saldo2 = (int)$this->decodePrice($pemilik->saldo_pemilik, "mysecretkey");
+                                    // dd($saldo2);
+                                    $extend_total_komisi = 0;
+                                    if ($extend_dtrans2 != null) {
+                                        $extend_total_komisi = $extend_dtrans2->total_komisi_pemilik;
+                                    }
+                                    $saldo2 += (int)$value->total_komisi_pemilik + $extend_total_komisi;
+                                    // dd($saldo2);
+                
+                                    $enkrip2 = $this->encodePrice((string)$saldo2, "mysecretkey");
+                
+                                    //update db
+                                    $dataSaldo2 = [
+                                        "id" => $value->fk_id_pemilik,
+                                        "saldo" => $enkrip2
+                                    ];
+                                    $pem = new pemilikAlat();
+                                    $pem->updateSaldo($dataSaldo2);
                                 }
-                                $saldo2 += (int)$value->total_komisi_pemilik + $extend_total_komisi;
-                                // dd($saldo2);
-            
-                                $enkrip2 = $this->encodePrice((string)$saldo2, "mysecretkey");
-            
-                                //update db
-                                $dataSaldo2 = [
-                                    "id" => $value->fk_id_pemilik,
-                                    "saldo" => $enkrip2
-                                ];
-                                $pem = new pemilikAlat();
-                                $pem->updateSaldo($dataSaldo2);
                             }
                         }
-                    }
-            
-                    //notif ke customer
-                    $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
-                    $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
-            
-                    $dtransStr = "";
-                    if (!$dataDtrans->isEmpty()) {
-                        foreach ($dataDtrans as $key => $value) {
-                            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
-                            $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+                
+                        //notif ke customer
+                        $cust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->get()->first();
+                        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->get()->first();
+                
+                        $dtransStr = "";
+                        if (!$dataDtrans->isEmpty()) {
+                            foreach ($dataDtrans as $key => $value) {
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+                            }
                         }
+                        
+                        $dataNotif = [
+                            "subject" => "🎉Transaksi Anda Telah Selesai!🎉",
+                            "judul" => "Transaksi Anda Telah Selesai!",
+                            "nama_user" => $cust->nama_user,
+                            "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                            "button" => "Lihat Transaksi",
+                            "isi" => "Yeay! Transaksi Anda telah selesai:<br><br>
+                                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                    ".$dtransStr."<br>
+                                    <b>Total Transaksi: Rp ".number_format($dataHtrans->total_trans + $extend_total, 0, ',', '.')."</b><br><br>
+                                    Terima kasih telah mempercayai layanan kami. Tetap Jaga Pola Sehat Anda bersama Sportiva! 😊"
+                        ];
+                        $e = new notifikasiEmail();
+                        $e->sendEmail($cust->email_user, $dataNotif);
                     }
-                    
-                    $dataNotif = [
-                        "subject" => "🎉Transaksi Anda Telah Selesai!🎉",
-                        "judul" => "Transaksi Anda Telah Selesai!",
-                        "nama_user" => $cust->nama_user,
-                        "url" => "https://sportiva.my.id/customer/daftarRiwayat",
-                        "button" => "Lihat Transaksi",
-                        "isi" => "Yeay! Transaksi Anda telah selesai:<br><br>
-                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
-                                ".$dtransStr."<br>
-                                <b>Total Transaksi: Rp ".number_format($dataHtrans->total_trans + $extend_total, 0, ',', '.')."</b><br><br>
-                                Terima kasih telah mempercayai layanan kami. Tetap Jaga Pola Sehat Anda bersama Sportiva! 😊"
-                    ];
-                    $e = new notifikasiEmail();
-                    $e->sendEmail($cust->email_user, $dataNotif);
                 }
             }
         }
