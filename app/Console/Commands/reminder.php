@@ -157,15 +157,22 @@ class reminder extends Command
                     $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
                     $transaksi = DB::table('dtrans')
-                                ->select("dtrans.total_komisi_tempat")
+                                ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
                                 ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                                 ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                 ->where("htrans.status_trans","=","Selesai")
                                 ->get();
                     $total = 0;
                     if (!$transaksi->isEmpty()) {
                         foreach ($transaksi as $key => $value2) {
-                            $total += $value2->total_komisi_tempat;
+                            if ($value2->total_ext != null) {
+                                $total += $value2->total_komisi_tempat + $value2->total_ext;
+                            }
+                            else {
+                                $total += $value2->total_komisi_tempat;
+                            }
                         }
                     }
 
@@ -313,15 +320,22 @@ class reminder extends Command
                     $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
                     $transaksi = DB::table('dtrans')
-                                ->select("dtrans.total_komisi_tempat")
+                                ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
                                 ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                                 ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                 ->where("htrans.status_trans","=","Selesai")
                                 ->get();
                     $total = 0;
                     if (!$transaksi->isEmpty()) {
                         foreach ($transaksi as $key => $value2) {
-                            $total += $value2->total_komisi_tempat;
+                            if ($value2->total_ext != null) {
+                                $total += $value2->total_komisi_tempat + $value2->total_ext;
+                            }
+                            else {
+                                $total += $value2->total_komisi_tempat;
+                            }
                         }
                     }
 

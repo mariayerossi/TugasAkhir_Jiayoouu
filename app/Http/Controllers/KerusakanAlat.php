@@ -13,9 +13,35 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\notifikasiEmail;
+use App\Models\pihakTempat;
 
 class KerusakanAlat extends Controller
 {
+    private function encodePrice($price, $key) {
+        $encodedPrice = '';
+        $priceLength = strlen($price);
+        $keyLength = strlen($key);
+    
+        for ($i = 0; $i < $priceLength; $i++) {
+            $encodedPrice .= $price[$i] ^ $key[$i % $keyLength];
+        }
+    
+        return base64_encode($encodedPrice);
+    }
+
+    private function decodePrice($encodedPrice, $key) {
+        $encodedPrice = base64_decode($encodedPrice);
+        $decodedPrice = '';
+        $priceLength = strlen($encodedPrice);
+        $keyLength = strlen($key);
+    
+        for ($i = 0; $i < $priceLength; $i++) {
+            $decodedPrice .= $encodedPrice[$i] ^ $key[$i % $keyLength];
+        }
+    
+        return $decodedPrice;
+    }
+    
     public function ajukanKerusakan(Request $request) {
         // Mengambil semua data dari request
         $cek = false;
@@ -45,18 +71,20 @@ class KerusakanAlat extends Controller
                             ->get()
                             ->first();
 
-                    //ubah status alat menjadi non aktif
+                    //hapus alat
+                    date_default_timezone_set("Asia/Jakarta");
                     $data2 = [
                         "id" => $dataTrans->fk_id_alat,
-                        "status" => "Non Aktif"
+                        "tanggal" => date("Y-m-d H:i:s")
                     ];
                     $alat = new alatOlahraga();
-                    $alat->updateStatus($data2);
+                    $alat->softDelete($data2);
 
                     //hapus request alat di tempat
                     $permintaan = DB::table('request_permintaan')
                                 ->where("req_id_alat","=",$dataTrans->fk_id_alat)
                                 ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
+                                ->where("status_permintaan","=","Disewakan")
                                 ->get();
                     if (!$permintaan->isEmpty()) {
                         $id = $permintaan->first()->id_permintaan;
@@ -67,11 +95,46 @@ class KerusakanAlat extends Controller
                         ];
                         $per = new requestPermintaan();
                         $per->updateStatus($data3);
+
+                        //memasukkan total komisi ke saldo tempat
+                        $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->first()->fk_id_tempat)->get()->first();
+                        $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
+
+                        $transaksi = DB::table('dtrans')
+                                    ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
+                                    ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                    ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                                    ->where("dtrans.fk_id_alat","=",$dataTrans->fk_id_alat)
+                                    ->where("htrans.fk_id_tempat","=",$permintaan->first()->fk_id_tempat)
+                                    ->where("htrans.status_trans","=","Selesai")
+                                    ->get();
+                        $total = 0;
+                        if (!$transaksi->isEmpty()) {
+                            foreach ($transaksi as $key => $value2) {
+                                if ($value2->total_ext != null) {
+                                    $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                }
+                                else {
+                                    $total += $value2->total_komisi_tempat;
+                                }
+                            }
+                        }
+
+                        $saldoTempat += $total;
+                        $enkrip = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+
+                        $temp = new pihakTempat();
+                        $dataSaldo3 = [
+                            "id" => $permintaan->first()->fk_id_tempat,
+                            "saldo" => $enkrip
+                        ];
+                        $temp->updateSaldo($dataSaldo3);
                     }
                     else {
                         $penawaran = DB::table('request_penawaran')
                                 ->where("req_id_alat","=",$dataTrans->fk_id_alat)
                                 ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
+                                ->where("status_penawaran","=","Disewakan")
                                 ->get();
                         if (!$penawaran->isEmpty()) {
                             $id = $penawaran->first()->id_penawaran;
@@ -82,6 +145,41 @@ class KerusakanAlat extends Controller
                             ];
                             $pen = new requestPenawaran();
                             $pen->updateStatus($data3);
+
+                            //memasukkan total komisi ke saldo tempat
+                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->first()->fk_id_tempat)->get()->first();
+                            $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
+
+                            $transaksi = DB::table('dtrans')
+                                        ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
+                                        ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                        ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                                        ->where("dtrans.fk_id_alat","=",$penawaran->first()->req_id_alat)
+                                        ->where("htrans.fk_id_tempat","=",$penawaran->first()->fk_id_tempat)
+                                        ->where("htrans.status_trans","=","Selesai")
+                                        ->get();
+                                        // dd($transaksi);
+                            $total = 0;
+                            if (!$transaksi->isEmpty()) {
+                                foreach ($transaksi as $key => $value2) {
+                                    if ($value2->total_ext != null) {
+                                        $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                    }
+                                    else {
+                                        $total += $value2->total_komisi_tempat;
+                                    }
+                                }
+                            }
+
+                            $saldoTempat += $total;
+                            $enkrip = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+
+                            $dataSaldo3 = [
+                                "id" => $penawaran->first()->fk_id_tempat,
+                                "saldo" => $enkrip
+                            ];
+                            $temp = new pihakTempat();
+                            $temp->updateSaldo($dataSaldo3);
                         }
                         else {
                             $sewa = DB::table('sewa_sendiri')
@@ -134,7 +232,7 @@ class KerusakanAlat extends Controller
                                     Terus sewakan alat olahragamu di Sportiva!"
                         ];
                         $e = new notifikasiEmail();
-                        $e->sendEmail("maria_y20@mhs.istts.ac.id", $dataNotif);
+                        $e->sendEmail($pemilik->email_pemilik, $dataNotif);
                     }
                 }
                 else {

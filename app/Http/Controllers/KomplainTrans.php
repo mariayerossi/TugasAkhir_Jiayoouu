@@ -207,20 +207,26 @@ class KomplainTrans extends Controller
                             $permintaan->updateStatus($dataPer1);
 
                             //tambahkan seluruh komisi tempat ke saldo
-                            // dd($value->fk_id_tempat);
                             $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
                             $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
                             $transaksi = DB::table('dtrans')
-                                        ->select("dtrans.total_komisi_tempat")
+                                        ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
                                         ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                        ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                                         ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                        ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                         ->where("htrans.status_trans","=","Selesai")
                                         ->get();
                             $total = 0;
                             if (!$transaksi->isEmpty()) {
                                 foreach ($transaksi as $key => $value2) {
-                                    $total += $value2->total_komisi_tempat;
+                                    if ($value2->total_ext != null) {
+                                        $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                    }
+                                    else {
+                                        $total += $value2->total_komisi_tempat;
+                                    }
                                 }
                             }
 
@@ -251,6 +257,21 @@ class KomplainTrans extends Controller
                             ];
                             $e2 = new notifikasiEmail();
                             $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
+
+                            //kirim notif ke tempat, request selesai
+                            $dataNotif3 = [
+                                "subject" => "⚠️Persewaan Alat Olahraga Sudah Selesai!⚠️",
+                                "judul" => "Persewaan Alat Olahraga Sudah Selesai!",
+                                "nama_user" => $dataTempat->nama_tempat,
+                                "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                "button" => "Lihat Detail Permintaan",
+                                "isi" => "Masa sewa alat dari:<br><br>
+                                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                        <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                        Sudah selesai. Silahkan cari dan temukan alat olahraga lain untuk disewakan! Terima kasih telah mempercayai Sportiva! 😊"
+                            ];
+                            $e3 = new notifikasiEmail();
+                            $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
                         }
                     }
                     else {
@@ -271,15 +292,22 @@ class KomplainTrans extends Controller
                                 $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
                                 $transaksi = DB::table('dtrans')
-                                            ->select("dtrans.total_komisi_tempat")
+                                            ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
                                             ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                            ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                                             ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                            ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                             ->where("htrans.status_trans","=","Selesai")
                                             ->get();
                                 $total = 0;
                                 if (!$transaksi->isEmpty()) {
                                     foreach ($transaksi as $key => $value2) {
-                                        $total += $value2->total_komisi_tempat;
+                                        if ($value2->total_ext != null) {
+                                            $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                        }
+                                        else {
+                                            $total += $value2->total_komisi_tempat;
+                                        }
                                     }
                                 }
 
@@ -310,6 +338,21 @@ class KomplainTrans extends Controller
                                 ];
                                 $e2 = new notifikasiEmail();
                                 $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
+
+                                //kirim notif ke tempat, request selesai
+                                $dataNotif3 = [
+                                    "subject" => "⚠️Persewaan Alat Olahraga Sudah Selesai!⚠️",
+                                    "judul" => "Persewaan Alat Olahraga Sudah Selesai!",
+                                    "nama_user" => $dataTempat->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Sudah selesai. Silahkan cari dan temukan alat olahraga lain untuk disewakan! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e3 = new notifikasiEmail();
+                                $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
                             }
                         }
                     }
@@ -337,15 +380,22 @@ class KomplainTrans extends Controller
                             $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
                             $transaksi = DB::table('dtrans')
-                                        ->select("dtrans.total_komisi_tempat")
+                                        ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
                                         ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                        ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                                         ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                        ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                         ->where("htrans.status_trans","=","Selesai")
                                         ->get();
                             $total = 0;
                             if (!$transaksi->isEmpty()) {
                                 foreach ($transaksi as $key => $value2) {
-                                    $total += $value2->total_komisi_tempat;
+                                    if ($value2->total_ext != null) {
+                                        $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                    }
+                                    else {
+                                        $total += $value2->total_komisi_tempat;
+                                    }
                                 }
                             }
 
@@ -376,6 +426,21 @@ class KomplainTrans extends Controller
                             ];
                             $e2 = new notifikasiEmail();
                             $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
+
+                            //kirim notif ke tempat, request selesai
+                            $dataNotif3 = [
+                                "subject" => "⚠️Persewaan Alat Olahraga Sudah Selesai!⚠️",
+                                "judul" => "Persewaan Alat Olahraga Sudah Selesai!",
+                                "nama_user" => $dataTempat->nama_tempat,
+                                "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                "button" => "Lihat Detail Permintaan",
+                                "isi" => "Masa sewa alat dari:<br><br>
+                                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                        <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                        Sudah selesai. Silahkan cari dan temukan alat olahraga lain untuk disewakan! Terima kasih telah mempercayai Sportiva! 😊"
+                            ];
+                            $e3 = new notifikasiEmail();
+                            $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
                         }
                     }
                     else {
@@ -395,15 +460,22 @@ class KomplainTrans extends Controller
                                 $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
                                 $transaksi = DB::table('dtrans')
-                                            ->select("dtrans.total_komisi_tempat")
+                                            ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
                                             ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                            ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                                             ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                            ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                             ->where("htrans.status_trans","=","Selesai")
                                             ->get();
                                 $total = 0;
                                 if (!$transaksi->isEmpty()) {
                                     foreach ($transaksi as $key => $value2) {
-                                        $total += $value2->total_komisi_tempat;
+                                        if ($value2->total_ext != null) {
+                                            $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                        }
+                                        else {
+                                            $total += $value2->total_komisi_tempat;
+                                        }
                                     }
                                 }
 
@@ -434,6 +506,21 @@ class KomplainTrans extends Controller
                                 ];
                                 $e2 = new notifikasiEmail();
                                 $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
+
+                                //kirim notif ke tempat, request selesai
+                                $dataNotif3 = [
+                                    "subject" => "⚠️Persewaan Alat Olahraga Sudah Selesai!⚠️",
+                                    "judul" => "Persewaan Alat Olahraga Sudah Selesai!",
+                                    "nama_user" => $dataTempat->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Sudah selesai. Silahkan cari dan temukan alat olahraga lain untuk disewakan! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e3 = new notifikasiEmail();
+                                $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
                             }
                         }
                     }
