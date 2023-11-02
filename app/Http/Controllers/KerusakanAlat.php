@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\alatOlahraga;
+use App\Models\customer;
 use App\Models\dtrans;
 use App\Models\htrans;
 use App\Models\kerusakanAlat as ModelsKerusakanAlat;
@@ -79,6 +80,54 @@ class KerusakanAlat extends Controller
                     ];
                     $alat = new alatOlahraga();
                     $alat->softDelete($data2);
+
+                    //hapus dtrans yang berhubungan dengan alat ini
+                    $dataDtrans2 = DB::table('dtrans')
+                                ->select("dtrans.id_dtrans","user.saldo_user","user.nama_user","user.email_user","user.id_user","dtrans.subtotal_alat","alat_olahraga.nama_alat","htrans.kode_trans")
+                                ->leftJoin("htrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                                ->join("user","htrans.fk_id_user","=","user.id_user")
+                                ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
+                                ->where("dtrans.fk_id_alat","=",$dataTrans->fk_id_alat)
+                                ->where("htrans.status_trans","=","Diterima")
+                                ->get();
+
+                    if (!$dataDtrans2->isEmpty()) {
+                        foreach ($dataDtrans2 as $key => $value) {
+                            //kembalikan dana ke saldo cust
+                            $saldoUser = (int)$this->decodePrice($value->saldo_user, "mysecretkey");
+                            $saldoUser += $value->subtotal_alat;
+                            $enkripUser = $this->encodePrice((string)$saldoUser, "mysecretkey");
+
+                            $dataSaldoUser = [
+                                "id" => $value->id_user,
+                                "saldo" => $enkripUser
+                            ];
+                            $user = new customer();
+                            $user->updateSaldo($dataSaldoUser);
+
+                            $data3 = [
+                                "id" => $value->id_dtrans,
+                                "tanggal" => date("Y-m-d H:i:s")
+                            ];
+                            $dtrans = new dtrans();
+                            $dtrans->softDelete($data3);
+
+                            //kasih notif ke cust
+                            $dataNotifUser = [
+                                "subject" => "😢Pembatalan Alat Olahraga yang Dipesan😢",
+                                "judul" => "Pembatalan Alat Olahraga yang Dipesan",
+                                "nama_user" => $value->nama_user,
+                                "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                                "button" => "Lihat Detail Transaksi",
+                                "isi" => "Maaf! Alat olahraga yang anda pesan:<br><br>
+                                        <b>Nama Alat Olahraga: ".$value->nama_alat."</b><br>
+                                        <b>dari Transaksi: ".$value->kode_trans."</b><br><br>
+                                        Telah mengalami kerusakan, oleh karena itu alat olahraga tersebut akan otomatis dibatalkan dari transaksi dan dana telah kami kembalikan ke saldo anda!"
+                            ];
+                            $e = new notifikasiEmail();
+                            $e->sendEmail($value->email_user, $dataNotifUser);
+                        }
+                    }
 
                     //hapus request alat di tempat
                     $permintaan = DB::table('request_permintaan')

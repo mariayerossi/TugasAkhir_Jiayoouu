@@ -32,6 +32,13 @@
         width: 60px;
         height: 60px;
     }
+    .truncate-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 70%;
+        display: block;
+    }
 }
 .tiny-card {
     width: 150px; /* Lebar tetap kartu */
@@ -161,7 +168,7 @@
                                         </div>
                                         
                                         <!-- Nama Alat -->
-                                        <div class="col-8 d-flex align-items-center justify-content-between">
+                                        <div class="col-8 d-flex flex-wrap align-items-center justify-content-between">
                                             <div>
                                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                                 <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>
@@ -189,7 +196,7 @@
                                         </div>
                                         
                                         <!-- Nama Alat -->
-                                        <div class="col-8 d-flex align-items-center justify-content-between">
+                                        <div class="col-8 d-flex flex-wrap align-items-center justify-content-between">
                                             <div>
                                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                                 <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>

@@ -1,5 +1,6 @@
 @extends('layouts.sidebarNavbar_tempat')
-
+<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 @section('content')
 <style>
 .square-image-container {
@@ -31,6 +32,13 @@
     .square-image-container {
         width: 60px;
         height: 60px;
+    }
+    .truncate-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 90%;
+        display: block;
     }
 }
 .tiny-card {
@@ -139,7 +147,7 @@
     </div>
     
     <div class="row mt-5">
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-9 col-sm-12">
             <h5>Alat Olahraga yang Disewa</h5>
             @if (!$dtrans->isEmpty())
                 @foreach ($dtrans as $item)
@@ -161,9 +169,16 @@
                                         </div>
                                         
                                         <!-- Nama Alat -->
-                                        <div class="col-8">
-                                            <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                            <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>
+                                        <div class="col-8 d-flex flex-wrap align-items-center justify-content-between">
+                                            <div>
+                                                <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                                <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>
+                                            </div>
+                                            <form action="/tempat/kerusakan/ajukanKerusakan" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
+                                                <button type="submit" class="ajukan btn btn-warning btn-sm">Ajukan Kerusakan</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -182,9 +197,16 @@
                                         </div>
                                         
                                         <!-- Nama Alat -->
-                                        <div class="col-8">
-                                            <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                            <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>
+                                        <div class="col-8 d-flex flex-wrap align-items-center justify-content-between">
+                                            <div>
+                                                <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                                <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>
+                                            </div>
+                                            <form action="/tempat/kerusakan/ajukanKerusakan" method="post">
+                                                @csrf
+                                                <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
+                                                <button type="submit" class="ajukan btn btn-warning btn-sm">Ajukan Kerusakan</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -312,7 +334,6 @@
                                 <h5 class="card-title truncate-text">{{$dataLapangan->nama_lapangan}}</h5>
                                 <!-- Contoh detail lain: -->
                                 <p class="card-text">Rp {{number_format($dataLapangan->harga_sewa_lapangan, 0, ',', '.')}} x {{$extend->first()->durasi_extend}} Jam</p>
-                                {{-- Anda bisa menambahkan detail lain di sini sesuai kebutuhan Anda --}}
                             </div>
                         </div>
                     </div>
@@ -434,7 +455,7 @@
         @if (!$extend->isEmpty() && $extend->first()->status_extend != "Menunggu" || $extend->isEmpty())
             <div class="d-flex justify-content-end mt-5 me-3 mb-5">
                 @if (!$dtrans->isEmpty())
-                    <a href="/tempat/kerusakan/detailKerusakan/{{$htrans->first()->id_htrans}}" class="btn btn-warning me-2">Ajukan Kerusakan Alat</a>
+                    {{-- <a href="/tempat/kerusakan/detailKerusakan/{{$htrans->first()->id_htrans}}" class="btn btn-warning me-2">Ajukan Kerusakan Alat</a> --}}
                     {{-- <button class="btn btn-warning me-2">Ajukan Kerusakan Alat</button> --}}
                 @endif
                 <form action="/tempat/transaksi/cetakNota" method="get">
@@ -640,6 +661,60 @@
             });
         });
 
+        $(".ajukan").click(async function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            const inputOptions = new Promise((resolve) => {
+                resolve({
+                    'Ya': 'Ya',
+                    'Tidak': 'Tidak'
+                });
+                });
+
+                let color;
+                let uploadedFile;
+
+                await Swal.fire({
+                title: 'Select color',
+                input: 'radio',
+                inputOptions: inputOptions,
+                inputValidator: (value) => {
+                    if (!value) {
+                    return 'You need to choose a color!';
+                    }
+                }
+                }).then((result) => {
+                color = result.value;
+                }).then(async () => {
+                const { value: file } = await Swal.fire({
+                    title: 'Select image',
+                    input: 'file',
+                    inputAttributes: {
+                    'accept': 'image/*',
+                    'aria-label': 'Upload your profile picture'
+                    }
+                });
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                    Swal.fire({
+                        title: 'Your uploaded picture',
+                        imageUrl: e.target.result,
+                        imageAlt: 'The uploaded picture'
+                    });
+                    };
+                    reader.readAsDataURL(file);
+                }
+
+                return Swal.fire({
+                    html: `You selected: ${color}`,
+                    text: `Uploaded file: ${file ? file.name : 'None'}`
+                });
+                });
+
+        });
+        
         $("#tolakTrans").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
 
