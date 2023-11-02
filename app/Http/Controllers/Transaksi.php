@@ -1166,7 +1166,7 @@ class Transaksi extends Controller
 
         $dataDtrans = DB::table('dtrans')
                 ->where("dtrans.fk_id_htrans","=",$request->id_htrans)
-                ->where("deleted_at","=",null)
+                ->where("dtrans.deleted_at","=",null)
                 ->get();
         
         $jam_sewa = $htrans->jam_sewa;
@@ -1273,7 +1273,7 @@ class Transaksi extends Controller
         $dtrans = DB::table('dtrans')
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("dtrans.fk_id_htrans","=",$request->id_htrans)
-                ->where("deleted_at","=",null)
+                ->where("dtrans.deleted_at","=",null)
                 ->get();
         // dd($dtrans);
 
@@ -1765,7 +1765,7 @@ class Transaksi extends Controller
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                 ->where("htrans.id_htrans","=",$request->id_htrans)
-                ->where("deleted_at","=",null)
+                ->where("dtrans.deleted_at","=",null)
                 ->get();
         // dd($trans);
 
