@@ -1668,7 +1668,7 @@ class Transaksi extends Controller
         //klo masa sewa sdh selesai baru dimasukin saldo tempat
         $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_tempat, "mysecretkey");
         // dd($extend->subtotal_lapangan);
-        $saldo += (int)$dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat;
+        $saldo += (int)$dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat - $dataHtrans->pendapatan_website_lapangan;
 
         // dd($dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat);
         //enkripsi kembali saldo
@@ -1700,9 +1700,9 @@ class Transaksi extends Controller
                     // dd($saldo2);
                     $extend_total_komisi = 0;
                     if ($extend_dtrans2 != null) {
-                        $extend_total_komisi = $extend_dtrans2->total_komisi_pemilik;
+                        $extend_total_komisi = $extend_dtrans2->total_komisi_pemilik - $extend_dtrans2->pendapatan_website_alat;
                     }
-                    $saldo2 += (int)$value->total_komisi_pemilik + $extend_total_komisi;
+                    $saldo2 += (int)$value->total_komisi_pemilik - $value->pendapatan_website_alat + $extend_total_komisi;
                     // dd($saldo2);
 
                     $enkrip2 = $this->encodePrice((string)$saldo2, "mysecretkey");

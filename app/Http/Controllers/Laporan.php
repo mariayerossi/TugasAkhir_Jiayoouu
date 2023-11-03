@@ -763,8 +763,7 @@ class Laporan extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->where("htrans.fk_id_tempat", "=", $role)
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->groupBy(
                     "alat_olahraga.id_alat",
                     "alat_olahraga.nama_alat",
@@ -777,34 +776,7 @@ class Laporan extends Controller
                 ->get();
         // dd($coba);
 
-        $monthlyIncome = [];
-
-        for ($i = 1; $i <= 12; $i++) {
-            $monthlyIncome[$i] = 0; // inisialisasi pendapatan setiap bulan dengan 0
-        }
-
-        $dataHtrans = DB::table('htrans')->where("fk_id_tempat","=",$role)->get();
-        // dd($dataHtrans);
-        foreach ($dataHtrans as $data) {
-            $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$data->id_htrans)->get();
-            $year = date('Y', strtotime($data->tanggal_sewa));
-            $bulan = date('m', strtotime($data->tanggal_sewa));
-    
-            if ($year == date('Y')) {
-                $monthlyIncome[(int)$bulan] = $dataDtrans->count();
-            }
-        }
-
-        // Mengkonversi $monthlyIncome ke array biasa
-        $monthlyIncomeData = [];
-        foreach ($monthlyIncome as $income) {
-            $monthlyIncomeData[] = $income;
-        }
-
-        // $monthlyIncomeData = array_values($monthlyIncome);
-
         $param["disewakan"] = $coba;
-        $param["monthlyIncome"] = $monthlyIncomeData;
         return view("tempat.laporan.laporanDisewakan")->with($param);
     }
 

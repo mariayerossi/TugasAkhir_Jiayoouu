@@ -21,9 +21,9 @@
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Daftar Alat Olahraga yang Rusak</h3>
-    <div class="d-flex justify-content-end mb-4">
+    {{-- <div class="d-flex justify-content-end mb-4">
         <a href="/tempat/kerusakan/detailKerusakan2" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Alat yang Rusak</a>
-    </div>
+    </div> --}}
     <table class="table table-striped">
         <thead>
             <tr>

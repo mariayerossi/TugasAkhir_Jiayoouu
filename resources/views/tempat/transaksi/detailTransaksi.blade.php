@@ -76,6 +76,7 @@
 }
 
 </style>
+@include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <h3 class="text-center mb-5">Detail Transaksi</h3>
     <div class="d-flex justify-content-end mt-3 me-3">
@@ -174,11 +175,15 @@
                                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                                 <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>
                                             </div>
-                                            <form action="/tempat/kerusakan/ajukanKerusakan" method="post">
-                                                @csrf
-                                                <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
-                                                <button type="submit" class="ajukan btn btn-warning btn-sm">Ajukan Kerusakan</button>
-                                            </form>
+                                            @if ($htrans->first()->status_trans == "Berlangsung")
+                                                <form id="uploadForm" enctype="multipart/form-data" action="/tempat/kerusakan/ajukanKerusakan" method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
+                                                    <input type="hidden" name="unsur" id="unsurInput" value="">
+                                                    <input type="hidden" name="file" id="fileInput" value="">
+                                                    <button type="submit" class="ajukan btn btn-warning btn-sm">Ajukan Kerusakan</button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -202,11 +207,15 @@
                                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                                 <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>
                                             </div>
-                                            <form action="/tempat/kerusakan/ajukanKerusakan" method="post">
-                                                @csrf
-                                                <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
-                                                <button type="submit" class="ajukan btn btn-warning btn-sm">Ajukan Kerusakan</button>
-                                            </form>
+                                            @if ($htrans->first()->status_trans == "Berlangsung")
+                                                <form id="uploadForm" enctype="multipart/form-data" action="/tempat/kerusakan/ajukanKerusakan" method="post">
+                                                    @csrf
+                                                    <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
+                                                    <input type="hidden" name="unsur" id="unsurInput" value="">
+                                                    <input type="hidden" name="file" id="fileInput" value="">
+                                                    <button type="submit" class="ajukan btn btn-warning btn-sm">Ajukan Kerusakan</button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -666,52 +675,62 @@
 
             const inputOptions = new Promise((resolve) => {
                 resolve({
-                    'Ya': 'Ya',
-                    'Tidak': 'Tidak'
+                    'Ya': 'Ya, Disengaja',
+                    'Tidak': 'Tidak Sengaja'
                 });
                 });
 
-                let color;
+                let unsur;
                 let uploadedFile;
 
                 await Swal.fire({
-                title: 'Select color',
+                title: 'Apakah terdapat unsur kesengajaan dalam kerusakan alat olahraga?',
                 input: 'radio',
                 inputOptions: inputOptions,
                 inputValidator: (value) => {
                     if (!value) {
-                    return 'You need to choose a color!';
+                    return 'Anda harus memasukan unsur kesengajaan!';
                     }
-                }
+                },
+                theme: 'light'
                 }).then((result) => {
-                color = result.value;
+                unsur = result.value;
                 }).then(async () => {
                 const { value: file } = await Swal.fire({
-                    title: 'Select image',
+                    title: 'Lampirkan Bukti Foto (.jpg/.png/.jpeg)',
                     input: 'file',
                     inputAttributes: {
                     'accept': 'image/*',
-                    'aria-label': 'Upload your profile picture'
-                    }
+                    'aria-label': 'Tambahkan Bukti Foto yang Valid'
+                    },
+                    inputValidator: (value) => {
+                        if (!value) {
+                        return 'Anda harus memasukan Bukti Foto!';
+                        }
+                    },
+                    theme: 'light'
                 });
 
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                    Swal.fire({
-                        title: 'Your uploaded picture',
-                        imageUrl: e.target.result,
-                        imageAlt: 'The uploaded picture'
-                    });
-                    };
-                    reader.readAsDataURL(file);
-                }
+                // if (file) {
+                //     const reader = new FileReader();
+                //     reader.onload = (e) => {
+                //         Swal.fire({
+                //             title: 'Your uploaded picture',
+                //             imageUrl: e.target.result,
+                //             imageAlt: 'The uploaded picture'
+                //         });
+                //     };
+                //     reader.readAsDataURL(file);
+                // }
 
-                return Swal.fire({
-                    html: `You selected: ${color}`,
-                    text: `Uploaded file: ${file ? file.name : 'None'}`
-                });
-                });
+                // Set the values of the hidden inputs in the form
+                document.getElementById('unsurInput').value = unsur;
+                document.getElementById('fileInput').value = file ? file.name : '';
+                console.log(document.getElementById('unsurInput').value);
+
+                // Submit the form to the server
+                document.getElementById('uploadForm').submit();
+            });
 
         });
         

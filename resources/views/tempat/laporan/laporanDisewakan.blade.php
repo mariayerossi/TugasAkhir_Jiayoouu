@@ -38,14 +38,6 @@
         <a href="/tempat/laporan/disewakan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
-    {{-- grafik --}}
-    <div class="mt-5 mb-5">
-        <h4>Grafik Persewaan per Bulan</h4>
-        <div class="chart-container">
-            <canvas id="incomeChart"></canvas>
-        </div>
-    </div>
-
     <table class="table table-striped">
         <thead>
             <tr>
@@ -54,8 +46,9 @@
                 <th>Jumlah Disewakan</th>
                 <th>Total Komisi (/jam)</th>
                 <th>Total Durasi Sewa</th>
-                <th>Total Pendapatan</th>
-                <th>Status</th>
+                <th>Total Pendapatan Kotor(sebelum biaya aplikasi)</th>
+                <th>Total Pendapatan Bersih</th>
+                {{-- <th>Status</th> --}}
                 <th>Detail</th>
             </tr>
         </thead>
@@ -73,13 +66,15 @@
                         @endif
                         <td>{{$item->total_durasi  + $item->durasi_ext}} jam</td>
                         <td>Rp {{ number_format($item->total_pendapatan + $item->komisi_ext, 0, ',', '.') }}</td>
-                        @if ($item->fk_id_pemilik != null)
+                        <td>Rp {{ number_format(($item->total_pendapatan + $item->komisi_ext) * 0.91, 0, ',', '.') }}</td>
+                        {{-- @if ($item->fk_id_pemilik != null)
                             <td>Alat Sewaan</td>
                             <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                         @else
                             <td>Alat Pribadi</td>
-                            <td><a href="/tempat/alat/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
-                        @endif
+                            <td><a href="/tempat/laporan/disewakan/laporanPerAlat/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                        @endif --}}
+                        <td><a href="/tempat/laporan/disewakan/laporanPerAlat/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                     </tr>
                 @endforeach
             @else
@@ -93,29 +88,6 @@
 <script>
     $(document).ready(function() {
         var table = $('.table').DataTable();
-    });
-    var ctx = document.getElementById('incomeChart').getContext('2d');
-    var incomeChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-            datasets: [{
-                label: 'Jumlah Sewa',
-                data: @json($monthlyIncome),
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
     });
 </script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
