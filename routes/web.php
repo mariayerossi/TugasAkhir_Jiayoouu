@@ -766,7 +766,8 @@ Route::prefix("/tempat")->group(function(){
         Route::prefix("/disewakan")->group(function(){
             Route::get("/laporanDisewakan", [Laporan::class, "laporanDisewakanTempat"])->middleware([CekTempat::class]);
             Route::get('/CetakPDF', [Laporan::class, "disewakanTempatCetakPDF"]);
-            Route::get("/laporanPerAlat", [Laporan::class, "laporanPerAlatTempat"])->middleware([CekTempat::class]);
+            Route::get("/laporanPerAlat/{id}", [Laporan::class, "laporanPerAlatTempat"])->middleware([CekTempat::class]);
+            Route::get("/fiturPerAlat/{id}", [Laporan::class, "fiturPerAlat"])->middleware([CekTempat::class]);
         });
 
         Route::prefix("/lapangan")->group(function(){

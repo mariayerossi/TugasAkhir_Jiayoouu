@@ -10,7 +10,10 @@ use App\Models\komplainTrans;
 use App\Models\lapanganOlahraga;
 use App\Models\requestPenawaran;
 use App\Models\requestPermintaan;
+use DateInterval;
+use DatePeriod;
 use DateTime;
+use Illuminate\Contracts\Session\Session as SessionSession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -758,8 +761,8 @@ class Laporan extends Controller
                     DB::raw('SUM(extend_htrans.durasi_extend) as durasi_ext'),
                     DB::raw('SUM(extend_dtrans.total_komisi_tempat) as komisi_ext'),
                 )
-                ->leftJoin("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
-                ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
+                ->join("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
+                ->join("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->where("htrans.fk_id_tempat", "=", $role)
@@ -818,6 +821,225 @@ class Laporan extends Controller
         $pdf = PDF::loadview('tempat.laporan.laporanDisewakan_pdf',['data'=>$data]);
         // return $pdf->download('laporan-pendapatan-pdf');
         return $pdf->stream();
+    }
+
+    public function laporanPerAlatTempat(Request $request) {
+        $endDate1 = date('Y-m-d');
+        $endDate = date('Y-m-d', strtotime('+1 day', strtotime($endDate1)));
+    
+        // Mengambil tanggal satu bulan sebelumnya dari tanggal hari ini
+        $startDate = date('Y-m-d', strtotime('-1 month', strtotime($endDate)));
+        $startDate = date('Y-m-d', strtotime('+1 day', strtotime($startDate)));
+
+        $dataAlat = DB::table('alat_olahraga')
+            ->where("id_alat","=",$request->id)
+            ->get()
+            ->first();
+        
+        $req = DB::table('request_permintaan')
+            ->where("req_id_alat","=",$request->id)
+            ->where("fk_id_tempat","=",Session::get("dataRole")->id_tempat)
+            ->get()
+            ->first();
+        if ($req == null) {
+            $req = DB::table('request_penawaran')
+            ->where("req_id_alat","=",$request->id)
+            ->where("fk_id_tempat","=",Session::get("dataRole")->id_tempat)
+            ->get()
+            ->first();
+        }
+    
+        $dataDtrans = DB::table('dtrans')
+            ->select("htrans.tanggal_sewa")
+            ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+            ->where("dtrans.fk_id_alat","=",$request->id)
+            ->whereBetween('htrans.tanggal_sewa', [$startDate, $endDate])
+            ->get();
+    
+        $monthlyIncome = [];
+        foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
+            $dateStr = $date->format('Y-m-d');
+            $monthlyIncome[$dateStr] = 0;
+        }
+        // dd($monthlyIncome);
+    
+        foreach ($dataDtrans as $data) {
+            $sewaDate = date('Y-m-d', strtotime($data->tanggal_sewa));
+        
+            if ($sewaDate >= $startDate && $sewaDate <= $endDate) {
+                $day = date('Y-m-d', strtotime($sewaDate));
+                // dd($day);
+                $monthlyIncome[$day] += 1;
+            }
+        }
+        // dd($monthlyIncome);
+        
+        $labels = [];
+        $currentDate = $startDate;
+        
+        while (strtotime($currentDate) <= strtotime($endDate)) {
+            $labels[] = date('j M', strtotime($currentDate));
+            $currentDate = date('Y-m-d', strtotime($currentDate . ' +1 day'));
+        }
+    
+        $monthlyIncomeData = array_values($monthlyIncome); // Mengambil nilai dari array asosiatif
+
+        $currentMonth = end($monthlyIncomeData);
+        $previousMonth = prev($monthlyIncomeData);
+
+        if ($previousMonth == 0) {
+            $increasePercentage = ($currentMonth > 0) ? 100 : 0;
+        } else {
+            $increasePercentage = round((($currentMonth - $previousMonth) / $previousMonth) * 100);
+        }
+
+        $increasePercentage = number_format($increasePercentage, 2); // Format persentase dengan 2 desimal
+        // ...
+
+        $param["monthlyLabels"] = $labels;
+        // dd($labels);
+        // dd($monthlyIncomeData);
+        $param["monthlyIncome"] = $monthlyIncomeData;
+        $param["alat"] = $dataAlat;
+        $param["dtrans"] = $dataDtrans;
+        $param["request"] = $req;
+        $param["mulai"] = $startDate;
+        $param["selesai"] = $endDate1;
+        $param["increasePercentage"] = $increasePercentage;
+        return view("tempat.laporan.laporanPerAlat")->with($param);
+    }
+
+    public function fiturPerAlat(Request $request) {
+        // dd($request->filter);
+        $endDate1 = date('Y-m-d');
+        $endDate = date('Y-m-d', strtotime('+1 day', strtotime($endDate1)));
+    
+        // Mengambil tanggal satu bulan sebelumnya dari tanggal hari ini
+        $startDate = date('Y-m-d', strtotime('-'.$request->filter.' month', strtotime($endDate)));
+        $startDate = date('Y-m-d', strtotime('+1 day', strtotime($startDate)));
+
+        $dataAlat = DB::table('alat_olahraga')
+            ->where("id_alat","=",$request->id)
+            ->get()
+            ->first();
+        
+        $req = DB::table('request_permintaan')
+            ->where("req_id_alat","=",$request->id)
+            ->where("fk_id_tempat","=",Session::get("dataRole")->id_tempat)
+            ->get()
+            ->first();
+        if ($req == null) {
+            $req = DB::table('request_penawaran')
+            ->where("req_id_alat","=",$request->id)
+            ->where("fk_id_tempat","=",Session::get("dataRole")->id_tempat)
+            ->get()
+            ->first();
+        }
+    
+        $dataDtrans = DB::table('dtrans')
+            ->select("htrans.tanggal_sewa")
+            ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+            ->where("dtrans.fk_id_alat","=",$request->id)
+            ->whereBetween('htrans.tanggal_sewa', [$startDate, $endDate])
+            ->get();
+    
+        if ($request->filter >= "3") {
+            $monthlyIncome = [];
+
+            foreach ($dataDtrans as $data) {
+                $sewaDate = date('Y-m-d', strtotime($data->tanggal_sewa));
+
+                if ($sewaDate >= $startDate && $sewaDate <= $endDate) {
+                    $day = date('Y-m-d', strtotime($sewaDate));
+                    if (!isset($monthlyIncome[$day])) {
+                        $monthlyIncome[$day] = 1;
+                    } else {
+                        $monthlyIncome[$day] += 1;
+                    }
+                }
+            }
+
+            // Menghitung persentase kenaikan
+            $monthlyIncomeData = array_values($monthlyIncome); // Mengambil nilai dari array asosiatif
+            $currentMonth = end($monthlyIncomeData);
+            $previousMonth = prev($monthlyIncomeData);
+
+            if ($previousMonth === false) {
+                $increasePercentage = ($currentMonth > 0) ? 100 : 0;
+            } else {
+                $increasePercentage = round((($currentMonth - $previousMonth) / $previousMonth) * 100);
+            }
+
+            $increasePercentage = number_format($increasePercentage, 2);
+
+            $labels = array_keys($monthlyIncome); // Mengambil tanggal yang memiliki data
+            sort($labels); // Urutkan tanggal secara ascending
+            $labels = array_map(function ($date) {
+                return date('j M y', strtotime($date));
+            }, $labels);
+            // Mengambil tanggal yang memiliki data
+
+            $param["monthlyLabels"] = $labels;
+            $param["monthlyIncome"] = $monthlyIncomeData;
+            $param["alat"] = $dataAlat;
+            $param["dtrans"] = $dataDtrans;
+            $param["request"] = $req;
+            $param["mulai"] = $startDate;
+            $param["selesai"] = $endDate1;
+            $param["increasePercentage"] = $increasePercentage;
+
+        }
+        else {
+            $monthlyIncome = [];
+            foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
+                $dateStr = $date->format('Y-m-d');
+                $monthlyIncome[$dateStr] = 0;
+            }
+            // dd($monthlyIncome);
+        
+            foreach ($dataDtrans as $data) {
+                $sewaDate = date('Y-m-d', strtotime($data->tanggal_sewa));
+            
+                if ($sewaDate >= $startDate && $sewaDate <= $endDate) {
+                    $day = date('Y-m-d', strtotime($sewaDate));
+                    // dd($day);
+                    $monthlyIncome[$day] += 1;
+                }
+            }
+            // dd($monthlyIncome);
+            
+            $labels = [];
+            $currentDate = $startDate;
+            
+            while (strtotime($currentDate) <= strtotime($endDate)) {
+                $labels[] = date('j M y', strtotime($currentDate));
+                $currentDate = date('Y-m-d', strtotime($currentDate . ' +1 day'));
+            }
+        
+            $monthlyIncomeData = array_values($monthlyIncome); // Mengambil nilai dari array asosiatif
+
+            $currentMonth = end($monthlyIncomeData);
+            $previousMonth = prev($monthlyIncomeData);
+
+            if ($previousMonth == 0) {
+                $increasePercentage = ($currentMonth > 0) ? 100 : 0;
+            } else {
+                $increasePercentage = round((($currentMonth - $previousMonth) / $previousMonth) * 100);
+            }
+
+            $increasePercentage = number_format($increasePercentage, 2); // Format persentase dengan 2 desimal
+            // ...
+
+            $param["monthlyLabels"] = $labels;
+            $param["monthlyIncome"] = $monthlyIncomeData;
+            $param["alat"] = $dataAlat;
+            $param["dtrans"] = $dataDtrans;
+            $param["request"] = $req;
+            $param["mulai"] = $startDate;
+            $param["selesai"] = $endDate1;
+            $param["increasePercentage"] = $increasePercentage;
+        }
+        return view("tempat.laporan.laporanPerAlat")->with($param);
     }
 
     public function laporanLapangan() {
