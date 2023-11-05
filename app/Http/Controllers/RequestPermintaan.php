@@ -8,6 +8,7 @@ use DateInterval;
 use DateTime;
 use App\Models\notifikasiEmail;
 use App\Models\pihakTempat;
+use App\Models\requestPenawaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -187,6 +188,29 @@ class RequestPermintaan extends Controller
                 ];
                 $alat = new alatOlahraga();
                 $alat->updateStatus($data3);
+
+                //tolak permintaan lain yg terkait dgn alat ini
+                $minta = DB::table('request_permintaan')->where("req_id_alat","=",$id_alat)->get();
+                $tawar = DB::table('request_penawaran')->where("req_id_alat","=",$id_alat)->get();
+                if (!$minta->isEmpty()) {
+                    foreach ($minta as $key => $value) {
+                        $data2 = [
+                            "id" => $value->id_permintaan,
+                            "status" => "Ditolak"
+                        ];
+                        $per->updateStatus($data2);
+                    }
+                }
+                if (!$tawar->isEmpty()) {
+                    foreach ($tawar as $key => $value) {
+                        $data3 = [
+                            "id" => $value->id_penawaran,
+                            "status" => "Ditolak"
+                        ];
+                        $pen = new requestPenawaran();
+                        $pen->updateStatus($data3);
+                    }
+                }
 
                 $email_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->email_tempat;
                 $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;

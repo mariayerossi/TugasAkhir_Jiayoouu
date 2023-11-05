@@ -7,6 +7,7 @@ use App\Models\requestPenawaran as ModelsRequestPenawaran;
 use DateInterval;
 use App\Models\notifikasiEmail;
 use App\Models\pihakTempat;
+use App\Models\requestPermintaan;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -396,6 +397,28 @@ class RequestPenawaran extends Controller
             $alat = new alatOlahraga();
             $alat->updateStatus($data4);
 
+            //tolak penawaran lain yg terkait dgn alat ini
+            $minta = DB::table('request_permintaan')->where("req_id_alat","=",$dataReq->req_id_alat)->get();
+            $tawar = DB::table('request_penawaran')->where("req_id_alat","=",$dataReq->req_id_alat)->get();
+            if (!$minta->isEmpty()) {
+                foreach ($minta as $key => $value) {
+                    $data2 = [
+                        "id" => $value->id_permintaan,
+                        "status" => "Ditolak"
+                    ];
+                    $per = new requestPermintaan();
+                    $per->updateStatus($data2);
+                }
+            }
+            if (!$tawar->isEmpty()) {
+                foreach ($tawar as $key => $value) {
+                    $data3 = [
+                        "id" => $value->id_penawaran,
+                        "status" => "Ditolak"
+                    ];
+                    $req->updateStatus($data3);
+                }
+            }
 
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$dataReq->fk_id_tempat)->get()->first();
             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataReq->req_id_alat)->get()->first();
