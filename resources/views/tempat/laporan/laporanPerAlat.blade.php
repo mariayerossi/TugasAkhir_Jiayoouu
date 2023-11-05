@@ -108,7 +108,7 @@
                             <td>{{ $label }}</td>
                             <td>{{ $monthlyIncome[$index] }}</td>
                             <td>
-                                @if($index > 0)
+                                @if($index >= 0)
                                     @php
                                         $currentIncome = $monthlyIncome[$index];
                                         $increase = $currentIncome - $previousIncome;
@@ -125,9 +125,9 @@
                                     @endphp
     
                                     @if ($increase > 0)
-                                        <span class="text-success">+{{ $formattedPercentage }}%</span>
+                                        <span class="text-success"><i class="bi bi-arrow-up"></i>+{{ $formattedPercentage }}%</span>
                                     @elseif ($increase < 0)
-                                        <span class="text-danger">{{ $formattedPercentage }}%</span>
+                                        <span class="text-danger"><i class="bi bi-arrow-down"></i>{{ $formattedPercentage }}%</span>
                                     @else
                                         <span>{{ $formattedPercentage }}%</span>
                                     @endif
