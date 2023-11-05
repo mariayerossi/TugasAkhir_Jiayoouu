@@ -115,7 +115,7 @@
         <div class="row mb-3 mt-3">
             <div class="col-md-6 col-sm-12 mb-3">
                 <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
-                @if ($penawaran->first()->req_harga_sewa != null && $penawaran->first()->status_penawaran != "Menunggu")
+                @if ($penawaran->first()->req_harga_sewa != null)
                     <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}</p>
                 @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
                     <div class="input-group">
@@ -147,9 +147,7 @@
                             $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
                         @endphp
                         <p>{{$tanggalBaru2}}</p>
-                    @endif
-
-                    @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
+                    @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
                         <div class="input-group">
                             <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                             <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
@@ -169,9 +167,7 @@
                             $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
                         @endphp
                         <p>{{$tanggalBaru3}}</p>
-                    @endif
-
-                    @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
+                    @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
                         <div class="input-group">
                             <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                             <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">

@@ -122,7 +122,7 @@ class RequestPermintaan extends Controller
             $per = new ModelsRequestPermintaan();
             $per->updateStatus($data);
     
-            return redirect("/tempat/permintaan/daftarPermintaan");
+            return redirect()->back()->with("success", "Berhasil membatalkan permintaan!");
         }
         else {
             return redirect()->back()->with("error", "Gagal membatalkan permintaan! status alat sudah $status");
@@ -227,7 +227,7 @@ class RequestPermintaan extends Controller
                 $e2 = new notifikasiEmail();
                 $e2->sendEmail($email_pemilik,$dataNotif2);
         
-                return redirect("/pemilik/permintaan/daftarPermintaan");
+                return redirect()->back()->with("success", "Berhasil menerima permintaan!");
             }
             else {
                 return redirect()->back()->with("error", "Gagal menerima permintaan! status alat sudah $status");
@@ -273,7 +273,7 @@ class RequestPermintaan extends Controller
             $e = new notifikasiEmail();
             $e->sendEmail($email_tempat, $dataNotif);
     
-            return redirect("/pemilik/permintaan/daftarPermintaan");
+            return redirect()->back()->with("success", "Berhasil menolak permintaan!");
         }
         else {
             return redirect()->back()->with("error", "Gagal menolak permintaan! status alat sudah $status");

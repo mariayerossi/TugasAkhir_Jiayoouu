@@ -79,10 +79,10 @@ display: block;
                             <!-- Nama Alat -->
                             <div class="col-8 d-flex flex-column justify-content-center">
                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                <p class="card-text">komisi: Rp {{number_format($dataAlat->komisi_alat, 0, ',', '.')}}/jam</p>
                                 @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_tempat == null)
                                     <form action="/pemilik/editHargaKomisi" method="post" id="noRedirectInput">
                                         @csrf
+                                        Komisi: 
                                         <div class="input-group">
                                             <input type="hidden" name="id_alat" value="{{$dataAlat->id_alat}}">
                                             <!-- Input yang terlihat oleh pengguna -->
@@ -96,7 +96,7 @@ display: block;
                                         </div>
                                     </form>
                                 @else
-                                    <p class="card-text">(Tidak dapat mengedit komisi)</p>
+                                    <p class="card-text">Komisi: Rp {{number_format($dataAlat->komisi_alat, 0, ',', '.')}}/jam</p>
                                 @endif
                             </div>
                         </div>

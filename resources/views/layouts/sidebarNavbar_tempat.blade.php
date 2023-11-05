@@ -193,14 +193,16 @@ Sportiva
                 <!-- Add other sports or categories here -->
             </div> --}}
         </div>
-        <div class="sidebar-dropdown">
+        {{-- <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-collection me-3"></i>Daftar Request <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
                 <a href="/tempat/permintaan/daftarPermintaan">Permintaan</a>
                 <a href="/tempat/penawaran/daftarPenawaran">Penawaran</a>
                 <!-- Add other sports or categories here -->
             </div>
-        </div>
+        </div> --}}
+        <a href="/tempat/permintaan/daftarPermintaan"><i class="bi bi-send-plus me-3"></i>Daftar Permintaan Alat</a>
+        <a href="/tempat/penawaran/daftarPenawaran"><i class="bi bi-envelope-paper me-3"></i>Daftar Penawaran Alat</a>
         <a href="/tempat/transaksi/daftarTransaksi"><i class="bi bi-journal-text me-3"></i></i>Transaksi</a>
         <a href="/tempat/kerusakan/daftarKerusakan"><i class="bi bi-heartbreak me-3"></i>Daftar Alat yang Rusak</a>
         <div class="sidebar-dropdown">

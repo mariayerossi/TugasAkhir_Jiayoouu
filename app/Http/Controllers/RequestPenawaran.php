@@ -91,7 +91,7 @@ class RequestPenawaran extends Controller
             $per = new ModelsRequestPenawaran();
             $per->updateStatus($data);
     
-            return redirect("/pemilik/penawaran/daftarPenawaran");
+            return redirect()->back()->with("success", "Berhasil membatalkan penawaran!");
         }
         else {
             return redirect()->back()->with("error", "Gagal membatalkan penawaran! status alat sudah $status");
@@ -282,7 +282,7 @@ class RequestPenawaran extends Controller
             $e = new notifikasiEmail();
             $e->sendEmail($pemilik->email_pemilik,$dataNotif);
     
-            return redirect("/tempat/penawaran/daftarPenawaran");
+            return redirect()->back()->with("success", "Berhasil menolak penawaran!");
         }
         else {
             return redirect()->back()->with("error", "Gagal menolak penawaran! status alat sudah $penawaran->status_penawaran");
@@ -433,7 +433,7 @@ class RequestPenawaran extends Controller
             $e2 = new notifikasiEmail();
             $e2->sendEmail($email_pemilik,$dataNotif2);
 
-            return redirect("/pemilik/penawaran/daftarPenawaran");
+            return redirect()->back()->with("success", "Berhasil mengkonfirmasi penawaran!");
         }
         else {
             return redirect()->back()->with("error", "Gagal mengkonfirmasi penawaran! status penawaran sudah $dataReq->status_penawaran");
