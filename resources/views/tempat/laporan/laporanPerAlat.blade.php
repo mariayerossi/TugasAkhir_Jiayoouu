@@ -93,6 +93,7 @@
         <thead>
             <tr>
                 <th>Waktu Sewa</th>
+                <th>Total Sewa</th>
                 <th>Total Pendapatan Bersih</th>
                 <th>Persentase</th>
             </tr>
@@ -107,6 +108,7 @@
                         <tr>
                             <td>{{ $label }}</td>
                             <td>{{ $monthlyIncome[$index] }}</td>
+                            <td>{{$total[$index]}}</td>
                             <td>
                                 @if($index >= 0)
                                     @php

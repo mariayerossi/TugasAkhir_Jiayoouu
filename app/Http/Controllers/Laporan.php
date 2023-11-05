@@ -937,17 +937,20 @@ class Laporan extends Controller
         }
     
         $dataDtrans = DB::table('dtrans')
-            ->select("htrans.tanggal_sewa")
+            ->select("htrans.tanggal_sewa","dtrans.total_komisi_tempat")
             ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
             ->where("dtrans.fk_id_alat","=",$request->id)
             ->whereBetween('htrans.tanggal_sewa', [$startDate, $endDate])
             ->get();
+        // dd($dataDtrans);
     
         if ($request->filter == "1" || $request->filter == "2") {
             $monthlyIncome = [];
+            $total = [];
             foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
                 $dateStr = $date->format('Y-m-d');
                 $monthlyIncome[$dateStr] = 0;
+                $total[$dateStr] = 0;
             }
             // dd($monthlyIncome);
         
@@ -958,6 +961,7 @@ class Laporan extends Controller
                     $day = date('Y-m-d', strtotime($sewaDate));
                     // dd($day);
                     $monthlyIncome[$day] += 1;
+                    $total[$day] += $data->total_komisi_tempat * 0.91;
                 }
             }
             // dd($monthlyIncome);
@@ -971,6 +975,7 @@ class Laporan extends Controller
             }
         
             $monthlyIncomeData = array_values($monthlyIncome); // Mengambil nilai dari array asosiatif
+            $totalData = array_values($total);
 
             $currentMonth = end($monthlyIncomeData);
             $previousMonth = prev($monthlyIncomeData);
@@ -991,11 +996,12 @@ class Laporan extends Controller
             $param["request"] = $req;
             $param["mulai"] = $startDate;
             $param["selesai"] = $endDate1;
+            $param["total"] = $totalData;
             $param["increasePercentage"] = $increasePercentage;
         }
         else if ($request->filter == "3") {
             $monthlyIncome = [];
-
+            $total = [];
             foreach ($dataDtrans as $data) {
                 $sewaDate = date('Y-m-d', strtotime($data->tanggal_sewa));
 
@@ -1003,14 +1009,17 @@ class Laporan extends Controller
                     $day = date('Y-m-d', strtotime($sewaDate));
                     if (!isset($monthlyIncome[$day])) {
                         $monthlyIncome[$day] = 1;
+                        $total[$day] = $data->total_komisi_tempat * 0.91;
                     } else {
                         $monthlyIncome[$day] += 1;
+                        $total[$day] += $data->total_komisi_tempat * 0.91;
                     }
                 }
             }
 
             // Menghitung persentase kenaikan
             $monthlyIncomeData = array_values($monthlyIncome); // Mengambil nilai dari array asosiatif
+            $totalData = array_values($total);
             $currentMonth = end($monthlyIncomeData);
             $previousMonth = prev($monthlyIncomeData);
 
@@ -1036,6 +1045,7 @@ class Laporan extends Controller
             $param["request"] = $req;
             $param["mulai"] = $startDate;
             $param["selesai"] = $endDate1;
+            $param["total"] = $totalData;
             $param["increasePercentage"] = $increasePercentage;
 
         }
@@ -1044,13 +1054,15 @@ class Laporan extends Controller
             $endDate = date('Y-m-d', strtotime('+1 day', strtotime($endDate1)));
 
             // Set the start date to July (7 months before the current date)
-            $startDate = date('Y-m-d', strtotime('-6 months', strtotime($endDate)));
+            $startDate = date('Y-m-d', strtotime('-'.$request->filter.' months', strtotime($endDate)));
             $startDate = date('Y-m-d', strtotime('first day of next month', strtotime($startDate)));
 
             $monthlyIncome = [];
+            $total = [];
             foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
                 $dateStr = $date->format('Y-m');
                 $monthlyIncome[$dateStr] = 0;
+                $total[$dateStr] = 0;
             }
             // dd($monthlyIncome);
         
@@ -1061,9 +1073,10 @@ class Laporan extends Controller
                     $day = date('Y-m', strtotime($sewaDate));
                     // dd($day);
                     $monthlyIncome[$day] += 1;
+                    $total[$day] += $data->total_komisi_tempat * 0.91;
                 }
             }
-            // dd($monthlyIncome);
+            // dd($total);
             
             $labels = [];
             $currentDate = new DateTime($startDate);
@@ -1075,6 +1088,7 @@ class Laporan extends Controller
             }
 
             $monthlyIncomeData = array_values($monthlyIncome);
+            $totalData = array_values($total);
 
             $currentMonth = end($monthlyIncomeData);
             $previousMonth = prev($monthlyIncomeData);
@@ -1094,6 +1108,7 @@ class Laporan extends Controller
             $param["request"] = $req;
             $param["mulai"] = $startDate;
             $param["selesai"] = $endDate1;
+            $param["total"] = $totalData;
             $param["increasePercentage"] = $increasePercentage;
 
         }
