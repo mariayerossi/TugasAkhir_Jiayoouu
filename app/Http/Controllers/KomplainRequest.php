@@ -773,21 +773,80 @@ class KomplainRequest extends Controller
                                 $e->sendEmail($dataTemp3->email_tempat, $dataNotif14);
                             }
                             else if ($value->status_permintaan == "Disewakan") {
+                                //tambahkan saldo tempat
+                                $saldoTempat1 = (int)$this->decodePrice($dataTemp3->saldo_tempat, "mysecretkey");
+
+                                $transaksi = DB::table('dtrans')
+                                            ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
+                                            ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                            ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                                            ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                            ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
+                                            ->where("htrans.status_trans","=","Selesai")
+                                            ->where("dtrans.deleted_at","=",null)
+                                            ->get();
+                                $total = 0;
+                                if (!$transaksi->isEmpty()) {
+                                    foreach ($transaksi as $key => $value2) {
+                                        if ($value2->total_ext != null) {
+                                            $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                        }
+                                        else {
+                                            $total += $value2->total_komisi_tempat;
+                                        }
+                                    }
+                                }
+
+                                $saldoTempat1 += $total;
+                                $enkrip4 = $this->encodePrice((string)$saldoTempat1, "mysecretkey");
+                                
+                                $temp = new pihakTempat();
+                                $dataSaldo5 = [
+                                    "id" => $value->fk_id_tempat,
+                                    "saldo" => $enkrip4
+                                ];
+                                $temp->updateSaldo($dataSaldo5);
+                                
+                                //kasih notif ke tempat, request selesai
+                                $dataNotif14= [
+                                    "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
+                                    "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
+                                    "nama_user" => $dataTemp3->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "button" => "Lihat Detail Permintaan",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                    <b>Nama Alat Olahraga: ".$dataAla4->nama_alat."</b><br>
+                                    <b>Di Lapangan Olahraga: ".$dataLapa4->nama_lapangan."</b><br><br>
+                                    Sudah selesai. Tunggu pemilik alat olahraga mengambil alatnya ya! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e = new notifikasiEmail();
+                                $e->sendEmail($dataTemp3->email_tempat, $dataNotif14);
+
                                 $data9 = [
                                     "id" => $value->id_permintaan,
                                     "status" => "Selesai"
                                 ];
                                 $pena = new requestPenawaran();
                                 $pena->updateStatus($data9);
-
-                                //tambahkan saldo tempat ???
-                                
-                                //kasih notif ke tempat, request selesai
                             }
                         }
                     }
 
                     //kasih notif ke pemilik, akun e dihapus, produk, request semua dihapus
+                    $dataPemi3 = DB::table('pemilik_alat')->where("id_pemilik","=",$array[0])->get()->first();
+                    $dataNotif15 = [
+                        "subject" => "😔Akun Anda Telah Dihapus!😔",
+                        "judul" => "Maaf! Akun Anda Telah Dihapus!",
+                        "nama_user" => $dataPemi3->nama_pemilik,
+                        "url" => "https://sportiva.my.id/registerTempat",
+                        "button" => "Silahkan Register Lagi",
+                        "isi" => "Detail Akun:<br><br>
+                                    <b>Nama Akun: ".$dataPemi3->nama_pemilik."</b><br>
+                                    <b>Email Akun: ".$dataPemi3->email_pemilik."</b><br><br>
+                                    Telah dihapus sebagai penanganan komplain yang diajukan! Semua request yang sudah diterima dan menunggu konfirmasi akan otomatis dibatalkan. Gunakan email yang berbeda untuk melakukan pendaftaran lagi! 😊"
+                    ];
+                    $e = new notifikasiEmail();
+                    $e->sendEmail($dataPemi3->email_pemilik, $dataNotif15);
 
                     $pemi = new pemilikAlat();
                     $pemi->softDelete($data);
