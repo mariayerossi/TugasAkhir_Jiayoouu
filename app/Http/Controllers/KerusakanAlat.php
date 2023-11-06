@@ -47,7 +47,7 @@ class KerusakanAlat extends Controller
         // Mengambil semua data dari request
         dd($request->file("file")->getClientOriginalExtension());
         $cek = false;
-            // Ambil unsur dan foto
+        // Ambil unsur dan foto
         $unsur = $request->unsur;
         $foto = $request->file("file");
         $id_dtrans = $request->id_dtrans;
@@ -92,7 +92,11 @@ class KerusakanAlat extends Controller
                             ->join("user","htrans.fk_id_user","=","user.id_user")
                             ->join("alat_olahraga","dtrans.fk_id_alat","=","alat_olahraga.id_alat")
                             ->where("dtrans.fk_id_alat","=",$dataTrans->fk_id_alat)
-                            ->where("htrans.status_trans","=","Diterima")
+                            ->where(function ($query) {
+                                $query->where("htrans.status_trans", "=", "Menunggu")
+                                    ->orWhere("htrans.status_trans", "=", "Diterima");
+                            })
+                            ->where("dtrans.deleted_at", "=", null)
                             ->get();
 
                 if (!$dataDtrans2->isEmpty()) {
@@ -210,6 +214,7 @@ class KerusakanAlat extends Controller
                                     ->where("dtrans.fk_id_alat","=",$penawaran->first()->req_id_alat)
                                     ->where("htrans.fk_id_tempat","=",$penawaran->first()->fk_id_tempat)
                                     ->where("htrans.status_trans","=","Selesai")
+                                    ->where("dtrans.deleted_at","=",null)
                                     ->get();
                                     // dd($transaksi);
                         $total = 0;
