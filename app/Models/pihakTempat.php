@@ -17,7 +17,7 @@ class pihakTempat extends Model
 
     public function cek_email_tempat($isi)
     {
-        return pihakTempat::where('deleted_at',"=",null)->where('email_tempat',"=", $isi)->get();
+        return pihakTempat::where('email_tempat',"=", $isi)->get();
     }
 
     public function insertTempat($data)

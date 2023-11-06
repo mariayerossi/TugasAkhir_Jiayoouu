@@ -17,7 +17,7 @@ class pemilikAlat extends Model
 
     public function cek_email_pemilik($isi)
     {
-        return pemilikAlat::where('deleted_at',"=",null)->where('email_pemilik',"=", $isi)->get();
+        return pemilikAlat::where('email_pemilik',"=", $isi)->get();
     }
 
     public function insertPemilik($data)

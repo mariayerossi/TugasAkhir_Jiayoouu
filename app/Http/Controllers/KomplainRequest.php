@@ -378,6 +378,8 @@ class KomplainRequest extends Controller
                     $cekTrans = DB::table('htrans')->where("fk_id_lapangan","=",$array[0])->get();
                     if (!$cekTrans->isEmpty()) {
                         foreach ($cekTrans as $key => $value) {
+                            $dataLap = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->fk_id_lapangan)->get()->first();
+                            $dataTemp = DB::table('pihak_tempat')->where("id_tempat")->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
                             if ($value->status_trans == "Menunggu" || $value->status_trans == "Diterima") {
                                 $data5 = [
                                     "id" => $value->id_htrans,
@@ -401,16 +403,20 @@ class KomplainRequest extends Controller
                                 $cust->updateSaldo($dataSaldo);
 
                                 //kasih notif ke customer, transaksi dibatalkan
+                                $tanggalAwal3 = $value->tanggal_sewa;
+                                $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+                                $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
                                 $dataNotif7 = [
-                                    "subject" => "😔Booking Lapangan ".$dataLapangan->nama_lapangan." Telah Dibatalkan!😔",
-                                    "judul" => "Transaksi Booking Anda Dibatalkan!",
+                                    "subject" => "😔Booking Lapangan ".$dataLap->nama_lapangan." Telah Dibatalkan!😔",
+                                    "judul" => "Booking Lapangan ".$dataLap->nama_lapangan." Telah Dibatalkan!",
                                     "nama_user" => $dataCus->nama_user,
                                     "url" => "https://sportiva.my.id/customer/daftarRiwayat",
                                     "button" => "Lihat Riwayat Transaksi",
-                                    "isi" => "Masa sewa alat dari:<br><br>
-                                            <b>Nama Alat Olahraga: ".$dataAlat2->nama_alat."</b><br>
-                                            <b>Di Lapangan Olahraga: ".$dataLapangan2->nama_lapangan."</b><br><br>
-                                            Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
+                                    "isi" => "Detail Sewa Lapangan:<br><br>
+                                    <b>Nama Lapangan Olahraga: ".$dataLap->nama_lapangan."</b><br>
+                                    <b>Tanggal Sewa: ".$tanggalBaru3."</b><br>
+                                    <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
+                                    Telah dibatalkan, dana anda telah kami kembalikan ke saldo wallet! Terus jaga kesehatanmu bersama Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
                                 $e->sendEmail($dataCus->email_user, $dataNotif7);
@@ -419,6 +425,19 @@ class KomplainRequest extends Controller
                     }
 
                     //kasih notif ke pihak tempat, lapangan e dihapus, request semua dibatalkan
+                    $dataNotif8 = [
+                        "subject" => "😔Lapangan ".$dataLap->nama_lapangan." Telah Dihapus!😔",
+                        "judul" => "Lapangan ".$dataLap->nama_lapangan." Telah Dihapus!",
+                        "nama_user" => $dataTemp->nama_tempat,
+                        "url" => "https://sportiva.my.id/tempat/lapangan/daftarLapangan",
+                        "button" => "Lihat Daftar Lapangan",
+                        "isi" => "Detail Lapangan Olahraga:<br><br>
+                        <b>Nama Lapangan Olahraga: ".$dataLap->nama_lapangan."</b><br>
+                        <b>Harga Sewa: Rp ".number_format($dataLap->harga_sewa_lapangan, 0, ',', '.')."</b><br><br>
+                        Telah dihapus. Semua request permintaan dan penawaran dari lapangan ini yang masih disewakan akan otomatis selesai dan dana komisi alat olahraga telah masuk ke saldo anda! Sedangkan transaksi yang diterima dan menunggu konfirmasi akan otomatis dibatalkan! 😊"
+                    ];
+                    $e = new notifikasiEmail();
+                    $e->sendEmail($dataTemp->email_tempat, $dataNotif8);
 
                     $lapangan = new lapanganOlahraga();
                     $lapangan->softDelete($data);
@@ -474,6 +493,9 @@ class KomplainRequest extends Controller
                     $pen = DB::table('request_penawaran')->where("fk_id_tempat","=",$array[0])->get();
                     if (!$per->isEmpty()) {
                         foreach ($per as $key => $value) {
+                            $dataPem = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
+                            $dataAla = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                            $dataLapa = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
                             if ($value->status_permintaan == "Disewakan") {
                                 $data4 = [
                                     "id" => $value->id_permintaan,
@@ -483,7 +505,21 @@ class KomplainRequest extends Controller
                                 $permin->updateStatus($data4);
                                 //ga ada penambahan dana tempat, wong dihapus akun e
 
-                                //kasih notif ke pemilik alat ???
+                                //kasih notif ke pemilik alat
+                                $dataNotif9 = [
+                                    "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
+                                    "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
+                                    "nama_user" => $dataPem->nama_pemilik,
+                                    "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "button" => "Lihat Detail Permintaan",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAla->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapa->nama_lapangan."</b><br><br>
+                                            Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e = new notifikasiEmail();
+                                $e->sendEmail($dataPem->nama_pemilik, $dataNotif9);
+
                             }
                             else if ($value->status_permintaan == "Menunggu" || $value->status_permintaan == "Diterima") {
                                 $data4 = [
@@ -493,12 +529,28 @@ class KomplainRequest extends Controller
                                 $permin = new requestPermintaan();
                                 $permin->updateStatus($data4);
 
-                                //kasih notif ke pemilik alat ???
+                                //kasih notif ke pemilik alat
+                                $dataNotif9 = [
+                                    "subject" => "⏳Masa Sewa Alat Olahraga Telah Dibatalkan!⏳",
+                                    "judul" => "Masa Sewa Alat Olahraga Telah Dibatalkan!",
+                                    "nama_user" => $dataPem->nama_pemilik,
+                                    "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "button" => "Lihat Detail Permintaan",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAla->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapa->nama_lapangan."</b><br><br>
+                                            Telah Dibatalkan. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e = new notifikasiEmail();
+                                $e->sendEmail($dataPem->nama_pemilik, $dataNotif9);
                             }
                         }
                     }
                     if (!$pen->isEmpty()) {
                         foreach ($pen as $key => $value) {
+                            $dataPem2 = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
+                            $dataAla2 = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                            $dataLapa2 = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
                             if ($value->status_penawaran == "Disewakan") {
                                 $data5 = [
                                     "id" => $value->id_penawaran,
@@ -508,7 +560,20 @@ class KomplainRequest extends Controller
                                 $pena->updateStatus($data5);
                                 //ga ada penambahan dana tempat, wong dihapus akun e
 
-                                //kasih notif ke pemilik alat ???
+                                //kasih notif ke pemilik alat
+                                $dataNotif10 = [
+                                    "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
+                                    "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
+                                    "nama_user" => $dataPem2->nama_pemilik,
+                                    "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAla2->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapa2->nama_lapangan."</b><br><br>
+                                            Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e = new notifikasiEmail();
+                                $e->sendEmail($dataPem2->nama_pemilik, $dataNotif10);
                             }
                             else if ($value->status_penawaran == "Menunggu" || $value->status_penawaran == "Diterima") {
                                 $data5 = [
@@ -518,15 +583,87 @@ class KomplainRequest extends Controller
                                 $pena = new requestPenawaran();
                                 $pena->updateStatus($data5);
 
-                                //kasih notif ke pemilik alat ???
+                                //kasih notif ke pemilik alat
+                                $dataNotif10 = [
+                                    "subject" => "⏳Masa Sewa Alat Olahraga Telah Dibatalkan!⏳",
+                                    "judul" => "Masa Sewa Alat Olahraga Telah Dibatalkan!",
+                                    "nama_user" => $dataPem2->nama_pemilik,
+                                    "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAla2->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapa2->nama_lapangan."</b><br><br>
+                                            Telah Dibatalkan. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e = new notifikasiEmail();
+                                $e->sendEmail($dataPem2->nama_pemilik, $dataNotif10);
                             }
                         }
                     }
 
-                    //batalkan semua transaksi yang "Menunggu" & kembalikan seluruh dana cust ???
-                    //kasih notif ke cust
+                    //batalkan semua transaksi yang "Menunggu" & kembalikan seluruh dana cust
+                    $trans = DB::table('htrans')->where("fk_id_tempat","=",$array[0])->get();
+                    if (!$trans->isEmpty()) {
+                        foreach ($trans as $key => $value) {
+                            if ($value->status_trans == "Menunggu" || $value->status_trans == "Diterima") {
+                                $data6 = [
+                                    "id" => $value->id_dtrans,
+                                    "status" => "Dibatalkan"
+                                ];
+                                $ht = new htrans();
+                                $ht->updateStatus($data6);
+
+                                $dataLapa3 = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->fk_id_lapangan)->get()->first();
+                                $dataCust1 = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
+                                $saldoCust1 = (int)$this->decodePrice($dataCust1->saldo_user, "mysecretkey");
+
+                                $saldoCust1 += $value->total_trans;
+
+                                $enkrip2 = $this->encodePrice((string)$saldoCust1, "mysecretkey");
+                                $dataSaldo2 = [
+                                    "id" => $value->fk_id_user,
+                                    "saldo" => $enkrip2
+                                ];
+                                $Cuzz = new customer();
+                                $Cuzz->updateSaldo($dataSaldo2);
+
+                                //kasih notif ke cust
+                                $tanggalAwal4 = $value->tanggal_sewa;
+                                $tanggalObjek4 = DateTime::createFromFormat('Y-m-d', $tanggalAwal4);
+                                $tanggalBaru4 = $tanggalObjek4->format('d-m-Y');
+                                $dataNotif11 = [
+                                    "subject" => "😔Booking Lapangan ".$dataLapa3->nama_lapangan." Telah Dibatalkan!😔",
+                                    "judul" => "Booking Lapangan ".$dataLapa3->nama_lapangan." Telah Dibatalkan!",
+                                    "nama_user" => $dataCust1->nama_user,
+                                    "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                                    "button" => "Lihat Riwayat Transaksi",
+                                    "isi" => "Detail Sewa Lapangan:<br><br>
+                                            <b>Nama Lapangan Olahraga: ".$dataLapa3->nama_lapangan."</b><br>
+                                            <b>Tanggal Sewa: ".$tanggalBaru4."</b><br>
+                                            <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
+                                            Telah dibatalkan, dana anda telah kami kembalikan ke saldo wallet! Terus jaga kesehatanmu bersama Sportiva! 😊"
+                                ];
+                                $e = new notifikasiEmail();
+                                $e->sendEmail($dataCust1->nama_user, $dataNotif11);
+                            }
+                        }
+                    }
 
                     //kasih notif ke tempat, akun e dihapus, produk, request, transaksi semua dihapus
+                    $dataTemp2 = DB::table('pihak_tempat')->where("id_tempat","=",$array[0])->get()->first();
+                    $dataNotif12= [
+                        "subject" => "😔Akun Anda Telah Dihapus!😔",
+                        "judul" => "Maaf! Akun Anda Telah Dihapus!",
+                        "nama_user" => $dataTemp2->nama_tempat,
+                        "url" => "https://sportiva.my.id/registerTempat",
+                        "button" => "Silahkan Register Lagi",
+                        "isi" => "Detail Akun:<br><br>
+                                <b>Nama Akun: ".$dataTemp2->nama_tempat."</b><br>
+                                <b>Email Akun: ".$dataTemp2->email_tempat."</b><br><br>
+                                Telah dihapus sebagai penanganan komplain yang diajukan! Semua transaksi yang sudah diterima dan menunggu konfirmasi akan otomatis dibatalkan. Gunakan email yang berbeda untuk melakukan pendaftaran lagi! 😊"
+                    ];
+                    $e = new notifikasiEmail();
+                    $e->sendEmail($dataTemp2->email_tempat, $dataNotif12);
 
                     $temp = new pihakTempat();
                     $temp->softDelete($data);
@@ -534,9 +671,30 @@ class KomplainRequest extends Controller
                     $penanganan .= "Hapus Tempat,";
                 }
                 else if ($array[1] == "pemilik") {
-                    //hapus semua produknya ???
+                    //hapus semua produknya
+                    $dataAla3 = DB::table('alat_olahraga')->where("fk_id_pemilik","=",$array[0])->get();
 
-                    //selesaikan semua request yg berhubungan dan masukkan total komisi ke saldo tempat
+                    date_default_timezone_set("Asia/Jakarta");
+                    $tanggal = date("Y-m-d H:i:s");
+                    
+                    if (!$dataAla3->isEmpty()) {
+                        foreach ($dataAla3 as $key => $value) {
+                            $data7 = [
+                                "id" => $value->id_alat,
+                                "tanggal" => $tanggal
+                            ];
+                            $ala = new alatOlahraga();
+                            $ala->softDelete($data7);
+
+                            //hapus dtransnya
+                        }
+                    }
+
+                    //selesaikan semua request yg berhubungan dan masukkan total komisi ke saldo tempat ???
+                    $per = DB::table('request_permintaan')->where("fk_id_pemilik","=",$array[0])->get();
+                    $pen = DB::table('request_penawaran')->where("fk_id_pemilik","=",$array[0])->get();
+                    
+
                     //kasih notif ke tempat, request selesai
 
                     //kasih notif ke pemilik, akun e dihapus, produk, request semua dihapus
