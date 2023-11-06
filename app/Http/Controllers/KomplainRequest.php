@@ -179,8 +179,8 @@ class KomplainRequest extends Controller
                     //kasih notif ke pemilik, alatnya dihapus
                     $alat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first();
                     $dataNotif4 = [
-                        "subject" => "😔Alat Olahraga Anda Telah Dihapus!😔",
-                        "judul" => "Alat Olahraga Anda Telah Dihapus!",
+                        "subject" => "😔Alat Olahraga ".$alat->nama_alat." Telah Dihapus!😔",
+                        "judul" => "Alat Olahraga ".$alat->nama_alat." Telah Dihapus!",
                         "nama_user" => $pemilik->nama_pemilik,
                         "url" => "https://sportiva.my.id/pemilik/daftarAlat",
                         "button" => "Lihat Daftar Alat Olahraga",
@@ -377,53 +377,58 @@ class KomplainRequest extends Controller
                         }
                     }
 
+                    $dataLap = DB::table('lapangan_olahraga')->where("id_lapangan","=",$array[0])->get()->first();
+                    $dataTemp = DB::table('pihak_tempat')->where("id_tempat")->where("id_tempat","=",$dataLap->fk_id_tempat)->get()->first();
+
                     //batalkan semua transaksi yang "Menunggu"/"Diterima" & kembalikan dana cust
-                    $cekTrans = DB::table('htrans')->where("fk_id_lapangan","=",$array[0])->get();
+                    $cekTrans = DB::table('htrans')
+                                ->where("fk_id_lapangan","=",$array[0])
+                                ->where(function ($query) {
+                                    $query->where("status_trans", "=", "Menunggu")
+                                        ->orWhere("status_trans", "=", "Diterima");
+                                })
+                                ->get();
                     if (!$cekTrans->isEmpty()) {
                         foreach ($cekTrans as $key => $value) {
-                            $dataLap = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->fk_id_lapangan)->get()->first();
-                            $dataTemp = DB::table('pihak_tempat')->where("id_tempat")->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
-                            if ($value->status_trans == "Menunggu" || $value->status_trans == "Diterima") {
-                                $data5 = [
-                                    "id" => $value->id_htrans,
-                                    "status" => "Dibatalkan"
-                                ];
-                                $htr = new htrans();
-                                $htr->updateStatus($data5);
+                            $data5 = [
+                                "id" => $value->id_htrans,
+                                "status" => "Dibatalkan"
+                            ];
+                            $htr = new htrans();
+                            $htr->updateStatus($data5);
 
-                                $dataCus = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
-                                $saldoCus = (int)$this->decodePrice($dataCus->saldo_user, "mysecretkey");
+                            $dataCus = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
+                            $saldoCus = (int)$this->decodePrice($dataCus->saldo_user, "mysecretkey");
 
-                                $saldoCus += $value->total_trans;
+                            $saldoCus += $value->total_trans;
 
-                                $enkrip = $this->encodePrice((string)$saldoCus, "mysecretkey");
+                            $enkrip = $this->encodePrice((string)$saldoCus, "mysecretkey");
 
-                                $dataSaldo = [
-                                    "id" => $value->fk_id_user,
-                                    "saldo" => $enkrip
-                                ];
-                                $cust = new customer();
-                                $cust->updateSaldo($dataSaldo);
+                            $dataSaldo = [
+                                "id" => $value->fk_id_user,
+                                "saldo" => $enkrip
+                            ];
+                            $cust = new customer();
+                            $cust->updateSaldo($dataSaldo);
 
-                                //kasih notif ke customer, transaksi dibatalkan
-                                $tanggalAwal3 = $value->tanggal_sewa;
-                                $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
-                                $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
-                                $dataNotif7 = [
-                                    "subject" => "😔Booking Lapangan ".$dataLap->nama_lapangan." Telah Dibatalkan!😔",
-                                    "judul" => "Booking Lapangan ".$dataLap->nama_lapangan." Telah Dibatalkan!",
-                                    "nama_user" => $dataCus->nama_user,
-                                    "url" => "https://sportiva.my.id/customer/daftarRiwayat",
-                                    "button" => "Lihat Riwayat Transaksi",
-                                    "isi" => "Detail Sewa Lapangan:<br><br>
-                                    <b>Nama Lapangan Olahraga: ".$dataLap->nama_lapangan."</b><br>
-                                    <b>Tanggal Sewa: ".$tanggalBaru3."</b><br>
-                                    <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
-                                    Telah dibatalkan, dana anda telah kami kembalikan ke saldo wallet! Terus jaga kesehatanmu bersama Sportiva! 😊"
-                                ];
-                                $e = new notifikasiEmail();
-                                $e->sendEmail($dataCus->email_user, $dataNotif7);
-                            }
+                            //kasih notif ke customer, transaksi dibatalkan
+                            $tanggalAwal3 = $value->tanggal_sewa;
+                            $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+                            $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+                            $dataNotif7 = [
+                                "subject" => "😔Booking Lapangan ".$dataLap->nama_lapangan." Telah Dibatalkan!😔",
+                                "judul" => "Booking Lapangan ".$dataLap->nama_lapangan." Telah Dibatalkan!",
+                                "nama_user" => $dataCus->nama_user,
+                                "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                                "button" => "Lihat Riwayat Transaksi",
+                                "isi" => "Detail Sewa Lapangan:<br><br>
+                                <b>Nama Lapangan Olahraga: ".$dataLap->nama_lapangan."</b><br>
+                                <b>Tanggal Sewa: ".$tanggalBaru3."</b><br>
+                                <b>Jam Sewa: ".$value->jam_sewa." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_sewa)->format('H:i:s')." WIB</b><br><br>
+                                Telah dibatalkan, dana anda telah kami kembalikan ke saldo wallet! Terus jaga kesehatanmu bersama Sportiva! 😊"
+                            ];
+                            $e = new notifikasiEmail();
+                            $e->sendEmail($dataCus->email_user, $dataNotif7);
                         }
                     }
 
@@ -604,7 +609,7 @@ class KomplainRequest extends Controller
                         }
                     }
 
-                    //batalkan semua transaksi yang "Menunggu" & kembalikan seluruh dana cust
+                    //batalkan semua transaksi yang "Menunggu"/"Diterima" & kembalikan seluruh dana cust
                     $trans = DB::table('htrans')->where("fk_id_tempat","=",$array[0])->get();
                     if (!$trans->isEmpty()) {
                         foreach ($trans as $key => $value) {
@@ -725,7 +730,7 @@ class KomplainRequest extends Controller
                                         "button" => "Lihat Riwayat Transaksi",
                                         "isi" => "Detail Transaksi:<br><br>
                                                 <b>Nama Alat Olahraga: ".$dataAl->nama_alat."</b><br>
-                                                <b>yang Disewa pada Transaksi: ".$value2."</b><br><br>
+                                                <b>yang Disewa pada Transaksi: ".$value2->kode_trans."</b><br><br>
                                                 Telah dibatalkan! Jangan Khawatir, dana telah kami kembalikan ke saldo anda! 😊"
                                     ];
                                     $e = new notifikasiEmail();
