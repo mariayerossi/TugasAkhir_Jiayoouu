@@ -419,7 +419,7 @@ class reminder extends Command
                             "judul" => "Jangan Lupa datang besok ya!",
                             "nama_user" => $dataCust->nama_user,
                             "url" => "https://sportiva.my.id/customer/daftarRiwayat",
-                            "button" => "Lihat Transaksi",
+                            "button" => "Lihat Riwayat Transaksi",
                             "isi" => "Detail Sewa Lapangan:<br><br>
                                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                     <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
@@ -496,7 +496,7 @@ class reminder extends Command
                         "judul" => "Yah! Booking Lapangan ".$dataLapangan->nama_lapangan." Telah Dibatalkan",
                         "nama_user" => $cust->get_all_data_by_id($value->fk_id_user)->first()->nama_user,
                         "url" => "https://sportiva.my.id/customer/daftarRiwayat",
-                        "button" => "Lihat Transaksi",
+                        "button" => "Lihat Riwayat Transaksi",
                         "isi" => "Detail Sewa Lapangan:<br><br>
                                 <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                 <b>Tanggal Sewa: ".$tanggalBaru3."</b><br>
@@ -529,7 +529,7 @@ class reminder extends Command
                             "judul" => "Jangan Lupa Datang ya!",
                             "nama_user" => $dataCust->nama_user,
                             "url" => "https://sportiva.my.id/customer/daftarRiwayat",
-                            "button" => "Lihat Transaksi",
+                            "button" => "Lihat Riwayat Transaksi",
                             "isi" => "Detail Sewa Lapangan:<br><br>
                                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                     <b>Tanggal Sewa: ".$tanggalBaru2."</b><br>
@@ -657,7 +657,7 @@ class reminder extends Command
                             "judul" => "Transaksi Anda Telah Selesai!",
                             "nama_user" => $cust->nama_user,
                             "url" => "https://sportiva.my.id/customer/daftarRiwayat",
-                            "button" => "Lihat Transaksi",
+                            "button" => "Lihat Riwayat Transaksi",
                             "isi" => "Yeay! Transaksi Anda telah selesai:<br><br>
                                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                                     ".$dtransStr."<br>

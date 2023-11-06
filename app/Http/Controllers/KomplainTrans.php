@@ -197,7 +197,6 @@ class KomplainTrans extends Controller
                     //buat status request alat jd selesai
                     $per = DB::table('request_permintaan')->where("req_id_alat","=",$array[0])->where("status_permintaan","=","Disewakan")->get();
                     if (!$per->isEmpty()) {
-                        //kalau ada
                         foreach ($per as $key => $value) {
                             $dataPer1 = [
                                 "id" => $value->id_permintaan,
@@ -356,6 +355,11 @@ class KomplainTrans extends Controller
                             }
                         }
                     }
+
+                    //hapus dtrans yang berhubungan dengan alat ini & balikin dana cust ???
+                    //kirim notif ke cust
+
+                    //kirim notif ke pemilik, alatnya dihapus
                 }
                 else if ($array[1] == "lapangan") {
                     $lapangan = new lapanganOlahraga();
@@ -525,6 +529,11 @@ class KomplainTrans extends Controller
                         }
                     }
                 }
+
+                //batalkan htrans yang berhubungan dengan alat ini & balikin seluruh dana cust ???
+                //kasih notif ke cust
+
+                //kasih notif ke tempat, lapangannya dihapus
             }
             else {
                 return redirect()->back()->with("error", "produk yang akan dihapus tidak boleh kosong!");
@@ -545,12 +554,31 @@ class KomplainTrans extends Controller
                 ];
 
                 if ($array[1] == "tempat") {
+                    //hapus semua produknya ???
+
+                    //selesai semua request yg berhubungan (ga masuk saldo, wong akun e dihapus)
+                    //(disewakan = selesai, menunggu/diterima = dibatalkan)
+                    //kirim notif ke pemilik, request selesai
+
+                    //batalkan semua transaksi yang "Menunggu" & balikin semua dana cust
+
+                    //kasih notif ke tempat, akunnya, request, produk semua dihapus
+
                     $temp = new pihakTempat();
                     $temp->softDelete($data4);
 
                     $penanganan .= "Hapus Tempat,";
                 }
                 else if ($array[1] == "pemilik") {
+                    //hapus semua produknya???
+                    //hapus dtrans produknya & balikin dana dtrans ke cust
+                    //kasih notif cust
+
+                    //selesaikan semua request yg berhubungan dan masukkan total komisi ke saldo tempat
+                    //(disewakan = selesai, menunggu/diterima = dibatalkan)
+
+                    //kasih notif ke pemilik, akunnya, produk, request semua dihapus
+
                     $pemi = new pemilikAlat();
                     $pemi->softDelete($data4);
 
