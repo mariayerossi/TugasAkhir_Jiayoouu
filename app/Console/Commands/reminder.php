@@ -163,6 +163,7 @@ class reminder extends Command
                                 ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
                                 ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                 ->where("htrans.status_trans","=","Selesai")
+                                ->where("dtrans.deleted_at","=",null)
                                 ->get();
                     $total = 0;
                     if (!$transaksi->isEmpty()) {
@@ -326,6 +327,7 @@ class reminder extends Command
                                 ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
                                 ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                 ->where("htrans.status_trans","=","Selesai")
+                                ->where("dtrans.deleted_at","=",null)
                                 ->get();
                     $total = 0;
                     if (!$transaksi->isEmpty()) {
@@ -569,7 +571,7 @@ class reminder extends Command
                 
                         $dataHtrans = DB::table('htrans')->where("id_htrans","=",$value->id_htrans)->get()->first();
                         $extend = DB::table('extend_htrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get()->first();
-                        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$value->id_htrans)->get();
+                        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$value->id_htrans)->where("deleted_at","=",null)->get();
                 
                         //total komisi dari alat miliknya sendiri
                         $total_komisi_tempat = 0;

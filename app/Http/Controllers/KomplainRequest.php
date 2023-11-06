@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\alatOlahraga;
 use App\Models\customer;
+use App\Models\dtrans;
 use App\Models\filesKomplainReq;
 use App\Models\htrans;
 use App\Models\komplainRequest as ModelsKomplainRequest;
@@ -248,6 +249,7 @@ class KomplainRequest extends Controller
                                             ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
                                             ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                             ->where("htrans.status_trans","=","Selesai")
+                                            ->where("dtrans.deleted_at","=",null)
                                             ->get();
                                 $total = 0;
                                 if (!$transaksi->isEmpty()) {
@@ -334,6 +336,7 @@ class KomplainRequest extends Controller
                                             ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
                                             ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                             ->where("htrans.status_trans","=","Selesai")
+                                            ->where("dtrans.deleted_at","=",null)
                                             ->get();
                                 $total = 0;
                                 if (!$transaksi->isEmpty()) {
@@ -607,7 +610,7 @@ class KomplainRequest extends Controller
                         foreach ($trans as $key => $value) {
                             if ($value->status_trans == "Menunggu" || $value->status_trans == "Diterima") {
                                 $data6 = [
-                                    "id" => $value->id_dtrans,
+                                    "id" => $value->id_htrans,
                                     "status" => "Dibatalkan"
                                 ];
                                 $ht = new htrans();
@@ -679,23 +682,110 @@ class KomplainRequest extends Controller
                     
                     if (!$dataAla3->isEmpty()) {
                         foreach ($dataAla3 as $key => $value) {
+                            //hapus dtransnya (status htrans menunggu / diterima)
+                            $dtr = DB::table('dtrans')
+                                ->select("dtrans.id_dtrans", "htrans.fk_id_user","htrans.kode_trans")
+                                ->join("htrans", "dtrans.fk_id_htrans", "=", "htrans.id_htrans")
+                                ->where("dtrans.deleted_at", "=", null)
+                                ->where(function ($query) {
+                                    $query->where("htrans.status_trans", "=", "Menunggu")
+                                        ->orWhere("htrans.status_trans", "=", "Diterima");
+                                })
+                                ->where("dtrans.fk_id_alat", "=", $value->id_alat)
+                                ->get();
+                            if (!$dtr->isEmpty()) {
+                                foreach ($dtr as $key => $value2) {
+                                    $dataCust2 = DB::table('user')->where("id_user","=",$value2->fk_id_user)->get()->first();
+                                    //balikin dananya
+                                    $saldoCust2 = (int)$this->decodePrice($dataCust2->saldo_user, "mysecretkey");
+                                    $saldoCust2 += $value2->subtotal_alat;
+                                    $enkrip3 = $this->encodePrice((string)$saldoCust2, "mysecretkey");
+
+                                    $dataSaldo4 = [
+                                        "id" => $value2->fk_id_user,
+                                        "saldo" => $enkrip3
+                                    ];
+                                    $cust = new customer();
+                                    $cust->updateSaldo($dataSaldo4);
+
+                                    $data8 = [
+                                        "id" => $value2->id_dtrans,
+                                        "tanggal" => $tanggal
+                                    ];
+                                    $dtra = new dtrans();
+                                    $dtra->softDelete($data8);
+
+                                    //kasih notif cust
+                                    $dataAl = DB::table('alat_olahraga')->where("id_alat","=",$value2->fk_id_alat)->get()->first();
+                                    $dataNotif13= [
+                                        "subject" => "😔Alat Olahraga yang Anda Sewa Dibatalkan!😔",
+                                        "judul" => "Maaf! Alat Olahraga yang Anda Sewa Dibatalkan!",
+                                        "nama_user" => $dataCust2->nama_user,
+                                        "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                                        "button" => "Lihat Riwayat Transaksi",
+                                        "isi" => "Detail Transaksi:<br><br>
+                                                <b>Nama Alat Olahraga: ".$dataAl->nama_alat."</b><br>
+                                                <b>yang Disewa pada Transaksi: ".$value2."</b><br><br>
+                                                Telah dibatalkan! Jangan Khawatir, dana telah kami kembalikan ke saldo anda! 😊"
+                                    ];
+                                    $e = new notifikasiEmail();
+                                    $e->sendEmail($dataCust2->email_user, $dataNotif13);
+                                }
+                            }
                             $data7 = [
                                 "id" => $value->id_alat,
                                 "tanggal" => $tanggal
                             ];
                             $ala = new alatOlahraga();
                             $ala->softDelete($data7);
-
-                            //hapus dtransnya
                         }
                     }
 
-                    //selesaikan semua request yg berhubungan dan masukkan total komisi ke saldo tempat ???
+                    //selesaikan semua request yg berhubungan dan masukkan total komisi ke saldo tempat
                     $per = DB::table('request_permintaan')->where("fk_id_pemilik","=",$array[0])->get();
                     $pen = DB::table('request_penawaran')->where("fk_id_pemilik","=",$array[0])->get();
-                    
+                    if (!$per->isEmpty()) {
+                        foreach ($per as $key => $value) {
+                            $dataTemp3 = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+                            $dataAla4 = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                            $dataLapa4 = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+                            if ($value->status_permintaan == "Menunggu" || $value->status_permintaan == "Diterima") {
+                                $data9 = [
+                                    "id" => $value->id_permintaan,
+                                    "status" => "Dibatalkan"
+                                ];
+                                $pena = new requestPenawaran();
+                                $pena->updateStatus($data9);
 
-                    //kasih notif ke tempat, request selesai
+                                //kasih notif ke tempat, request dibatalkan
+                                $dataNotif14= [
+                                    "subject" => "⚠️Request Anda Telah Dibatalkan!⚠️",
+                                    "judul" => "Maaf! Request Anda Telah Dibatalkan!",
+                                    "nama_user" => $dataTemp3->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "button" => "Lihat Detail Permintaan",
+                                    "isi" => "Sayang sekali! Request Permintaan dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAla4->nama_alat."</b><br>
+                                            <b>Diantar ke Lapangan: ".$dataLapa4->nama_lapangan."</b><br><br>
+                                            Telah dibatalkan! Cari dan temukan alat olarhaga lain di Sportiva! 😊"
+                                ];
+                                $e = new notifikasiEmail();
+                                $e->sendEmail($dataTemp3->email_tempat, $dataNotif14);
+                            }
+                            else if ($value->status_permintaan == "Disewakan") {
+                                $data9 = [
+                                    "id" => $value->id_permintaan,
+                                    "status" => "Selesai"
+                                ];
+                                $pena = new requestPenawaran();
+                                $pena->updateStatus($data9);
+
+                                //tambahkan saldo tempat ???
+                                
+                                //kasih notif ke tempat, request selesai
+                            }
+                        }
+                    }
 
                     //kasih notif ke pemilik, akun e dihapus, produk, request semua dihapus
 

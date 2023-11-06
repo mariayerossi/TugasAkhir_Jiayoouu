@@ -216,6 +216,7 @@ class KomplainTrans extends Controller
                                         ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
                                         ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                         ->where("htrans.status_trans","=","Selesai")
+                                        ->where("dtrans.deleted_at","=",null)
                                         ->get();
                             $total = 0;
                             if (!$transaksi->isEmpty()) {
@@ -297,6 +298,7 @@ class KomplainTrans extends Controller
                                             ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
                                             ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                             ->where("htrans.status_trans","=","Selesai")
+                                            ->where("dtrans.deleted_at","=",null)
                                             ->get();
                                 $total = 0;
                                 if (!$transaksi->isEmpty()) {
@@ -356,7 +358,7 @@ class KomplainTrans extends Controller
                         }
                     }
 
-                    //hapus dtrans yang berhubungan dengan alat ini & balikin dana cust ???
+                    //hapus dtrans yang berhubungan dengan alat ini & balikin dana cust (status htrans menunggu / diterima) ???
                     //kirim notif ke cust
 
                     //kirim notif ke pemilik, alatnya dihapus
@@ -390,6 +392,7 @@ class KomplainTrans extends Controller
                                         ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
                                         ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                         ->where("htrans.status_trans","=","Selesai")
+                                        ->where("dtrans.deleted_at","=",null)
                                         ->get();
                             $total = 0;
                             if (!$transaksi->isEmpty()) {
@@ -470,6 +473,7 @@ class KomplainTrans extends Controller
                                             ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
                                             ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
                                             ->where("htrans.status_trans","=","Selesai")
+                                            ->where("dtrans.deleted_at","=",null)
                                             ->get();
                                 $total = 0;
                                 if (!$transaksi->isEmpty()) {
@@ -571,7 +575,7 @@ class KomplainTrans extends Controller
                 }
                 else if ($array[1] == "pemilik") {
                     //hapus semua produknya???
-                    //hapus dtrans produknya & balikin dana dtrans ke cust
+                    //hapus dtrans produknya & balikin dana dtrans ke cust (status htrans menunggu / diterima)
                     //kasih notif cust
 
                     //selesaikan semua request yg berhubungan dan masukkan total komisi ke saldo tempat
