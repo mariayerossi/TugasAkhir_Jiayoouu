@@ -48,7 +48,7 @@ Sportiva
           <h2>Selamat Datang di <span>Sportiva</span></h2>
           <p>Kami hadir untuk memenuhi kebutuhan Anda dalam menciptakan pengalaman olahraga yang menyenangkan dan memuaskan.</p>
           <div class="d-flex justify-content-center justify-content-lg-start">
-            <a href="#produk" class="btn-get-started">Lihat Produk</a>
+            <a href="/daftarLapangan" class="btn-get-started">Sewa Sekarang!</a>
           </div>
         </div>
       </div>

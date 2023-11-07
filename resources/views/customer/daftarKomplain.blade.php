@@ -113,6 +113,8 @@
                 </div>
             </div>
         @endforeach
+    @else
+        <h5>Belum ada Komplain</h5>
     @endif
 </div>
 <script>

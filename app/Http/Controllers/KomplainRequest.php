@@ -21,6 +21,31 @@ use Illuminate\Support\Facades\Session;
 
 class KomplainRequest extends Controller
 {
+    private function encodePrice($price, $key) {
+        $encodedPrice = '';
+        $priceLength = strlen($price);
+        $keyLength = strlen($key);
+    
+        for ($i = 0; $i < $priceLength; $i++) {
+            $encodedPrice .= $price[$i] ^ $key[$i % $keyLength];
+        }
+    
+        return base64_encode($encodedPrice);
+    }
+
+    private function decodePrice($encodedPrice, $key) {
+        $encodedPrice = base64_decode($encodedPrice);
+        $decodedPrice = '';
+        $priceLength = strlen($encodedPrice);
+        $keyLength = strlen($key);
+    
+        for ($i = 0; $i < $priceLength; $i++) {
+            $decodedPrice .= $encodedPrice[$i] ^ $key[$i % $keyLength];
+        }
+    
+        return $decodedPrice;
+    }
+
     public function tambahKomplain(Request $request){
         $request->validate([
             "jenis" => "required",
@@ -220,7 +245,7 @@ class KomplainRequest extends Controller
                                     "subject" => "⚠️Request Alat Olahraga Dibatalkan!⚠️",
                                     "judul" => "Request Alat Olahraga Dibatalkan!",
                                     "nama_user" => $dataPemi->nama_pemilik,
-                                    "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_penawaran,
+                                    "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
                                     "button" => "Lihat Detail Permintaan",
                                     "isi" => "Masa sewa alat dari:<br><br>
                                             <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
@@ -278,7 +303,7 @@ class KomplainRequest extends Controller
                                 "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
                                 "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
                                 "nama_user" => $dataPemi->nama_pemilik,
-                                "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_penawaran,
+                                "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
                                 "button" => "Lihat Detail Permintaan",
                                 "isi" => "Masa sewa alat dari:<br><br>
                                         <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
@@ -378,7 +403,7 @@ class KomplainRequest extends Controller
                     }
 
                     $dataLap = DB::table('lapangan_olahraga')->where("id_lapangan","=",$array[0])->get()->first();
-                    $dataTemp = DB::table('pihak_tempat')->where("id_tempat")->where("id_tempat","=",$dataLap->fk_id_tempat)->get()->first();
+                    $dataTemp = DB::table('pihak_tempat')->where("id_tempat","=",$dataLap->pemilik_lapangan)->get()->first();
 
                     //batalkan semua transaksi yang "Menunggu"/"Diterima" & kembalikan dana cust
                     $cekTrans = DB::table('htrans')
@@ -526,7 +551,7 @@ class KomplainRequest extends Controller
                                             Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataPem->nama_pemilik, $dataNotif9);
+                                $e->sendEmail($dataPem->email_pemilik, $dataNotif9);
 
                             }
                             else if ($value->status_permintaan == "Menunggu" || $value->status_permintaan == "Diterima") {
@@ -550,7 +575,7 @@ class KomplainRequest extends Controller
                                             Telah Dibatalkan. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataPem->nama_pemilik, $dataNotif9);
+                                $e->sendEmail($dataPem->email_pemilik, $dataNotif9);
                             }
                         }
                     }
@@ -581,7 +606,7 @@ class KomplainRequest extends Controller
                                             Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataPem2->nama_pemilik, $dataNotif10);
+                                $e->sendEmail($dataPem2->email_pemilik, $dataNotif10);
                             }
                             else if ($value->status_penawaran == "Menunggu" || $value->status_penawaran == "Diterima") {
                                 $data5 = [
@@ -604,7 +629,7 @@ class KomplainRequest extends Controller
                                             Telah Dibatalkan. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataPem2->nama_pemilik, $dataNotif10);
+                                $e->sendEmail($dataPem2->email_pemilik, $dataNotif10);
                             }
                         }
                     }
@@ -652,7 +677,7 @@ class KomplainRequest extends Controller
                                             Telah dibatalkan, dana anda telah kami kembalikan ke saldo wallet! Terus jaga kesehatanmu bersama Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataCust1->nama_user, $dataNotif11);
+                                $e->sendEmail($dataCust1->email_user, $dataNotif11);
                             }
                         }
                     }

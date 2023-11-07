@@ -60,6 +60,25 @@ use Illuminate\Support\Facades\Session;
 Route::get('/', function () {
     return view('home');
 });
+Route::get("/daftarLapangan", [LapanganOlahraga::class, "cariLapangan2"]);
+Route::get("/detailLapangan/{id}", function ($id) {
+    $kat = new kategori();
+    $param["kategori"] = $kat->get_all_data();
+    $lapa = new ModelsLapanganOlahraga();
+    $param["lapangan"] = $lapa->get_all_data_by_id($id);
+    $files = new filesLapanganOlahraga();
+    $param["files"] = $files->get_all_data($id);
+    $slot = new ModelsSlotWaktu();
+    $param["slot"] = $slot->get_all_data_by_lapangan($id);
+
+    $per = new ModelsRequestPermintaan();
+    $param["permintaan"] = $per->get_all_data_by_lapangan($id);
+    $pen = new ModelsRequestPenawaran();
+    $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
+    $sewa = new ModelsSewaSendiri();
+    $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
+    return view("detailLapangan")->with($param);
+});
 
 // -------------------------------
 // TAMPILAN LOGIN REGISTER

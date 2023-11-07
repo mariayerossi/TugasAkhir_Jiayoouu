@@ -1931,15 +1931,17 @@ section {
   display: inline-block;
   padding: 14px 40px;
   border-radius: 50px;
-  transition: 0.3s;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+  transition: 0.5s;
+  color: #ffffff;
+  background: #007466;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
   border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .hero .btn-get-started:hover {
   border-color: rgba(255, 255, 255, 0.5);
+  background: #00a17c; /* Ubah warna latar belakang saat dihover */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); /* Tingkatkan intensitas bayangan saat dihover */
 }
 
 .hero .btn-watch-video {

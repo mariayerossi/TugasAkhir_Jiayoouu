@@ -735,7 +735,7 @@ class KomplainTrans extends Controller
                                             Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataPem->nama_pemilik, $dataNotif9);
+                                $e->sendEmail($dataPem->email_pemilik, $dataNotif9);
 
                             }
                             else if ($value->status_permintaan == "Menunggu" || $value->status_permintaan == "Diterima") {
@@ -759,7 +759,7 @@ class KomplainTrans extends Controller
                                             Telah Dibatalkan. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataPem->nama_pemilik, $dataNotif9);
+                                $e->sendEmail($dataPem->email_pemilik, $dataNotif9);
                             }
                         }
                     }
@@ -790,7 +790,7 @@ class KomplainTrans extends Controller
                                             Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataPem2->nama_pemilik, $dataNotif10);
+                                $e->sendEmail($dataPem2->email_pemilik, $dataNotif10);
                             }
                             else if ($value->status_penawaran == "Menunggu" || $value->status_penawaran == "Diterima") {
                                 $data5 = [
@@ -813,7 +813,7 @@ class KomplainTrans extends Controller
                                             Telah Dibatalkan. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataPem2->nama_pemilik, $dataNotif10);
+                                $e->sendEmail($dataPem2->email_pemilik, $dataNotif10);
                             }
                         }
                     }
@@ -861,7 +861,7 @@ class KomplainTrans extends Controller
                                             Telah dibatalkan, dana anda telah kami kembalikan ke saldo wallet! Terus jaga kesehatanmu bersama Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
-                                $e->sendEmail($dataCust1->nama_user, $dataNotif11);
+                                $e->sendEmail($dataCust1->email_user, $dataNotif11);
                             }
                         }
                     }
