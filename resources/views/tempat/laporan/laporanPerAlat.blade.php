@@ -108,7 +108,7 @@
                         <tr>
                             <td>{{ $label }}</td>
                             <td>{{ $monthlyIncome[$index] }}</td>
-                            <td>{{$total[$index]}}</td>
+                            <td>Rp {{ number_format($total[$index], 0, ',', '.') }}</td>
                             <td>
                                 @if($index >= 0)
                                     @php

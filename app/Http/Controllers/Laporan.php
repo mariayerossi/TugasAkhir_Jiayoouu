@@ -850,16 +850,18 @@ class Laporan extends Controller
         }
     
         $dataDtrans = DB::table('dtrans')
-            ->select("htrans.tanggal_sewa")
+            ->select("htrans.tanggal_sewa","dtrans.total_komisi_tempat")
             ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
             ->where("dtrans.fk_id_alat","=",$request->id)
             ->whereBetween('htrans.tanggal_sewa', [$startDate, $endDate])
             ->get();
     
         $monthlyIncome = [];
+        $total = [];
         foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
             $dateStr = $date->format('Y-m-d');
             $monthlyIncome[$dateStr] = 0;
+            $total[$dateStr] = 0;
         }
         // dd($monthlyIncome);
     
@@ -870,6 +872,7 @@ class Laporan extends Controller
                 $day = date('Y-m-d', strtotime($sewaDate));
                 // dd($day);
                 $monthlyIncome[$day] += 1;
+                $total[$day] += $data->total_komisi_tempat * 0.91;
             }
         }
         // dd($monthlyIncome);
@@ -894,6 +897,7 @@ class Laporan extends Controller
         }
 
         $increasePercentage = number_format($increasePercentage, 2); // Format persentase dengan 2 desimal
+        $totalData = array_values($total);
         // ...
 
         $param["monthlyLabels"] = $labels;
@@ -906,6 +910,7 @@ class Laporan extends Controller
         $param["mulai"] = $startDate;
         $param["selesai"] = $endDate1;
         $param["increasePercentage"] = $increasePercentage;
+        $param["total"] = $totalData;
         return view("tempat.laporan.laporanPerAlat")->with($param);
     }
 
