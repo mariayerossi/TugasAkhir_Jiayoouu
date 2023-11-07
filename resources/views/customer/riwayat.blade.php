@@ -240,14 +240,14 @@
                                 <h6>Jenis Komplain</h6>
                             </div>
                             <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                                <input type="radio" class="btn-check" name="jenis" id="info-outlined" autocomplete="off" value="Lapangan tidak sesuai">
-                                <label class="btn btn-outline-info" for="info-outlined"><i class="bi bi-house-slash me-2"></i>Lapangan tidak sesuai</label>
+                                <input type="radio" class="btn-check" name="jenis" id="info-outlined{{$item->id_htrans}}" autocomplete="off" value="Lapangan tidak sesuai">
+                                <label class="btn btn-outline-info" for="info-outlined{{$item->id_htrans}}"><i class="bi bi-house-slash me-2"></i>Lapangan tidak sesuai</label>
 
-                                <input type="radio" class="btn-check" name="jenis" id="danger-outlined" autocomplete="off" value="Alat tidak sesuai">
-                                <label class="btn btn-outline-danger" for="danger-outlined"><i class="bi bi-box2 me-2"></i>Alat tidak sesuai</label>
+                                <input type="radio" class="btn-check" name="jenis" id="danger-outlined{{$item->id_htrans}}" autocomplete="off" value="Alat tidak sesuai">
+                                <label class="btn btn-outline-danger" for="danger-outlined{{$item->id_htrans}}"><i class="bi bi-box2 me-2"></i>Alat tidak sesuai</label>
 
-                                <input type="radio" class="btn-check" name="jenis" id="primary-outlined" autocomplete="off" value="Lainnya">
-                                <label class="btn btn-outline-primary" for="primary-outlined"><i class="bi bi-justify-left me-2"></i></i>Lainnya</label>
+                                <input type="radio" class="btn-check" name="jenis" id="primary-outlined{{$item->id_htrans}}" autocomplete="off" value="Lainnya">
+                                <label class="btn btn-outline-primary" for="primary-outlined{{$item->id_htrans}}"><i class="bi bi-justify-left me-2"></i></i>Lainnya</label>
                             </div>
                         </div>
                         <div class="row">

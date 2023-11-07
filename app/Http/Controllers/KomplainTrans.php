@@ -353,7 +353,7 @@ class KomplainTrans extends Controller
 
                     //hapus dtrans yang berhubungan dengan alat ini & balikin dana cust (status htrans menunggu / diterima)
                     $dtr = DB::table('dtrans')
-                        ->select("dtrans.id_dtrans", "htrans.fk_id_user","htrans.kode_trans")
+                        ->select("dtrans.id_dtrans", "htrans.fk_id_user","htrans.kode_trans","dtrans.subtotal_alat")
                         ->join("htrans", "dtrans.fk_id_htrans", "=", "htrans.id_htrans")
                         ->where("dtrans.deleted_at", "=", null)
                         ->where(function ($query) {
@@ -586,7 +586,8 @@ class KomplainTrans extends Controller
                     }
 
                     $dataLap = DB::table('lapangan_olahraga')->where("id_lapangan","=",$array[0])->get()->first();
-                    $dataTemp = DB::table('pihak_tempat')->where("id_tempat")->where("id_tempat","=",$dataLap->fk_id_tempat)->get()->first();
+                    $dataTemp = DB::table('pihak_tempat')->where("id_tempat","=",$dataLap->pemilik_lapangan)->get()->first();
+                    // dd($dataTemp);
 
                     //batalkan htrans yang berhubungan dengan lapangan ini & balikin seluruh dana cust
                     $cekTrans = DB::table('htrans')
@@ -714,12 +715,12 @@ class KomplainTrans extends Controller
                             $dataAla = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
                             $dataLapa = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
                             if ($value->status_permintaan == "Disewakan") {
-                                $data4 = [
+                                $data40 = [
                                     "id" => $value->id_permintaan,
                                     "status" => "Selesai"
                                 ];
                                 $permin = new requestPermintaan();
-                                $permin->updateStatus($data4);
+                                $permin->updateStatus($data40);
                                 //ga ada penambahan dana tempat, wong dihapus akun e
 
                                 //kasih notif ke pemilik alat
@@ -739,12 +740,12 @@ class KomplainTrans extends Controller
 
                             }
                             else if ($value->status_permintaan == "Menunggu" || $value->status_permintaan == "Diterima") {
-                                $data4 = [
+                                $data40 = [
                                     "id" => $value->id_permintaan,
                                     "status" => "Dibatalkan"
                                 ];
                                 $permin = new requestPermintaan();
-                                $permin->updateStatus($data4);
+                                $permin->updateStatus($data40);
 
                                 //kasih notif ke pemilik alat
                                 $dataNotif9 = [
