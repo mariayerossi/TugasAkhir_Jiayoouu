@@ -51,11 +51,7 @@ Sportiva
                 max-width: 50%;
             }
         }
-    </style>
-<!-- Section: Design Block -->
-<section class="text-center text-lg-start">
-    <style>
-      .cascading-right {
+        .cascading-right {
         margin-right: -50px;
       }
   
@@ -64,11 +60,52 @@ Sportiva
           margin-right: 0;
         }
       }
+      .responsive-form {
+        width: 50%;
+    }
+
+    /* CSS untuk layar dengan lebar maksimum 768px (misalnya tablet) */
+    @media (max-width: 768px) {
+        .responsive-form {
+            width: 70%;
+        }
+    }
+
+    /* CSS untuk layar dengan lebar maksimum 576px (misalnya smartphone) */
+    @media (max-width: 576px) {
+        .responsive-form {
+            width: 100%;
+        }
+    }
     </style>
-  
+<!-- Section: Design Block -->
+<section class="text-center text-lg-start">
     <!-- Jumbotron -->
-    <div class="container py-4">
+    <div class="container">
       @include("layouts.message")
+      <div class="d-flex justify-content-center align-items-center mb-3"> 
+        <form action="/searchLapangan" method="GET" class="input-group responsive-form">
+            @csrf
+            <div class="input-group-prepend">
+                <select class="form-control" name="kategori">
+                    <option value="" disabled selected>Kategori</option>
+                    @if (!$kategori->isEmpty())
+                        @foreach ($kategori as $item)
+                        <option value="{{$item->id_kategori}}">{{$item->nama_kategori}}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan dan Tempat Olahraga...">
+            {{-- <input type="text" name="cariPemilik" class="form-control" placeholder="Cari Tempat Olahraga..."> --}}
+            <div class="input-group-append">
+                <button class="btn btn-success" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <hr>
       <div class="row">
         @if (!$lapangan->isEmpty())
             @foreach ($lapangan as $item)

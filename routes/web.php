@@ -79,6 +79,7 @@ Route::get("/detailLapangan/{id}", function ($id) {
     $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
     return view("detailLapangan")->with($param);
 });
+Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapangan2"]);
 
 // -------------------------------
 // TAMPILAN LOGIN REGISTER

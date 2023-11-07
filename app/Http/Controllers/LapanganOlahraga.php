@@ -303,6 +303,47 @@ class LapanganOlahraga extends Controller
         }
     }
 
+    public function searchLapangan2(Request $request)
+    {
+        $query = DB::table('lapangan_olahraga')->where('lapangan_olahraga.deleted_at',"=",null)->where("lapangan_olahraga.status_lapangan","=","Aktif");
+    
+        if ($request->filled('kategori')) {
+            $query->where('lapangan_olahraga.fk_id_kategori', $request->kategori);
+        }
+        
+        if ($request->filled('cari')) {
+            // $query->where('nama_lapangan', 'like', '%' . $request->cari . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('lapangan_olahraga.nama_lapangan', 'like', '%' . $request->cari . '%')
+                  ->orWhereExists(function ($subQuery) use ($request) {
+                      $subQuery->select(DB::raw(1))
+                               ->from('pihak_tempat')
+                               ->whereColumn('lapangan_olahraga.pemilik_lapangan', 'pihak_tempat.id_tempat')
+                               ->where('pihak_tempat.nama_tempat', 'like', '%' . $request->cari . '%');
+                  });
+            });
+        }
+        
+        $hasil = $query
+                ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
+                ->joinSub(function($query) {
+                    $query->select("fk_id_lapangan", "nama_file_lapangan")
+                        ->from('files_lapangan')
+                        ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                ->get();
+        // dd($hasil);
+        $kat = new kategori();
+        $kategori = $kat->get_all_data();
+
+        // $files = new filesLapanganOlahraga();
+        // dd($hasil);
+        $param["lapangan"] = $hasil;
+        $param["kategori"] = $kategori;
+
+        return view('daftarLapangan')->with($param);
+    }
+
     public function searchLapanganCustomer(Request $request)
     {
         $query = DB::table('lapangan_olahraga')->where('lapangan_olahraga.deleted_at',"=",null)->where("lapangan_olahraga.status_lapangan","=","Aktif");
