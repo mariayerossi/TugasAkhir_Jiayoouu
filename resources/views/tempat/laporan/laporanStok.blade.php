@@ -38,51 +38,55 @@
         <a href="/tempat/laporan/stok/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Kategori</th>
-                <th>Harga Sewa</th>
-                <th>Status</th>
-                <th>Detail</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$stok->isEmpty())
-                @foreach ($stok as $item)
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$item->nama_alat}}</td>
-                        <td>{{$item->nama_kategori}}</td>
-                        @if ($item->harga_permintaan != null)
-                            <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td>
-                            <td>Alat Sewaan</td>
-                            <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
-                        @elseif ($item->harga_penawaran != null)
-                            <td>Rp {{ number_format($item->harga_penawaran, 0, ',', '.') }}</td>
-                            <td>Alat Sewaan</td>
-                            <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
-                        @else
-                            <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                            <td>Alat Pribadi</td>
-                            <td><a href="/tempat/alat/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
-                        @endif
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Harga Sewa</th>
+                        <th>Status</th>
+                        <th>Detail</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="6" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!$stok->isEmpty())
+                        @foreach ($stok as $item)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$item->nama_alat}}</td>
+                                <td>{{$item->nama_kategori}}</td>
+                                @if ($item->harga_permintaan != null)
+                                    <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td>
+                                    <td>Alat Sewaan</td>
+                                    <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                @elseif ($item->harga_penawaran != null)
+                                    <td>Rp {{ number_format($item->harga_penawaran, 0, ',', '.') }}</td>
+                                    <td>Alat Sewaan</td>
+                                    <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                @else
+                                    <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                                    <td>Alat Pribadi</td>
+                                    <td><a href="/tempat/alat/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="6" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <script>
-    $(document).ready(function() {
-        var table = $('.table').DataTable();
-    });
+    // $(document).ready(function() {
+    //     var table = $('.table').DataTable();
+    // });
 </script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>

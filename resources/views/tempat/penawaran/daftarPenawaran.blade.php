@@ -56,318 +56,346 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="baru" role="tabpanel" aria-labelledby="baru-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Foto Alat</th>
-                        <th>Keterangan</th>
-                        <th>Pengaju</th>
-                        <th>Waktu</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$baru->isEmpty())
-                        @foreach ($baru as $item)
-                            {{-- @php
-                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
-                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                            @endphp --}}
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>
-                                    <div class="square-image-container">
-                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                                    </div>
-                                </td>
-                                <td>Penawaran {{$item->nama_alat}}</td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
-                                <td>Diajukan oleh {{$item->nama_pemilik}}</td>
-                                <td>{{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <th>Foto Alat</th>
+                                <th>Keterangan</th>
+                                <th>Pengaju</th>
+                                <th>Waktu</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$baru->isEmpty())
+                                @foreach ($baru as $item)
+                                    {{-- @php
+                                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                        $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                    @endphp --}}
+                                    <tr>
+                                        <td>
+                                            <div class="square-image-container">
+                                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                            </div>
+                                        </td>
+                                        <td>Penawaran {{$item->nama_alat}}</td>
+                                        @php
+                                            $tanggalAwal = $item->tanggal_tawar;
+                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                        @endphp
+                                        <td>Diajukan oleh {{$item->nama_pemilik}}</td>
+                                        <td>{{$tanggalBaru}}</td>
+                                        <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="diterima" role="tabpanel" aria-labelledby="diterima-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Foto Alat</th>
-                        <th>Keterangan</th>
-                        <th>Pengaju</th>
-                        <th>Waktu</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$diterima->isEmpty())
-                        @foreach ($diterima as $item)
-                            {{-- @php
-                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
-                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                            @endphp --}}
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>
-                                    <div class="square-image-container">
-                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                                    </div>
-                                </td>
-                                <td>Penawaran {{$item->nama_alat}} sudah <span style="color:rgb(0, 145, 0)">Diterima</span> dan sedang diantar</td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
-                                <td>Diajukan oleh {{$item->nama_pemilik}}</td>
-                                <td>{{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <th>Foto Alat</th>
+                                <th>Keterangan</th>
+                                <th>Pengaju</th>
+                                <th>Waktu</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$diterima->isEmpty())
+                                @foreach ($diterima as $item)
+                                    {{-- @php
+                                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                        $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                    @endphp --}}
+                                    <tr>
+                                        <td>
+                                            <div class="square-image-container">
+                                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                            </div>
+                                        </td>
+                                        <td>Penawaran {{$item->nama_alat}} sudah <span style="color:rgb(0, 145, 0)">Diterima</span> dan sedang diantar</td>
+                                        @php
+                                            $tanggalAwal = $item->tanggal_tawar;
+                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                        @endphp
+                                        <td>Diajukan oleh {{$item->nama_pemilik}}</td>
+                                        <td>{{$tanggalBaru}}</td>
+                                        <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="disewakan" role="tabpanel" aria-labelledby="disewakan-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Foto Alat</th>
-                        <th>Keterangan</th>
-                        <th>Pengaju</th>
-                        <th>Waktu</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$disewakan->isEmpty())
-                        @foreach ($disewakan as $item)
-                            {{-- @php
-                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
-                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                            @endphp --}}
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>
-                                    <div class="square-image-container">
-                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                                    </div>
-                                </td>
-                                <td>Penawaran {{$item->nama_alat}} sudah <span style="color:rgb(0, 145, 0)">Disewakan</span></td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
-                                <td>Diajukan oleh {{$item->nama_pemilik}}</td>
-                                <td>{{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <th>Foto Alat</th>
+                                <th>Keterangan</th>
+                                <th>Pengaju</th>
+                                <th>Waktu</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$disewakan->isEmpty())
+                                @foreach ($disewakan as $item)
+                                    {{-- @php
+                                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                        $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                    @endphp --}}
+                                    <tr>
+                                        <td>
+                                            <div class="square-image-container">
+                                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                            </div>
+                                        </td>
+                                        <td>Penawaran {{$item->nama_alat}} sudah <span style="color:rgb(0, 145, 0)">Disewakan</span></td>
+                                        @php
+                                            $tanggalAwal = $item->tanggal_tawar;
+                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                        @endphp
+                                        <td>Diajukan oleh {{$item->nama_pemilik}}</td>
+                                        <td>{{$tanggalBaru}}</td>
+                                        <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="ditolak" role="tabpanel" aria-labelledby="ditolak-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Foto Alat</th>
-                        <th>Keterangan</th>
-                        <th>Pengaju</th>
-                        <th>Waktu</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$ditolak->isEmpty())
-                        @foreach ($ditolak as $item)
-                            {{-- @php
-                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
-                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                            @endphp --}}
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>
-                                    <div class="square-image-container">
-                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                                    </div>
-                                </td>
-                                <td>Penawaran {{$item->nama_alat}} sudah <span style="color:red">Ditolak</span></td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
-                                <td>Diajukan oleh {{$item->nama_pemilik}}</td>
-                                <td>{{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <th>Foto Alat</th>
+                                <th>Keterangan</th>
+                                <th>Pengaju</th>
+                                <th>Waktu</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$ditolak->isEmpty())
+                                @foreach ($ditolak as $item)
+                                    {{-- @php
+                                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                        $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                    @endphp --}}
+                                    <tr>
+                                        <td>
+                                            <div class="square-image-container">
+                                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                            </div>
+                                        </td>
+                                        <td>Penawaran {{$item->nama_alat}} sudah <span style="color:red">Ditolak</span></td>
+                                        @php
+                                            $tanggalAwal = $item->tanggal_tawar;
+                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                        @endphp
+                                        <td>Diajukan oleh {{$item->nama_pemilik}}</td>
+                                        <td>{{$tanggalBaru}}</td>
+                                        <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="selesai" role="tabpanel" aria-labelledby="selesai-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Foto Alat</th>
-                        <th>Keterangan</th>
-                        <th>Pengaju</th>
-                        <th>Waktu</th>
-                        <th>Status Alat</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$selesai->isEmpty())
-                        @foreach ($selesai as $item)
-                            {{-- @php
-                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
-                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                            @endphp --}}
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>
-                                    <div class="square-image-container">
-                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                                    </div>
-                                </td>
-                                <td>Penawaran {{$item->nama_alat}} sudah <span style="color:blue">Selesai</span></td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
-                                <td>Diajukan oleh {{$item->nama_pemilik}}</td>
-                                <td>{{$tanggalBaru}}</td>
-                                @if ($item->status_alat == null)
-                                    <td><span>Belum dikembalikan</span></td>
-                                @else
-                                    <td><span>Sudah dikembalikan</span></td>
-                                @endif
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <th>Foto Alat</th>
+                                <th>Keterangan</th>
+                                <th>Pengaju</th>
+                                <th>Waktu</th>
+                                <th>Status Alat</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="6" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$selesai->isEmpty())
+                                @foreach ($selesai as $item)
+                                    {{-- @php
+                                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                        $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                    @endphp --}}
+                                    <tr>
+                                        <td>
+                                            <div class="square-image-container">
+                                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                            </div>
+                                        </td>
+                                        <td>Penawaran {{$item->nama_alat}} sudah <span style="color:blue">Selesai</span></td>
+                                        @php
+                                            $tanggalAwal = $item->tanggal_tawar;
+                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                        @endphp
+                                        <td>Diajukan oleh {{$item->nama_pemilik}}</td>
+                                        <td>{{$tanggalBaru}}</td>
+                                        @if ($item->status_alat == null)
+                                            <td><span>Belum dikembalikan</span></td>
+                                        @else
+                                            <td><span>Sudah dikembalikan</span></td>
+                                        @endif
+                                        <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="6" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="dibatalkan" role="tabpanel" aria-labelledby="dibatalkan-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Foto Alat</th>
-                        <th>Keterangan</th>
-                        <th>Pengaju</th>
-                        <th>Waktu</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$dibatalkan->isEmpty())
-                        @foreach ($dibatalkan as $item)
-                            {{-- @php
-                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
-                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                            @endphp --}}
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>
-                                    <div class="square-image-container">
-                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                                    </div>
-                                </td>
-                                <td>Penawaran {{$item->nama_alat}} sudah <span style="color:red">Dibatalkan</span></td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
-                                <td>Diajukan oleh {{$item->nama_pemilik}}</td>
-                                <td>{{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <th>Foto Alat</th>
+                                <th>Keterangan</th>
+                                <th>Pengaju</th>
+                                <th>Waktu</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$dibatalkan->isEmpty())
+                                @foreach ($dibatalkan as $item)
+                                    {{-- @php
+                                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                        $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                    @endphp --}}
+                                    <tr>
+                                        <td>
+                                            <div class="square-image-container">
+                                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                            </div>
+                                        </td>
+                                        <td>Penawaran {{$item->nama_alat}} sudah <span style="color:red">Dibatalkan</span></td>
+                                        @php
+                                            $tanggalAwal = $item->tanggal_tawar;
+                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                        @endphp
+                                        <td>Diajukan oleh {{$item->nama_pemilik}}</td>
+                                        <td>{{$tanggalBaru}}</td>
+                                        <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="dikomplain" role="tabpanel" aria-labelledby="dikomplain-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Foto Alat</th>
-                        <th>Keterangan</th>
-                        <th>Pengaju</th>
-                        <th>Waktu</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$dikomplain->isEmpty())
-                        @foreach ($dikomplain as $item)
-                            {{-- @php
-                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
-                                $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                            @endphp --}}
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>
-                                    <div class="square-image-container">
-                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                                    </div>
-                                </td>
-                                <td>Penawaran {{$item->nama_alat}} <span style="color:red">Dikomplain</span></td>
-                                @php
-                                    $tanggalAwal = $item->tanggal_tawar;
-                                    $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                    $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
-                                @endphp
-                                <td>Diajukan oleh {{$item->nama_pemilik}}</td>
-                                <td>{{$tanggalBaru}}</td>
-                                <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                <th>Foto Alat</th>
+                                <th>Keterangan</th>
+                                <th>Pengaju</th>
+                                <th>Waktu</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$dikomplain->isEmpty())
+                                @foreach ($dikomplain as $item)
+                                    {{-- @php
+                                        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
+                                        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                        $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                    @endphp --}}
+                                    <tr>
+                                        <td>
+                                            <div class="square-image-container">
+                                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                            </div>
+                                        </td>
+                                        <td>Penawaran {{$item->nama_alat}} <span style="color:red">Dikomplain</span></td>
+                                        @php
+                                            $tanggalAwal = $item->tanggal_tawar;
+                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
+                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                        @endphp
+                                        <td>Diajukan oleh {{$item->nama_pemilik}}</td>
+                                        <td>{{$tanggalBaru}}</td>
+                                        <td><a href="/tempat/penawaran/detailPenawaranNego/{{$item->id_penawaran}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

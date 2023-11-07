@@ -73,85 +73,91 @@
 
     {{-- grafik --}}
     <div class="mt-5 mb-5">
-        <div class="chart-container">
-            <canvas id="incomeChart"></canvas>
+        <div class="card">
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="incomeChart"></canvas>
+                </div>
+                <div id="keterangan" class="text-center mt-5">
+                    @if ($increasePercentage > 0)
+                        Persewaan meningkat sebesar {{ $increasePercentage }}% dalam satu bulan ini.
+                    @elseif ($increasePercentage < 0)
+                        Persewaan menurun sebesar {{ abs($increasePercentage) }}% dalam satu bulan ini.
+                    @else
+                        Persewaan tetap stabil dalam satu bulan ini.
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
-
     
-    <div id="keterangan" class="text-center mt-3">
-        @if ($increasePercentage > 0)
-            Persewaan meningkat sebesar {{ $increasePercentage }}% dalam satu bulan ini.
-        @elseif ($increasePercentage < 0)
-            Persewaan menurun sebesar {{ abs($increasePercentage) }}% dalam satu bulan ini.
-        @else
-            Persewaan tetap stabil dalam satu bulan ini.
-        @endif
-    </div>
-    
-    <table class="table table-striped mt-4">
-        <thead>
-            <tr>
-                <th>Waktu Sewa</th>
-                <th>Total Sewa</th>
-                <th>Total Pendapatan Bersih</th>
-                <th>Persentase</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if(isset($monthlyIncome) && count($monthlyIncome) > 0)
-                @php
-                    $previousIncome = null;
-                @endphp
-                @foreach($monthlyLabels as $index => $label)
-                    @if(isset($monthlyIncome[$index]) && $monthlyIncome[$index] > 0) <!-- Check if the index exists and income is greater than 0 -->
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Waktu Sewa</th>
+                        <th>Total Sewa</th>
+                        <th>Total Pendapatan Bersih</th>
+                        <th>Persentase</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(isset($monthlyIncome) && count($monthlyIncome) > 0)
+                        @php
+                            $previousIncome = null;
+                        @endphp
+                        @foreach($monthlyLabels as $index => $label)
+                            @if(isset($monthlyIncome[$index]) && $monthlyIncome[$index] > 0) <!-- Check if the index exists and income is greater than 0 -->
+                                <tr>
+                                    <td>{{ $label }}</td>
+                                    <td>{{ $monthlyIncome[$index] }}</td>
+                                    <td>Rp {{ number_format($total[$index], 0, ',', '.') }}</td>
+                                    <td>
+                                        @if($index >= 0)
+                                            @php
+                                                $currentIncome = $monthlyIncome[$index];
+                                                $increase = $currentIncome - $previousIncome;
+            
+                                                if ($previousIncome === 0) {
+                                                    $percentage = 100;
+                                                } elseif ($previousIncome === null) {
+                                                    $percentage = 0;
+                                                } else {
+                                                    $percentage = ($increase / abs($previousIncome)) * 100;
+                                                }
+            
+                                                $formattedPercentage = number_format($percentage, 2);
+                                            @endphp
+            
+                                            @if ($increase > 0)
+                                                <span class="text-success"><i class="bi bi-arrow-up"></i>+{{ $formattedPercentage }}%</span>
+                                            @elseif ($increase < 0)
+                                                <span class="text-danger"><i class="bi bi-arrow-down"></i>{{ $formattedPercentage }}%</span>
+                                            @else
+                                                <span>{{ $formattedPercentage }}%</span>
+                                            @endif
+            
+                                            @php
+                                                $previousIncome = $currentIncome;
+                                            @endphp
+                                        @else
+                                            <span>N/A</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+                            <!-- Handle the case where the index does not exist or income is 0 -->
+                        @endforeach
+                    @else
                         <tr>
-                            <td>{{ $label }}</td>
-                            <td>{{ $monthlyIncome[$index] }}</td>
-                            <td>Rp {{ number_format($total[$index], 0, ',', '.') }}</td>
-                            <td>
-                                @if($index >= 0)
-                                    @php
-                                        $currentIncome = $monthlyIncome[$index];
-                                        $increase = $currentIncome - $previousIncome;
-    
-                                        if ($previousIncome === 0) {
-                                            $percentage = 100;
-                                        } elseif ($previousIncome === null) {
-                                            $percentage = 0;
-                                        } else {
-                                            $percentage = ($increase / abs($previousIncome)) * 100;
-                                        }
-    
-                                        $formattedPercentage = number_format($percentage, 2);
-                                    @endphp
-    
-                                    @if ($increase > 0)
-                                        <span class="text-success"><i class="bi bi-arrow-up"></i>+{{ $formattedPercentage }}%</span>
-                                    @elseif ($increase < 0)
-                                        <span class="text-danger"><i class="bi bi-arrow-down"></i>{{ $formattedPercentage }}%</span>
-                                    @else
-                                        <span>{{ $formattedPercentage }}%</span>
-                                    @endif
-    
-                                    @php
-                                        $previousIncome = $currentIncome;
-                                    @endphp
-                                @else
-                                    <span>N/A</span>
-                                @endif
-                            </td>
+                            <td colspan="3">Tidak ada data yang tersedia.</td>
                         </tr>
                     @endif
-                    <!-- Handle the case where the index does not exist or income is 0 -->
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="3">Tidak ada data yang tersedia.</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </tbody>
+            </table>
+        </div>
+    </div>
     
     
     <script>

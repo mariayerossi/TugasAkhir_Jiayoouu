@@ -81,69 +81,81 @@
     <div class="row mt-5 mb-5">
         <div class="col-md-6">
             <h4>Grafik Pendapatan per Bulan</h4>
-            <div class="chart-container">
-                <canvas id="incomeChart"></canvas>
+            <div class="card">
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="incomeChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     
         <div class="col-md-6">
             <h4>Grafik Pendapatan 5 Tahun Terakhir</h4>
-            <div class="chart-container">
-                <canvas id="yearlyIncomeChart"></canvas>
+            <div class="card">
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="yearlyIncomeChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>    
     </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                {{-- <th>Foto</th> --}}
-                <th>Kode Transaksi</th>
-                <th>Tanggal Transaksi</th>
-                <th>Nama Lapangan</th>
-                <th>Subtotal Lapangan</th>
-                <th>Jumlah Alat Disewakan</th>
-                <th>Total Komisi Alat</th>
-                <th>Total Pendapatan Kotor(sebelum biaya aplikasi)</th>
-                <th>Total Pendapatan Bersih</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$trans->isEmpty())
-                @foreach ($trans as $item)
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        {{-- <td>
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
-                            </div>
-                        </td> --}}
-                        <td>{{$item->kode_trans}}</td>
-                        @php
-                            $tanggalAwal2 = $item->tanggal_trans;
-                            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
-                        @endphp
-                        <td>{{$tanggalBaru2}}</td>
-                        <td>{{$item->nama_lapangan}}</td>
-                        <td>Rp {{ number_format($item->subtotal_lapangan + $item->subtotal_ext, 0, ',', '.') }}</td>
-                        <td>{{$item->alat}}</td>
-                        <td>Rp {{ number_format($item->total_komisi + $item->komisi_extend, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format($item->total_komisi + $item->subtotal_lapangan + $item->komisi_extend + $item->subtotal_ext, 0, ',', '.') }}</td>
-                        <td>Rp {{ number_format(($item->total_komisi + $item->subtotal_lapangan - $item->pendapatan_website_lapangan) + ($item->komisi_extend + $item->subtotal_ext - $item->pendapatan_ext), 0, ',', '.') }}</td>
+                        {{-- <th>Foto</th> --}}
+                        <th>Kode Transaksi</th>
+                        <th>Tanggal Transaksi</th>
+                        <th>Nama Lapangan</th>
+                        <th>Subtotal Lapangan</th>
+                        <th>Jumlah Alat Disewakan</th>
+                        <th>Total Komisi Alat</th>
+                        <th>Total Pendapatan Kotor(sebelum biaya aplikasi)</th>
+                        <th>Total Pendapatan Bersih</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="8" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!$trans->isEmpty())
+                        @foreach ($trans as $item)
+                            <tr>
+                                {{-- <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $dataFiles->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td> --}}
+                                <td>{{$item->kode_trans}}</td>
+                                @php
+                                    $tanggalAwal2 = $item->tanggal_trans;
+                                    $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+                                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
+                                @endphp
+                                <td>{{$tanggalBaru2}}</td>
+                                <td>{{$item->nama_lapangan}}</td>
+                                <td>Rp {{ number_format($item->subtotal_lapangan + $item->subtotal_ext, 0, ',', '.') }}</td>
+                                <td>{{$item->alat}}</td>
+                                <td>Rp {{ number_format($item->total_komisi + $item->komisi_extend, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($item->total_komisi + $item->subtotal_lapangan + $item->komisi_extend + $item->subtotal_ext, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format(($item->total_komisi + $item->subtotal_lapangan - $item->pendapatan_website_lapangan) + ($item->komisi_extend + $item->subtotal_ext - $item->pendapatan_ext), 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="8" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <script>
-    $(document).ready(function() {
-        var table = $('.table').DataTable();
-    });
+    // $(document).ready(function() {
+    //     var table = $('.table').DataTable();
+    // });
     var ctx = document.getElementById('incomeChart').getContext('2d');
     var incomeChart = new Chart(ctx, {
         type: 'line',

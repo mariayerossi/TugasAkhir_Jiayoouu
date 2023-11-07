@@ -38,57 +38,53 @@
         <a href="/tempat/laporan/lapangan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
-    {{-- grafik --}}
-    <div class="mt-5 mb-5">
-        <h4>Grafik Persewaan per Bulan</h4>
-        <div class="chart-container">
-            <canvas id="incomeChart"></canvas>
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Jumlah Disewakan</th>
+                        <th>Harga Sewa (/jam)</th>
+                        <th>Total Durasi Sewa</th>
+                        <th>Total Pendapatan</th>
+                        <th>Status</th>
+                        <th>Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!$lapangan->isEmpty())
+                        @foreach ($lapangan as $item)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$item->nama_lapangan}}</td>
+                                <td>{{$item->total_sewa}} kali</td>
+                                <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
+                                <td>{{$item->total_durasi + $item->durasi_ext}} jam</td>
+                                <td>Rp {{ number_format($item->total_pendapatan + $item->subtotal_ext, 0, ',', '.') }}</td>
+                                @if ($item->status_lapangan == "Aktif")
+                                    <td style="color: green">{{$item->status_lapangan}}</td>
+                                @else
+                                    <td style="color:red">{{$item->status_lapangan}}</td>
+                                @endif
+                                <td><a href="/tempat/lapangan/lihatDetailLapangan/{{$item->id_lapangan}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="8" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Jumlah Disewakan</th>
-                <th>Harga Sewa (/jam)</th>
-                <th>Total Durasi Sewa</th>
-                <th>Total Pendapatan</th>
-                <th>Status</th>
-                <th>Detail</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$lapangan->isEmpty())
-                @foreach ($lapangan as $item)
-                    <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$item->nama_lapangan}}</td>
-                        <td>{{$item->total_sewa}} kali</td>
-                        <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
-                        <td>{{$item->total_durasi + $item->durasi_ext}} jam</td>
-                        <td>Rp {{ number_format($item->total_pendapatan + $item->subtotal_ext, 0, ',', '.') }}</td>
-                        @if ($item->status_lapangan == "Aktif")
-                            <td style="color: green">{{$item->status_lapangan}}</td>
-                        @else
-                            <td style="color:red">{{$item->status_lapangan}}</td>
-                        @endif
-                        <td><a href="/tempat/lapangan/lihatDetailLapangan/{{$item->id_lapangan}}" class="btn btn-outline-success">Lihat Detail</a></td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="8" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
 </div>
 <script>
-    $(document).ready(function() {
-        var table = $('.table').DataTable();
-    });
+    // $(document).ready(function() {
+    //     var table = $('.table').DataTable();
+    // });
     var ctx = document.getElementById('incomeChart').getContext('2d');
     var incomeChart = new Chart(ctx, {
         type: 'bar',

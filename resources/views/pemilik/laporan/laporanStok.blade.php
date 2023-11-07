@@ -38,45 +38,49 @@
         <a href="/pemilik/laporan/stok/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Kategori</th>
-                <th>Disewakan</th>
-                <th>Status</th>
-                <th>Detail</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$alat->isEmpty())
-                @foreach ($alat as $item)
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$item->nama_alat}}</td>
-                        <td>{{$item->nama_kategori}}</td>
-                        <td>{{$item->totalRequest}} Kali</td>
-                        @if ($item->status_alat == "Aktif")
-                            <td style="color: green">{{$item->status_alat}}</td>
-                        @else
-                            <td style="color:red">{{$item->status_alat}}</td>
-                        @endif
-                        <td><a href="/pemilik/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Kategori</th>
+                        <th>Disewakan</th>
+                        <th>Status</th>
+                        <th>Detail</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="8" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!$alat->isEmpty())
+                        @foreach ($alat as $item)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$item->nama_alat}}</td>
+                                <td>{{$item->nama_kategori}}</td>
+                                <td>{{$item->totalRequest}} Kali</td>
+                                @if ($item->status_alat == "Aktif")
+                                    <td style="color: green">{{$item->status_alat}}</td>
+                                @else
+                                    <td style="color:red">{{$item->status_alat}}</td>
+                                @endif
+                                <td><a href="/pemilik/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="8" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <script>
-    $(document).ready(function() {
-        var table = $('.table').DataTable();
-    });
+    // $(document).ready(function() {
+    //     var table = $('.table').DataTable();
+    // });
 </script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>

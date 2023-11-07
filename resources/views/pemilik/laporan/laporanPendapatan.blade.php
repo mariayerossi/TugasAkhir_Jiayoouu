@@ -80,15 +80,23 @@
     <div class="row mt-5 mb-5">
         <div class="col-md-6">
             <h4>Grafik Pendapatan per Bulan</h4>
-            <div class="chart-container">
-                <canvas id="incomeChart"></canvas>
+            <div class="card">
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="incomeChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     
         <div class="col-md-6">
             <h4>Grafik Pendapatan 5 Tahun Terakhir</h4>
-            <div class="chart-container">
-                <canvas id="yearlyIncomeChart"></canvas>
+            <div class="card">
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="yearlyIncomeChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>    
     </div>
@@ -102,36 +110,41 @@
         @foreach ($grouped as $nama_alat => $items)
             
             {{-- Tampilkan nama alat olahraga --}}
-            <h4 class="mt-5"><b>{{ $nama_alat }}</b></h4>
+            {{-- <h4 class="mt-5"><b>{{ $nama_alat }}</b></h4> --}}
 
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Tanggal Transaksi</th>
-                        <th>Komisi Alat (/jam)</th>
-                        <th>Durasi</th>
-                        <th>Pendapatan Kotor <br>(sebelum biaya aplikasi)</th>
-                        <th>Pendapatan Bersih</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{-- Iterasi untuk setiap item dalam grup alat olahraga --}}
-                    @foreach ($items as $item)
-                        <tr>
-                            @php
-                                $tanggalAwal2 = $item->tanggal_trans;
-                                $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                                $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
-                            @endphp
-                            <td>{{ $tanggalBaru2 }}</td>
-                            <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                            <td>{{ $item->durasi_sewa + $item->durasi_extend }} jam</td>
-                            <td>Rp {{ number_format($item->total_komisi_pemilik + $item->komisi_extend, 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format(($item->total_komisi_pemilik - $item->pendapatan_website_alat) + ($item->komisi_extend - $item->pendapatan_extend), 0, ',', '.') }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <h5 class="card-header">{{ $nama_alat }}</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tanggal Transaksi</th>
+                                <th>Komisi Alat (/jam)</th>
+                                <th>Durasi</th>
+                                <th>Pendapatan Kotor <br>(sebelum biaya aplikasi)</th>
+                                <th>Pendapatan Bersih</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Iterasi untuk setiap item dalam grup alat olahraga --}}
+                            @foreach ($items as $item)
+                                <tr>
+                                    @php
+                                        $tanggalAwal2 = $item->tanggal_trans;
+                                        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+                                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
+                                    @endphp
+                                    <td>{{ $tanggalBaru2 }}</td>
+                                    <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                                    <td>{{ $item->durasi_sewa + $item->durasi_extend }} jam</td>
+                                    <td>Rp {{ number_format($item->total_komisi_pemilik + $item->komisi_extend, 0, ',', '.') }}</td>
+                                    <td>Rp {{ number_format(($item->total_komisi_pemilik - $item->pendapatan_website_alat) + ($item->komisi_extend - $item->pendapatan_extend), 0, ',', '.') }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         @endforeach
 

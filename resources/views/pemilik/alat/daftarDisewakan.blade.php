@@ -34,32 +34,36 @@
         <h4 class="mt-5"><b>Transaksi: {{ $kode }}</b></h4>
         <h6 class="mt-2 mb-3">Tanggal Sewa: {{ $tanggalBaru2 }} {{$items->first()->jam_sewa}}</h6>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Foto</th>
-                    <th>Nama</th>
-                    <th>Harga Sewa</th>
-                    <th>Durasi</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($items as $item)
-                    <tr>
-                        <td>
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                            </div>
-                        </td>
-                        <td>{{$item->nama_alat}}</td>
-                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
-                        <td>{{$item->durasi_sewa + $item->durasi_extend}} jam</td>
-                        <td>Rp {{ number_format($item->subtotal_alat + $item->subtotal_extend, 0, ',', '.') }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="card">
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Nama</th>
+                            <th>Harga Sewa</th>
+                            <th>Durasi</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($items as $item)
+                            <tr>
+                                <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td>
+                                <td>{{$item->nama_alat}}</td>
+                                <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
+                                <td>{{$item->durasi_sewa + $item->durasi_extend}} jam</td>
+                                <td>Rp {{ number_format($item->subtotal_alat + $item->subtotal_extend, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     @endforeach
     @endif
 
