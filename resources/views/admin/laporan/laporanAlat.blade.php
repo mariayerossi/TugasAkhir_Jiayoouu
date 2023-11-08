@@ -39,58 +39,62 @@
     </div>
 
     {{-- grafik --}}
-    <div class="mt-5 mb-5">
+    {{-- <div class="mt-5 mb-5">
         <h4>Grafik Persewaan per Bulan</h4>
         <div class="chart-container">
             <canvas id="incomeChart"></canvas>
         </div>
-    </div>
+    </div> --}}
 
     {{-- laporan pendapatan per alat olahraga --}}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                {{-- <th>Foto</th> --}}
-                <th>Nama</th>
-                <th>Harga Sewa</th>
-                <th>Status</th>
-                <th>Disewakan</th>
-                <th>Pendapatan Website</th>
-                <th>Detail</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$alat->isEmpty())
-                @foreach ($alat as $item)
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{$loop->iteration}}</td>
-                        {{-- <td>
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                            </div>
-                        </td> --}}
-                        <td>{{$item->nama_alat}}</td>
-                        <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
-                        @if ($item->status_alat == "Aktif")
-                            <td style="color: green">{{$item->status_alat}}</td>
-                        @else
-                            <td style="color:red">{{$item->status_alat}}</td>
-                        @endif
-                        <td>{{$item->total_sewa}} Kali</td>
-                        <td>Rp {{ number_format($item->total_pendapatan + $item->pendapatan_ext, 0, ',', '.') }}</td>
-                        <td><a href="/admin/alat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                        <th>No</th>
+                        {{-- <th>Foto</th> --}}
+                        <th>Nama</th>
+                        <th>Harga Sewa</th>
+                        <th>Status</th>
+                        <th>Disewakan</th>
+                        <th>Pendapatan Website</th>
+                        <th>Detail</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="7" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!$alat->isEmpty())
+                        @foreach ($alat as $item)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                {{-- <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td> --}}
+                                <td>{{$item->nama_alat}}</td>
+                                <td>Rp {{ number_format($item->harga_sewa_alat, 0, ',', '.') }}</td>
+                                @if ($item->status_alat == "Aktif")
+                                    <td style="color: green">{{$item->status_alat}}</td>
+                                @else
+                                    <td style="color:red">{{$item->status_alat}}</td>
+                                @endif
+                                <td>{{$item->total_sewa}} Kali</td>
+                                <td>Rp {{ number_format($item->total_pendapatan + $item->pendapatan_ext, 0, ',', '.') }}</td>
+                                <td><a href="/admin/alat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="7" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<script>
+{{-- <script>
     $(document).ready(function() {
         var table = $('.table').DataTable();
     });
@@ -117,7 +121,7 @@
             }
         }
     });
-</script>
+</script> --}}
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>

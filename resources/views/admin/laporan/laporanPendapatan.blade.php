@@ -81,58 +81,67 @@
     <div class="row mt-5 mb-5">
         <div class="col-md-6">
             <h4>Grafik Pendapatan per Bulan</h4>
-            <div class="chart-container">
-                <canvas id="incomeChart"></canvas>
+            <div class="card">
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="incomeChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     
         <div class="col-md-6">
             <h4>Grafik Pendapatan 5 Tahun Terakhir</h4>
-            <div class="chart-container">
-                <canvas id="yearlyIncomeChart"></canvas>
+            <div class="card">
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="yearlyIncomeChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>    
     </div>
 
     {{-- laporan pendapatan per alat olahraga --}}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Kode Transaksi</th>
-                <th>Tanggal Transaksi</th>
-                <th>Nama Lapangan</th>
-                <th>Jumlah Alat Disewakan</th>
-                <th>Pendapatan Website</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$trans->isEmpty())
-                @foreach ($trans as $item)
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{$item->kode_trans}}</td>
-                        @php
-                            $tanggalAwal2 = $item->tanggal_trans;
-                            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
-                            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
-                        @endphp
-                        <td>{{$tanggalBaru2}}</td>
-                        <td>{{$item->nama_lapangan}}</td>
-                        <td>{{$item->jumlah_alat}}</td>
-                        <td>Rp {{ number_format(($item->pendapatan_lapangan + $item->pendapatan_alat) + ($item->lapangan_ext + $item->alat_ext), 0, ',', '.') }}</td>
+                        <th>Kode Transaksi</th>
+                        <th>Tanggal Transaksi</th>
+                        <th>Nama Lapangan</th>
+                        <th>Jumlah Alat Disewakan</th>
+                        <th>Pendapatan Website</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="6" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!$trans->isEmpty())
+                        @foreach ($trans as $item)
+                            <tr>
+                                <td>{{$item->kode_trans}}</td>
+                                @php
+                                    $tanggalAwal2 = $item->tanggal_trans;
+                                    $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+                                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y H:i:s');
+                                @endphp
+                                <td>{{$tanggalBaru2}}</td>
+                                <td>{{$item->nama_lapangan}}</td>
+                                <td>{{$item->jumlah_alat}}</td>
+                                <td>Rp {{ number_format(($item->pendapatan_lapangan + $item->pendapatan_alat) + ($item->lapangan_ext + $item->alat_ext), 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="6" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <script>
-    $(document).ready(function() {
-        var table = $('.table').DataTable();
-    });
     var ctx = document.getElementById('incomeChart').getContext('2d');
     var incomeChart = new Chart(ctx, {
         type: 'line',

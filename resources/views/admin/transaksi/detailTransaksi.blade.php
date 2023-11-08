@@ -39,6 +39,13 @@
     <div class="d-flex justify-content-end mt-3 me-3">
         <h6><b>Kode Transaksi: {{$htrans->first()->kode_trans}}</b></h6>
     </div>
+    <div class="d-flex justify-content-end mt-3 me-3 mb-5">
+        @if ($htrans->first()->status_trans == "Ditolak" || $htrans->first()->status_trans == "Dibatalkan")
+            <h6><b>Status Transaksi: </b><b style="color: red">{{$htrans->first()->status_trans}}</b></h6>
+        @else
+            <h6><b>Status Transaksi: {{$htrans->first()->status_trans}}</b></h6>
+        @endif
+    </div>
     @php
         $dataUser = DB::table('user')->where("id_user","=",$htrans->first()->fk_id_user)->get()->first();
         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->first()->fk_id_lapangan)->get()->first();
@@ -97,13 +104,6 @@
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Jam Sewa: {{$htrans->first()->jam_sewa}} WIB</h6>
         </div>
-    </div>
-    <div class="d-flex justify-content-end mt-3 me-3 mb-5">
-        @if ($htrans->first()->status_trans == "Ditolak" || $htrans->first()->status_trans == "Dibatalkan")
-            <h6><b>Status Transaksi: </b><b style="color: red">{{$htrans->first()->status_trans}}</b></h6>
-        @else
-            <h6><b>Status Transaksi: {{$htrans->first()->status_trans}}</b></h6>
-        @endif
     </div>
     <h5>Lapangan yang Disewa</h5>
     @if ($dataLapangan->deleted_at == null)<a href="/admin/lapangan/detailLapanganUmum/{{$htrans->first()->fk_id_lapangan}}">@endif

@@ -39,47 +39,51 @@
     </div>
 
     {{-- grafik --}}
-    <div class="mt-5 mb-5">
+    {{-- <div class="mt-5 mb-5">
         <h4>Grafik Persewaan per Bulan</h4>
         <div class="chart-container">
             <canvas id="incomeChart"></canvas>
         </div>
-    </div>
+    </div> --}}
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Jumlah Disewakan</th>
-                <th>Total Komisi (/jam)</th>
-                <th>Total Durasi Sewa</th>
-                <th>Total Pendapatan</th>
-                <th>Detail</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$disewakan->isEmpty())
-                @foreach ($disewakan as $item)
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$item->nama_alat}}</td>
-                        <td>{{$item->total_sewa}} kali</td>
-                        <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
-                        <td>{{$item->total_durasi + $item->durasi_extend}} jam</td>
-                        <td>Rp {{ number_format($item->total_pendapatan + $item->komisi_extend, 0, ',', '.') }}</td>
-                        <td><a href="/pemilik/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Jumlah Disewakan</th>
+                        <th>Total Komisi (/jam)</th>
+                        <th>Total Durasi Sewa</th>
+                        <th>Total Pendapatan</th>
+                        <th>Detail</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="7" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!$disewakan->isEmpty())
+                        @foreach ($disewakan as $item)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$item->nama_alat}}</td>
+                                <td>{{$item->total_sewa}} kali</td>
+                                <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                                <td>{{$item->total_durasi + $item->durasi_extend}} jam</td>
+                                <td>Rp {{ number_format($item->total_pendapatan + $item->komisi_extend, 0, ',', '.') }}</td>
+                                <td><a href="/pemilik/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="7" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<script>
+{{-- <script>
     $(document).ready(function() {
         var table = $('.table').DataTable();
     });
@@ -109,7 +113,7 @@
 
     //untuk menampilkan grafik tahunnya juga
     // https://chat.openai.com/share/b77dab7a-1a72-46e1-8d46-a117fa535d17
-</script>
+</script> --}}
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>

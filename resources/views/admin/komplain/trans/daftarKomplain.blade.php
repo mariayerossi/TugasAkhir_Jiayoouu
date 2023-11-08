@@ -46,114 +46,120 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="baru" role="tabpanel" aria-labelledby="baru-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Jenis Komplain</th>
-                        <th>Pengaju</th>
-                        <th>Kode Transaksi</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$baru->isEmpty())
-                        @foreach ($baru as $item)
-                            @php
-                                $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                                $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
-                            @endphp
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>{{$item->jenis_komplain}}</td>
-                                <td>{{$dataUser->nama_user}}</td>
-                                <td>{{$dataHtrans->kode_trans}}</td>
-                                <td style="color:rgb(239, 203, 0)">{{$item->status_komplain}}</td>
-                                <td><a class="btn btn-outline-success" href="/admin/komplain/trans/detailKomplain/{{$item->id_komplain_trans}}">Lihat Detail</a></td>
+                                <th>Jenis Komplain</th>
+                                <th>Pengaju</th>
+                                <th>Kode Transaksi</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$baru->isEmpty())
+                                @foreach ($baru as $item)
+                                    @php
+                                        $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
+                                        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
+                                    @endphp
+                                    <tr>
+                                        <td>{{$item->jenis_komplain}}</td>
+                                        <td>{{$dataUser->nama_user}}</td>
+                                        <td>{{$dataHtrans->kode_trans}}</td>
+                                        <td style="color:rgb(239, 203, 0)">{{$item->status_komplain}}</td>
+                                        <td><a class="btn btn-outline-success" href="/admin/komplain/trans/detailKomplain/{{$item->id_komplain_trans}}">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="diterima" role="tabpanel" aria-labelledby="diterima-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Jenis Komplain</th>
-                        <th>Pengaju</th>
-                        <th>Kode Transaksi</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$diterima->isEmpty())
-                        @foreach ($diterima as $item)
-                            @php
-                                $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                                $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
-                            @endphp
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>{{$item->jenis_komplain}}</td>
-                                <td>{{$dataUser->nama_user}}</td>
-                                <td>{{$dataHtrans->kode_trans}}</td>
-                                <td style="color:rgb(0, 145, 0)">{{$item->status_komplain}}</td>
-                                <td><a class="btn btn-outline-success" href="/admin/komplain/trans/detailKomplain/{{$item->id_komplain_trans}}">Lihat Detail</a></td>
+                                <th>Jenis Komplain</th>
+                                <th>Pengaju</th>
+                                <th>Kode Transaksi</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$diterima->isEmpty())
+                                @foreach ($diterima as $item)
+                                    @php
+                                        $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
+                                        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
+                                    @endphp
+                                    <tr>
+                                        <td>{{$item->jenis_komplain}}</td>
+                                        <td>{{$dataUser->nama_user}}</td>
+                                        <td>{{$dataHtrans->kode_trans}}</td>
+                                        <td style="color:rgb(0, 145, 0)">{{$item->status_komplain}}</td>
+                                        <td><a class="btn btn-outline-success" href="/admin/komplain/trans/detailKomplain/{{$item->id_komplain_trans}}">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="ditolak" role="tabpanel" aria-labelledby="ditolak-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Jenis Komplain</th>
-                        <th>Pengaju</th>
-                        <th>Kode Transaksi</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$ditolak->isEmpty())
-                        @foreach ($ditolak as $item)
-                            @php
-                                $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
-                                $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
-                            @endphp
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>{{$item->jenis_komplain}}</td>
-                                <td>{{$dataUser->nama_user}}</td>
-                                <td>{{$dataHtrans->kode_trans}}</td>
-                                <td style="color:red">{{$item->status_komplain}}</td>
-                                <td><a class="btn btn-outline-success" href="/admin/komplain/trans/detailKomplain/{{$item->id_komplain_trans}}">Lihat Detail</a></td>
+                                <th>Jenis Komplain</th>
+                                <th>Pengaju</th>
+                                <th>Kode Transaksi</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$ditolak->isEmpty())
+                                @foreach ($ditolak as $item)
+                                    @php
+                                        $dataUser = DB::table('user')->where("id_user","=",$item->fk_id_user)->get()->first();
+                                        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$item->fk_id_htrans)->get()->first();
+                                    @endphp
+                                    <tr>
+                                        <td>{{$item->jenis_komplain}}</td>
+                                        <td>{{$dataUser->nama_user}}</td>
+                                        <td>{{$dataHtrans->kode_trans}}</td>
+                                        <td style="color:red">{{$item->status_komplain}}</td>
+                                        <td><a class="btn btn-outline-success" href="/admin/komplain/trans/detailKomplain/{{$item->id_komplain_trans}}">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('.table').DataTable();
-    });
-
-</script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 @endsection

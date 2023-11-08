@@ -38,38 +38,37 @@
         <a href="/pemilik/laporan/tempat/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Tempat</th>
-                <th>Total Alat Disewakan</th>
-                <th>Total Komisi yang Diperoleh</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$tempat->isEmpty())
-                @foreach ($tempat as $item)
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$item->nama_tempat}}</td>
-                        <td>{{$item->jumlah}}</td>
-                        <td>Rp {{ number_format($item->total_komisi + $item->komisi_extend, 0, ',', '.') }}</td>
+                        <th>No</th>
+                        <th>Nama Tempat</th>
+                        <th>Total Alat Disewakan</th>
+                        <th>Total Komisi yang Diperoleh</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="4" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!$tempat->isEmpty())
+                        @foreach ($tempat as $item)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$item->nama_tempat}}</td>
+                                <td>{{$item->jumlah}}</td>
+                                <td>Rp {{ number_format($item->total_komisi + $item->komisi_extend, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="4" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<script>
-    $(document).ready(function() {
-        var table = $('.table').DataTable();
-    });
-</script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>

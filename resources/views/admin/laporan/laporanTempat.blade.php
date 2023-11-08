@@ -39,44 +39,48 @@
     </div>
 
     {{-- grafik --}}
-    <div class="mt-5 mb-5">
+    {{-- <div class="mt-5 mb-5">
         <h4>Grafik Persewaan per Bulan</h4>
         <div class="chart-container">
             <canvas id="incomeChart"></canvas>
         </div>
-    </div>
+    </div> --}}
 
     {{-- laporan pendapatan per alat olahraga --}}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama</th>
-                <th>Jumlah Lapangan</th>
-                <th>Total Transaksi</th>
-                <th>Pendapatan Website</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$tempat->isEmpty())
-                @foreach ($tempat as $item)
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{$loop->iteration}}</td>
-                        <td>{{$item->nama_tempat}}</td>
-                        <td>{{$item->jumlah_lapangan}}</td>
-                        <td>{{$item->jumlah_trans}}</td>
-                        <td>Rp {{ number_format($item->total_lapangan + $item->lapangan_ext, 0, ',', '.') }}</td>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Jumlah Lapangan</th>
+                        <th>Total Transaksi</th>
+                        <th>Pendapatan Website</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="5" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!$tempat->isEmpty())
+                        @foreach ($tempat as $item)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$item->nama_tempat}}</td>
+                                <td>{{$item->jumlah_lapangan}}</td>
+                                <td>{{$item->jumlah_trans}}</td>
+                                <td>Rp {{ number_format($item->total_lapangan + $item->lapangan_ext, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="5" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<script>
+{{-- <script>
     $(document).ready(function() {
         var table = $('.table').DataTable();
     });
@@ -103,7 +107,7 @@
             }
         }
     });
-</script>
+</script> --}}
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>

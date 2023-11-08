@@ -24,47 +24,51 @@
     {{-- <div class="d-flex justify-content-end mb-4">
         <a href="/tempat/kerusakan/detailKerusakan2" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Alat yang Rusak</a>
     </div> --}}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Kode Transaksi</th>
-                <th>Foto</th>
-                <th>Nama</th>
-                <th>Ganti Rugi</th>
-                <th>Unsur Kesengajaan</th>
-                <th>Pemilik Alat</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (!$rusak->isEmpty())
-                @foreach ($rusak as $item)
-                    {{-- @php
-                        $dataFiles = $files->get_all_data($item->id_alat)->first();
-                    @endphp --}}
+    <div class="card mb-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{$item->kode_trans}}</td>
-                        <td>
-                            <div class="square-image-container">
-                                <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
-                            </div>
-                        </td>
-                        <td>{{$item->nama_alat}}</td>
-                        <td>Rp {{ number_format($item->ganti_rugi_alat, 0, ',', '.') }}</td>
-                        @if ($item->kesengajaan == "Ya")
-                            <td style="color: red">{{$item->kesengajaan}}, Disengaja</td>
-                        @else
-                            <td style="color:green">{{$item->status_alat}}</td>
-                        @endif
-                        <td>{{$item->nama_pemilik}}</td>
+                        <th>Kode Transaksi</th>
+                        <th>Foto</th>
+                        <th>Nama</th>
+                        <th>Ganti Rugi</th>
+                        <th>Unsur Kesengajaan</th>
+                        <th>Pemilik Alat</th>
                     </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="6" class="text-center">Tidak Ada Data</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @if (!$rusak->isEmpty())
+                        @foreach ($rusak as $item)
+                            {{-- @php
+                                $dataFiles = $files->get_all_data($item->id_alat)->first();
+                            @endphp --}}
+                            <tr>
+                                <td>{{$item->kode_trans}}</td>
+                                <td>
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $item->nama_file_alat) }}" alt="">
+                                    </div>
+                                </td>
+                                <td>{{$item->nama_alat}}</td>
+                                <td>Rp {{ number_format($item->ganti_rugi_alat, 0, ',', '.') }}</td>
+                                @if ($item->kesengajaan == "Ya")
+                                    <td style="color: red">{{$item->kesengajaan}}, Disengaja</td>
+                                @else
+                                    <td style="color:green">{{$item->status_alat}}</td>
+                                @endif
+                                <td>{{$item->nama_pemilik}}</td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="6" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 <script>
     $(document).ready(function() {

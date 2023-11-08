@@ -19,32 +19,34 @@
             </div>
         </div>
     </form>
-    
-    <div class="mt-5">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Nomer</th>
-                    <th>Nama Kategori</th>
-                    {{-- <th>Aksi</th> --}}
-                </tr>
-            </thead>
-            <tbody>
-                @if (!$kategori->isEmpty())
-                    @foreach ($kategori as $item)
-                        <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{$item->nama_kategori}}</td>
-                            {{-- <td><a href="/admin/hapusKategori/{{$item->id_kategori}}" class="btn btn-danger">Hapus</a></td> --}}
-                        </tr>
-                    @endforeach
-                @else
+
+    <div class="card mb-5 mt-5">
+        <div class="table-responsive text-nowrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td colspan="3" class="text-center">Tidak Ada Data</td>
+                        <th>Nomer</th>
+                        <th>Nama Kategori</th>
+                        {{-- <th>Aksi</th> --}}
                     </tr>
-                @endif
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @if (!$kategori->isEmpty())
+                        @foreach ($kategori as $item)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$item->nama_kategori}}</td>
+                                {{-- <td><a href="/admin/hapusKategori/{{$item->id_kategori}}" class="btn btn-danger">Hapus</a></td> --}}
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="3" class="text-center">Tidak Ada Data</td>
+                        </tr>
+                    @endif
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 @endsection

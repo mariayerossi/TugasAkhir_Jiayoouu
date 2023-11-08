@@ -46,153 +46,159 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="baru" role="tabpanel" aria-labelledby="baru-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Jenis Komplain</th>
-                        <th>Pengaju</th>
-                        <th>Jenis Request</th>
-                        <th>Status</th>
-                         <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$baru->isEmpty())
-                        @foreach ($baru as $item)
-                            @php
-                                if ($item->fk_id_pemilik != null) {
-                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                                }
-                                else if ($item->fk_id_tempat != null) {
-                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
-                                }
-                            @endphp
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>{{$item->jenis_komplain}}</td>
-                                @if ($item->fk_id_pemilik != null)
-                                    <td>{{$dataPemilik->nama_pemilik}}</td>
-                                @elseif ($item->fk_id_tempat != null)
-                                    <td>{{$dataTempat->nama_tempat}}</td>
-                                @endif
-
-                                @if ($item->fk_id_permintaan != null)
-                                    <td>Permintaan</td>
-                                @else
-                                    <td>Penawaran</td>
-                                @endif
-                                <td style="color:rgb(239, 203, 0)">{{$item->status_komplain}}</td>
-                                <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
+                                <th>Jenis Komplain</th>
+                                <th>Pengaju</th>
+                                <th>Jenis Request</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$baru->isEmpty())
+                                @foreach ($baru as $item)
+                                    @php
+                                        if ($item->fk_id_pemilik != null) {
+                                            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                        }
+                                        else if ($item->fk_id_tempat != null) {
+                                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+                                        }
+                                    @endphp
+                                    <tr>
+                                        <td>{{$item->jenis_komplain}}</td>
+                                        @if ($item->fk_id_pemilik != null)
+                                            <td>{{$dataPemilik->nama_pemilik}}</td>
+                                        @elseif ($item->fk_id_tempat != null)
+                                            <td>{{$dataTempat->nama_tempat}}</td>
+                                        @endif
+
+                                        @if ($item->fk_id_permintaan != null)
+                                            <td>Permintaan</td>
+                                        @else
+                                            <td>Penawaran</td>
+                                        @endif
+                                        <td style="color:rgb(239, 203, 0)">{{$item->status_komplain}}</td>
+                                        <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="diterima" role="tabpanel" aria-labelledby="diterima-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Jenis Komplain</th>
-                        <th>Pengaju</th>
-                        <th>Jenis Request</th>
-                        <th>Status</th>
-                         <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$diterima->isEmpty())
-                        @foreach ($diterima as $item)
-                            @php
-                                if ($item->fk_id_pemilik != null) {
-                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                                }
-                                else if ($item->fk_id_tempat != null) {
-                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
-                                }
-                            @endphp
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-hover table-bordered table-striped">
+                        <thead class="thead-light">
                             <tr>
-                                <td>{{$item->jenis_komplain}}</td>
-                                @if ($item->fk_id_pemilik != null)
-                                    <td>{{$dataPemilik->nama_pemilik}}</td>
-                                @elseif ($item->fk_id_tempat != null)
-                                    <td>{{$dataTempat->nama_tempat}}</td>
-                                @endif
-                                
-                                @if ($item->fk_id_permintaan != null)
-                                    <td>Permintaan</td>
-                                @else
-                                    <td>Penawaran</td>
-                                @endif
-                                <td style="color:rgb(0, 145, 0)">{{$item->status_komplain}}</td>
-                                <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
+                                <th>Jenis Komplain</th>
+                                <th>Pengaju</th>
+                                <th>Jenis Request</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$diterima->isEmpty())
+                                @foreach ($diterima as $item)
+                                    @php
+                                        if ($item->fk_id_pemilik != null) {
+                                            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                        }
+                                        else if ($item->fk_id_tempat != null) {
+                                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+                                        }
+                                    @endphp
+                                    <tr>
+                                        <td>{{$item->jenis_komplain}}</td>
+                                        @if ($item->fk_id_pemilik != null)
+                                            <td>{{$dataPemilik->nama_pemilik}}</td>
+                                        @elseif ($item->fk_id_tempat != null)
+                                            <td>{{$dataTempat->nama_tempat}}</td>
+                                        @endif
+                                        
+                                        @if ($item->fk_id_permintaan != null)
+                                            <td>Permintaan</td>
+                                        @else
+                                            <td>Penawaran</td>
+                                        @endif
+                                        <td style="color:rgb(0, 145, 0)">{{$item->status_komplain}}</td>
+                                        <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade" id="ditolak" role="tabpanel" aria-labelledby="ditolak-tab">
-            <table class="table table-hover table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Jenis Komplain</th>
-                        <th>Pengaju</th>
-                        <th>Jenis Request</th>
-                        <th>Status</th>
-                         <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (!$ditolak->isEmpty())
-                        @foreach ($ditolak as $item)
-                            @php
-                                if ($item->fk_id_pemilik != null) {
-                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                                }
-                                else {
-                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
-                                }
-                            @endphp
+            <div class="card mb-5">
+                <div class="table-responsive text-nowrap">
+                    <table class="table">
+                        <thead class="thead-light">
                             <tr>
-                                <td>{{$item->jenis_komplain}}</td>
-                                @if ($item->fk_id_pemilik != null)
-                                    <td>{{$dataPemilik->nama_pemilik}}</td>
-                                @else
-                                    <td>{{$dataTempat->nama_tempat}}</td>
-                                @endif
-                                
-                                @if ($item->fk_id_permintaan != null)
-                                    <td>Permintaan</td>
-                                @else
-                                    <td>Penawaran</td>
-                                @endif
-                                <td style="color:red">{{$item->status_komplain}}</td>
-                                <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
+                                <th>Jenis Komplain</th>
+                                <th>Pengaju</th>
+                                <th>Jenis Request</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
                             </tr>
-                        @endforeach
-                    @else
-                        <tr>
-                            <td colspan="5" class="text-center">Tidak Ada Data</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @if (!$ditolak->isEmpty())
+                                @foreach ($ditolak as $item)
+                                    @php
+                                        if ($item->fk_id_pemilik != null) {
+                                            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                        }
+                                        else {
+                                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+                                        }
+                                    @endphp
+                                    <tr>
+                                        <td>{{$item->jenis_komplain}}</td>
+                                        @if ($item->fk_id_pemilik != null)
+                                            <td>{{$dataPemilik->nama_pemilik}}</td>
+                                        @else
+                                            <td>{{$dataTempat->nama_tempat}}</td>
+                                        @endif
+                                        
+                                        @if ($item->fk_id_permintaan != null)
+                                            <td>Permintaan</td>
+                                        @else
+                                            <td>Penawaran</td>
+                                        @endif
+                                        <td style="color:red">{{$item->status_komplain}}</td>
+                                        <td><a class="btn btn-outline-success" href="/admin/komplain/request/detailKomplain/{{$item->id_komplain_req}}">Lihat Detail</a></td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        $('.table').DataTable();
-    });
-
-</script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 @endsection
