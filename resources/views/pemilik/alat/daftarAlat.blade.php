@@ -24,7 +24,7 @@
     <div class="d-flex justify-content-end mb-4">
         <a href="/pemilik/masterAlat" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Alat</a>
     </div>
-    <div class="card mb-5">
+    <div class="card mb-5 mb-5 p-3">
         <div class="table-responsive text-nowrap">
             <table class="table">
                 <thead>
@@ -62,6 +62,11 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    });
+</script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>

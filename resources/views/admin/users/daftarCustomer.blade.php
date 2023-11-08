@@ -5,7 +5,7 @@
 @section('content')
 <div class="container mt-5">
     <h2 class="text-center mb-5">Daftar Customer</h2>
-    <div class="card mb-5 mt-5">
+    <div class="card mb-5 mt-5 p-3">
         <div class="table-responsive text-nowrap">
             <table class="table">
                 <thead>
@@ -34,6 +34,11 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    });
+</script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
