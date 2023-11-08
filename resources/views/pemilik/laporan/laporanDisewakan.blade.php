@@ -56,7 +56,7 @@
                         <th>Jumlah Disewakan</th>
                         <th>Total Komisi (/jam)</th>
                         <th>Total Durasi Sewa</th>
-                        <th>Total Pendapatan</th>
+                        <th>Total Pendapatan Bersih</th>
                         <th>Detail</th>
                     </tr>
                 </thead>
@@ -69,7 +69,7 @@
                                 <td>{{$item->total_sewa}} kali</td>
                                 <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
                                 <td>{{$item->total_durasi + $item->durasi_extend}} jam</td>
-                                <td>Rp {{ number_format($item->total_pendapatan + $item->komisi_extend, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format(($item->total_pendapatan + $item->komisi_extend) * 0.89, 0, ',', '.') }}</td>
                                 <td><a href="/pemilik/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                             </tr>
                         @endforeach

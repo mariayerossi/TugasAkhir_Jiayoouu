@@ -47,6 +47,7 @@
                         <th>Nama</th>
                         <th>Kategori</th>
                         <th>Disewakan</th>
+                        <th>Total Pendapatan Bersih</th>
                         <th>Status</th>
                         <th>Detail</th>
                     </tr>
@@ -59,6 +60,7 @@
                                 <td>{{$item->nama_alat}}</td>
                                 <td>{{$item->nama_kategori}}</td>
                                 <td>{{$item->totalRequest}} Kali</td>
+                                <td>Rp {{ number_format(($item->totalKomisi + $item->totalKomisiExt) * 0.89, 0, ',', '.') }}</td>
                                 @if ($item->status_alat == "Aktif")
                                     <td style="color: green">{{$item->status_alat}}</td>
                                 @else

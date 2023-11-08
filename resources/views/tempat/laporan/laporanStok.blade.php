@@ -46,7 +46,9 @@
                         <th>No</th>
                         <th>Nama</th>
                         <th>Kategori</th>
-                        <th>Harga Sewa</th>
+                        {{-- <th>Harga Sewa</th> --}}
+                        <th>Total Pendapatan Kotor(sebelum biaya aplikasi)</th>
+                        <th>Total Pendapatan Bersih</th>
                         <th>Status</th>
                         <th>Detail</th>
                     </tr>
@@ -59,15 +61,21 @@
                                 <td>{{$item->nama_alat}}</td>
                                 <td>{{$item->nama_kategori}}</td>
                                 @if ($item->harga_permintaan != null)
-                                    <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td>
+                                    {{-- <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td> --}}
+                                    <td>Rp {{ number_format($item->total_komisi + $item->total_komisi_ext, 0, ',', '.') }}</td>
+                                    <td>Rp {{ number_format(($item->total_komisi + $item->total_komisi_ext) * 0.91, 0, ',', '.') }}</td>
                                     <td>Alat Sewaan</td>
                                     <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                                 @elseif ($item->harga_penawaran != null)
-                                    <td>Rp {{ number_format($item->harga_penawaran, 0, ',', '.') }}</td>
+                                    {{-- <td>Rp {{ number_format($item->harga_penawaran, 0, ',', '.') }}</td> --}}
+                                    <td>Rp {{ number_format($item->total_komisi + $item->total_komisi_ext, 0, ',', '.') }}</td>
+                                    <td>Rp {{ number_format(($item->total_komisi + $item->total_komisi_ext) * 0.91, 0, ',', '.') }}</td>
                                     <td>Alat Sewaan</td>
                                     <td><a href="/tempat/detailAlatUmum/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                                 @else
-                                    <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                                    {{-- <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td> --}}
+                                    <td>Rp {{ number_format($item->total_komisi + $item->total_komisi_ext, 0, ',', '.') }}</td>
+                                    <td>Rp {{ number_format(($item->total_komisi + $item->total_komisi_ext) * 0.91, 0, ',', '.') }}</td>
                                     <td>Alat Pribadi</td>
                                     <td><a href="/tempat/alat/lihatDetail/{{$item->id_alat}}" class="btn btn-outline-success">Lihat Detail</a></td>
                                 @endif

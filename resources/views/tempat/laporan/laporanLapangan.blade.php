@@ -48,7 +48,8 @@
                         <th>Jumlah Disewakan</th>
                         <th>Harga Sewa (/jam)</th>
                         <th>Total Durasi Sewa</th>
-                        <th>Total Pendapatan</th>
+                        <th>Total Pendapatan Kotor (sebelum biaya aplikasi)</th>
+                        <th>Total Pendapatan Bersih</th>
                         <th>Status</th>
                         <th>Detail</th>
                     </tr>
@@ -63,6 +64,7 @@
                                 <td>Rp {{ number_format($item->harga_sewa_lapangan, 0, ',', '.') }}</td>
                                 <td>{{$item->total_durasi + $item->durasi_ext}} jam</td>
                                 <td>Rp {{ number_format($item->total_pendapatan + $item->subtotal_ext, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format(($item->total_pendapatan + $item->subtotal_ext) * 0.91, 0, ',', '.') }}</td>
                                 @if ($item->status_lapangan == "Aktif")
                                     <td style="color: green">{{$item->status_lapangan}}</td>
                                 @else
