@@ -232,15 +232,16 @@ class Laporan extends Controller
     public function stokPemilikCetakPDF(){
     	$role = Session::get("dataRole")->id_pemilik;
         $data = DB::table('alat_olahraga')
-                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'),"kategori.nama_kategori","alat_olahraga.status_alat")
-                ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
-                ->leftJoin("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
-                ->join("kategori","alat_olahraga.fk_id_kategori","=","kategori.id_kategori")
-                ->where("alat_olahraga.fk_id_pemilik","=",$role)
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
-                ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "kategori.nama_kategori", "alat_olahraga.status_alat")
-                ->get();
+            ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", DB::raw('count(dtrans.id_dtrans) as totalRequest'), DB::raw('sum(dtrans.total_komisi_pemilik) as totalKomisi'), DB::raw('sum(extend_dtrans.total_komisi_pemilik) as totalKomisiExt'),"alat_olahraga.status_alat","kategori.nama_kategori")
+            ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
+            ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+            ->leftJoin("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+            ->join("kategori","alat_olahraga.fk_id_kategori","=","kategori.id_kategori")
+            ->where("alat_olahraga.fk_id_pemilik","=",$role)
+            ->where("htrans.status_trans","!=","Dibatalkan")
+            ->where("htrans.status_trans","!=","Ditolak")
+            ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "alat_olahraga.status_alat","kategori.nama_kategori")
+            ->get();
  
     	$pdf = PDF::loadview('pemilik.laporan.laporanStok_pdf',['data'=>$data]);
     	// return $pdf->download('laporan-pendapatan-pdf');
@@ -718,10 +719,12 @@ class Laporan extends Controller
     public function stokTempatCetakPDF() {
         $role = Session::get("dataRole")->id_tempat;
         $data = DB::table('alat_olahraga')
-                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "request_permintaan.req_harga_sewa as harga_permintaan", "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "kategori.nama_kategori as kategori_alat")
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "request_permintaan.req_harga_sewa as harga_permintaan", DB::raw('SUM(dtrans.total_komisi_tempat) as total_komisi'), DB::raw('SUM(extend_dtrans.total_komisi_tempat) as total_komisi_ext'), "request_penawaran.req_harga_sewa as harga_penawaran", "alat_olahraga.komisi_alat", "kategori.nama_kategori")
                 ->leftJoin("request_permintaan", "alat_olahraga.id_alat", "=", "request_permintaan.req_id_alat")
                 ->leftJoin("request_penawaran", "alat_olahraga.id_alat", "=", "request_penawaran.req_id_alat")
                 ->leftJoin("sewa_sendiri", "alat_olahraga.id_alat", "=", "sewa_sendiri.req_id_alat")
+                ->leftJoin("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
+                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->join("kategori","alat_olahraga.fk_id_kategori","=","kategori.id_kategori")
                 ->orWhere(function ($query) use ($role) {
                     $query->where("request_permintaan.fk_id_tempat", "=", $role)
@@ -733,7 +736,9 @@ class Laporan extends Controller
                 })
                 ->orWhere(function ($query) use ($role) {
                     $query->where("sewa_sendiri.fk_id_tempat", "=", $role);
-                })->get();
+                })
+                ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "request_permintaan.req_harga_sewa", "request_penawaran.req_harga_sewa", "alat_olahraga.komisi_alat", "kategori.nama_kategori")
+                ->get();
 
         $pdf = PDF::loadview('tempat.laporan.laporanStok_pdf',['data'=>$data]);
         // return $pdf->download('laporan-pendapatan-pdf');
@@ -805,13 +810,12 @@ class Laporan extends Controller
                     DB::raw('SUM(extend_htrans.durasi_extend) as durasi_ext'),
                     DB::raw('SUM(extend_dtrans.total_komisi_tempat) as komisi_ext'),
                 )
-                ->leftJoin("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
-                ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
+                ->join("dtrans", "alat_olahraga.id_alat", "=", "dtrans.fk_id_alat")
+                ->join("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                 ->where("htrans.fk_id_tempat", "=", $role)
-                ->where("htrans.status_trans","!=","Dibatalkan")
-                ->where("htrans.status_trans","!=","Ditolak")
+                ->where("htrans.status_trans","=","Selesai")
                 ->groupBy(
                     "alat_olahraga.id_alat",
                     "alat_olahraga.nama_alat",

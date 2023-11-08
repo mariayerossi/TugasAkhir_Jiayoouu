@@ -26,7 +26,9 @@
                 <th>No</th>
                 <th>Nama</th>
                 <th>Kategori</th>
-                <th>Harga Sewa</th>
+                {{-- <th>Harga Sewa</th> --}}
+                <th>Total Pendapatan Kotor(sebelum biaya aplikasi)</th>
+                <th>Total Pendapatan Bersih</th>
                 <th>Status</th>
             </tr>
 		</thead>
@@ -36,22 +38,28 @@
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$item->nama_alat}}</td>
-                        <td>{{$item->kategori_alat}}</td>
+                        <td>{{$item->nama_kategori}}</td>
                         @if ($item->harga_permintaan != null)
-                            <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td>
+                            {{-- <td>Rp {{ number_format($item->harga_permintaan, 0, ',', '.') }}</td> --}}
+                            <td>Rp {{ number_format($item->total_komisi + $item->total_komisi_ext, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format(($item->total_komisi + $item->total_komisi_ext) * 0.91, 0, ',', '.') }}</td>
                             <td>Alat Sewaan</td>
                         @elseif ($item->harga_penawaran != null)
-                            <td>Rp {{ number_format($item->harga_penawaran, 0, ',', '.') }}</td>
+                            {{-- <td>Rp {{ number_format($item->harga_penawaran, 0, ',', '.') }}</td> --}}
+                            <td>Rp {{ number_format($item->total_komisi + $item->total_komisi_ext, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format(($item->total_komisi + $item->total_komisi_ext) * 0.91, 0, ',', '.') }}</td>
                             <td>Alat Sewaan</td>
                         @else
-                            <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td>
+                            {{-- <td>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</td> --}}
+                            <td>Rp {{ number_format($item->total_komisi + $item->total_komisi_ext, 0, ',', '.') }}</td>
+                            <td>Rp {{ number_format(($item->total_komisi + $item->total_komisi_ext) * 0.91, 0, ',', '.') }}</td>
                             <td>Alat Pribadi</td>
                         @endif
                     </tr>
                 @endforeach
             @else
                 <tr>
-                    <td colspan="5" class="text-center">Tidak Ada Data</td>
+                    <td colspan="6" class="text-center">Tidak Ada Data</td>
                 </tr>
             @endif
 		</tbody>
