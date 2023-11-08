@@ -724,6 +724,7 @@
                 // }
 
                 // Set the values of the hidden inputs in the form
+                console.log(file);
                 document.getElementById('unsurInput').value = unsur;
                 document.getElementById('fileInput').value = file ? file.name : '';
                 console.log(document.getElementById('unsurInput').value);

@@ -45,7 +45,7 @@ class KerusakanAlat extends Controller
     
     public function ajukanKerusakan(Request $request) {
         // Mengambil semua data dari request
-        dd($request->file("file")->getClientOriginalExtension());
+        // dd($request->file("file")->getClientOriginalExtension());
         $cek = false;
         // Ambil unsur dan foto
         $unsur = $request->unsur;
