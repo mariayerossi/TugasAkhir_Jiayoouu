@@ -138,26 +138,26 @@ class Transaksi extends Controller
         $mulaiDateTime1 = new DateTime($request->mulai);
         $selesaiDateTime1 = new DateTime($request->selesai);
 
-        $slot = DB::table('slot_waktu')->where("fk_id_lapangan","=",$request->id_lapangan)->get();
-        if (!$slot->isEmpty()) {
-            foreach ($slot as $key => $value) {
-                if ($value->hari == $hari) {
-                    $jamOperasionalMulai = new DateTime($value->jam_buka);
-                    $jamOperasionalSelesai = new DateTime($value->jam_tutup);
+        // $slot = DB::table('slot_waktu')->where("fk_id_lapangan","=",$request->id_lapangan)->get();
+        // if (!$slot->isEmpty()) {
+        //     foreach ($slot as $key => $value) {
+        //         if ($value->hari == $hari) {
+        //             $jamOperasionalMulai = new DateTime($value->jam_buka);
+        //             $jamOperasionalSelesai = new DateTime($value->jam_tutup);
 
-                    if ($mulaiDateTime1 >= $jamOperasionalMulai && $selesaiDateTime1 <= $jamOperasionalSelesai) {
-                        // Jam sewa sesuai dengan jam operasional
-                        // Lakukan tindakan yang sesuai
-                    } else {
-                        // Jam sewa tidak sesuai dengan jam operasional, berikan pesan error
-                        return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
-                    }
-                }
-                else {
-                    return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
-                }
-            }
-        }
+        //             if ($mulaiDateTime1 >= $jamOperasionalMulai && $selesaiDateTime1 <= $jamOperasionalSelesai) {
+        //                 // Jam sewa sesuai dengan jam operasional
+        //                 // Lakukan tindakan yang sesuai
+        //             } else {
+        //                 // Jam sewa tidak sesuai dengan jam operasional, berikan pesan error
+        //                 return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
+        //             }
+        //         }
+        //         else {
+        //             return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
+        //         }
+        //     }
+        // }
 
         $lapangan = DB::table('lapangan_olahraga')
                             ->select("harga_sewa_lapangan")
@@ -799,26 +799,26 @@ class Transaksi extends Controller
         $mulaiDateTime1 = new DateTime($request->mulai);
         $selesaiDateTime1 = new DateTime($request->selesai);
 
-        $slot = DB::table('slot_waktu')->where("fk_id_lapangan","=",$request->id_lapangan)->get();
-        if (!$slot->isEmpty()) {
-            foreach ($slot as $key => $value) {
-                if ($value->hari == $hari) {
-                    $jamOperasionalMulai = new DateTime($value->jam_buka);
-                    $jamOperasionalSelesai = new DateTime($value->jam_tutup);
+        // $slot = DB::table('slot_waktu')->where("fk_id_lapangan","=",$request->id_lapangan)->get();
+        // if (!$slot->isEmpty()) {
+        //     foreach ($slot as $key => $value) {
+        //         if ($value->hari == $hari) {
+        //             $jamOperasionalMulai = new DateTime($value->jam_buka);
+        //             $jamOperasionalSelesai = new DateTime($value->jam_tutup);
 
-                    if ($mulaiDateTime1 >= $jamOperasionalMulai && $selesaiDateTime1 <= $jamOperasionalSelesai) {
-                        // Jam sewa sesuai dengan jam operasional
-                        // Lakukan tindakan yang sesuai
-                    } else {
-                        // Jam sewa tidak sesuai dengan jam operasional, berikan pesan error
-                        return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
-                    }
-                }
-                else {
-                    return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
-                }
-            }
-        }
+        //             if ($mulaiDateTime1 >= $jamOperasionalMulai && $selesaiDateTime1 <= $jamOperasionalSelesai) {
+        //                 // Jam sewa sesuai dengan jam operasional
+        //                 // Lakukan tindakan yang sesuai
+        //             } else {
+        //                 // Jam sewa tidak sesuai dengan jam operasional, berikan pesan error
+        //                 return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
+        //             }
+        //         }
+        //         else {
+        //             return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
+        //         }
+        //     }
+        // }
 
         $start_time = strtotime($request->mulai);
         $end_time = strtotime($request->selesai);
@@ -947,26 +947,26 @@ class Transaksi extends Controller
         $mulaiDateTime1 = new DateTime($dataHtrans->jam_sewa);
         $selesaiDateTime1 = new DateTime($selesai);
 
-        $slot = DB::table('slot_waktu')->where("fk_id_lapangan","=",$dataHtrans->fk_id_lapangan)->get();
-        if (!$slot->isEmpty()) {
-            foreach ($slot as $key => $value) {
-                if ($value->hari == $hari) {
-                    $jamOperasionalMulai = new DateTime($value->jam_buka);
-                    $jamOperasionalSelesai = new DateTime($value->jam_tutup);
+        // $slot = DB::table('slot_waktu')->where("fk_id_lapangan","=",$dataHtrans->fk_id_lapangan)->get();
+        // if (!$slot->isEmpty()) {
+        //     foreach ($slot as $key => $value) {
+        //         if ($value->hari == $hari) {
+        //             $jamOperasionalMulai = new DateTime($value->jam_buka);
+        //             $jamOperasionalSelesai = new DateTime($value->jam_tutup);
 
-                    if ($mulaiDateTime1 >= $jamOperasionalMulai && $selesaiDateTime1 <= $jamOperasionalSelesai) {
-                        // Jam sewa sesuai dengan jam operasional
-                        // Lakukan tindakan yang sesuai
-                    } else {
-                        // Jam sewa tidak sesuai dengan jam operasional, berikan pesan error
-                        return response()->json(['success' => false, 'message' => 'Maaf, Tidak dapat menyewa ketika lapangan tutup!']);
-                    }
-                }
-                else {
-                    return response()->json(['success' => false, 'message' => 'Maaf, Tidak dapat menyewa ketika lapangan tutup!']);
-                }
-            }
-        }
+        //             if ($mulaiDateTime1 >= $jamOperasionalMulai && $selesaiDateTime1 <= $jamOperasionalSelesai) {
+        //                 // Jam sewa sesuai dengan jam operasional
+        //                 // Lakukan tindakan yang sesuai
+        //             } else {
+        //                 // Jam sewa tidak sesuai dengan jam operasional, berikan pesan error
+        //                 return response()->json(['success' => false, 'message' => 'Maaf, Tidak dapat menyewa ketika lapangan tutup!']);
+        //             }
+        //         }
+        //         else {
+        //             return response()->json(['success' => false, 'message' => 'Maaf, Tidak dapat menyewa ketika lapangan tutup!']);
+        //         }
+        //     }
+        // }
 
         $data = [
             "id" => $request->id_htrans,

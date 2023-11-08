@@ -879,7 +879,6 @@ class Laporan extends Controller
         
             if ($sewaDate >= $startDate && $sewaDate <= $endDate) {
                 $day = date('Y-m-d', strtotime($sewaDate));
-                // dd($day);
                 $monthlyIncome[$day] += 1;
                 $total[$day] += $data->total_komisi_tempat * 0.91;
             }
