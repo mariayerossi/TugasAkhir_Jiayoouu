@@ -863,6 +863,7 @@ class Laporan extends Controller
             ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
             ->where("dtrans.fk_id_alat","=",$request->id)
             ->whereBetween('htrans.tanggal_sewa', [$startDate, $endDate])
+            ->where("htrans.status_trans","=","Selesai")
             ->get();
     
         $monthlyIncome = [];

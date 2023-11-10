@@ -1,9 +1,8 @@
-{{-- kalo "tempat.alat.detailAlat" itu buat liat detail dari alat olahraga miliknya --}}
-{{-- kalo "detailAlatUmum" buat liat detail alat olahraga orang lain --}}
 @extends('layouts.sidebarNavbar_tempat')
 
 @section('content')
 <style>
+    /* Add any existing styles here */
     .container {
         background-color: white;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -26,15 +25,56 @@
     .bi-star-fill {
         color: gold;
     }
+    /* Custom styles for the three side-by-side sections */
+    .left-section,
+    .center-section,
+    .right-section {
+        height: 100vh; /* Adjust the height as needed */
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .left-section {
+        border-right: 1px solid #ccc;
+    }
+
+    .right-section {
+        border-left: 1px solid #ccc;
+    }
+
+    /* Responsive styles for mobile view */
+    @media (max-width: 767px) {
+        .left-section,
+        .center-section,
+        .right-section {
+            padding: 30px !important;
+            margin: 0 !important;
+            border: none;
+            overflow-y: hidden; /* Disable vertical scrolling */
+            height: auto; /* Adjust height based on content */
+        }
+
+        .center-section {
+            order: 3; /* Change the order to 3, so it appears after right-section */
+        }
+
+        .right-section {
+            order: 2; /* Change the order to 2, so it appears before center-section */
+            border-left: none; /* Remove left border for better appearance */
+        }
+    }
 </style>
+
+
 @if (!$alat->isEmpty())
-<div class="container mt-5 p-5 mb-5" >
+<div class="container mt-3 mb-3">
     <div class="row">
-        <!-- Image section with carousel -->
-        <div class="col-lg-6">
+        <!-- Left Section: Image, Product Name, and Rating -->
+        <div class="col-lg-4 left-section">
             <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
                 <!-- Indicators -->
                 <div class="carousel-indicators">
+                    <!-- Add your carousel indicators code here -->
                     @if (!$files->isEmpty())
                         @foreach ($files as $item)
                             <button type="button" data-bs-target="#productCarousel" data-bs-slide-to="{{ $loop->index }}" {{ $loop->first ? 'class=active aria-current=true' : '' }} aria-label="Slide {{ $loop->iteration }}"></button>
@@ -44,6 +84,7 @@
 
                 <!-- Slides -->
                 <div class="carousel-inner">
+                    <!-- Add your carousel inner code here -->
                     @if (!$files->isEmpty())
                         @foreach ($files as $item)
                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
@@ -54,6 +95,7 @@
                 </div>
 
                 <!-- Controls -->
+                <!-- Add your carousel controls code here -->
                 <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
@@ -63,12 +105,8 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-        </div>
 
-        <!-- Product details section -->
-        <div class="col-lg-6">
             <h2><b>{{ ucwords($alat->first()->nama_alat)}}</b></h2>
-            <p><i class="bi bi-geo-alt"></i> Kota {{$alat->first()->kota_alat}}</p>
             @php
                 $averageRating = DB::table('rating_alat')
                             ->where('fk_id_alat', $alat->first()->id_alat)
@@ -85,9 +123,74 @@
                 <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                 </svg> {{ $averageRating }} rating ({{ $totalReviews }})
             </p>
-            <h5 class="mt-4">Komisi Pemilik:</h5>
             <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
+        </div>
 
+        <!-- Center Section: Product Details, Description, and Reviews -->
+        <div class="col-lg-4 center-section">
+            <p class="text-muted mt-2">
+                @php
+                    $kat = DB::table('kategori')->where("id_kategori","=",$alat->first()->fk_id_kategori)->get()->first()->nama_kategori;
+                @endphp
+                Kategori : {{$kat}} <br>
+                Berat : {{$alat->first()->berat_alat}} gram <br>
+                @php
+                    $array = explode("x", $alat->first()->ukuran_alat);
+                @endphp
+                Ukuran : {{$array[0]." cm x ".$array[1]." cm x ".$array[2]." cm"}} <br>
+                Biaya Ganti Rugi : Rp {{number_format($alat->first()->ganti_rugi_alat, 0, ',', '.')}} <br>
+                Status : {{$alat->first()->status_alat}}
+            </p>
+
+            <!-- Additional details section -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h4>Deskripsi Alat Olahraga</h4>
+                    <p>{!! nl2br(e($alat->first()->deskripsi_alat)) !!}</p>
+                </div>
+            </div>
+
+            <!-- Reviews section -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h4>Ulasan Alat Olahraga</h4>
+                    @php
+                        $rating = DB::table('rating_alat')
+                                ->select("user.nama_user", "rating_alat.review", "rating_alat.rating")
+                                ->join("user", "rating_alat.fk_id_user","=","user.id_user")
+                                ->where("fk_id_alat","=",$alat->first()->id_alat)
+                                ->get();
+                    @endphp
+                    @if (!$rating->isEmpty())
+                        @foreach ($rating as $item)
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5>{{$item->nama_user}}</h5>
+                                    <!-- Tampilkan bintang -->
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $item->rating)
+                                            <i class="bi bi-star-fill"></i>
+                                        @else
+                                            <i class="bi bi-star"></i>
+                                        @endif
+                                    @endfor
+                                    <p class="mt-3">{{$item->review}}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5>Tidak ada ulasan</h5>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section: Form for Price and Date -->
+        <div class="col-lg-4 right-section">
             @include("layouts.message")
             <form action="/tempat/permintaan/requestPermintaanAlat" method="post" class="mt-3" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                 @csrf
@@ -152,129 +255,8 @@
             </form>
         </div>
     </div>
-
-    <p class="text-muted mt-5">
-        <h4>Detail Alat Olahraga</h4>
-        Kategori : {{$alat->first()->kategori_alat}} <br>
-        Berat : {{$alat->first()->berat_alat}} gram <br>
-        @php
-            $array = explode("x", $alat->first()->ukuran_alat);
-        @endphp
-        Ukuran : {{$array[0]." cm x ".$array[1]." cm x ".$array[2]." cm"}} <br>
-        Biaya Ganti Rugi : Rp {{number_format($alat->first()->ganti_rugi_alat, 0, ',', '.')}} <br>
-        Status : {{$alat->first()->status_alat}}
-    </p>
-
-    <!-- Additional details section -->
-    <div class="row mt-4">
-        <div class="col-12">
-            <h4>Deskripsi Alat Olahraga</h4>
-            <p>{!! nl2br(e($alat->first()->deskripsi_alat)) !!}</p>
-        </div>
-    </div>
-
-    <!-- Reviews section -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <h4>Ulasan Alat Olahraga</h4>
-            @php
-                $rating = DB::table('rating_alat')
-                        ->select("user.nama_user", "rating_alat.review", "rating_alat.rating")
-                        ->join("user", "rating_alat.fk_id_user","=","user.id_user")
-                        ->where("fk_id_alat","=",$alat->first()->id_alat)
-                        ->get();
-            @endphp
-            @if (!$rating->isEmpty())
-                @foreach ($rating as $item)
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5>{{$item->nama_user}}</h5>
-                            <!-- Tampilkan bintang -->
-                            @for ($i = 1; $i <= 5; $i++)
-                                @if ($i <= $item->rating)
-                                    <i class="bi bi-star-fill"></i>
-                                @else
-                                    <i class="bi bi-star"></i>
-                                @endif
-                            @endfor
-                            <p class="mt-3">{{$item->review}}</p>
-                        </div>
-                    </div>
-                @endforeach
-            @else
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5>Tidak ada ulasan</h5>
-                    </div>
-                </div>
-            @endif
-        </div>
-    </div>
 </div>
-<script>
-    // function formatNumber(input) {
-    //     // Mengambil value dari input
-    //     let value = input.value;
-
-    //     // Menghapus semua titik dan karakter non-numerik lainnya
-    //     value = value.replace(/\D/g, '');
-
-    //     // Memformat ulang sebagai angka dengan pemisah ribuan titik
-    //     value = parseFloat(value).toLocaleString('id-ID');
-
-    //     // Mengembalikan format yang sudah diubah ke input
-    //     input.value = value;
-    // }
-    function formatNumber(input) {
-        let value = input.value;
-        value = value.replace(/\D/g, '');
-        let numberValue = parseInt(value, 10);
-        
-        if (!isNaN(numberValue)) {
-            // Update input yang terlihat oleh pengguna dengan format yang sudah diformat
-            input.value = numberValue.toLocaleString('id-ID');
-            // Update input tersembunyi dengan angka murni
-            document.getElementById('sewaActual').value = numberValue;
-        } else {
-            input.value = '';
-            document.getElementById('sewaActual').value = '';
-        }
-    }
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();   
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form');
-        const kotaAlatInput = document.querySelector('input[name="kota_alat"]');
-        const lapanganSelect = document.querySelector('select[name="lapangan"]');
-
-        form.addEventListener('submit', function(e) {
-            let selectedOption = lapanganSelect.options[lapanganSelect.selectedIndex].value;
-            let kotaLapangan = selectedOption.split('-')[1];
-
-            if (kotaAlatInput.value !== kotaLapangan) {
-                e.preventDefault();
-
-                swal({
-                    title: "Apakah anda yakin?",
-                    text: "Alat olahraga berasal dari kota yang berbeda dengan kota tempat lapangan anda",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Lanjutkan",
-                    cancelButtonText: "Batalkan",
-                    closeOnConfirm: false,
-                    closeOnCancel: true
-                }, function(isConfirm) {
-                    if (isConfirm) {
-                        form.submit();
-                    }
-                });
-            }
-        });
-    });
-</script>
 @else
-<h1>Alat Olahraga tidak tersedia</h1>
+    <h1>Alat Olahraga tidak tersedia</h1>
 @endif
 @endsection
