@@ -34,13 +34,12 @@
         padding: 20px;
     }
 
-    .left-section {
-        border-right: 1px solid #ccc;
+    .left-section::-webkit-scrollbar,
+    .center-section::-webkit-scrollbar,
+    .right-section::-webkit-scrollbar {
+        display: none;
     }
 
-    .right-section {
-        border-left: 1px solid #ccc;
-    }
 
     /* Responsive styles for mobile view */
     @media (max-width: 767px) {
