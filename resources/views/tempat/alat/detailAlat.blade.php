@@ -24,12 +24,37 @@
     .bi-star-fill {
         color: gold;
     }
+    .left-section,
+    .right-section {
+        height: 100vh; /* Adjust the height as needed */
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .left-section::-webkit-scrollbar,
+    .right-section::-webkit-scrollbar {
+        display: none;
+    }
+
+
+    /* Responsive styles for mobile view */
+    @media (max-width: 767px) {
+        .left-section,
+        .right-section {
+            padding: 30px !important;
+            margin: 0 !important;
+            border: none;
+            overflow-y: hidden; /* Disable vertical scrolling */
+            height: auto; /* Adjust height based on content */
+        }
+    }
 </style>
+
 @if (!$alat->isEmpty())
-<div class="container mt-5 p-5 mb-5" >
+<div class="container mt-5 p-4 mb-5">
     <div class="row">
-        <!-- Image section with carousel -->
-        <div class="col-lg-6">
+        <!-- Left Section: Image and Product Details -->
+        <div class="col-lg-6 left-section">
             <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
                 <!-- Indicators -->
                 <div class="carousel-indicators">
@@ -61,10 +86,6 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
-        </div>
-
-        <!-- Product details section -->
-        <div class="col-lg-6">
             <h2><b>{{ ucwords($alat->first()->nama_alat)}}</b></h2>
             @php
                 $averageRating = DB::table('rating_alat')
@@ -96,55 +117,58 @@
 
             <a href="/tempat/alat/editAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Ubah Detail Alat</a>
         </div>
-    </div>
 
-    <!-- Additional details section -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <h4>Deskripsi Alat Olahraga</h4>
-            <p>{!! nl2br(e($alat->first()->deskripsi_alat)) !!}</p>
-        </div>
-    </div>
-
-    <!-- Reviews section -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <h4>Ulasan Alat Olahraga</h4>
-            @php
-                $rating = DB::table('rating_alat')
-                        ->select("user.nama_user", "rating_alat.review", "rating_alat.rating")
-                        ->join("user", "rating_alat.fk_id_user","=","user.id_user")
-                        ->where("fk_id_alat","=",$alat->first()->id_alat)
-                        ->get();
-            @endphp
-            @if (!$rating->isEmpty())
-                @foreach ($rating as $item)
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5>{{$item->nama_user}}</h5>
-                            <!-- Tampilkan bintang -->
-                            @for ($i = 1; $i <= 5; $i++)
-                                @if ($i <= $item->rating)
-                                    <i class="bi bi-star-fill"></i>
-                                @else
-                                    <i class="bi bi-star"></i>
-                                @endif
-                            @endfor
-                            <p class="mt-3">{{$item->review}}</p>
-                        </div>
-                    </div>
-                @endforeach
-            @else
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5>Tidak ada ulasan</h5>
-                    </div>
+        <!-- Right Section: Product Details and Form -->
+        <div class="col-lg-6 right-section">
+            <!-- Additional details section -->
+            <div class="row">
+                <div class="col-12">
+                    <h4>Deskripsi Alat Olahraga</h4>
+                    <p>{!! nl2br(e($alat->first()->deskripsi_alat)) !!}</p>
                 </div>
-            @endif
+            </div>
+
+            <!-- Reviews section -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h4>Ulasan Alat Olahraga</h4>
+                    @php
+                        $rating = DB::table('rating_alat')
+                                ->select("user.nama_user", "rating_alat.review", "rating_alat.rating")
+                                ->join("user", "rating_alat.fk_id_user","=","user.id_user")
+                                ->where("fk_id_alat","=",$alat->first()->id_alat)
+                                ->get();
+                    @endphp
+                    @if (!$rating->isEmpty())
+                        @foreach ($rating as $item)
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5>{{$item->nama_user}}</h5>
+                                    <!-- Tampilkan bintang -->
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= $item->rating)
+                                            <i class="bi bi-star-fill"></i>
+                                        @else
+                                            <i class="bi bi-star"></i>
+                                        @endif
+                                    @endfor
+                                    <p class="mt-3">{{$item->review}}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5>Tidak ada ulasan</h5>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </div>
 @else
-<h1>Alat Olahraga tidak tersedia</h1>
+    <h1>Alat Olahraga tidak tersedia</h1>
 @endif
 @endsection
