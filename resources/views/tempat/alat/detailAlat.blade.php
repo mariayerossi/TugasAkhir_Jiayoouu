@@ -5,21 +5,31 @@
     .container {
         background-color: white;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        height: 70%;
     }
-    .carousel-item {
-        position: relative;
-        width: 100%;
-        padding-bottom: 100%; /* Membuat rasio 1:1 */
-        overflow: hidden;
+    #productCarousel {
+        max-width: 300px; /* Adjust the maximum width as needed */
+        margin: 0 auto;
     }
 
-    .carousel-item img {
+    #productCarousel .carousel-inner {
+        height: 0;
+        padding-top: 100%; /* 1:1 aspect ratio */
+        position: relative;
+    }
+
+    #productCarousel .carousel-inner .carousel-item {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+    }
+
+    #productCarousel img {
         object-fit: cover;
+        width: 100%;
+        height: 100%;
     }
     .bi-star-fill {
         color: gold;
