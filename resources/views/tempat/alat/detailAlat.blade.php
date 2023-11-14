@@ -34,7 +34,6 @@
     .bi-star-fill {
         color: gold;
     }
-    .left-section,
     .right-section {
         height: 100vh; /* Adjust the height as needed */
         overflow-y: auto;
