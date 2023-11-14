@@ -85,7 +85,7 @@
                     <!-- Add your carousel inner code here -->
                     @if (!$files->isEmpty())
                         @foreach ($files as $item)
-                            <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                            <div class="carousel-item {{ $loop->first ? 'active' : '' }} mt-3">
                                 <img src="{{ asset('upload/' . $item->nama_file_alat)}}" class="d-block w-100" alt="">
                             </div>
                         @endforeach
