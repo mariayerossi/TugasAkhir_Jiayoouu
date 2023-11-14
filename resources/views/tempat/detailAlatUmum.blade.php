@@ -26,7 +26,6 @@
         color: gold;
     }
     /* Custom styles for the three side-by-side sections */
-    .left-section,
     .center-section,
     .right-section {
         height: 100vh; /* Adjust the height as needed */
@@ -105,7 +104,7 @@
                 </button>
             </div>
 
-            <h2><b>{{ ucwords($alat->first()->nama_alat)}}</b></h2>
+            <h3><b>{{ ucwords($alat->first()->nama_alat)}}</b></h3>
             @php
                 $averageRating = DB::table('rating_alat')
                             ->where('fk_id_alat', $alat->first()->id_alat)
