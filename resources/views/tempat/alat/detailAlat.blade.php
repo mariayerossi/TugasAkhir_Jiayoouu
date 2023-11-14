@@ -9,7 +9,6 @@
     }
     #productCarousel {
         max-width: 300px; /* Adjust the maximum width as needed */
-        margin: 0 auto;
     }
 
     #productCarousel .carousel-inner {
