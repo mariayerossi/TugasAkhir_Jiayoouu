@@ -9,12 +9,8 @@
         background-position: center center;
         background-repeat: no-repeat;
         background-size: 60%; /* Mengurangi ukuran gambar */
-    }
-    @media (min-width: 769px) {
-        .image-container {
-            margin-top: -80px;
-            margin-bottom: -50px; /* Contoh: menggeser ke atas sebanyak 50px */
-        }
+        margin-top: -200px;
+        margin-bottom: -200px; /* Contoh: menggeser ke atas sebanyak 50px */
     }
     .square-image-container {
         width: 100px;
@@ -48,6 +44,8 @@
         }
         .image-container {
             background-size: 100%; /* Memperbesar gambar lapangan menjadi 100% */
+            margin-top: 0px;
+            margin-bottom: 0px; /* Contoh: menggeser ke atas sebanyak 50px */
         }
     }
     .bi-star-fill {
@@ -71,6 +69,10 @@
 
     .carousel-control-next {
         right: 10px; /* Posisi dari sisi kanan */
+    }
+
+    .carousel-control-prev-icon, .carousel-control-next-icon {
+        /* Anda bisa menambahkan style untuk ikon panah di sini, misalnya dengan mengganti gambar latar belakang */
     }
 </style>
 @if (!$lapangan->isEmpty())
