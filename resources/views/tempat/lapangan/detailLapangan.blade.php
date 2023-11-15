@@ -194,7 +194,16 @@
                     <ul>
                         @if (!$slot->isEmpty())
                             @foreach ($slot as $item)
-                                <li>{{$item->hari}} : {{$item->jam_buka}} - {{$item->jam_tutup}}</li>
+                            @php
+                            $tanggalAwal3 = $item->jam_buka;
+                            $tanggalObjek3 = DateTime::createFromFormat('H:i:s', $tanggalAwal3);
+                            $tanggalBaru3 = $tanggalObjek3->format('H:i');
+
+                            $tanggalAwal4 = $item->jam_tutup;
+                            $tanggalObjek4 = DateTime::createFromFormat('H:i:s', $tanggalAwal4);
+                            $tanggalBaru4 = $tanggalObjek4->format('H:i');
+                        @endphp
+                        <li>{{$item->hari}}: {{$tanggalBaru3}} - {{$tanggalBaru4}}</li>
                             @endforeach
                         @endif
                     </ul>
