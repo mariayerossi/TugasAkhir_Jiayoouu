@@ -52,8 +52,8 @@
             padding: 30px !important;
             margin: 0 !important;
             border: none;
-            overflow-y: hidden; /* Disable vertical scrolling */
-            height: auto; /* Adjust height based on content */
+            overflow-y: hidden !important; /* Disable vertical scrolling */
+            height: auto !important; /* Adjust height based on content */
         }
     }
 </style>

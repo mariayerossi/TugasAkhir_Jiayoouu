@@ -47,6 +47,23 @@
             margin-top: 0px;
             margin-bottom: 0px; /* Contoh: menggeser ke atas sebanyak 50px */
         }
+        .left-section,
+        .right-section {
+            padding: 30px !important;
+            margin: 0 !important;
+            border: none;
+            overflow-y: hidden !important; /* Disable vertical scrolling */
+            height: auto !important; /* Adjust height based on content */
+        }
+
+        .left-section {
+            order: 3; /* Change the order to 3, so it appears after right-section */
+        }
+
+        .right-section {
+            order: 2; /* Change the order to 2, so it appears before center-section */
+            border-left: none; /* Remove left border for better appearance */
+        }
     }
     .bi-star-fill {
         color: gold;
@@ -83,19 +100,6 @@
     .left-section::-webkit-scrollbar,
     .right-section::-webkit-scrollbar {
         display: none;
-    }
-
-
-    /* Responsive styles for mobile view */
-    @media (max-width: 767px) {
-        .left-section,
-        .right-section {
-            padding: 30px !important;
-            margin: 0 !important;
-            border: none;
-            overflow-y: hidden; /* Disable vertical scrolling */
-            height: auto; /* Adjust height based on content */
-        }
     }
 </style>
 @if (!$lapangan->isEmpty())
@@ -167,7 +171,7 @@
             <h2>Rp {{number_format($lapangan->first()->harga_sewa_lapangan, 0, ',', '.')}} /jam</h2>
         </div>
     </div>
-<hr>
+    <hr>
     <div class="row">
         <div class="col-lg-6 left-section">
             <h4>Lokasi Lapangan</h4>
@@ -192,7 +196,7 @@
                 {!! nl2br(e($lapangan->first()->deskripsi_lapangan)) !!}
             </p>
             
-            <div class="row mt-4 mb-4">
+            <div class="row mt-5">
                 <div class="col-md-6 col-sm-12">
                     <h4>Jam Operasional Lapangan</h4>
                     <ul>
@@ -213,8 +217,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="row mt-4">
-                <div class="">
+            <div class="row mt-5">
+                <div>
                     <h4>Alat Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang disewakan di lapangan ini"></i></h4>
                     @if ($permintaan->isEmpty() && $penawaran->isEmpty() && $sewa->isEmpty())
                         <p>(Tidak ada alat olahraga yang disewakan di lapangan ini)</p>
