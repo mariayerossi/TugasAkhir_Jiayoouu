@@ -46,7 +46,7 @@
 
         $tanggalAwal1 = $permintaan->first()->tanggal_minta;
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
-        $tanggalBaru1 = $tanggalObjek1->format('d-m-Y H:i:s');
+        $tanggalBaru1 = $tanggalObjek1->format('d-m-Y H:i');
     @endphp
 
     <div class="row mb-5 mt-5">
