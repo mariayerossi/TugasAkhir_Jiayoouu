@@ -2,10 +2,6 @@
 
 @section('content')
 <style>
-    .container {
-        background-color: white;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    }
     .image-container {
         position: relative;
         width: 100%;
