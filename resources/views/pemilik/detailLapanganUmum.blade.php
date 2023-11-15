@@ -8,7 +8,7 @@
         padding-top: 75%; /* aspek rasio 4:3 */
         background-position: center center;
         background-repeat: no-repeat;
-        background-size: 70%; /* Mengurangi ukuran gambar */
+        background-size: 60%; /* Mengurangi ukuran gambar */
     }
     @media (min-width: 769px) {
         .image-container {
@@ -71,10 +71,6 @@
 
     .carousel-control-next {
         right: 10px; /* Posisi dari sisi kanan */
-    }
-
-    .carousel-control-prev-icon, .carousel-control-next-icon {
-        /* Anda bisa menambahkan style untuk ikon panah di sini, misalnya dengan mengganti gambar latar belakang */
     }
 </style>
 @if (!$lapangan->isEmpty())
