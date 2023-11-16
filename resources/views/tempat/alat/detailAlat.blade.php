@@ -113,7 +113,10 @@
             </p>
             <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
             <p class="text-muted mt-2">
-                Kategori : {{$alat->first()->kategori_alat}} <br>
+                @php
+                    $kat = DB::table('kategori')->where("id_kategori","=",$alat->first()->fk_id_kategori)->get()->first()->nama_kategori;
+                @endphp
+                Kategori : {{$kat}} <br>
                 Berat : {{$alat->first()->berat_alat}} gram <br>
                 @php
                     $array = explode("x", $alat->first()->ukuran_alat);
