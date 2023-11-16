@@ -878,9 +878,12 @@ Route::prefix("/customer")->group(function(){
         Route::get("/detailRating/{id}", function ($id) {
             $kat = new kategori();
             $param["kategori"] = $kat->get_all_data();
-            
+
             $htrans = new ModelsHtrans();
             $param["htrans"] = $htrans->get_all_data_by_id($id);
+
+            $dtrans = new ModelsDtrans();
+            $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
             return view("customer.ulasan")->with($param);
         })->middleware([CekCustomer::class]);
 
