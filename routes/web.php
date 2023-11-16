@@ -875,6 +875,15 @@ Route::prefix("/customer")->group(function(){
     });
 
     Route::prefix("/rating")->group(function(){
+        Route::get("/detailRating/{id}", function ($id) {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            
+            $htrans = new ModelsHtrans();
+            $param["htrans"] = $htrans->get_all_data_by_id($id);
+            return view("customer.ulasan")->with($param);
+        })->middleware([CekCustomer::class]);
+
         Route::prefix("/lapangan")->group(function(){
             Route::post("/tambahRating", [Rating::class, "tambahRatingLapangan"]);
         });

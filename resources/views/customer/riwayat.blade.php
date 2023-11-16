@@ -180,7 +180,7 @@
                                             @csrf
                                             <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
                                             <input type="hidden" name="durasi" id="durasi_jam" data-id="{{$item->id_htrans}}">
-                                            <button type="submit" class="btn btn-primary me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert(this)">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
+                                            <button type="submit" class="btn btn-success me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert(this)">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
                                         </form>
                                     @elseif (!$cek->isEmpty())
                                         <h6 class="mt-4">Status Extend Waktu {{$cek->first()->status_extend}} Admin</h6>
@@ -201,6 +201,8 @@
                                             <h4 class="card-title"><b>Yeay! Komplain Anda telah {{$komplain->status_komplain}}!</b></h4>
                                         @endif
                                     </div>
+                                @elseif ($item->status_trans == "Selesai")
+                                    <a href="/customer/rating/detailRating/{{$item->id_htrans}}" class="btn btn-success">Berikan Ulasan <i class="bi bi-star"></i></a>
                                 @endif
 
                                 @if ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")
