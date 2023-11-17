@@ -27,12 +27,13 @@
     @endphp
     @foreach ($grouped as $kode => $items)
         @php
-            $tanggalAwal2 = $items->first()->tanggal_sewa;
-            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+            $tanggalAwal2 = $items->first()->tanggal_sewa." ".$items->first()->jam_sewa;
+            $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+            $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+            $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY H:mm');
         @endphp
         <h4 class="mt-5"><b>Transaksi: {{ $kode }}</b></h4>
-        <h6 class="mt-2 mb-3">Tanggal Sewa: {{ $tanggalBaru2 }} {{$items->first()->jam_sewa}}</h6>
+        <h6 class="mt-2 mb-3">Tanggal Sewa: {{ $tanggalBaru2 }}</h6>
 
         <div class="card">
             <div class="table-responsive text-nowrap">

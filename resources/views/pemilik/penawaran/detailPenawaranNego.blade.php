@@ -46,7 +46,8 @@ display: block;
 
         $tanggalAwal1 = $penawaran->first()->tanggal_tawar;
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
-        $tanggalBaru1 = $tanggalObjek1->format('d-m-Y H:i');
+        $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
+        $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY H:mm');
     @endphp
     
     <div class="row mb-5 mt-5">
@@ -151,7 +152,8 @@ display: block;
                     @php
                         $tanggalAwal = $penawaran->first()->req_tanggal_mulai;
                         $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
-                        $tanggalBaru = $tanggalObjek->format('d-m-Y');
+                        $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
+                        $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY');
                     @endphp
                     <p>{{$tanggalBaru}}</p>
                 @endif
@@ -164,7 +166,8 @@ display: block;
                     @php
                         $tanggalAwal2 = $penawaran->first()->req_tanggal_selesai;
                         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                        $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+                        $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
                     @endphp
                     <p>{{$tanggalBaru2}}</p>
                 @endif
@@ -235,11 +238,12 @@ display: block;
                                             <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
                                         @endif
                                         @php
-                                            $tanggalAwal = $item->waktu_negosiasi;
-                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                            $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+                                            $tanggalAwal3 = $item->waktu_negosiasi;
+                                            $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
+                                            $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
+                                            $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY H:mm:s');
                                         @endphp
-                                        <p>{{$tanggalBaru}}</p>
+                                        <p>{{$tanggalBaru3}}</p>
                                         <p class="mt-2">{{$item->isi_negosiasi}}</p>
                                     </div>
                                 </div>
