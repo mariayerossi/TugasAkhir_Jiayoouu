@@ -91,7 +91,8 @@
 
         $tanggalAwal = $htrans->first()->tanggal_trans;
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+        $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
+        $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
     @endphp
     <div class="row mt-5">
         <!-- Nama Pengirim -->
@@ -108,7 +109,8 @@
     @php
         $tanggalAwal2 = $htrans->first()->tanggal_sewa;
         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+        $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+        $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
     @endphp
 
     <div class="row mb-5 mt-4">
@@ -116,7 +118,7 @@
             <h6>Tanggal Sewa: {{$tanggalBaru2}}</h6>
         </div>
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Jam Sewa: {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->format('H:i:s') }} WIB - {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->addHours($htrans->first()->durasi_sewa)->format('H:i:s') }} WIB</h6>
+            <h6>Jam Sewa: {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->format('H:i') }} WIB - {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->addHours($htrans->first()->durasi_sewa)->format('H:i') }} WIB</h6>
         </div>
     </div>
     

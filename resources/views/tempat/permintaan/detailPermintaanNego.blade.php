@@ -46,7 +46,8 @@
 
         $tanggalAwal3 = $permintaan->first()->tanggal_minta;
         $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
-        $tanggalBaru3 = $tanggalObjek3->format('d-m-Y H:i');
+        $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
+        $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY H:mm');
     @endphp
 
     <div class="row mb-5 mt-5">
@@ -154,7 +155,8 @@
                 @php
                     $tanggalAwal = $permintaan->first()->req_tanggal_mulai;
                     $tanggalObjek = DateTime::createFromFormat('Y-m-d', $tanggalAwal);
-                    $tanggalBaru = $tanggalObjek->format('d-m-Y');
+                    $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
+                    $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY');
                 @endphp
                 <p>{{$tanggalBaru}}</p>
             @endif
@@ -172,7 +174,8 @@
                 @php
                     $tanggalAwal2 = $permintaan->first()->req_tanggal_selesai;
                     $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                    $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+                    $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
                 @endphp
                 <p>{{$tanggalBaru2}}</p>
             @endif
