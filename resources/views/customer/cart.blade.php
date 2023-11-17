@@ -65,7 +65,8 @@
                                 $tanggalAwal2 = $item->tanggal;
                                 if ($tanggalAwal2 != null) {
                                     $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                                    $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+                                    $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
                                 }
                                 else {
                                     $tanggalBaru2 = "(Anda belum menentukan tanggal sewa)";

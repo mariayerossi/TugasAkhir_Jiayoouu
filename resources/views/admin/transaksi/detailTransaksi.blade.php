@@ -53,7 +53,8 @@
 
         $tanggalAwal = $htrans->first()->tanggal_trans;
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-        $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+        $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
+        $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
     @endphp
     <div class="row mt-5">
         <!-- Nama Pengirim -->
@@ -68,38 +69,15 @@
     </div>
 
     @php
-        function getBulan($bulan) {
-            $namaBulan = array(
-                '01' => 'Januari',
-                '02' => 'Februari',
-                '03' => 'Maret',
-                '04' => 'April',
-                '05' => 'Mei',
-                '06' => 'Juni',
-                '07' => 'Juli',
-                '08' => 'Agustus',
-                '09' => 'September',
-                '10' => 'Oktober',
-                '11' => 'November',
-                '12' => 'Desember',
-            );
-
-            return $namaBulan[$bulan];
-        }
-
         $tanggalAwal2 = $htrans->first()->tanggal_sewa;
         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-        $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
-        
-        // Pecah tanggal dan ganti bagian bulannya
-        $pecahTanggal = explode('-', $tanggalBaru2);
-        $pecahTanggal[1] = getBulan($pecahTanggal[1]);
-        $tanggalDenganNamaBulan = implode(' ', $pecahTanggal); 
+        $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+        $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
     @endphp
 
     <div class="row mb-4 mt-4">
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Tanggal Sewa: {{$tanggalDenganNamaBulan}}</h6>
+            <h6>Tanggal Sewa: {{$tanggalBaru2}}</h6>
         </div>
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Jam Sewa: {{$htrans->first()->jam_sewa}} WIB</h6>

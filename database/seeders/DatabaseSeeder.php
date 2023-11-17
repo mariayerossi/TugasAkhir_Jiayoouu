@@ -655,6 +655,7 @@ class DatabaseSeeder extends Seeder
             'review' => "bola basketnya lumayan bagus, cuman agak kempes",
             'fk_id_user' => 1,
             'fk_id_alat' => 1,
+            'fk_id_dtrans' => 3,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -663,6 +664,7 @@ class DatabaseSeeder extends Seeder
             'review' => "lapangannya bagus, bersih, nyaman dibuat main",
             'fk_id_user' => 1,
             'fk_id_lapangan' => 1,
+            'fk_id_htrans' => 2,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("review", 500)->nullable();//opsional
             $table->unsignedInteger("fk_id_user");
             $table->unsignedInteger("fk_id_alat");
+            $table->unsignedInteger("fk_id_dtrans");
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fk_id_user')
@@ -25,6 +26,9 @@ return new class extends Migration
             $table->foreign('fk_id_alat')
                   ->references('id_alat')
                   ->on('alat_olahraga');
+            $table->foreign('fk_id_dtrans')
+                  ->references('id_dtrans')
+                  ->on('dtrans');
         });
     }
 

@@ -20,7 +20,8 @@ class Rating extends Controller
             "rating" => $request->rating,
             "review" => $request->review,
             "id_user" => Session::get("dataRole")->id_user,
-            "id_lapangan" => $request->id_lapangan
+            "id_lapangan" => $request->id_lapangan,
+            "id_htrans" => $request->id_htrans
         ];
         $rate = new ratingLapangan();
         $rate->insertRating($data);
@@ -39,7 +40,8 @@ class Rating extends Controller
             "rating" => $request->rating,
             "review" => $request->review,
             "id_user" => Session::get("dataRole")->id_user,
-            "id_alat" => $request->id_alat
+            "id_alat" => $request->id_alat,
+            "id_dtrans" => $request->id_dtrans
         ];
         $rate = new ratingAlat();
         $rate->insertRating($data);

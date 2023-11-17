@@ -22,6 +22,7 @@ class ratingAlat extends Model
         $rate->review = $data["review"];
         $rate->fk_id_user = $data["id_user"];
         $rate->fk_id_alat = $data["id_alat"];
+        $rate->fk_id_dtrans = $data["id_dtrans"];
         $rate->save();
     }
 }

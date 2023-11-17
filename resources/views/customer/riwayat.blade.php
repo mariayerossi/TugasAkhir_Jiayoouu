@@ -81,7 +81,8 @@
                                 @php
                                     $tanggalAwal1 = $item->tanggal_trans;
                                     $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
-                                    $tanggalBaru1 = $tanggalObjek1->format('d-m-Y H:i:s');
+                                    $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
+                                    $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY H:mm');
                                 @endphp
                                 <div class="d-flex justify-content-end">
                                     <h6><b>Tanggal Transaksi: {{$tanggalBaru1}}</b></h6>
@@ -109,7 +110,8 @@
                                 @php
                                     $tanggalAwal2 = $item->tanggal_sewa;
                                     $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-                                    $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+                                    $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+                                    $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
 
                                     $dtrans = DB::table('dtrans')
                                             ->select("alat_olahraga.id_alat", "alat_olahraga.nama_alat","files_alat.nama_file_alat")
@@ -125,7 +127,7 @@
                                     // dd($dtrans);
                                 @endphp
                                 <p class="card-text"><strong>Tanggal Sewa: </strong>{{$tanggalBaru2}}</p>
-                                <p class="card-text"><strong>Jam Sewa: </strong>{{ \Carbon\Carbon::parse($item->jam_sewa)->format('H:i:s') }} - {{ \Carbon\Carbon::parse($item->jam_sewa)->addHours($item->durasi_sewa)->format('H:i:s') }}</p>
+                                <p class="card-text"><strong>Jam Sewa: </strong>{{ \Carbon\Carbon::parse($item->jam_sewa)->format('H:i') }} - {{ \Carbon\Carbon::parse($item->jam_sewa)->addHours($item->durasi_sewa)->format('H:i') }}</p>
                                 <div class="d-flex flex-row flex-wrap">
                                 @if (!$dtrans->isEmpty())
                                     @foreach ($dtrans as $item2)
