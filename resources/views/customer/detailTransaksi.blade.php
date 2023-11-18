@@ -45,7 +45,8 @@
         @php
             $tanggalAwal2 = $data["tanggal"];
             $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
-            $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
+            $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+            $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY HH:mm');
         @endphp
     
         <div class="row mb-5 mt-4">

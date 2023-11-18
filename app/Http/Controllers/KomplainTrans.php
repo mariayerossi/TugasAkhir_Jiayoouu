@@ -1186,6 +1186,89 @@ class KomplainTrans extends Controller
         ];
         $komp->updateAlasan($data2);
 
+        //ubah status transaksi menjadi "Selesai" dan masukkan uang ke saldo pemilik alat dan pihak tempat
+        $data3 = [
+            "id" => $request->id2,
+            "status" => "Selesai"
+        ];
+        $trans = new htrans();
+        $trans->updateStatus($data3);
+
+        $dataHtrans = DB::table('htrans')->where("id_htrans","=",$request->id2)->get()->first();
+        $extend = DB::table('extend_htrans')->where("fk_id_htrans","=",$dataHtrans->id_htrans)->get()->first();
+        $dataDtrans = DB::table('dtrans')->where("fk_id_htrans","=",$request->id2)->where("deleted_at","=",null)->get();
+
+        //total komisi dari alat miliknya sendiri
+        $total_komisi_tempat = 0;
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                if ($value->fk_id_tempat == $dataHtrans->fk_id_tempat) {
+                    $extend_dtrans = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value->id_dtrans)->get()->first();
+                    if ($extend_dtrans != null) {
+                        $total_komisi_tempat += $extend_dtrans->total_komisi_tempat;
+                    }
+                    $total_komisi_tempat += $value->total_komisi_tempat;
+                }
+            }
+        }
+
+        $extend_subtotal = 0;
+        $extend_total = 0;
+        if ($extend != null) {
+            $extend_subtotal = $extend->subtotal_lapangan;
+            $extend_total = $extend->total;
+        }
+
+        //subtotal lapangan masuk ke saldo tempat & total komisi tempat ditahan dulu
+        //klo masa sewa sdh selesai baru dimasukin saldo tempat
+        $temp = DB::table('pihak_tempat')->where("id_tempat","=",$dataHtrans->fk_id_tempat)->get()->first();
+        $saldo = (int)$this->decodePrice($temp->saldo_tempat, "mysecretkey");
+        // dd($extend->subtotal_lapangan);
+        $saldo += (int)$dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat - $dataHtrans->pendapatan_website_lapangan;
+
+        // dd($dataHtrans->subtotal_lapangan + $extend_subtotal + $total_komisi_tempat);
+        //enkripsi kembali saldo
+        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+        //update db tempat
+        $dataSaldo = [
+            "id" => $dataHtrans->fk_id_tempat,
+            "saldo" => $enkrip
+        ];
+        $temp = new pihakTempat();
+        $temp->updateSaldo($dataSaldo);
+
+        // total komisi pemilik masuk ke saldo pemilik
+        if (!$dataDtrans->isEmpty()) {
+            foreach ($dataDtrans as $key => $value) {
+                if ($value->fk_id_pemilik != null) {
+                    $extend_dtrans2 = DB::table('extend_dtrans')->where("fk_id_dtrans","=",$value->id_dtrans)->get()->first();
+
+                    $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
+                    // dd($value->total_komisi_pemilik);
+
+                    $saldo2 = (int)$this->decodePrice($pemilik->saldo_pemilik, "mysecretkey");
+                    // dd($saldo2);
+                    $extend_total_komisi = 0;
+                    if ($extend_dtrans2 != null) {
+                        $extend_total_komisi = $extend_dtrans2->total_komisi_pemilik - $extend_dtrans2->pendapatan_website_alat;
+                    }
+                    $saldo2 += (int)$value->total_komisi_pemilik - $value->pendapatan_website_alat + $extend_total_komisi;
+                    // dd($saldo2);
+
+                    $enkrip2 = $this->encodePrice((string)$saldo2, "mysecretkey");
+
+                    //update db
+                    $dataSaldo2 = [
+                        "id" => $value->fk_id_pemilik,
+                        "saldo" => $enkrip2
+                    ];
+                    $pem = new pemilikAlat();
+                    $pem->updateSaldo($dataSaldo2);
+                }
+            }
+        }
+
         //notif ke cust
         $komplain = DB::table('komplain_trans')->where("id_komplain_trans","=",$request->id)->get()->first();
         $user = DB::table('user')->where("id_user","=",$komplain->fk_id_user)->get()->first();

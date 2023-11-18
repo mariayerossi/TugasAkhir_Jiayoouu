@@ -69,7 +69,7 @@
         $tanggalAwal1 = $komplain->first()->waktu_komplain;
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
-        $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY H:mm');
+        $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY HH:mm');
     @endphp
     <div class="row mb-5 mt-5">
         <!-- Nama Pengirim -->
@@ -342,7 +342,7 @@
                         console.log(inputValue);
                         return false;
                     }
-                    window.location.href = "/admin/komplain/trans/tolakKomplain/{{$komplain->first()->id_komplain_trans}}?alasan=" + encodeURIComponent(inputValue);
+                    window.location.href = "/admin/komplain/trans/tolakKomplain/{{$komplain->first()->id_komplain_trans}}/{{$komplain->first()->fk_id_htrans}}?alasan=" + encodeURIComponent(inputValue);
                 });
 
                 setTimeout(function() {

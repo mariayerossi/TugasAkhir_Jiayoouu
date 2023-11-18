@@ -92,7 +92,7 @@
         $tanggalAwal = $htrans->first()->tanggal_trans;
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
-        $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
+        $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm');
     @endphp
     <div class="row mt-5">
         <!-- Nama Pengirim -->

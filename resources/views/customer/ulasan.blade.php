@@ -3,15 +3,20 @@
 @section('content')
 <style>
   .img-fluid {
-      height: 80px;
-      width: 110px;
+      width: calc(4/3 * 60px); /* 4:3 aspect ratio for a height of 60px */
+      max-width: 100%; /* Set a maximum width for responsiveness */
+      overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
+  }
+  .img-fluid2 {
+      width: 60px; /* 1:1 aspect ratio for a height of 60px */
+      max-width: 100%; /* Set a maximum width for responsiveness */
       overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
   }
   @media (max-width: 768px) {
     .img-fluid {
       height: 60px;
       width: 90px;
-      overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
+      overflow: hidden; /* Memastikan gam bar tidak melebihi kontainer */
     }
   }
   .truncate-text {
@@ -26,6 +31,7 @@
         cursor: pointer;
     }
     .bi-star-fill {
+      font-size: 24px;
         color: gold;
     }
 </style>
@@ -38,10 +44,11 @@
         $tanggal_hasil = $carbonDate->isoFormat('D MMMM YYYY');
     @endphp
     <h6>{{$tanggal_hasil}}, Pukul {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->format('H:i') }} - {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->addHours($htrans->first()->durasi_sewa)->format('H:i') }}</h6>
-    <div class="accordion" id="accordionExample">
+    <div class="accordion mt-3" id="accordionExample">
         @php
             $lap = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->first()->fk_id_lapangan)->get()->first();
             $fileLap = DB::table('files_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->get()->first();
+            $ratingLap = DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$htrans->first()->id_htrans)->get()->first();
         @endphp
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
@@ -51,57 +58,105 @@
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              <div class="row mt-3">
-                <div class="col-12">
-                    <h4>Beri Ulasan</h4>
-                    <form action="/customer/rating/lapangan/tambahRating" method="post" id="ratingForm">
-                        @csrf
-                        <div class="rating-container">
-                            @for($i=1; $i<=5; $i++)
-                                <i class="bi bi-star star" data-rate="{{ $i }}"></i>
-                            @endfor
-                            <input type="hidden" name="rating" id="ratingValue">
-                        </div>
-                        <div class="form-group mt-3">
+              @if ($ratingLap == null)
+                <div class="row mt-3">
+                  <div class="col-12">
+                      <h4>Beri Ulasan</h4>
+                      <form action="/customer/rating/lapangan/tambahRating" method="post" id="ratingForm">
+                          @csrf
+                          <div class="rating-container">
+                              @for($i=1; $i<=5; $i++)
+                                  <i class="bi bi-star star" data-rate="{{ $i }}"></i>
+                              @endfor
+                              <input type="hidden" name="rating" id="ratingValue">
+                          </div>
+                          <div class="form-group mt-3">
                             <label for="comment">Review (opsional):</label>
                             <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
-                        </div>
-                        <input type="hidden" name="id_lapangan" value="{{$lap->id_lapangan}}">
-                        <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
-                        <div class="d-flex justify-content-end">
-                          <button type="submit" class="btn btn-success mt-2">Kirim</button>
-                        </div>
-                    </form>
+                          </div>
+                          <input type="hidden" name="id_lapangan" value="{{$lap->id_lapangan}}">
+                          <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
+                          <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-success mt-2">Kirim</button>
+                          </div>
+                      </form>
+                  </div>
                 </div>
-              </div>
+              @else
+                <h4 class="mt-4">Ulasan Anda:</h4>
+                @for ($i = 1; $i <= 5; $i++)
+                  @if ($i <= $ratingLap->rating)
+                      <i class="bi bi-star-fill"></i>
+                  @else
+                      <i class="bi bi-star"></i>
+                  @endif
+                @endfor
+                @if ($ratingLap->review != null)
+                  <h6 class="mt-2 mb-4">{{$ratingLap->review}}</h6>
+                @endif
+              @endif
             </div>
           </div>
         </div>
 
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingTwo">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-              Accordion Item #2
-            </button>
-          </h2>
-          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-              <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+        @if (!$dtrans->isEmpty())
+          @foreach ($dtrans as $item)
+            @php
+              $alat = DB::table('alat_olahraga')->where("id_alat", "=", $item->fk_id_alat)->get()->first();
+              $filesAlat = DB::table('files_alat')->where("fk_id_alat", "=", $item->fk_id_alat)->get()->first();
+              $ratingAlat = DB::table('rating_alat')->where("fk_id_alat", "=", $item->fk_id_alat)->where("fk_id_dtrans","=",$item->id_dtrans)->get()->first();
+              $collapseId = 'collapse_' . $alat->id_alat;
+            @endphp
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading{{ $alat->id_alat }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $collapseId }}" aria-expanded="false" aria-controls="{{ $collapseId }}">
+                  <img src="{{ asset('upload/' . $filesAlat->nama_file_alat) }}" alt="" class="img-fluid2"><h5 class="truncate-text ms-2">{{ $alat->nama_alat }}</h5>
+                </button>
+              </h2>
+              <div id="{{ $collapseId }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $alat->id_alat }}" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  @if ($ratingAlat == null)
+                    <div class="row mt-3">
+                      <div class="col-12">
+                          <h4>Beri Ulasan</h4>
+                          <form action="/customer/rating/alat/tambahRating" method="post" id="ratingForm">
+                              @csrf
+                              <div class="rating-container">
+                                  @for($i=1; $i<=5; $i++)
+                                      <i class="bi bi-star star" data-rate="{{ $i }}"></i>
+                                  @endfor
+                                  <input type="hidden" name="rating" id="ratingValue">
+                              </div>
+                              <div class="form-group mt-3">
+                                <label for="comment">Review (opsional):</label>
+                                <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
+                              </div>
+                              <input type="hidden" name="id_alat" value="{{$item->fk_id_alat}}">
+                              <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
+                              <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success mt-2">Kirim</button>
+                              </div>
+                          </form>
+                      </div>
+                    </div>
+                  @else
+                    <h4 class="mt-4">Ulasan Anda:</h4>
+                    @for ($i = 1; $i <= 5; $i++)
+                      @if ($i <= $ratingAlat->rating)
+                          <i class="bi bi-star-fill"></i>
+                      @else
+                          <i class="bi bi-star"></i>
+                      @endif
+                    @endfor
+                    @if ($ratingAlat->review != null)
+                      <h6 class="mt-2 mb-4">{{$ratingAlat->review}}</h6>
+                    @endif
+                  @endif
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingThree">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-              Accordion Item #3
-            </button>
-          </h2>
-          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-              <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-            </div>
-          </div>
-        </div>
+          @endforeach
+        @endif
       </div>
 </div>
 <script>

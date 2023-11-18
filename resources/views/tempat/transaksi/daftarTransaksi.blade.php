@@ -87,7 +87,7 @@
                                             $tanggalAwal = $item->tanggal_trans;
                                             $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                             $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
-                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
+                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm');
                                         @endphp
                                         <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                         <td><span style="color:rgb(239, 203, 0)">Menunggu</span></td>
@@ -134,7 +134,7 @@
                                             $tanggalAwal = $item->tanggal_trans;
                                             $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                             $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
-                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
+                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm');
                                         @endphp
                                         <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                         {{-- <td><span style="color:rgb(255, 145, 0)">Berlangsung</span></td> --}}
@@ -193,7 +193,7 @@
                                             $tanggalAwal = $item->tanggal_trans;
                                             $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                             $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
-                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
+                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm');
                                         @endphp
                                         <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                         <td><span style="color:rgb(0, 145, 0)">Diterima dan Menunggu Konfirmasi Kedatangan</span></td>
@@ -241,7 +241,7 @@
                                             $tanggalAwal = $item->tanggal_trans;
                                             $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                             $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
-                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
+                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm');
                                         @endphp
                                         <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                         <td><span style="color:red">Ditolak</span></td>
@@ -289,7 +289,7 @@
                                             $tanggalAwal = $item->tanggal_trans;
                                             $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                             $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
-                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
+                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm');
                                         @endphp
                                         <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                         <td><span style="color:blue">Selesai</span></td>
@@ -337,7 +337,7 @@
                                             $tanggalAwal = $item->tanggal_trans;
                                             $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                             $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
-                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
+                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm');
                                         @endphp
                                         <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                         <td><span style="color:red">Dibatalkan</span></td>
@@ -385,7 +385,7 @@
                                             $tanggalAwal = $item->tanggal_trans;
                                             $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
                                             $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
-                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY H:mm');
+                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm');
                                         @endphp
                                         <td>Dipesan oleh {{$item->nama_user}} ({{$item->telepon_user}}) pada {{$tanggalBaru}}</td>
                                         <td><span style="color:red">Dikomplain</span></td>

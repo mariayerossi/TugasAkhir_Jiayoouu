@@ -30,7 +30,7 @@
             $tanggalAwal2 = $items->first()->tanggal_sewa." ".$items->first()->jam_sewa;
             $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
             $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
-            $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY H:mm');
+            $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY HH:mm');
         @endphp
         <h4 class="mt-5"><b>Transaksi: {{ $kode }}</b></h4>
         <h6 class="mt-2 mb-3">Tanggal Sewa: {{ $tanggalBaru2 }}</h6>

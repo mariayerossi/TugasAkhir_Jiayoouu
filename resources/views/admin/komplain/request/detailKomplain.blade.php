@@ -81,7 +81,7 @@
         $tanggalAwal1 = $komplain->first()->waktu_komplain;
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
-        $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY H:mm');
+        $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY HH:mm');
     @endphp
     <div class="row mb-5 mt-5">
         <!-- Nama Pengirim -->
