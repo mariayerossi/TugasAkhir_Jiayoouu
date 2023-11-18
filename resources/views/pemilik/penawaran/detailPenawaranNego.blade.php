@@ -241,7 +241,7 @@ display: block;
                                             $tanggalAwal3 = $item->waktu_negosiasi;
                                             $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
                                             $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
-                                            $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm:s');
+                                            $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm:ss');
                                         @endphp
                                         <p>{{$tanggalBaru3}}</p>
                                         <p class="mt-2">{{$item->isi_negosiasi}}</p>

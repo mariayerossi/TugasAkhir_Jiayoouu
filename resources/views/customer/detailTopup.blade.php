@@ -46,9 +46,12 @@ data-client-key={{config("midtrans.client_key")}}></script>
                         @php
                             date_default_timezone_set("Asia/Jakarta");
                             $tanggal = date("d-m-Y H:i:s");
+                            $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggal);
+                            $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
+                            $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY HH:mm');
                         @endphp
                         <h6 class="mt-4">Nama: {{Session::get("dataRole")->nama_user}}</h6>
-                        <h6 class="mt-2">Tanggal Top Up: {{$tanggal}}</h6>
+                        <h6 class="mt-2">Tanggal Top Up: {{$tanggalBaru1}}</h6>
                     </div>
 
                     <div class="text-center text-lg-start mt-4 pt-2">
