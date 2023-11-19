@@ -134,6 +134,7 @@
     }
 </style>
 @if (!$lapangan->isEmpty())
+@include("layouts.message")
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <!-- Carousel Gambar Lapangan -->
     <div class="row mb-4">
@@ -464,39 +465,6 @@
                     @endif
                 </div>
             </div>
-            {{-- @php
-                $cekStatus = DB::table('htrans')
-                                ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
-                                ->where("fk_id_user","=",Session::get("dataRole")->id_user)
-                                ->where("status_trans","=","Selesai")
-                                ->get();
-                $cekRating = DB::table('rating_lapangan')
-                                ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
-                                ->where("fk_id_user","=",Session::get("dataRole")->id_user)
-                                ->get();
-            @endphp
-            @if (!$cekStatus->isEmpty())
-                <div class="row mt-5">
-                    <div class="col-12">
-                        <h4>Beri Ulasan</h4>
-                        <form action="/customer/rating/lapangan/tambahRating" method="post" id="ratingForm">
-                            @csrf
-                            <div class="rating-container">
-                                @for($i=1; $i<=5; $i++)
-                                    <i class="bi bi-star star" data-rate="{{ $i }}"></i>
-                                @endfor
-                                <input type="hidden" name="rating" id="ratingValue">
-                            </div>
-                            <div class="form-group mt-3">
-                                <label for="comment">Review (opsional):</label>
-                                <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
-                            </div>
-                            <input type="hidden" name="id_lapangan" value="{{$lapangan->first()->id_lapangan}}">
-                            <button type="submit" class="btn btn-primary mt-2">Kirim</button>
-                        </form>
-                    </div>
-                </div>
-            @endif --}}
             <!-- Reviews section -->
             <div class="row mt-5">
                 <div class="col-12">
