@@ -21,10 +21,10 @@
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Daftar Lapangan Olahraga</h3>
-    <div class="d-flex justify-content-end mb-4">
+    <div class="d-flex justify-content-end">
         <a href="/tempat/lapangan/masterLapangan" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tambah Lapangan</a>
     </div>
-    <div class="card mt-5 mb-5 p-3">
+    <div class="card mt-3 mb-5 p-3">
         <div class="table-responsive text-nowrap">
             <table class="table">
                 <thead>
