@@ -259,6 +259,21 @@
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();   
     });
+    function formatNumber(input) {
+        let value = input.value;
+        value = value.replace(/\D/g, '');
+        let numberValue = parseInt(value, 10);
+        
+        if (!isNaN(numberValue)) {
+            // Update input yang terlihat oleh pengguna dengan format yang sudah diformat
+            input.value = numberValue.toLocaleString('id-ID');
+            // Update input tersembunyi dengan angka murni
+            document.getElementById('sewaActual').value = numberValue;
+        } else {
+            input.value = '';
+            document.getElementById('sewaActual').value = '';
+        }
+    }
 </script>
 @else
     <h1>Alat Olahraga tidak tersedia</h1>

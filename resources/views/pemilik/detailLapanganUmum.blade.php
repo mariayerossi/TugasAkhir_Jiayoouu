@@ -228,8 +228,16 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $isi = "";
+                                if ($dataAlat->fk_id_pemilik == Session::get("dataRole")->id_pemilik) {
+                                    $isi = "lihatDetail";
+                                }
+                                else {
+                                    $isi = "detailAlatUmum";
+                                }
                             @endphp
-                            <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+                            <a href="/pemilik/{{$isi}}/{{$dataAlat->id_alat}}">
                                 <div class="card h-70 mb-3">
                                     <div class="card-body">
                                         <div class="row">
@@ -255,8 +263,16 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $isi = "";
+                                if ($dataAlat->fk_id_pemilik == Session::get("dataRole")->id_pemilik) {
+                                    $isi = "lihatDetail";
+                                }
+                                else {
+                                    $isi = "detailAlatUmum";
+                                }
                             @endphp
-                            <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+                            <a href="/pemilik/{{$isi}}/{{$dataAlat->id_alat}}">
                                 <div class="card h-70 mb-3">
                                     <div class="card-body">
                                         <div class="row">
@@ -282,8 +298,16 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+                                $isi = "";
+                                if ($dataAlat->fk_id_pemilik == Session::get("dataRole")->id_pemilik) {
+                                    $isi = "lihatDetail";
+                                }
+                                else {
+                                    $isi = "detailAlatUmum";
+                                }
                             @endphp
-                            <a href="/pemilik/lihatDetail/{{$dataAlat->id_alat}}">
+                            <a href="/pemilik/{{$isi}}/{{$dataAlat->id_alat}}">
                                 <div class="card h-70 mb-3">
                                     <div class="card-body">
                                         <div class="row">
@@ -313,7 +337,7 @@
                     <!-- Example of a review -->
                     @php
                         $rating = DB::table('rating_lapangan')
-                                ->select("user.nama_user", "rating_lapangan.review", "rating_lapangan.rating")
+                                ->select("user.nama_user", "rating_lapangan.review", "rating_lapangan.rating","rating_lapangan.created_at")
                                 ->join("user", "rating_lapangan.fk_id_user","=","user.id_user")
                                 ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
                                 ->get();
@@ -323,6 +347,13 @@
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <h5>{{$item->nama_user}}</h5>
+                                    @php
+                                        $tanggalAwal1 = $item->created_at;
+                                        $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
+                                        $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
+                                        $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY HH:mm');
+                                    @endphp
+                                    <h6>{{$tanggalBaru1}}</h6>
                                     <!-- Tampilkan bintang -->
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($i <= $item->rating)

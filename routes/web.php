@@ -329,6 +329,14 @@ Route::prefix("/pemilik")->group(function(){
         return view("pemilik.alat.detailAlat")->with($param);
         // echo $id;
     })->middleware([CekPemilik::class]);
+    Route::get("/detailAlatUmum/{id}", function ($id) {//melihat detail alat olahraga milik orang lain
+        $alat = new ModelsAlatOlahraga();
+        $param["alat"] = $alat->get_all_data_by_id($id);
+        $files = new filesAlatOlahraga();
+        $param["files"] = $files->get_all_data($id);
+        return view("pemilik.detailAlatUmum")->with($param);
+        // echo $id;
+    })->middleware([CekPemilik::class]);
     Route::get("/editAlat/{id}", function ($id) {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
