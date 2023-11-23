@@ -162,6 +162,7 @@
                                 ->select("user.nama_user", "rating_alat.review", "rating_alat.rating","rating_alat.created_at")
                                 ->join("user", "rating_alat.fk_id_user","=","user.id_user")
                                 ->where("fk_id_alat","=",$alat->first()->id_alat)
+                                ->orderBy("rating_alat.created_at","desc")
                                 ->get();
                     @endphp
                     @if (!$rating->isEmpty())

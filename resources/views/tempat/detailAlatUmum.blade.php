@@ -155,9 +155,10 @@
                     <h4>Ulasan Alat Olahraga</h4>
                     @php
                         $rating = DB::table('rating_alat')
-                                ->select("user.nama_user", "rating_alat.review", "rating_alat.rating")
+                                ->select("user.nama_user", "rating_alat.review", "rating_alat.rating", "rating_alat.created_at")
                                 ->join("user", "rating_alat.fk_id_user","=","user.id_user")
                                 ->where("fk_id_alat","=",$alat->first()->id_alat)
+                                ->orderBy("rating_alat.created_at","desc")
                                 ->get();
                     @endphp
                     @if (!$rating->isEmpty())
@@ -165,6 +166,13 @@
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <h5>{{$item->nama_user}}</h5>
+                                    @php
+                                        $tanggalAwal1 = $item->created_at;
+                                        $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
+                                        $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
+                                        $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY HH:mm');
+                                    @endphp
+                                    <h6>{{$tanggalBaru1}}</h6>
                                     <!-- Tampilkan bintang -->
                                     @for ($i = 1; $i <= 5; $i++)
                                         @if ($i <= $item->rating)

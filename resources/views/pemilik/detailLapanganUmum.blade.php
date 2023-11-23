@@ -340,6 +340,7 @@
                                 ->select("user.nama_user", "rating_lapangan.review", "rating_lapangan.rating","rating_lapangan.created_at")
                                 ->join("user", "rating_lapangan.fk_id_user","=","user.id_user")
                                 ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
+                                ->orderBy("rating_lapangan.created_at","desc")
                                 ->get();
                     @endphp
                     @if (!$rating->isEmpty())
