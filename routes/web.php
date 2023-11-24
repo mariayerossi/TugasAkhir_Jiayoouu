@@ -127,10 +127,14 @@ Route::prefix("/admin")->group(function(){
     Route::get("/masterKategori", function () {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+        $param["edit"] = "";
+        $param["id"] = "";
         return view("admin.masterKategori")->with($param);
     })->middleware([CekAdmin::class]);
     Route::post("/tambahKategori", [KategoriOlahraga::class, "tambahKategori"]);
     Route::get("/hapusKategori/{id}", [KategoriOlahraga::class, "hapusKategori"]);
+    Route::get("/editKategori/{id}", [KategoriOlahraga::class, "edit"]);
+    Route::post("/editKategori", [KategoriOlahraga::class, "editKategori"]);
     Route::get("/daftarCustomer", function () {
         $cust = new customer();
         $param["customer"] = $cust->get_all_data();

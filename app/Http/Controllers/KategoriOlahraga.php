@@ -33,4 +33,25 @@ class KategoriOlahraga extends Controller
 
         return redirect()->back()->with("success", "Berhasil Menghapus Kategori!");
     }
+
+    public function edit(Request $request) {
+        $data = DB::table('kategori')->where("id_kategori","=",$request->id)->get()->first()->nama_kategori;
+
+        $param["edit"] = $data;
+        $param["id"] = $request->id;
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        return view("admin.masterKategori")->with($param);
+    }
+
+    public function editKategori(Request $request) {
+        $data = [
+            "id" => $request->id,
+            "nama" => ucwords($request->kategori)
+        ];
+        $kat = new kategori();
+        $kat->updateKategori($data);
+
+        return redirect("/admin/masterKategori");
+    }
 }

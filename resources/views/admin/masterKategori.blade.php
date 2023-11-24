@@ -5,20 +5,38 @@
     <h2 class="text-center mb-5">Tambah Kategori Olahraga</h2>
     @include("layouts.message")
 
-    <form action="/admin/tambahKategori" method="post">
-        @csrf
-        <div class="row">
-            <div class="col-md-2 col-12">
-                <h6 class="mt-2">Nama Kategori</h6>
+    @if ($id == "")
+        <form action="/admin/tambahKategori" method="post">
+            @csrf
+            <div class="row">
+                <div class="col-md-2 col-12">
+                    <h6 class="mt-2">Nama Kategori</h6>
+                </div>
+                <div class="col-md-7 col-12 mt-2 mt-md-0">
+                    <input type="text" class="form-control" name="kategori" placeholder="Contoh : Basket" value="{{$edit}}">
+                </div>
+                <div class="col-md-3 col-12 mt-2 mt-md-0">
+                    <button type="submit" class="btn btn-primary">Tambah</button>
+                </div>
             </div>
-            <div class="col-md-7 col-12 mt-2 mt-md-0">
-                <input type="text" class="form-control" name="kategori" placeholder="Contoh : Basket" value="{{old('kategori')}}">
+        </form>
+    @else
+        <form action="/admin/editKategori" method="post">
+            @csrf
+            <div class="row">
+                <div class="col-md-2 col-12">
+                    <h6 class="mt-2">Nama Kategori</h6>
+                </div>
+                <div class="col-md-7 col-12 mt-2 mt-md-0">
+                    <input type="text" class="form-control" name="kategori" placeholder="Contoh : Basket" value="{{$edit}}">
+                </div>
+                <div class="col-md-3 col-12 mt-2 mt-md-0">
+                    <input type="hidden" name="id" value="{{$id}}">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
             </div>
-            <div class="col-md-3 col-12 mt-2 mt-md-0">
-                <button type="submit" class="btn btn-primary">Tambah</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    @endif
 
     <div class="card mb-5 mt-5">
         <div class="table-responsive text-nowrap">

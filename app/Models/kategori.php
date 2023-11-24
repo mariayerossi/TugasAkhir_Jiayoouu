@@ -34,4 +34,10 @@ class kategori extends Model
         $kat = kategori::find($data["id"]);
         $kat->delete();
     }
+
+    public function updateKategori($data){
+        $kat = kategori::find($data["id"]);
+        $kat->nama_kategori = $data["nama"];
+        $kat->save();
+    }
 }
