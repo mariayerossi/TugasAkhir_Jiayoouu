@@ -62,9 +62,12 @@
 <div class="container mt-5 mb-5">
     <h2 class="text-center mb-5">Daftar Komplain</h2>
     @include("layouts.message")
+    <div class="d-flex justify-content-start">
+        <a href="javascript:history.back()"><i class="bi bi-chevron-left me-2"></i>Kembali</a>
+    </div>
     @if (!$komplain->isEmpty())
         @foreach ($komplain as $item)
-            <div class="card mt-5" style="max-width: 100%;" data-id="{{$item->id_komplain_trans}}">
+            <div class="card mb-5" style="max-width: 100%;" data-id="{{$item->id_komplain_trans}}">
                 <div class="card-body">
                     <div class="row no-gutters">
                         <div class="col-md-3">

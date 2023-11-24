@@ -47,6 +47,10 @@
 </style>
 <div class="container mt-5">
     <h2 class="text-center mb-5">Daftar Favorit</h2>
+    @include("layouts.message")
+    <div class="d-flex justify-content-start">
+        <a href="javascript:history.back()"><i class="bi bi-chevron-left me-2"></i>Kembali</a>
+    </div>
     @if($data != null)
         @foreach($data as $item)
         <a href="/customer/detailLapangan/{{$item->id_lapangan}}">
@@ -119,7 +123,7 @@
         </a>
         @endforeach
     @else
-        <h5>Daftar Favorit Kosong</h5>
+        <h5 class="mt-4">Daftar Favorit Kosong</h5>
     @endif
 </div>
 <script>

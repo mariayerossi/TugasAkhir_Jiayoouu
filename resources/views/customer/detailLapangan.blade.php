@@ -136,6 +136,9 @@
 @if (!$lapangan->isEmpty())
 @include("layouts.message")
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
+    <div class="d-flex justify-content-start">
+        <a href="javascript:history.back()"><i class="bi bi-chevron-left me-2"></i>Kembali</a>
+    </div>
     <!-- Carousel Gambar Lapangan -->
     <div class="row mb-4">
         <div class="col-12">

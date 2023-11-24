@@ -205,7 +205,7 @@
         </div>
         <input type="hidden" name="pemilik" value="{{$alat->first()->fk_id_pemilik}}">
         <div class="d-flex justify-content-end">
-            <a href="javascript:history.back()" class="btn btn-outline-primary me-3">Batal</a>
+            <a href="javascript:history.back()" class="btn btn-outline-danger me-3">Batal</a>
             <button type="submit" class="btn btn-success">Simpan</button>
         </div>
     </form>

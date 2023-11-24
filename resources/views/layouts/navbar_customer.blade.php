@@ -248,7 +248,7 @@ Sportiva
                 </div>
             </div>
         </nav>
-        <button class="float-back-button mt-3" onclick="goBack()"><i class="bi bi-arrow-90deg-left"></i></button>
+        {{-- <button class="float-back-button mt-3" onclick="goBack()"><i class="bi bi-arrow-90deg-left"></i></button> --}}
         <div class="sidebar">
             <!-- Logo dan profil Anda -->
             <div class="logo-container">

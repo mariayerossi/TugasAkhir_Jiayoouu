@@ -872,7 +872,7 @@ Route::prefix("/customer")->group(function(){
     Route::get("/daftarKomplain", [KomplainTrans::class, "daftarKomplain"])->middleware([CekCustomer::class]);
 
     Route::prefix("/saldo")->group(function(){
-        Route::post("/topup", [Saldo::class, "topup"]);
+        Route::get("/topup", [Saldo::class, "topup"]);
         Route::get("/topupSaldo", function () {
             $kat = new kategori();
             $param["kategori"] = $kat->get_all_data();

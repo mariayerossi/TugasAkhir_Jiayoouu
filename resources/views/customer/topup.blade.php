@@ -28,7 +28,7 @@
                 <img src="{{ asset('assets/img/topup.png') }}" class="img-fluid" alt="Sample image">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <form action="/customer/saldo/topup" method="post">
+                <form action="/customer/saldo/topup" method="get">
                     @csrf
 
                     <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">

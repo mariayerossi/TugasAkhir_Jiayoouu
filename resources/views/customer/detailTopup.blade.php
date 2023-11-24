@@ -56,6 +56,7 @@ data-client-key={{config("midtrans.client_key")}}></script>
 
                     <div class="text-center text-lg-start mt-4 pt-2">
                         <input type="hidden" name="jumlah" value="{{$isi["transaction_details"]["gross_amount"]}}">
+                        <a href="javascript:history.back()" class="btn btn-outline-danger me-3">Batal</a>
                         <button type="submit" class="btn btn-success" id="pay-button">Top Up Sekarang</button>
                     </div>
                 </form>

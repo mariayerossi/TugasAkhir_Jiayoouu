@@ -41,7 +41,7 @@ class Saldo extends Controller
 
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
-        $param["isi"] =$params;
+        $param["isi"] = $params;
         return view('customer.detailTopup', compact('snapToken'))->with($param);
     }
 
