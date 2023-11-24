@@ -36,7 +36,10 @@
 </style>
 @include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
-    <h3 class="text-center mb-5">Permohonan Penawaran Alat</h3>
+    <div class="d-flex justify-content-start">
+        <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
+    </div>
+    <h3 class="text-center">Pengajuan Penawaran Alat</h3>
     @php
         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->first()->req_id_alat)->get()->first();
         $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();

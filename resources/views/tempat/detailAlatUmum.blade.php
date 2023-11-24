@@ -65,7 +65,10 @@
 
 
 @if (!$alat->isEmpty())
-<div class="container mt-5 mb-5">
+<div class="container mt-5 p-4 mb-5">
+    <div class="d-flex justify-content-start mb-2">
+        <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
+    </div>
     <div class="row">
         <!-- Left Section: Image, Product Name, and Rating -->
         <div class="col-lg-4 left-section">

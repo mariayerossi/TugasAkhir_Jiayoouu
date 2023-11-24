@@ -12,9 +12,11 @@
     <div style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-3 mb-5">
         <i class="bi bi-exclamation-circle"></i> Syarat alat olahraga yang boleh disewakan adalah sebagai berikut: <br>
         <ul>
-            <li> Alat olahraga yang diajukan untuk disewakan harus merupakan alat yang sudah tidak lagi digunakan oleh pemiliknya.</li>
             <li> Kondisi alat olahraga yang disewakan harus dalam keadaan BEKAS, namun tetap layak dan aman untuk digunakan. </li>
             <li> Alat olahraga harus bebas dari kerusakan yang dapat mengancam keselamatan pengguna.</li>
+            <li> Uang ganti rugi hanya akan dibayar oleh pengguna yang dengan SENGAJA merusak alat olahraga.</li>
+            <li> Jika alat olahraga mengalami kerusakan secara TIDAK SENGAJA, maka tidak ada pihak yang akan dikenakan biaya ganti rugi atas kerusakan.</li>
+            <li><b> Apabila anda mengunggah alat olahraga, maka dianggap telah menyetujui ketentuan-ketentuan yang telah disebutkan di atas.</b></li>
         </ul>
     </div>
     <form action="/tempat/alat/tambahAlat" method="post" enctype="multipart/form-data" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-5 mb-5">
