@@ -53,6 +53,9 @@
 </style>
 @include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
+    <div class="d-flex justify-content-start">
+        <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
+    </div>
     <h3 class="text-center mb-5">Detail Komplain Transaksi</h3>
     <div class="d-flex justify-content-end mt-3 me-3">
         @if ($komplain->first()->status_komplain == "Menunggu")

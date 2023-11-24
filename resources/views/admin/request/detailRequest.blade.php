@@ -35,6 +35,9 @@
 }
 </style>
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
+    <div class="d-flex justify-content-start">
+        <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
+    </div>
     <h3 class="text-center mb-5">Detail {{$jenis}} Alat</h3>
     @php
         $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$request->first()->req_id_alat)->get()->first();
