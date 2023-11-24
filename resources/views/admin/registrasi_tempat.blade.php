@@ -17,7 +17,7 @@
     <div class="mt-5">
         <div class="card mt-3 mb-5 p-3">
             <div class="table-responsive text-nowrap">
-                <table class="table table-striped">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>Nama Tempat Olahraga</th>
