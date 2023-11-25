@@ -8,7 +8,7 @@
         height: 70%;
     }
     #productCarousel {
-        max-width: 300px; /* Adjust the maximum width as needed */
+        max-width: 350px; /* Adjust the maximum width as needed */
     }
 
     #productCarousel .carousel-inner {
@@ -33,10 +33,20 @@
     .bi-star-fill {
         color: gold;
     }
+    .carousel-control-prev, .carousel-control-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background-color: rgba(0,0,0,0.5); /* Warna latar belakang tombol dengan sedikit transparansi */
+        border-radius: 50%; /* Membuat tombol berbentuk bulat */
+        border: none; /* Menghilangkan border */
+        z-index: 10; /* Menjamin tombol muncul di atas gambar */
+    }
     .right-section {
         height: 100vh; /* Adjust the height as needed */
         overflow-y: auto;
-        padding: 20px;
     }
 
     .left-section::-webkit-scrollbar,
@@ -49,7 +59,7 @@
     @media (max-width: 767px) {
         .left-section,
         .right-section {
-            padding: 30px !important;
+            /* padding: 30px !important; */
             margin: 0 !important;
             border: none;
             overflow-y: hidden !important; /* Disable vertical scrolling */
@@ -59,8 +69,8 @@
 </style>
 
 @if (!$alat->isEmpty())
-<div class="container mt-5 p-4 mb-5">
-    <div class="d-flex justify-content-start mb-2">
+<div class="container mt-5 p-5 mb-5">
+    <div class="d-flex justify-content-start mb-2 d-none d-md-block">
         <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
     </div>
     <div class="row">
@@ -97,6 +107,23 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </div>
+            <p class="text-muted mt-4 d-none d-md-block">
+                @php
+                    $kat = DB::table('kategori')->where("id_kategori","=",$alat->first()->fk_id_kategori)->get()->first()->nama_kategori;
+                @endphp
+                Kategori : {{$kat}} <br>
+                Berat : {{$alat->first()->berat_alat}} gram <br>
+                @php
+                    $array = explode("x", $alat->first()->ukuran_alat);
+                @endphp
+                Ukuran : {{$array[0]." cm x ".$array[1]." cm x ".$array[2]." cm"}} <br>
+                Biaya Ganti Rugi : Rp {{number_format($alat->first()->ganti_rugi_alat, 0, ',', '.')}} <br>
+                Status : {{$alat->first()->status_alat}}
+            </p>
+        </div>
+
+        <!-- Right Section: Product Details and Form -->
+        <div class="col-lg-6 right-section">
             <h2><b>{{ ucwords($alat->first()->nama_alat)}}</b></h2>
             @php
                 $averageRating = DB::table('rating_alat')
@@ -131,7 +158,7 @@
                 }
             @endphp
             <h3>Rp {{ number_format($harga_sewa, 0, ',', '.') }} /jam</h3>
-            <p class="text-muted mt-2">
+            <p class="text-muted mt-5 d-lg-none">
                 @php
                     $kat = DB::table('kategori')->where("id_kategori","=",$alat->first()->fk_id_kategori)->get()->first()->nama_kategori;
                 @endphp
@@ -144,12 +171,8 @@
                 Biaya Ganti Rugi : Rp {{number_format($alat->first()->ganti_rugi_alat, 0, ',', '.')}} <br>
                 Status : {{$alat->first()->status_alat}}
             </p>
-        </div>
-
-        <!-- Right Section: Product Details and Form -->
-        <div class="col-lg-6 right-section">
             <!-- Additional details section -->
-            <div class="row">
+            <div class="row mt-5">
                 <div class="col-12">
                     <h4>Deskripsi Alat Olahraga</h4>
                     <p>{!! nl2br(e($alat->first()->deskripsi_alat)) !!}</p>
