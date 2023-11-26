@@ -67,14 +67,32 @@
         @endif
     </div>
     @php
+        $dataHtrans = DB::table('htrans')
+                    ->select("files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan", "htrans.kode_trans", "pihak_tempat.id_tempat","pihak_tempat.nama_tempat","pihak_tempat.email_tempat","pihak_tempat.telepon_tempat","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa")
+                    ->where("id_htrans","=",$komplain->first()->fk_id_htrans)
+                    ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                    ->join("pihak_tempat","lapangan_olahraga.pemilik_lapangan","=","pihak_tempat.id_tempat")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_lapangan", "nama_file_lapangan")
+                            ->from('files_lapangan')
+                            ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                    }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                    ->get()
+                    ->first();
+
         $namaUser = DB::table('user')->where("id_user","=",$komplain->first()->fk_id_user)->get()->first()->nama_user;
 
         $tanggalAwal1 = $komplain->first()->waktu_komplain;
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
         $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY HH:mm');
+
+        $tanggalAwal2 = $dataHtrans->tanggal_sewa;
+        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+        $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+        $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
     @endphp
-    <div class="row mb-5 mt-5">
+    <div class="row mb-3 mt-5">
         <!-- Nama Pengirim -->
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Diajukan oleh: {{$namaUser}}</h6>
@@ -83,6 +101,18 @@
         <!-- Tanggal Permintaan -->
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Tanggal Komplain: {{$tanggalBaru1}}</h6>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <!-- Nama Pengirim -->
+        <div class="col-md-6 col-sm-12 mb-3">
+            <h6>Tanggal Sewa: {{$tanggalBaru2}}</h6>
+        </div>
+        
+        <!-- Tanggal Permintaan -->
+        <div class="col-md-6 col-sm-12 mb-3">
+            <h6>Jam Sewa: {{ \Carbon\Carbon::parse($dataHtrans->jam_sewa)->format('H:i') }} WIB - {{ \Carbon\Carbon::parse($dataHtrans->jam_sewa)->addHours($dataHtrans->durasi_sewa)->format('H:i') }} WIB</h6>
         </div>
     </div>
 
@@ -121,20 +151,6 @@
           </div>
         </div>
     </div>
-    @php
-        $dataHtrans = DB::table('htrans')
-                    ->select("files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan", "htrans.kode_trans", "pihak_tempat.id_tempat","pihak_tempat.nama_tempat","pihak_tempat.email_tempat","pihak_tempat.telepon_tempat")
-                    ->where("id_htrans","=",$komplain->first()->fk_id_htrans)
-                    ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
-                    ->join("pihak_tempat","lapangan_olahraga.pemilik_lapangan","=","pihak_tempat.id_tempat")
-                    ->joinSub(function($query) {
-                        $query->select("fk_id_lapangan", "nama_file_lapangan")
-                            ->from('files_lapangan')
-                            ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
-                    }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
-                    ->get()
-                    ->first();
-    @endphp
     {{-- detail request --}}
     <h5>Detail Transaksi</h5>
     <a href="/admin/transaksi/detailTransaksi/{{$komplain->first()->fk_id_htrans}}">
