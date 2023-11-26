@@ -27,10 +27,10 @@ class negosiasi extends Model
     }
 
     public function get_all_data_by_id_permintaan($id){
-        return negosiasi::where('deleted_at',"=",null)->where("fk_id_permintaan", "=", $id)->orderBy('created_at', 'desc')->get();
+        return negosiasi::where('deleted_at',"=",null)->where("fk_id_permintaan", "=", $id)->orderBy('created_at', 'asc')->get();
     }
 
     public function get_all_data_by_id_penawaran($id){
-        return negosiasi::where('deleted_at',"=",null)->where("fk_id_penawaran", "=", $id)->orderBy('created_at', 'desc')->get();
+        return negosiasi::where('deleted_at',"=",null)->where("fk_id_penawaran", "=", $id)->orderBy('created_at', 'asc')->get();
     }
 }

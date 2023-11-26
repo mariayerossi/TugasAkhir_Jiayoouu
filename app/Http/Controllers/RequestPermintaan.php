@@ -297,10 +297,10 @@ class RequestPermintaan extends Controller
             $e = new notifikasiEmail();
             $e->sendEmail($email_tempat, $dataNotif);
     
-            return redirect()->back()->with("success", "Berhasil menolak permintaan!");
+            return response()->json(['success' => true, 'message' => 'Berhasil menolak permintaan!']);
         }
         else {
-            return redirect()->back()->with("error", "Gagal menolak permintaan! status alat sudah $status");
+            return response()->json(['success' => true, 'message' => 'Gagal menolak permintaan! status alat sudah $status']);
         }
     }
 
