@@ -300,7 +300,7 @@ class RequestPermintaan extends Controller
             return response()->json(['success' => true, 'message' => 'Berhasil menolak permintaan!']);
         }
         else {
-            return response()->json(['success' => true, 'message' => 'Gagal menolak permintaan! status alat sudah $status']);
+            return response()->json(['success' => false, 'message' => 'Gagal menolak permintaan! status alat sudah $status']);
         }
     }
 

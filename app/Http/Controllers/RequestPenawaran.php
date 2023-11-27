@@ -283,10 +283,10 @@ class RequestPenawaran extends Controller
             $e = new notifikasiEmail();
             $e->sendEmail($pemilik->email_pemilik,$dataNotif);
     
-            return redirect()->back()->with("success", "Berhasil menolak penawaran!");
+            return response()->json(['success' => true, 'message' => 'Berhasil menolak penawaran!']);
         }
         else {
-            return redirect()->back()->with("error", "Gagal menolak penawaran! status alat sudah $penawaran->status_penawaran");
+            return response()->json(['success' => false, 'message' => "Gagal menolak penawaran! status alat sudah $penawaran->status_penawaran"]);
         }
     }
     

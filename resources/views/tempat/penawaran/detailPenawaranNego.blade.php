@@ -209,10 +209,10 @@
                     <a href="" class="btn btn-secondary w-100">Negosiasi</a>
                 </div>
                 <div class="col-12 col-md-3">
-                    <form action="/tempat/penawaran/tolakPenawaran" method="post">
+                    <form id="tolakForm" action="/tempat/penawaran/tolakPenawaran" method="post">
                         @csrf
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
-                        <button type="submit" class="btn btn-danger w-100">Tolak</button>
+                        <button type="submit" id="tolak" class="btn btn-danger w-100">Tolak</button>
                     </form>
                 </div>
             </div>
@@ -508,6 +508,52 @@
         $(".btn-warning").click(function(e) {
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
             $(".form_komplain").show();   // Menampilkan div nego
+        });
+        
+        $("#tolak").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            swal({
+                title: "Apakah Anda yakin?",
+                text: "Anda akan menolak penawaran ini.",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Ya, Tolak!",
+                cancelButtonText: "Tidak!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    // Jika user mengklik "Ya", submit form
+                    var formData = $("#tolakForm").serialize(); // Mengambil data dari form
+    
+                    $.ajax({
+                        url: "/tempat/penawaran/tolakPenawaran",
+                        type: "POST",
+                        data: formData,
+                        success: function(response) {
+                            if (response.success) {
+                                swal("Success!", response.message, "success");
+                            }
+                            else {
+                                swal("Error!", response.message, "error");
+                            }
+                            window.location.reload();
+                            // alert('Berhasil Diterima!');
+                            // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                            // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                        }
+                    });
+                } else {
+                    swal.close(); // Tutup SweetAlert jika user memilih "Tidak"
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
         });
     });
     function updateCount() {

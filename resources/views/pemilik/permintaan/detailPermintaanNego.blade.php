@@ -47,7 +47,7 @@
 }
 
 .chat-header {
-    background-color: #007bff;
+    background-color: #007466;
     color: #fff;
     padding: 10px;
     display: flex;
@@ -65,12 +65,12 @@
     padding: 10px;
 }
 .btn-secondary {
-    position: fixed;
+    /* position: fixed;
     bottom: 10px;
     right: 10px;
     z-index: 1100;
     cursor: pointer;
-    display: none;
+    display: none; */
 }
 </style>
 @include("layouts.message")
@@ -458,7 +458,7 @@
             @csrf
             <input type="hidden" name="permintaan" value="{{$permintaan->first()->id_permintaan}}">
             <textarea class="form-control mb-3" rows="2" name="isi" placeholder="Tulis pesan Anda di sini..."></textarea>
-            <button id="send-nego-btn" class="btn btn-primary w-100">Kirim</button>
+            <button id="send-nego-btn" class="btn btn-success w-100">Kirim</button>
         </form>
     </div>
 </div>
