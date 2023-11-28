@@ -466,11 +466,11 @@
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
         
-        // @if($nego->isEmpty())
-        //     $("#chat-popup").hide();
-        // @elseif (!$nego->isEmpty())
-        //     $("#chat-popup").show();
-        // @endif
+        @if($nego->isEmpty())
+            $("#chat-popup").hide();
+        @elseif (!$nego->isEmpty())
+            $("#chat-popup").show();
+        @endif
 
         @if($komplain->isEmpty())
         // Menyembunyikan div nego saat halaman pertama kali dimuat
