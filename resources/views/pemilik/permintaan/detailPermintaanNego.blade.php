@@ -445,7 +445,7 @@
                                 $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
                                 $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm:ss');
                             @endphp
-                            <p>{{$tanggalBaru3}}</p>
+                            <p style="font-size: 14px">{{$tanggalBaru3}}</p>
                             <p class="mt-2">{{$item->isi_negosiasi}}</p>
                         </div>
                     </div>
@@ -470,6 +470,7 @@
             $("#chat-popup").hide();
         @elseif (!$nego->isEmpty())
             $("#chat-popup").show();
+            $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
         @endif
 
         @if($komplain->isEmpty())
@@ -489,18 +490,18 @@
             $("#chat-popup").hide();
         });
 
-        // ... Your existing JavaScript code ...
-
-        // Submit the negotiation form
-        $("#send-nego-btn").click(function() {
-            // Your existing AJAX code for sending negotiation messages
-        });
-
         $(".btn-warning").click(function(e) {
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
             $(".form_komplain").show();   // Menampilkan div nego
         });
         $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+
+        if ($(window).width() <= 768) {
+            $("#chat-popup").hide();
+        } else {
+            $("#chat-popup").show();
+            $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+        }
 
         $("#tolak").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
@@ -584,18 +585,18 @@
                         echo $carbonDate3->isoFormat("D MMMM YYYY HH:mm:ss");
                     ?>';
 
-                    // window.location.reload();
                     let newMessage = `
                         <div class="card mb-4">
                             <div class="card-body">
                                 <h5><strong>${response.user}</strong></h5>
-                                <p>${formattedTime}</p>
+                                <p style="font-size: 14px">${formattedTime}</p>
                                 <p class="mt-2">${response.data.isi}</p>
                             </div>
                         </div>
                     `;
 
                     $(".history").append(newMessage);
+                    $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
                 } else {
                     alert("Terjadi kesalahan saat mengirim pesan.");
                 }

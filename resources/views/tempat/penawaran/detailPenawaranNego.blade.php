@@ -33,6 +33,37 @@
         height: 60px;
     }
 }
+#chat-popup {
+    display: none;
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+    width: 300px;
+    background-color: #f5f5f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+.chat-header {
+    background-color: #007466;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-body {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.chat-footer {
+    padding: 10px;
+}
 </style>
 @include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
@@ -217,7 +248,7 @@
                 </div>
             </div>
         </div>
-        <hr>
+        {{-- <hr>
         <div class="nego" id="negoDiv">
             <!-- Detail Negosiasi -->
             <h3>Negosiasi</h3>
@@ -262,7 +293,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     @endif
 
     @if ($penawaran->first()->status_penawaran == "Selesai" && $penawaran->first()->status_alat == null)
@@ -403,6 +434,52 @@
         </div>
     @endif
 </div>
+<div id="chat-popup" class="chat-popup">
+    <div class="chat-header">
+        <h3>Negosiasi</h3>
+        <button id="close-chat-btn" class="close-chat-btn">&times;</button>
+    </div>
+    <div class="chat-body">
+        <!-- Chat messages go here -->
+        <div class="history">
+            @if (!$nego->isEmpty())
+                @foreach ($nego as $item)
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            @if ($item->fk_id_pemilik != null)
+                                @php
+                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
+                                @endphp
+                                <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
+                            @elseif ($item->fk_id_tempat != null)
+                                @php
+                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
+                                @endphp
+                                <h5><strong>{{$dataTempat->nama_tempat}}</strong></h5>
+                            @endif
+                            @php
+                                $tanggalAwal3 = $item->waktu_negosiasi;
+                                $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
+                                $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
+                                $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm:ss');
+                            @endphp
+                            <p style="font-size: 14px">{{$tanggalBaru3}}</p>
+                            <p class="mt-2">{{$item->isi_negosiasi}}</p>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+    </div>
+    <div class="chat-footer">
+        <form action="/tempat/penawaran/negosiasi/tambahNego" method="post">
+            @csrf
+            <input type="hidden" name="penawaran" value="{{$penawaran->first()->id_penawaran}}">
+            <textarea class="form-control mb-3" rows="2" name="isi" placeholder="Tulis pesan Anda di sini..."></textarea>
+            <button id="send-nego-btn" class="btn btn-success w-100">Kirim</button>
+        </form>
+    </div>
+</div>
 <script>
     function formatNumber(input) {
         let value = input.value;
@@ -490,8 +567,10 @@
         $('[data-toggle="tooltip"]').tooltip();
         
         @if($nego->isEmpty())
-        // Menyembunyikan div nego saat halaman pertama kali dimuat
-            $(".nego").hide();
+            $("#chat-popup").hide();
+        @elseif (!$nego->isEmpty())
+            $("#chat-popup").show();
+            $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
         @endif
 
         @if($komplain->isEmpty())
@@ -501,14 +580,27 @@
 
         // Mengatur event ketika tombol Negosiasi diklik
         $(".btn-secondary").click(function(e) {
-            e.preventDefault();  // Menghentikan perilaku default (navigasi)
-            $(".nego").show();   // Menampilkan div nego
+            e.preventDefault();
+            $("#chat-popup").show();
+            $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+        });
+
+        // Close the chat pop-up
+        $("#close-chat-btn").click(function() {
+            $("#chat-popup").hide();
         });
 
         $(".btn-warning").click(function(e) {
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
             $(".form_komplain").show();   // Menampilkan div nego
         });
+
+        if ($(window).width() <= 768) {
+            $("#chat-popup").hide();
+        } else {
+            $("#chat-popup").show();
+            $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+        }
         
         $("#tolak").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
@@ -584,17 +676,26 @@
                 if(response.success) {
 
                     // Menambahkan pesan ke dalam div history
+                    let formattedTime = '<?php
+                        date_default_timezone_set("Asia/Jakarta");
+                        $tanggalAwal3 = date("Y-m-d H:i:s");
+                        $tanggalObjek3 = DateTime::createFromFormat("Y-m-d H:i:s", $tanggalAwal3);
+                        $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale("id");
+                        echo $carbonDate3->isoFormat("D MMMM YYYY HH:mm:ss");
+                    ?>';
+
                     let newMessage = `
                         <div class="card mb-4">
                             <div class="card-body">
                                 <h5><strong>${response.user}</strong></h5>
-                                <p>${response.waktu}</p>
+                                <p style="font-size: 14px">${formattedTime}</p>
                                 <p class="mt-2">${response.data.isi}</p>
                             </div>
                         </div>
                     `;
 
-                    $(".history").prepend(newMessage);
+                    $(".history").append(newMessage);
+                    $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
                 } else {
                     alert("Terjadi kesalahan saat mengirim pesan.");
                 }
