@@ -96,7 +96,7 @@
     <div class="d-flex justify-content-start mt-3">
         <h6><b>Kode Transaksi: {{$dataHtrans->kode_trans}}</b></h6>
     </div>
-    <div class="d-flex justify-content-start">
+    <div class="d-flex justify-content-start mt-1">
         @if ($dataHtrans->status_trans == "Menunggu")
             <h6><b>Status Transaksi: </b><b style="color:rgb(239, 203, 0)">{{$dataHtrans->status_trans}}</b></h6>
         @elseif($dataHtrans->status_trans == "Diterima")

@@ -64,7 +64,7 @@
             <h6><b>Jenis Request: Penawaran</b></h6>
         @endif
     </div>
-    <div class="d-flex justify-content-end mt-3 me-3">
+    <div class="d-flex justify-content-end mt-1 me-3">
         @if ($komplain->first()->status_komplain == "Menunggu")
             <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$komplain->first()->status_komplain}}</b></h6>
         @elseif($komplain->first()->status_komplain == "Diterima")
@@ -86,7 +86,7 @@
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
         $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY HH:mm');
     @endphp
-    <div class="row mb-5 mt-5">
+    <div class="row mt-5">
         <!-- Nama Pengirim -->
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Diajukan oleh: {{$namaUser}}</h6>
@@ -98,13 +98,14 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-start mt-3">
+    <div class="d-flex justify-content-start mt-4">
         <h6><b>Jenis Komplain: {{$komplain->first()->jenis_komplain}}</b></h6>
     </div>
 
-    <div class="row mb-5 mt-4">
+    <div class="row mb-4 mt-4">
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Keterangan: <br>{{$komplain->first()->keterangan_komplain}}</h6>
+            <h5>Keterangan:</h5>
+            <h6>{{$komplain->first()->keterangan_komplain}}</h6>
         </div>
         
         <div class="col-md-6 col-sm-12 mb-3">
