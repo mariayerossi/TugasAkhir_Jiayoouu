@@ -514,11 +514,17 @@ display: block;
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
         
-        @if($nego->isEmpty())
-            $("#chat-popup").hide();
-        @elseif (!$nego->isEmpty())
-            $("#chat-popup").show();
-            $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+        @if($penawaran->first()->status_penawaran == "Menunggu")
+            @if($nego->isEmpty())
+                $("#chat-popup").hide();
+            @elseif (!$nego->isEmpty())
+                if ($(window).width() <= 768) {
+                    $("#chat-popup").hide();
+                } else {
+                    $("#chat-popup").show();
+                    $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+                }
+            @endif
         @endif
 
         @if($komplain->isEmpty())
@@ -542,13 +548,6 @@ display: block;
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
             $(".form_komplain").show();   // Menampilkan div nego
         });
-        
-        if ($(window).width() <= 768) {
-            $("#chat-popup").hide();
-        } else {
-            $("#chat-popup").show();
-            $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
-        }
     });
     function updateCount() {
         let textarea = document.getElementById('myTextarea');

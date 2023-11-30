@@ -466,11 +466,17 @@
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
         
-        @if($nego->isEmpty())
-            $("#chat-popup").hide();
-        @elseif (!$nego->isEmpty())
-            $("#chat-popup").show();
-            $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+        @if($permintaan->first()->status_permintaan == "Menunggu")
+            @if($nego->isEmpty())
+                $("#chat-popup").hide();
+            @elseif (!$nego->isEmpty())
+                if ($(window).width() <= 768) {
+                    $("#chat-popup").hide();
+                } else {
+                    $("#chat-popup").show();
+                    $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
+                }
+            @endif
         @endif
 
         @if($komplain->isEmpty())
@@ -495,13 +501,6 @@
             $(".form_komplain").show();   // Menampilkan div nego
         });
         $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
-
-        if ($(window).width() <= 768) {
-            $("#chat-popup").hide();
-        } else {
-            $("#chat-popup").show();
-            $(".chat-body").scrollTop($(".chat-body")[0].scrollHeight);
-        }
 
         $("#tolak").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
