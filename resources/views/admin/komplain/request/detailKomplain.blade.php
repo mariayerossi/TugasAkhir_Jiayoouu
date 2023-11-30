@@ -56,8 +56,38 @@
     <div class="d-flex justify-content-start d-none d-md-block">
         <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
     </div>
-    <h3 class="text-center mb-5">Detail Komplain Request</h3>
-    <div class="d-flex justify-content-end mt-3 me-3">
+    <h3 class="text-center mb-4">Detail Komplain Request</h3>
+    @php
+        if ($komplain->first()->fk_id_permintaan != null) {
+            $dataRequest = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first();
+            $id_request = $dataRequest->id_permintaan;
+            $tanggal_req = $dataRequest->tanggal_minta;
+            $status = $dataRequest->status_permintaan;
+
+            $id_tempat = $dataRequest->fk_id_tempat;
+            $id_pemilik = $dataRequest->fk_id_pemilik;
+            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
+        }
+        else if ($komplain->first()->fk_id_penawaran != null) {
+            $dataRequest = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first();
+            $id_request = $dataRequest->id_penawaran;
+            $tanggal_req = $dataRequest->tanggal_tawar;
+            $status = $dataRequest->status_penawaran;
+
+            $id_tempat = $dataRequest->fk_id_tempat;
+            $id_pemilik = $dataRequest->fk_id_pemilik;
+            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
+            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
+        }
+        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataRequest->req_id_alat)->get()->first();
+        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataRequest->req_lapangan)->get()->first();
+        $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataRequest->req_lapangan)->get()->first();
+    @endphp
+
+    <div class="d-flex justify-content-end me-3">
         @if ($komplain->first()->fk_id_permintaan != null)
             <h6><b>Jenis Request: Permintaan</b></h6>
         @else
@@ -85,7 +115,27 @@
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
         $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY HH:mm');
+
+        $tanggalAwal2 = $tanggal_req;
+        $tanggalObjek2 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal2);
+        $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+        $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY HH:mm');
     @endphp
+
+    @if ($status == "Menunggu")
+    <h6><b>Status Transaksi: </b><b style="color:rgb(239, 203, 0)">{{$status}}</b></h6>
+    @elseif($status == "Diterima")
+        <h6><b>Status Transaksi: </b><b style="color:rgb(0, 145, 0)">{{$status}}</b></h6>
+    @elseif($status == "Ditolak")
+        <h6><b>Status Transaksi: </b><b style="color:red">{{$status}}</b></h6>
+    @elseif($status == "Disewakan")
+        <h6><b>Status Transaksi: </b><b style="color:rgb(0, 145, 0)">{{$status}}</b></h6>
+    @elseif($status == "Selesai")
+        <h6><b>Status Transaksi: </b><b style="color:blue">{{$status}}</b></h6>
+    @elseif($status == "Dikomplain")
+        <h6><b>Status Transaksi: </b><b style="color:red">{{$status}}</b></h6>
+    @endif
+
     <div class="row mt-5">
         <!-- Nama Pengirim -->
         <div class="col-md-6 col-sm-12 mb-3">
@@ -98,7 +148,69 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-start mt-4">
+    <div class="row mt-3">
+        <!-- Nama Pengirim -->
+        <div class="col-md-6 col-sm-12 mb-3">
+            <h6>Tanggal Pengajuan Request: {{$tanggalBaru2}}</h6>
+        </div>
+        
+        <!-- Tanggal Permintaan -->
+        <div class="col-md-6 col-sm-12 mb-3">
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Detail Alat -->
+        <div class="col-md-6 col-sm-12">
+            <h5>Alat Olahraga yang Diminta <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang direquest"></i></h5>
+            @if ($dataAlat->deleted_at == null)<a href="/admin/alat/detailAlatUmum/{{$dataAlat->id_alat}}">@endif
+                <div class="card h-70">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Gambar Alat -->
+                            <div class="col-4">
+                                <div class="square-image-container">
+                                    <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                </div>
+                            </div>
+                            
+                            <!-- Nama Alat -->
+                            <div class="col-8 d-flex align-items-center">
+                                <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+
+        <!-- Detail Lapangan -->
+        <div class="col-md-6 col-sm-12">
+            <h5>Lokasi Penggunaan Alat</h5>
+            @if ($dataLapangan->deleted_at == null)<a href="/admin/lapangan/detailLapanganUmum/{{$dataLapangan->id_lapangan}}">@endif
+                <div class="card h-70">
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Gambar Lapangan -->
+                            <div class="col-4">
+                                <div class="square-image-container">
+                                    <img src="{{ asset('upload/' . $dataFileLapangan->nama_file_lapangan) }}" alt="" class="img-fluid">
+                                </div>
+                            </div>
+                            
+                            <!-- Nama Lapangan -->
+                            <div class="col-8 d-flex align-items-center">
+                                <h5 class="card-title truncate-text">{{$dataLapangan->nama_lapangan}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-start mt-5">
         <h6><b>Jenis Komplain: {{$komplain->first()->jenis_komplain}}</b></h6>
     </div>
 
@@ -134,30 +246,6 @@
           </div>
         </div>
     </div>
-    @php
-        if ($komplain->first()->fk_id_permintaan != null) {
-            $dataRequest = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first();
-            $id_request = $dataRequest->id_permintaan;
-
-            $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_tempat;
-            $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_pemilik;
-            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-        }
-        else if ($komplain->first()->fk_id_penawaran != null) {
-            $dataRequest = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first();
-            $id_request = $dataRequest->id_penawaran;
-
-            $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_tempat;
-            $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_pemilik;
-            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-        }
-        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataRequest->req_id_alat)->get()->first();
-        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-
-        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataRequest->req_lapangan)->get()->first();
-    @endphp
     {{-- detail request --}}
     <h5>Detail Request</h5>
     @if ($komplain->first()->fk_id_permintaan != null)
@@ -387,5 +475,8 @@
         // Mengembalikan format yang sudah diubah ke input
         input.value = value;
     }
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
 </script>
 @endsection
