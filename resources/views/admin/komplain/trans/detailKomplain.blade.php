@@ -56,19 +56,10 @@
     <div class="d-flex justify-content-start d-none d-md-block">
         <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
     </div>
-    <h3 class="text-center mb-5">Detail Komplain Transaksi</h3>
-    <div class="d-flex justify-content-end mt-3 me-3">
-        @if ($komplain->first()->status_komplain == "Menunggu")
-            <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$komplain->first()->status_komplain}}</b></h6>
-        @elseif($komplain->first()->status_komplain == "Diterima")
-            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$komplain->first()->status_komplain}}</b></h6>
-        @elseif($komplain->first()->status_komplain == "Ditolak")
-            <h6><b>Status Komplain: </b><b style="color:red">{{$komplain->first()->status_komplain}}</b></h6>
-        @endif
-    </div>
+    <h3 class="text-center mb-4">Detail Komplain Transaksi</h3>
     @php
         $dataHtrans = DB::table('htrans')
-                    ->select("files_lapangan.nama_file_lapangan", "lapangan_olahraga.nama_lapangan", "htrans.kode_trans", "pihak_tempat.id_tempat","pihak_tempat.nama_tempat","pihak_tempat.email_tempat","pihak_tempat.telepon_tempat","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa")
+                    ->select("htrans.id_htrans", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.id_lapangan", "lapangan_olahraga.nama_lapangan", "lapangan_olahraga.harga_sewa_lapangan", "lapangan_olahraga.deleted_at", "htrans.kode_trans", "pihak_tempat.id_tempat","pihak_tempat.nama_tempat","pihak_tempat.email_tempat","pihak_tempat.telepon_tempat","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa","htrans.status_trans", "htrans.subtotal_lapangan","htrans.subtotal_alat","htrans.total_trans")
                     ->where("id_htrans","=",$komplain->first()->fk_id_htrans)
                     ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
                     ->join("pihak_tempat","lapangan_olahraga.pemilik_lapangan","=","pihak_tempat.id_tempat")
@@ -92,6 +83,35 @@
         $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
         $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
     @endphp
+    <div class="d-flex justify-content-end me-3">
+        @if ($komplain->first()->status_komplain == "Menunggu")
+            <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$komplain->first()->status_komplain}}</b></h6>
+        @elseif($komplain->first()->status_komplain == "Diterima")
+            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$komplain->first()->status_komplain}}</b></h6>
+        @elseif($komplain->first()->status_komplain == "Ditolak")
+            <h6><b>Status Komplain: </b><b style="color:red">{{$komplain->first()->status_komplain}}</b></h6>
+        @endif
+    </div>
+
+    <div class="d-flex justify-content-start mt-3">
+        <h6><b>Kode Transaksi: {{$dataHtrans->kode_trans}}</b></h6>
+    </div>
+    <div class="d-flex justify-content-start">
+        @if ($dataHtrans->status_trans == "Menunggu")
+            <h6><b>Status Transaksi: </b><b style="color:rgb(239, 203, 0)">{{$dataHtrans->status_trans}}</b></h6>
+        @elseif($dataHtrans->status_trans == "Diterima")
+            <h6><b>Status Transaksi: </b><b style="color:rgb(0, 145, 0)">{{$dataHtrans->status_trans}}</b></h6>
+        @elseif($dataHtrans->status_trans == "Ditolak")
+            <h6><b>Status Transaksi: </b><b style="color:red">{{$dataHtrans->status_trans}}</b></h6>
+        @elseif($dataHtrans->status_trans == "Berlangsung")
+            <h6><b>Status Transaksi: </b><b style="color:rgb(0, 145, 0)">{{$dataHtrans->status_trans}}</b></h6>
+        @elseif($dataHtrans->status_trans == "Selesai")
+            <h6><b>Status Transaksi: </b><b style="color:blue">{{$dataHtrans->status_trans}}</b></h6>
+        @elseif($dataHtrans->status_trans == "Dikomplain")
+            <h6><b>Status Transaksi: </b><b style="color:red">{{$dataHtrans->status_trans}}</b></h6>
+        @endif
+    </div>
+
     <div class="row mb-3 mt-5">
         <!-- Nama Pengirim -->
         <div class="col-md-6 col-sm-12 mb-3">
@@ -116,13 +136,91 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-start mt-3">
-        <h6><b>Jenis Komplain: {{$komplain->first()->jenis_komplain}}</b></h6>
+    <h5>Detail Transaksi</h5>
+    @if ($dataHtrans->deleted_at == null)<a href="/admin/lapangan/detailLapanganUmum/{{$dataHtrans->id_lapangan}}">@endif
+        <div class="card">
+            <div class="card-body">
+                <div class="row d-md-flex align-items-md-center">
+                    <!-- Gambar -->
+                    <div class="col-4">
+                        <div class="square-image-container">
+                            <img src="{{ asset('upload/' . $dataHtrans->nama_file_lapangan) }}" alt="" class="img-fluid">
+                        </div>
+                    </div>
+                    
+                    <!-- Nama -->
+                    <div class="col-8">
+                        <h5 class="card-title truncate-text">{{$dataHtrans->nama_lapangan}}</h5>
+                        <!-- Contoh detail lain: -->
+                        <p class="card-text">Rp {{number_format($dataHtrans->harga_sewa_lapangan, 0, ',', '.')}} x {{$dataHtrans->durasi_sewa}} Jam = Rp {{number_format($dataHtrans->subtotal_lapangan, 0, ',', '.')}}</p>
+                        {{-- Anda bisa menambahkan detail lain di sini sesuai kebutuhan Anda --}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+    <div class="d-flex justify-content-end mt-3 me-3">
+        <h5><b>Subtotal Lapangan: Rp {{number_format($dataHtrans->subtotal_lapangan, 0, ',', '.')}}</b></h5>
     </div>
 
-    <div class="row mb-5 mt-4">
+    <div class="row mt-4">
+        @php
+            $dataDtrans = DB::table('dtrans')
+                        ->where("dtrans.fk_id_htrans","=",$dataHtrans->id_htrans)
+                        ->get();
+        @endphp
+        @if (!$dataDtrans->isEmpty())
+            @foreach ($dataDtrans as $item)
+                @php
+                    $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->fk_id_alat)->get()->first();
+                    $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$item->fk_id_alat)->get()->first();
+                @endphp
+                @if ($dataAlat->deleted_at == null)<a href="/admin/alat/detailAlatUmum/{{$dataAlat->id_alat}}">@endif
+                    <div class="card h-70 mb-3">
+                        <div class="card-body">
+                            <div class="row d-md-flex align-items-md-center">
+                                <!-- Gambar Alat -->
+                                <div class="col-4">
+                                    <div class="square-image-container">
+                                        <img src="{{ asset('upload/' . $dataFileAlat->nama_file_alat) }}" alt="" class="img-fluid">
+                                    </div>
+                                </div>
+                                
+                                <!-- Nama Alat -->
+                                <div class="col-8">
+                                    <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                    <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$dataHtrans->durasi_sewa}} Jam = Rp {{number_format($item->subtotal_alat, 0, ',', '.')}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            @endforeach
+        @else
+            <p>(Tidak ada alat olahraga yang disewa)</p>
+        @endif
+    </div>
+    <div class="d-flex justify-content-end mt-3 me-3">
+        <h5><b>Subtotal Alat: Rp {{number_format($dataHtrans->subtotal_alat, 0, ',', '.')}}</b></h5>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-end mt-3 me-3">
+        <h4><b>Total Transaksi: Rp {{number_format($dataHtrans->total_trans, 0, ',', '.')}}</b></h4>
+    </div>
+
+    <div class="row mb-3 mt-4">
         <div class="col-md-6 col-sm-12 mb-3">
-            <h6>Keterangan: <br>{{$komplain->first()->keterangan_komplain}}</h6>
+            <h6><b>Jenis Komplain: {{$komplain->first()->jenis_komplain}}</b></h6>
+        </div>
+        
+        <div class="col-md-6 col-sm-12 mb-3">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6 col-sm-12 mb-3">
+            <h5>Keterangan:</h5>
+            <h6>{{$komplain->first()->keterangan_komplain}}</h6>
         </div>
         
         <div class="col-md-6 col-sm-12 mb-3">
@@ -152,7 +250,7 @@
         </div>
     </div>
     {{-- detail request --}}
-    <h5>Detail Transaksi</h5>
+    {{-- <h5>Detail Transaksi</h5>
     <a href="/admin/transaksi/detailTransaksi/{{$komplain->first()->fk_id_htrans}}">
         <div class="card h-70">
             <div class="card-body">
@@ -172,7 +270,7 @@
                 </div>
             </div>
         </div>
-    </a>
+    </a> --}}
     <h5 class="mt-5 mb-3">Kontak Pihak Tempat Olahraga</h5>
     <h6>Email: {{$dataHtrans->email_tempat}}</h6>
     <h6>No. Telepon: {{$dataHtrans->telepon_tempat}}</h6>
