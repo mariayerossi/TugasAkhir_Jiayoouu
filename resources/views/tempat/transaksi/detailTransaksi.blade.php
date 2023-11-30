@@ -153,7 +153,8 @@
     </div>
     
     <div class="row mt-5">
-        <div class="col-md-9 col-sm-12">
+        <div class="">
+            {{-- col-md-9 col-sm-12 --}}
             <h5>Alat Olahraga yang Disewa</h5>
             @if (!$dtrans->isEmpty())
                 @foreach ($dtrans as $item)
@@ -364,7 +365,7 @@
             @endphp
 
             <div class="row mt-5">
-                <div class="col-md-6 col-sm-12">
+                <div class="">
                     <h5>Alat Olahraga yang Disewa</h5>
                     @if (!$dtrans->isEmpty())
                         @foreach ($dtrans as $item)
