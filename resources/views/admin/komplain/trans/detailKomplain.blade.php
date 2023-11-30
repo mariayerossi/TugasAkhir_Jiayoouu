@@ -271,6 +271,7 @@
             </div>
         </div>
     </a> --}}
+    
     <h5 class="mt-5 mb-3">Kontak Pihak Tempat Olahraga</h5>
     <h6>Email: {{$dataHtrans->email_tempat}}</h6>
     <h6>No. Telepon: {{$dataHtrans->telepon_tempat}}</h6>
