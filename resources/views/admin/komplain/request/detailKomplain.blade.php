@@ -123,17 +123,17 @@
     @endphp
 
     @if ($status == "Menunggu")
-    <h6><b>Status Transaksi: </b><b style="color:rgb(239, 203, 0)">{{$status}}</b></h6>
+    <h6><b>Status Request: </b><b style="color:rgb(239, 203, 0)">{{$status}}</b></h6>
     @elseif($status == "Diterima")
-        <h6><b>Status Transaksi: </b><b style="color:rgb(0, 145, 0)">{{$status}}</b></h6>
+        <h6><b>Status Request: </b><b style="color:rgb(0, 145, 0)">{{$status}}</b></h6>
     @elseif($status == "Ditolak")
-        <h6><b>Status Transaksi: </b><b style="color:red">{{$status}}</b></h6>
+        <h6><b>Status Request: </b><b style="color:red">{{$status}}</b></h6>
     @elseif($status == "Disewakan")
-        <h6><b>Status Transaksi: </b><b style="color:rgb(0, 145, 0)">{{$status}}</b></h6>
+        <h6><b>Status Request: </b><b style="color:rgb(0, 145, 0)">{{$status}}</b></h6>
     @elseif($status == "Selesai")
-        <h6><b>Status Transaksi: </b><b style="color:blue">{{$status}}</b></h6>
+        <h6><b>Status Request: </b><b style="color:blue">{{$status}}</b></h6>
     @elseif($status == "Dikomplain")
-        <h6><b>Status Transaksi: </b><b style="color:red">{{$status}}</b></h6>
+        <h6><b>Status Request: </b><b style="color:red">{{$status}}</b></h6>
     @endif
 
     <div class="row mt-5">
@@ -210,7 +210,41 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-start mt-5">
+    <div class="row mb-3 mt-5">
+        <div class="col-md-6 col-sm-12 mb-3">
+            <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat)"></i></h6>
+            <p>Rp {{number_format($dataRequest->req_harga_sewa, 0, ',', '.')}}/jam</p>
+        </div>
+
+        <div class="col-md-6 col-sm-12 mb-3">
+        </div>
+    </div>
+
+    <div class="row mb-3 mt-3">
+        <div class="col-md-6 col-sm-12 mb-3">
+            <h6>Tanggal Mulai Dipinjam:</h6>
+            @php
+                $tanggalAwal2 = $dataRequest->req_tanggal_mulai;
+                $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+                $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
+            @endphp
+            <p>{{$tanggalBaru2}}</p>
+        </div>
+
+        <div class="col-md-6 col-sm-12 mb-3">
+            <h6>Tanggal Selesai Dipinjam:</h6>
+            @php
+                $tanggalAwal3 = $dataRequest->req_tanggal_selesai;
+                $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
+                $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
+                $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY');
+            @endphp
+            <p>{{$tanggalBaru3}}</p>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-start mt-3">
         <h6><b>Jenis Komplain: {{$komplain->first()->jenis_komplain}}</b></h6>
     </div>
 
@@ -246,8 +280,7 @@
           </div>
         </div>
     </div>
-    {{-- detail request --}}
-    <h5>Detail Request</h5>
+    {{-- <h5>Detail Request</h5>
     @if ($komplain->first()->fk_id_permintaan != null)
         <a href="/admin/request/detailRequest/Permintaan/{{$id_request}}">
     @elseif ($komplain->first()->fk_id_penawaran != null)
@@ -271,7 +304,7 @@
                 </div>
             </div>
         </div>
-    </a>
+    </a> --}}
 
     <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
     @if ($komplain->first()->status_komplain == "Menunggu")
