@@ -58,6 +58,29 @@
         width: 45px;
         overflow: hidden; /* Memastikan gambar tidak melebihi kontainer */
     }
+
+    .form_komplain {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1100;
+        display: none;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        border-radius: 5px;
+        background-color:white;
+    }
+    @media (max-width: 767px) {
+        /* Untuk layar dengan lebar maksimum 767px (tampilan mobile) */
+        .form_komplain {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%; /* Menyebabkan lebar elemen menjadi 100% dari lebar layar */
+            height: 100vh; /* Menyebabkan tinggi elemen menjadi 100% dari tinggi layar */
+        }
+    }
 </style>
 <div class="container mt-5 mb-5">
     <h2 class="text-center mb-5">Daftar Riwayat Transaksi</h2>
@@ -233,8 +256,11 @@
                 </div>
             </div>
             <div class="row form_komplain mb-5" data-id="{{$item->id_htrans}}">
-                <div class="col-md-8">
-                    <form action="/customer/komplain/ajukanKomplain" method="post" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);background-color:white">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-end me-3">
+                        <button class="close-chat-btn" data-id="{{$item->id_htrans}}">&times;</button>
+                    </div>
+                    <form action="/customer/komplain/ajukanKomplain" method="post" enctype="multipart/form-data" >
                         @csrf
                         <div class="d-flex justify-content-center">
                             <h5><b>Ajukan Komplain</b></h5>
@@ -278,9 +304,6 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-4">
-                    <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
-                </div>
             </div>
             {{-- <div class="row konfirmasiBatal mb-5" data-id="{{$item->id_htrans}}">
                 <div class="col-md-12">
@@ -302,6 +325,12 @@
 <script>
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
+
+        $(".close-chat-btn").click(function(e) {
+            e.preventDefault();  // Menghentikan perilaku default (navigasi)
+            let transaksiId = $(this).data('id'); // Mengambil data-id dari tombol yang ditekan
+            $(`.form_komplain[data-id=${transaksiId}]`).hide();
+        });
         
         $(".btn-danger").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
@@ -344,7 +373,7 @@
             });
         });
 
-        $(".form_komplain").hide();
+        // $(".form_komplain").hide();
 
         $(".btn-warning").click(function(e) {
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
