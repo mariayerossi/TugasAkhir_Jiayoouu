@@ -238,7 +238,7 @@ Sportiva
             @endphp
             <div class="coba">
                 <div class="profile-dropdown">
-                    <img src="{{ asset('assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
+                    <img src="{{ asset('assets/img/user_icon4.png')}}" alt="Profile" class="profile-image">
                     <div class="dropdown-content">
                         <h6 class="m-3">{{Session::get("dataRole")->nama_pemilik}}</h6>
                         <h6 class="m-3">

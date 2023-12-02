@@ -186,7 +186,7 @@ Sportiva
                     </div>
                     <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan/Tempat Olahraga"> 
                     <div class="input-group-append">
-                        <button class="btn btn-success" type="submit">
+                        <button class="btn" type="submit" style="background-color: #007466; color:white;">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -231,7 +231,11 @@ Sportiva
                     $saldo = decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
                 @endphp
                 <div class="profile-dropdown ms-3">
-                    <img src="{{ asset('assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
+                    <img src="{{ asset('assets/img/user_icon4.png')}}" alt="Profile" class="profile-image">
+                    {{-- <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="color: #007466">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+                    </svg> --}}
                     <div class="dropdown-content">
                         <h6 class="m-3">{{Session::get("dataRole")->nama_user}}</h6>
                         <h6 class="m-3">
@@ -258,7 +262,7 @@ Sportiva
                 </a>
             </div>
             <div class="d-flex align-items-center ms-3">
-                <img src="{{ asset('assets/img/user_icon.png')}}" alt="Profile" class="profile-image">
+                <img src="{{ asset('assets/img/user_icon4.png')}}" alt="Profile" class="profile-image">
                 <h5 class="m-3">{{Session::get("dataRole")->nama_user}}</h5>
             </div>
             <h6 style="margin-left: 70px">

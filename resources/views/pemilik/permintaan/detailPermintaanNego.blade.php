@@ -458,7 +458,7 @@
             @csrf
             <input type="hidden" name="permintaan" value="{{$permintaan->first()->id_permintaan}}">
             <textarea class="form-control mb-3" rows="2" name="isi" placeholder="Tulis pesan Anda di sini..."></textarea>
-            <button id="send-nego-btn" class="btn btn-success w-100">Kirim</button>
+            <button id="send-nego-btn" class="btn w-100" style="background-color: #007466; color:white;">Kirim</button>
         </form>
     </div>
 </div>
