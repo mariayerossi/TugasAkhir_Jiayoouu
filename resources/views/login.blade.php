@@ -5,25 +5,27 @@ Sportiva
 @include('layouts.main')
 
 <body style="background-color: #008374;">
-  <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
-    {{-- logo --}}
-      <a href="/" class="logo d-flex align-items-center">
-          <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
-          <h1 style="font-family: 'Bruno Ace SC', cursive; color:white">sportiva</h1>
-      </a>
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      {{-- logo --}}
+        <a href="/" class="logo d-flex align-items-center">
+            <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
+            <h1 style="font-family: 'Bruno Ace SC', cursive; color:white">sportiva</h1>
+        </a>
 
-    <nav id="navbar" class="navbar">
-      <ul>
-        <li><a href="/register">Daftar sebagai user</a></li>
-        <li><a href="/registerPemilik">Daftar sebagai pemilik alat</a></li>
-        <li><a href="/registerTempat">Daftar sebagai tempat olahraga</a></li>
-      </ul>
-    </nav><!-- .navbar -->
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="/register">Daftar sebagai user</a></li>
+          <li><a href="/registerPemilik">Daftar sebagai pemilik alat</a></li>
+          <li><a href="/registerTempat">Daftar sebagai tempat olahraga</a></li>
+        </ul>
+      </nav><!-- .navbar -->
 
-    <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-    <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
-    </div>
+      </div>
+  </header>
 <!-- Section: Design Block -->
 <section class="text-center text-lg-start">
     <style>
@@ -39,7 +41,7 @@ Sportiva
     </style>
   
     <!-- Jumbotron -->
-    <div class="container py-4">
+    <div class="container">
       @include("layouts.message")
       <div class="row g-0 align-items-center">
         <div class="col-lg-6 mb-5 mb-lg-0">
@@ -82,7 +84,7 @@ Sportiva
         </div>
   
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <img src="https://i.pinimg.com/564x/2e/6b/f4/2e6bf4d78db461b923413cc441252980.jpg" class="w-100 rounded-4 shadow-4"
+          <img src="{{asset('assets/img/img_login.jpg')}}" class="w-100 rounded-4 shadow-4"
             alt="" />
         </div>
       </div>

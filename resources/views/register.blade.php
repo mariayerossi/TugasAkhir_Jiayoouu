@@ -90,7 +90,7 @@ Sportiva
         </div>
   
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <img src="https://i.pinimg.com/564x/89/67/a1/8967a1a8a6ff258ef077971bd70e9e0c.jpg" class="w-100 rounded-4 shadow-4"
+          <img src="{{asset('assets/img/img_reg_user.jpg')}}" class="w-100 rounded-4 shadow-4"
             alt="" />
         </div>
       </div>

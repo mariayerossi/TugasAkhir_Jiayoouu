@@ -63,7 +63,7 @@
             <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan dan Tempat Olahraga...">
             {{-- <input type="text" name="cariPemilik" class="form-control" placeholder="Cari Tempat Olahraga..."> --}}
             <div class="input-group-append">
-                <button class="btn btn-success" type="submit">
+                <button class="btn" type="submit" style="background-color: #007466; color:white;">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
