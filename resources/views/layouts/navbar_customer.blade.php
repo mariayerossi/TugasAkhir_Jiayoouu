@@ -184,7 +184,7 @@ Sportiva
                             @endif
                         </select>
                     </div>
-                    <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan/Tempat Olahraga"> 
+                    <input type="text" name="cari" class="form-control bg-light" placeholder="Cari Lapangan/Tempat Olahraga"> 
                     <div class="input-group-append">
                         <button class="btn" type="submit" style="background-color: #007466; color:white;">
                             <i class="bi bi-search"></i>
