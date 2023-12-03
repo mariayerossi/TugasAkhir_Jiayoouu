@@ -5,7 +5,6 @@ Sportiva
 @include('layouts.main')
 
 <body style="background-color: #008374;">
-  <header id="header" class="header d-flex align-items-center">
     <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
       {{-- logo --}}
         <a href="/" class="logo d-flex align-items-center">
@@ -25,7 +24,6 @@ Sportiva
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
       </div>
-  </header>
 <!-- Section: Design Block -->
 <section class="text-center text-lg-start">
     <style>
