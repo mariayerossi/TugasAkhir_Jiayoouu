@@ -20,7 +20,7 @@ Sportiva
             top: 0;
             left: -250px;
             height: 100%;
-            background-color: white;
+            background-color: #007466;
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             overflow-x: hidden;
             transition: 0.5s;
@@ -29,20 +29,19 @@ Sportiva
         }
     
         #sidebar a {
-            font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            font-family: "Montserrat", sans-serif;
             padding: 10px 15px;
             font-weight: 600;
             text-decoration: none;
             font-size: 15px;
-            color: #007466;
+            color: white;
             display: block;
             transition: 0.3s;
-            font-weight: bold;
         }
     
         #sidebar a:hover {
-            background-color: #007466;
-            color: white;
+            background-color: white;
+            color: #007466;
         }
     
         #sidebar .closebtn {
@@ -67,7 +66,7 @@ Sportiva
         .sidebar-dropdown-content {
             display: none;
             position: relative;
-            background-color: #e3e3e3;
+            background-color: #006559;
             min-width: 240px; /* match the sidebar width */
             box-shadow: none; /* you may want to remove this or adjust according to the sidebar's look */
             z-index: 1;
@@ -129,10 +128,11 @@ Sportiva
             display: none;
             position: absolute;
             right: 0;
-            background-color: #f9f9f9;
-            min-width: 160px;
+            background-color: white;
+            min-width: 180px;
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
+            border-radius: 5%;
         }
 
         .dropdown-content a {
@@ -144,34 +144,6 @@ Sportiva
 
         .dropdown-content.active {
             display: block;
-        }
-
-        /* CSS untuk tombol */
-        .float-back-button {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: #007466; 
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 12px;
-            font-size: 14px;
-            z-index: 1100;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: none; /* default akan disembunyikan */
-        }
-
-        .float-back-button:hover {
-            background-color: #005744;
-        }
-
-        /* Tampilkan tombol hanya pada tampilan desktop */
-        @media (min-width: 768px) {
-            .float-back-button {
-                display: block; /* Menampilkan tombol saat layar lebih besar dari 767px */
-            }
         }
     </style>
     
@@ -332,9 +304,6 @@ Sportiva
                 });
             }
         });
-        function goBack() {
-            window.history.back();
-        }
     </script>
     
 </body>
