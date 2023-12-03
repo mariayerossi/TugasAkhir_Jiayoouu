@@ -175,16 +175,38 @@ Sportiva
         }
     </style>
     
-    <header class="header" id="header">
-        <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
-        <div class="header_img"> <img src="https://i.imgur.com/hczKIze.jpg" alt=""> </div>
-    </header>
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-            <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">BBBootstrap</span> </a>
-                <div class="nav_list"> <a href="#" class="nav_link active"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a> <a href="#" class="nav_link"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span> </a> <a href="#" class="nav_link"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Messages</span> </a> <a href="#" class="nav_link"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Bookmark</span> </a> <a href="#" class="nav_link"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Files</span> </a> <a href="#" class="nav_link"> <i class='bx bx-bar-chart-alt-2 nav_icon'></i> <span class="nav_name">Stats</span> </a> </div>
-            </div> <a href="#" class="nav_link"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
-        </nav>
+    <div id="sidebar">
+        <a href="/pemilik/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
+        <a href="/pemilik/cariLapangan"><i class="bi bi-search me-3"></i>Cari Lapangan Olahraga</a>
+        <div class="sidebar-dropdown">
+            <a href="#"><i class="bi bi-dribbble me-3"></i>Alat Olahraga <i class="bi bi-caret-down-fill"></i></a>
+            <div class="sidebar-dropdown-content">
+                {{-- <a href="/pemilik/masterAlat">Tambah Alat</a> --}}
+                <a href="/pemilik/daftarAlat">Daftar Alat</a>
+                <a href="/pemilik/disewakan/daftarDisewakan">Transaksi Alat</a>
+                <!-- Add other sports or categories here -->
+            </div>
+        </div>
+        {{-- <div class="sidebar-dropdown">
+            <a href="#"><i class="bi bi-collection me-3"></i>Daftar Request <i class="bi bi-caret-down-fill"></i></a>
+            <div class="sidebar-dropdown-content">
+                <a href="/pemilik/permintaan/daftarPermintaan">Permintaan</a>
+                <a href="/pemilik/penawaran/daftarPenawaran">Penawaran</a>
+                <!-- Add other sports or categories here -->
+            </div>
+        </div> --}}
+        <a href="/pemilik/permintaan/daftarPermintaan"><i class="bi bi-envelope-paper me-3"></i>Daftar Permintaan Alat</a>
+        <a href="/pemilik/penawaran/daftarPenawaran"><i class="bi bi-send-plus me-3"></i>Daftar Penawaran Alat</a>
+        <div class="sidebar-dropdown">
+            <a href="#"><i class="bi bi-clipboard-data me-3"></i>Laporan <i class="bi bi-caret-down-fill"></i></a>
+            <div class="sidebar-dropdown-content">
+                <a href="/pemilik/laporan/pendapatan/laporanPendapatan">Pendapatan</a>
+                <a href="/pemilik/laporan/stok/laporanStok">Stok Alat Olahraga</a>
+                <a href="/pemilik/laporan/disewakan/laporanDisewakan">Persewaan Alat Olahraga</a>
+                <a href="/pemilik/laporan/tempat/laporanTempat">Persewaan Tempat Olahraga</a>
+                <!-- Add other sports or categories here -->
+            </div>
+        </div>
     </div>
 
     <div id="main">
