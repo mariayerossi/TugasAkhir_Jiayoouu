@@ -5,7 +5,6 @@ Sportiva
 @include('layouts.main')
 
 <body>
-    {{-- <div id="preloader"></div> --}}
     <style>
         body {
             font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -21,7 +20,7 @@ Sportiva
             top: 0;
             left: -250px;
             height: 100%;
-            background-color: white;
+            background-color: #007466;
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             overflow-x: hidden;
             transition: 0.5s;
@@ -30,19 +29,19 @@ Sportiva
         }
     
         #sidebar a {
-            font-family: "Poppins", sans-serif;
+            font-family: "Montserrat", sans-serif;
             padding: 10px 15px;
             font-weight: 600;
             text-decoration: none;
-            font-size: 16px;
-            color: #007466;
+            font-size: 15px;
+            color: white;
             display: block;
             transition: 0.3s;
         }
     
         #sidebar .coba a:hover {
-            background-color: #007466;
-            color: white;
+            background-color: white;
+            color: #007466;
         }
     
         #sidebar .closebtn {
@@ -67,7 +66,7 @@ Sportiva
         .sidebar-dropdown-content {
             display: none;
             position: relative;
-            background-color: #e3e3e3;
+            background-color: #006559;
             min-width: 240px; /* match the sidebar width */
             box-shadow: none; /* you may want to remove this or adjust according to the sidebar's look */
             z-index: 1;
@@ -86,39 +85,13 @@ Sportiva
             background-color: #007466;
             color: white;
         }
-        .float-back-button {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: #007466; 
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 12px;
-            font-size: 14px;
-            z-index: 1100;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: none; /* default akan disembunyikan */
-        }
-
-        .float-back-button:hover {
-            background-color: #005744;
-        }
-
-        /* Tampilkan tombol hanya pada tampilan desktop */
-        @media (min-width: 768px) {
-            .float-back-button {
-                display: block; /* Menampilkan tombol saat layar lebih besar dari 767px */
-            }
-        }
     </style>
     
     <div id="sidebar">
         {{-- logo --}}
         <a href="/admin/beranda" class="logo d-flex align-items-center">
             <img class="w-20 h-20" src="{{ asset('logo2.ico')}} " alt="Logo" width="40">
-            <h2 style="font-family: 'Bruno Ace SC', cursive; color:#007466">sportiva</h2>
+            <h2 style="font-family: 'Bruno Ace SC', cursive; color:white">sportiva</h2>
         </a>
         <div class="coba mb-3">
             <a href="/admin/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
