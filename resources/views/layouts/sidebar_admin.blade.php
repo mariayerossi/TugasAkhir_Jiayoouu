@@ -159,7 +159,7 @@ Sportiva
                     <!-- Add other sports or categories here -->
                 </div>
             </div>
-            <a href="/logout"><i class="bi bi-box-arrow-right me-3"></i>Logout</a>
+            <a href="/logout"><i class="bi bi-power me-2"></i>Logout</a>
         </div>
     </div>
 

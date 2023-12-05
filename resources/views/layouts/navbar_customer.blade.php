@@ -92,7 +92,7 @@ Sportiva
         }
         
         .sidebar a {
-            font-family: "Poppins", sans-serif;
+            font-family: "Montserrat", sans-serif;
             padding: 10px 15px;
             font-weight: 600;
             text-decoration: none;
@@ -129,31 +129,6 @@ Sportiva
         @media screen and (min-width: 992px) { 
             .search-form-container {
                 width: 700px;
-            }
-        }
-        /* CSS untuk tombol */
-        .float-back-button {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background-color: #007466; 
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 8px 12px;
-            font-size: 14px;
-            z-index: 1100;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            display: none; /* default akan disembunyikan */
-        }
-
-        .float-back-button:hover {
-            background-color: #005744;
-        }
-        @media (min-width: 768px) {
-            .float-back-button {
-                display: block; /* Menampilkan tombol saat layar lebih besar dari 767px */
             }
         }
     </style>
@@ -245,9 +220,9 @@ Sportiva
                         </h6>
                         <hr>
                         {{-- <a href="/customer/editProfile">Profile</a> --}}
-                        <a href="/customer/saldo/topupSaldo">Top Up Saldo</a>
+                        <a href="/customer/saldo/topupSaldo"><i class="bi bi-cash-coin me-2"></i>Top Up Saldo</a>
                         {{-- <a href="">Ulasan</a> --}}
-                        <a href="/logout">Logout</a>
+                        <a href="/logout"><i class="bi bi-power me-2"></i>Logout</a>
                     </div>
                 </div>
             </div>
@@ -273,7 +248,7 @@ Sportiva
             <a href="/customer/saldo/topupSaldo" class="ms-5">Top Up Saldo</a>
             <hr>
             {{-- <a href="/customer/editProfile" class="ms-3"><i class="bi bi-pencil-square me-2"></i>Edit Profile</a> --}}
-            <a href="/logout" class="ms-3"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+            <a href="/logout" class="ms-3"><i class="bi bi-power me-2"></i>Logout</a>
             <hr>
             <a href="/customer/daftarKeranjang" class="ms-3"><i class="bi bi-heart me-2"></i>Daftar Favorit</a>
             <a href="/customer/daftarRiwayat" class="ms-3"><i class="bi bi-clock-history me-2"></i>Riwayat Transaksi</a>

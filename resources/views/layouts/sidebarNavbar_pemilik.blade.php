@@ -220,8 +220,8 @@ Sportiva
                         </h6>
                         <hr>
                         {{-- <a href="/editprofile">Profile</a> --}}
-                        <a href="/pemilik/saldo/tarikSaldo">Tarik Saldo</a>
-                        <a href="/logout">Logout</a>
+                        <a href="/pemilik/saldo/tarikSaldo"><i class="bi bi-cash-coin me-2"></i>Tarik Saldo</a>
+                        <a href="/logout"><i class="bi bi-power me-2"></i>Logout</a>
                     </div>
                 </div>
             </div>
