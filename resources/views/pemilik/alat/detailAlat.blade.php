@@ -144,7 +144,7 @@
                 </svg> {{ $averageRating }} rating ({{ $totalReviews }})
             </p>
             <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
-            <a href="/tempat/alat/editAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Ubah Detail Alat</a>
+            <a href="/pemilik/editAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Ubah Detail Alat</a>
             <!-- Additional details section -->
             <p class="text-muted mt-5 d-lg-none">
                 @php

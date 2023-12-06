@@ -93,7 +93,7 @@
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
                 <h6>Deskripsi Alat Olahraga</h6>
-                <span class="ml-2 ms-2" style="font-size: 15px">maksimal 300 kata</span>
+                <span class="ml-2 ms-2" style="font-size: 15px">maksimal 500 kata</span>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
                 <textarea id="myTextarea" class="form-control" name="deskripsi" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Deskripsi Alat Olahraga">{{ old('deskripsi') ?? $alat->first()->deskripsi_alat }}</textarea>
@@ -275,6 +275,8 @@
             statusInput.value = "Aktif";
         }
     });
+    
+    updateCount();
 
     function updateCount() {
         let textarea = document.getElementById('myTextarea');

@@ -311,6 +311,7 @@
             statusInput.value = "Aktif";
         }
     });
+    updateCount();
     function updateCount() {
         let textarea = document.getElementById('myTextarea');
         let textareaValue = textarea.value;
