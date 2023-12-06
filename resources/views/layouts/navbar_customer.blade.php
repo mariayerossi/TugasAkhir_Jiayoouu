@@ -149,9 +149,21 @@ Sportiva
             <div class="search-form-container d-flex justify-content-center align-items-center mt-3 mb-3"> 
                 <form action="/customer/searchLapangan" method="GET" class="input-group">
                     @csrf
-                    <div class="input-group-prepend">
-                        <select class="form-control" name="kategori">
+                    <div class="input-group-prepend d-none d-md-block">
+                        <select class="form-select" name="kota">
+                            <option value="" disabled selected>Kota</option> 
+                            <option value="">Semua</option> 
+                            @if (!$kota->isEmpty())
+                                @foreach ($kota as $item)
+                                <option value="{{$item->kota_lapangan}}">{{$item->kota_lapangan}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="input-group-prepend d-none d-md-block">
+                        <select class="form-select" name="kategori">
                             <option value="" disabled selected>Kategori</option> 
+                            <option value="">Semua</option>
                             @if (!$kategori->isEmpty())
                                 @foreach ($kategori as $item)
                                 <option value="{{$item->id_kategori}}">{{$item->nama_kategori}}</option>
@@ -159,7 +171,7 @@ Sportiva
                             @endif
                         </select>
                     </div>
-                    <input type="text" name="cari" class="form-control bg-light" placeholder="Cari Lapangan/Tempat Olahraga"> 
+                    <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan/Tempat Olahraga" style="border-radius: 5px"> 
                     <div class="input-group-append">
                         <button class="btn" type="submit" style="background-color: #007466; color:white;">
                             <i class="bi bi-search"></i>

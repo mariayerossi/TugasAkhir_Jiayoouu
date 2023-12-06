@@ -8,6 +8,7 @@ use App\Models\extendDtrans;
 use App\Models\extendHtrans;
 use App\Models\htrans;
 use App\Models\kategori;
+use App\Models\lapanganOlahraga;
 use App\Models\pihakTempat;
 use Carbon\Carbon;
 use App\Models\notifikasiEmail;
@@ -666,6 +667,9 @@ class Transaksi extends Controller
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
 
+        $kot = new lapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
+
         $data = [];
 
         if (Session::has("cart") && Session::get("cart") != null) {
@@ -735,6 +739,9 @@ class Transaksi extends Controller
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
 
+        $kot = new lapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
+
         $trans = DB::table('htrans')
                 ->select("htrans.id_htrans","files_lapangan.nama_file_lapangan", "lapangan_olahraga.id_lapangan", "lapangan_olahraga.nama_lapangan","htrans.kode_trans","htrans.total_trans","htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa", "htrans.status_trans", "htrans.tanggal_trans")
                 ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
@@ -754,6 +761,9 @@ class Transaksi extends Controller
     public function detailTransaksi(Request $request) {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+
+        $kot = new lapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
         
         if ($request->tanggal == null || $request->mulai == null || $request->selesai == null) {
             return redirect()->back()->with("error", "Tanggal dan Jam sewa tidak boleh kosong!");
@@ -1276,6 +1286,9 @@ class Transaksi extends Controller
         // dd($request->id_htrans);
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+
+        $kot = new lapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
 
         $htrans = DB::table('htrans')
                 ->select("htrans.id_htrans","htrans.kode_trans","lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan","files_lapangan.nama_file_lapangan","lapangan_olahraga.harga_sewa_lapangan","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa")

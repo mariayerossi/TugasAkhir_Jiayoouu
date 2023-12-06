@@ -1298,6 +1298,9 @@ class KomplainTrans extends Controller
     public function daftarKomplain() {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+
+        $kot = new lapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
         
         $komplain = DB::table('komplain_trans')
                     ->select("komplain_trans.id_komplain_trans","htrans.kode_trans","files_komplain_trans.nama_file_komplain","komplain_trans.jenis_komplain","komplain_trans.keterangan_komplain","komplain_trans.waktu_komplain","komplain_trans.status_komplain","komplain_trans.penanganan_komplain","komplain_trans.alasan_komplain")

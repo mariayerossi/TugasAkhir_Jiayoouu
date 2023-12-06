@@ -818,6 +818,8 @@ Route::prefix("/customer")->group(function(){
     Route::get("/editProfile", function () {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+        $kot = new ModelsLapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
         $cust = new customer();
         $cust->get_all_data_by_id(Session::get("dataRole")->id_user);
         $param["cust"] = $cust->get_all_data_by_id(Session::get("dataRole")->id_user);
@@ -826,6 +828,8 @@ Route::prefix("/customer")->group(function(){
     Route::get("/detailLapangan/{id}", function ($id) {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+        $kot = new ModelsLapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
         $lapa = new ModelsLapanganOlahraga();
         $param["lapangan"] = $lapa->get_all_data_by_id($id);
         $files = new filesLapanganOlahraga();
@@ -845,6 +849,8 @@ Route::prefix("/customer")->group(function(){
     Route::get("/detailAlat/{id}", function ($id) {//melihat detail alat olahraga milik org lain
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+        $kot = new ModelsLapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
         $alat = new ModelsAlatOlahraga();
         $param["alat"] = $alat->get_all_data_by_id($id);
         $files = new filesAlatOlahraga();
@@ -856,7 +862,7 @@ Route::prefix("/customer")->group(function(){
     Route::prefix("/transaksi")->group(function(){
         Route::post("/tambahAlat", [Transaksi::class, "tambahAlat"]);
         Route::get("/deleteAlat/{urutan}", [Transaksi::class, "deleteAlat"]);
-        Route::get("/detailTransaksi", [Transaksi::class, "detailTransaksi"]);
+        Route::get("/detailTransaksi", [Transaksi::class, "detailTransaksi"])->middleware([CekCustomer::class]);
         Route::post("/tambahTransaksi", [Transaksi::class, "tambahTransaksi"]);
         Route::post("/batalBooking", [Transaksi::class, "batalBooking"]);
         Route::get("/deleteAlatDetail/{id}", [Transaksi::class, "deleteAlatDetail"]);
@@ -865,7 +871,7 @@ Route::prefix("/customer")->group(function(){
     //bagian transaksi
     Route::prefix("/extend")->group(function(){
         Route::post("/tambahWaktu", [Transaksi::class, "tambahWaktu"]);
-        Route::get("/detailTambahWaktu", [Transaksi::class, "detailTambahWaktu"]);
+        Route::get("/detailTambahWaktu", [Transaksi::class, "detailTambahWaktu"])->middleware([CekCustomer::class]);
     });
 
     Route::post("/tambahKeranjang", [Transaksi::class, "tambahKeranjang"]);
@@ -880,6 +886,8 @@ Route::prefix("/customer")->group(function(){
         Route::get("/topupSaldo", function () {
             $kat = new kategori();
             $param["kategori"] = $kat->get_all_data();
+            $kot = new ModelsLapanganOlahraga();
+            $param["kota"] = $kot->get_kota();
             return view("customer.topup")->with($param);
         })->middleware([CekCustomer::class]);
         Route::post("/midtrans-callback", [Saldo::class, "callback"]);
@@ -890,6 +898,9 @@ Route::prefix("/customer")->group(function(){
         Route::get("/detailRating/{id}", function ($id) {
             $kat = new kategori();
             $param["kategori"] = $kat->get_all_data();
+
+            $kot = new ModelsLapanganOlahraga();
+            $param["kota"] = $kot->get_kota();
 
             $htrans = new ModelsHtrans();
             $param["htrans"] = $htrans->get_all_data_by_id($id);

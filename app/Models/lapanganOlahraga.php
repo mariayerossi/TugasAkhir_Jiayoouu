@@ -61,6 +61,10 @@ class lapanganOlahraga extends Model
         return lapanganOlahraga::where('deleted_at',"=",null)->count();
     }
 
+    public function get_kota(){
+        return lapanganOlahraga::where('deleted_at',"=",null)->distinct()->get("kota_lapangan");
+    }
+
     public function updateLapangan($data){
         $lapa = lapanganOlahraga::find($data["id"]);
         $lapa->nama_lapangan = $data["nama"];

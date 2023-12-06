@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\customer;
 use App\Models\kategori;
+use App\Models\lapanganOlahraga;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\notifikasiEmail;
@@ -41,6 +42,8 @@ class Saldo extends Controller
 
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+        $kot = new lapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
         $param["isi"] = $params;
         return view('customer.detailTopup', compact('snapToken'))->with($param);
     }
