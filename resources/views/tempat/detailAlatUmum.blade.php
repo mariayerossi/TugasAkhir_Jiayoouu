@@ -274,10 +274,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">
-                        <h6>Tanggal Pinjam</h6>
+                        <h6>Durasi Pinjam</h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                        <input type="date" name="tgl_mulai" id="" class="form-control" value="{{old('tgl_mulai')}}">
+                        {{-- <input type="date" name="tgl_mulai" id="" class="form-control" value="{{old('tgl_mulai')}}"> --}}
+                        <input type="text" class="form-control" name="durasi_pinjam" value="{{old('durasi_pinjam')}}" />
                     </div>
                 </div>
                 <div class="row">
@@ -333,6 +334,15 @@
             document.getElementById('sewaActual').value = '';
         }
     }
+    $(function() {
+  $('input[name="durasi_pinjam"]').daterangepicker({
+    startDate: moment().add(2, 'day'),
+    endDate: moment().add(6, 'day'),
+    locale: {
+      format: 'DD/MM/YYYY'
+    }
+  });
+});
 </script>
 @else
     <h1>Alat Olahraga tidak tersedia</h1>

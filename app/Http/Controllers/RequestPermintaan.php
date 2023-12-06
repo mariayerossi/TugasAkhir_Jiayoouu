@@ -16,18 +16,18 @@ use Illuminate\Support\Facades\Session;
 class RequestPermintaan extends Controller
 {
     public function ajukanPermintaan(Request $request){
+        // dd($request->all());
         $request->validate([
             "harga" => "required",
-            "tgl_mulai" => "required",
-            "tgl_selesai" => "required",
+            "durasi_pinjam" => "required",
             "lapangan" => "required"
         ],[
             "harga.required" => "harga sewa tidak boleh kosong!",
-            "tgl_mulai.required" => "tanggal pinjam tidak boleh kosong!",
-            "tgl_selesai.required" => "tanggal kembali tidak boleh kosong!",
+            "durasi_pinjam.required" => "durasi pinjam tidak boleh kosong!",
             "lapangan.required" => "lapangan tidak boleh kosong!"
         ]);
-        // dd($request->id_pemilik);
+        // benerin format durasinya
+
         
         $array = explode("-", $request->lapangan);
 
