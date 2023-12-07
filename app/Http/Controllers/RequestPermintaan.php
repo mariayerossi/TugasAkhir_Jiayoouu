@@ -27,7 +27,9 @@ class RequestPermintaan extends Controller
             "lapangan.required" => "lapangan tidak boleh kosong!"
         ]);
         // benerin format durasinya
-
+        $array1 = explode(" - ", $request->durasi_pinjam);
+        $tgl_mulai = str_replace("/", "-", $array1[0]);
+        $tgl_selesai = str_replace("/", "-", $array1[1]);
         
         $array = explode("-", $request->lapangan);
 
@@ -44,8 +46,8 @@ class RequestPermintaan extends Controller
         date_default_timezone_set("Asia/Jakarta");
         $tgl_minta = date("Y-m-d H:i:s");
 
-        $date_mulai = new DateTime($request->tgl_mulai);
-        $date_selesai = new DateTime($request->tgl_selesai);
+        $date_mulai = new DateTime($tgl_mulai);
+        $date_selesai = new DateTime($tgl_selesai);
         
         if ($date_selesai <= $date_mulai) {
             return redirect()->back()->withInput()->with("error", "Tanggal kembali tidak sesuai!");
@@ -57,8 +59,8 @@ class RequestPermintaan extends Controller
             $data = [
                 "harga" => $harga,
                 "lapangan" => $array[0],
-                "mulai" => $request->tgl_mulai,
-                "selesai" => $request->tgl_selesai,
+                "mulai" => $date_mulai,
+                "selesai" => $date_selesai,
                 "id_alat" => $request->id_alat,
                 "id_tempat" => $request->id_tempat,
                 "id_pemilik" => $request->id_pemilik,

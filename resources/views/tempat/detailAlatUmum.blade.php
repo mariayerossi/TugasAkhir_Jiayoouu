@@ -137,6 +137,10 @@
                     <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                     </svg> {{ $averageRating }} rating ({{ $totalReviews }})
                 </p>
+                @php
+                    $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$alat->first()->fk_id_pemilik)->first()->nama_pemilik;
+                @endphp
+                <p><i class="bi bi-geo-alt"></i>{{$pemilik}}, Kota {{$alat->first()->kota_alat}}</p>
                 <h5>Komisi Pemilik Alat:</h5>
                 <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
             </div>
@@ -175,6 +179,10 @@
                     <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                     </svg> {{ $averageRating }} rating ({{ $totalReviews }})
                 </p>
+                @php
+                    $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$alat->first()->fk_id_pemilik)->first()->nama_pemilik;
+                @endphp
+                <p><i class="bi bi-geo-alt"></i>{{$pemilik}}, Kota {{$alat->first()->kota_alat}}</p>
                 <h5>Komisi Pemilik Alat:</h5>
                 <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
             </div>
@@ -281,14 +289,14 @@
                         <input type="text" class="form-control" name="durasi_pinjam" value="{{old('durasi_pinjam')}}" />
                     </div>
                 </div>
-                <div class="row">
+                {{-- <div class="row">
                     <div class="col-md-4 col-12 mt-2">
                         <h6>Tanggal Kembali</h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
                         <input type="date" name="tgl_selesai" id="" class="form-control" value="{{old('tgl_selesai')}}">
                     </div>
-                </div>
+                </div> --}}
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">
                         <h6>Lapangan <i class="bi bi-info-circle" data-toggle="tooltip" title="Pilih lapangan mana alat olahraga ini akan digunakan."></i></h6>
@@ -334,6 +342,36 @@
             document.getElementById('sewaActual').value = '';
         }
     }
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const kotaAlatInput = document.querySelector('input[name="kota_alat"]');
+        const lapangan = document.querySelector('select[name="lapangan"]');
+
+        form.addEventListener('submit', function(e) {
+            let selectedOption = lapangan.options[lapangan.selectedIndex].value;
+            let kotaLapangan = selectedOption.split('-')[1];
+
+            if (kotaAlatInput.value !== kotaLapangan) {
+                e.preventDefault();
+
+                swal({
+                    title: "Apakah anda yakin?",
+                    text: "Alat olahraga ini berasal dari kota yang berbeda dengan kota tempat lapangan anda",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Lanjutkan",
+                    cancelButtonText: "Batalkan",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        form.submit();
+                    }
+                });
+            }
+        });
+    });
     $(function() {
   $('input[name="durasi_pinjam"]').daterangepicker({
     startDate: moment().add(2, 'day'),

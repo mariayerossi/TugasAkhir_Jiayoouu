@@ -181,7 +181,7 @@
     @php
         $dataTempat  = DB::table('pihak_tempat')->where("id_tempat","=",$lapangan->first()->pemilik_lapangan)->get()->first();
     @endphp
-    <p class="mb-2">{{$dataTempat->nama_tempat}}, Kota {{$lapangan->first()->kota_lapangan}}</p>
+    <p class="mb-2"><i class="bi bi-geo-alt"></i> {{$dataTempat->nama_tempat}}, Kota {{$lapangan->first()->kota_lapangan}}</p>
 
     @php
         $averageRating = DB::table('rating_lapangan')

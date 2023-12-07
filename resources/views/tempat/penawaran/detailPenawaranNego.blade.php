@@ -171,11 +171,11 @@
 
             <div class="col-md-6 col-sm-12 mb-3">
             </div>
-            
-            <div class="row mb-3 mt-3">
-                <div class="col-md-6 col-sm-12 mb-3">
-                    <h6>Tanggal Mulai Dipinjam:</h6>
-                    @if ($penawaran->first()->req_tanggal_mulai != null)
+
+            @if ($penawaran->first()->req_tanggal_mulai != null && $penawaran->first()->req_tanggal_selesai != null)
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        <h6>Tanggal Mulai Dipinjam:</h6>
                         @php
                             $tanggalAwal2 = $penawaran->first()->req_tanggal_mulai;
                             $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
@@ -183,20 +183,9 @@
                             $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY');
                         @endphp
                         <p>{{$tanggalBaru2}}</p>
-                    @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
-                        <div class="input-group">
-                            <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
-                            <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
-                            <input type="date" name="tanggal_mulai" value="{{ old('tanggal_mulai') ?? $penawaran->first()->req_tanggal_mulai }}" class="form-control">
-                            {{-- <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">Edit Tanggal</button>
-                            </div> --}}
-                        </div>
-                    @endif
-                </div>
-                <div class="col-md-6 col-sm-12 mb-3">
-                    <h6>Tanggal Selesai Dipinjam:</h6>
-                    @if ($penawaran->first()->req_tanggal_selesai != null)
+                    </div>
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        <h6>Tanggal Selesai Dipinjam:</h6>
                         @php
                             $tanggalAwal3 = $penawaran->first()->req_tanggal_selesai;
                             $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
@@ -204,18 +193,18 @@
                             $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY');
                         @endphp
                         <p>{{$tanggalBaru3}}</p>
-                    @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
-                        <div class="input-group">
-                            <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
-                            <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
-                            <input type="date" name="tanggal_selesai" value="{{ old('tanggal_selesai') ?? $penawaran->first()->req_tanggal_selesai }}" class="form-control">
-                            {{-- <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">Edit Tanggal</button>
-                            </div> --}}
-                        </div>
-                    @endif
+                    </div>
                 </div>
-            </div>
+            @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        <h6>Durasi Pinjam:</h6>
+                        <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                        <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
+                        <input type="text" class="form-control" name="durasi_pinjam" value="{{old('durasi_pinjam')}}" />
+                    </div>
+                </div>
+            @endif
         </div>
     @if ($penawaran->first()->status_penawaran == "Menunggu")
         <div class="container">
@@ -481,6 +470,15 @@
     </div>
 </div>
 <script>
+    $(function() {
+        $('input[name="durasi_pinjam"]').daterangepicker({
+            startDate: moment().add(2, 'day'),
+            endDate: moment().add(6, 'day'),
+            locale: {
+            format: 'DD/MM/YYYY'
+            }
+        });
+    });
     function formatNumber(input) {
         let value = input.value;
         value = value.replace(/\D/g, '');
@@ -702,6 +700,7 @@
             }
         });
     });
+    
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 @endsection
