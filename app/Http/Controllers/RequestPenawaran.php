@@ -144,7 +144,6 @@ class RequestPenawaran extends Controller
         $dataAlat = $alat->get_all_data_by_id($dataReq->req_id_alat)->first();
         if ($dataAlat->status_alat == "Aktif") {
             if ($dataReq->status_penawaran == "Menunggu") {
-
                 //cek dulu apakah harga sewa dan tanggal masih null atau tidak
                 if ($request->harga_sewa != null) {
                     //cek apakah request harga lebih kecil dari komisi
@@ -160,10 +159,14 @@ class RequestPenawaran extends Controller
                     $pen = new ModelsRequestPenawaran();
                     $pen->updateHargaSewa($dataH);
 
-                    if ($request->tanggal_mulai != null && $request->tanggal_selesai != null) {
+                    if ($request->durasi_pinjam != null) {
                         //cek apakah tanggal awal lbh awal dari tanggal berakhir?
-                        $date_mulai = new DateTime($request->tanggal_mulai);
-                        $date_selesai = new DateTime($request->tanggal_selesai);
+                        $array1 = explode(" - ", $request->durasi_pinjam);
+                        $tgl_mulai = str_replace("/", "-", $array1[0]);
+                        $tgl_selesai = str_replace("/", "-", $array1[1]);
+
+                        $date_mulai = new DateTime($tgl_mulai);
+                        $date_selesai = new DateTime($tgl_selesai);
                         
                         if ($date_selesai <= $date_mulai) {
                             return redirect()->back()->withInput()->with("error", "Tanggal kembali tidak sesuai!");
@@ -174,10 +177,10 @@ class RequestPenawaran extends Controller
                             $tgl_minta = date("Y-m-d H:i:s");
 
                             if ($request->status_penawaran == "Menunggu") {
-                                if (new DateTime($request->tanggal_mulai) > new DateTime($tgl_minta)) {
+                                if ($date_mulai > new DateTime($tgl_minta)) {
                                     $data = [
                                         "id" => $request->id_penawaran,
-                                        "tanggal" => $request->tanggal_mulai
+                                        "tanggal" => $date_mulai
                                     ];
                                     $pen = new ModelsRequestPenawaran();
                                     $pen->updateTanggalMulai($data);
@@ -195,10 +198,10 @@ class RequestPenawaran extends Controller
                             $tgl_minta = date("Y-m-d H:i:s");
 
                             if ($request->status_penawaran == "Menunggu") {
-                                if (new DateTime($request->tanggal_selesai) > new DateTime($tgl_minta)) {
+                                if ($date_selesai > new DateTime($tgl_minta)) {
                                     $data = [
                                         "id" => $request->id_penawaran,
-                                        "tanggal" => $request->tanggal_selesai
+                                        "tanggal" => $date_selesai
                                     ];
                                     $pen = new ModelsRequestPenawaran();
                                     $pen->updateTanggalSelesai($data);
