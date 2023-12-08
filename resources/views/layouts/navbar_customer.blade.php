@@ -150,7 +150,7 @@ Sportiva
                 <form action="/customer/searchLapangan" method="GET" class="input-group">
                     @csrf
                     <div class="input-group-prepend d-none d-md-block">
-                        <select class="form-select" name="kota">
+                        <select class="form-select" name="kota" style="border-radius: 10px 0 0 10px">
                             <option value="" disabled selected>Kota</option> 
                             <option value="">Semua</option> 
                             @if (!$kota->isEmpty())
@@ -161,7 +161,7 @@ Sportiva
                         </select>
                     </div>
                     <div class="input-group-prepend d-none d-md-block">
-                        <select class="form-select" name="kategori">
+                        <select class="form-select" name="kategori" style="border-radius: 0px">
                             <option value="" disabled selected>Kategori</option> 
                             <option value="">Semua</option>
                             @if (!$kategori->isEmpty())
@@ -171,9 +171,9 @@ Sportiva
                             @endif
                         </select>
                     </div>
-                    <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan/Tempat Olahraga" style="border-radius: 5px"> 
+                    <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan/Tempat Olahraga"> 
                     <div class="input-group-append">
-                        <button class="btn" type="submit" style="background-color: #007466; color:white;">
+                        <button class="btn" type="submit" style="background-color: #007466; color:white;border-radius: 0 10px 10px 0;">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
