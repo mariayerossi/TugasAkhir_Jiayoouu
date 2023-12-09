@@ -362,7 +362,7 @@ Route::prefix("/pemilik")->group(function(){
     //     return view("pemilik.cariLapangan")->with($param);
     // })->middleware([CekPemilik::class]);
     Route::get("/cariLapangan", [LapanganOlahraga::class, "cariLapangan"])->middleware([CekPemilik::class]);
-    Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapangan"]);
+    Route::get("/searchLapangan", [LapanganOlahraga::class, "sedafarchLapangan"]);
     Route::get("/detailLapanganUmum/{id}", function ($id) {//melihat detail lapangan olahraga milik org lain
         $lapa = new ModelsLapanganOlahraga();
         $param["lapangan"] = $lapa->get_all_data_by_id($id);
