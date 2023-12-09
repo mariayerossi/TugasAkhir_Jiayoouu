@@ -228,7 +228,11 @@ class AlatOlahraga extends Controller
         if ($request->filled('kategori')) {
             $query->where('fk_id_kategori', $request->kategori);
         }
-        
+
+        if ($request->filled('kota')) {
+            $query->where('kota_alat', $request->kota);
+        }
+
         if ($request->filled('cari')) {
             $query->where('nama_alat', 'like', '%' . $request->cari . '%');
         }
@@ -244,6 +248,9 @@ class AlatOlahraga extends Controller
         // dd($hasil);
         $kat = new kategori();
         $kategori = $kat->get_all_data();
+        
+        $kot = new ModelsAlatOlahraga();
+        $kota = $kot->get_kota();
 
         // $files = new filesAlatOlahraga();
 
@@ -251,10 +258,10 @@ class AlatOlahraga extends Controller
         $role = Session::get("role");
         if ($role == "tempat") {
             // mengirimkan data ke tampilan
-            return view('tempat.cariAlat', ['alat' => $hasil, 'kategori' => $kategori]);
+            return view('tempat.cariAlat', ['alat' => $hasil, 'kategori' => $kategori, 'kota' => $kota]);
         }
         else if ($role == "admin") {
-            return view('admin.produk.cariAlat', ['alat' => $hasil, 'kategori' => $kategori]);
+            return view('admin.produk.cariAlat', ['alat' => $hasil, 'kategori' => $kategori, 'kota' => $kota]);
         }
     }
 
@@ -339,6 +346,9 @@ class AlatOlahraga extends Controller
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
 
+        $kot = new ModelsAlatOlahraga();
+        $param["kota"] = $kot->get_kota();
+
         $data = DB::table('alat_olahraga')
                 ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.kota_alat")
                 ->joinSub(function($query) {
@@ -357,6 +367,9 @@ class AlatOlahraga extends Controller
     public function cariAlat() {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+
+        $kot = new ModelsAlatOlahraga();
+        $param["kota"] = $kot->get_kota();
 
         $data = DB::table('alat_olahraga')
                 ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.kota_alat")

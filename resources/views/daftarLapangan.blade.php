@@ -86,8 +86,19 @@ Sportiva
       <div class="d-flex justify-content-center align-items-center mb-3"> 
         <form action="/searchLapangan" method="GET" class="input-group responsive-form">
             @csrf
+            <div class="input-group-prepend d-none d-md-block">
+                <select class="form-select" name="kota" style="border-radius: 10px 0 0 10px">
+                    <option value="" disabled selected>Kota</option> 
+                    <option value="">Semua</option> 
+                    @if (!$kota->isEmpty())
+                        @foreach ($kota as $item)
+                        <option value="{{$item->kota_lapangan}}">{{$item->kota_lapangan}}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
             <div class="input-group-prepend">
-                <select class="form-control" name="kategori">
+                <select class="form-select" name="kategori" style="border-radius: 0px">
                     <option value="" disabled selected>Kategori</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
@@ -99,7 +110,7 @@ Sportiva
             <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan dan Tempat Olahraga...">
             {{-- <input type="text" name="cariPemilik" class="form-control" placeholder="Cari Tempat Olahraga..."> --}}
             <div class="input-group-append">
-                <button class="btn btn-success" type="submit">
+                <button class="btn btn-success" type="submit" style="background-color: #007466; color:white;border-radius: 0 10px 10px 0;">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
@@ -140,6 +151,8 @@ Sportiva
                     </a>
                 </div>
             @endforeach
+        @else
+        <h5 class="text-center mt-5">Tidak ada lapangan olahraga yang tersedia!</h5>
         @endif
     </div>
     </div>
@@ -148,14 +161,14 @@ Sportiva
   <!-- Section: Design Block -->
   
   <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
+  <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
+  <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+  <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
 
   <!-- Template Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script src="{{ asset('assets/js/main.js') }}"></script>
 </body>

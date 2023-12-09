@@ -50,9 +50,21 @@
     <div class="d-flex justify-content-center align-items-center mt-3 mb-3"> 
         <form action="/tempat/searchAlat" method="GET" class="input-group responsive-form">
             @csrf
+            <div class="input-group-prepend d-none d-md-block">
+                <select class="form-select" name="kota" style="border-radius: 10px 0 0 10px">
+                    <option value="" disabled selected>Kota</option> 
+                    <option value="">Semua</option> 
+                    @if (!$kota->isEmpty())
+                        @foreach ($kota as $item)
+                        <option value="{{$item->kota_alat}}">{{$item->kota_alat}}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
             <div class="input-group-prepend">
-                <select class="form-control" name="kategori">
+                <select class="form-select" name="kategori" style="border-radius: 0px">
                     <option value="" disabled selected>Kategori</option> 
+                    <option value="">Semua</option> 
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
                         <option value="{{$item->id_kategori}}">{{$item->nama_kategori}}</option>
@@ -62,7 +74,7 @@
             </div>
             <input type="text" name="cari" class="form-control" placeholder="Cari Alat..."> 
             <div class="input-group-append">
-                <button class="btn" type="submit" style="background-color: #007466; color:white;">
+                <button class="btn" type="submit" style="background-color: #007466; color:white;border-radius: 0 10px 10px 0;">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
@@ -107,6 +119,8 @@
                     </a>
                 </div>
             @endforeach
+        @else
+            <h5 class="text-center mt-5">Tidak ada alat olahraga yang tersedia!</h5>
         @endif
     </div>
 </div>

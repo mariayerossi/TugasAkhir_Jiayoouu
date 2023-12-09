@@ -63,6 +63,8 @@
                     </a>
                 </div>
             @endforeach
+        @else
+            <h5 class="text-center mt-5">Tidak ada lapangan olahraga yang tersedia!</h5>
         @endif
     </div>
 </div>

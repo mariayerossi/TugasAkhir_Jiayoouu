@@ -67,6 +67,10 @@ class alatOlahraga extends Model
         return alatOlahraga::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$id)->where("status_alat","=","Aktif")->get();
     }
 
+    public function get_kota(){
+        return alatOlahraga::where('deleted_at',"=",null)->distinct()->get("kota_alat");
+    }
+
     public function updateAlat($data){
         $alat = alatOlahraga::find($data["id"]);
         $alat->nama_alat = $data["nama"];

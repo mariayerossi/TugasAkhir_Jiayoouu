@@ -50,8 +50,19 @@
     <div class="d-flex justify-content-center align-items-center mt-3 mb-3"> 
         <form action="/admin/lapangan/searchLapangan" method="GET" class="input-group responsive-form">
             @csrf
+            <div class="input-group-prepend d-none d-md-block">
+                <select class="form-select" name="kota" style="border-radius: 10px 0 0 10px">
+                    <option value="" disabled selected>Kota</option> 
+                    <option value="">Semua</option> 
+                    @if (!$kota->isEmpty())
+                        @foreach ($kota as $item)
+                        <option value="{{$item->kota_lapangan}}">{{$item->kota_lapangan}}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
             <div class="input-group-prepend">
-                <select class="form-control" name="kategori">
+                <select class="form-select" name="kategori" style="border-radius: 0px">
                     <option value="" disabled selected>Kategori</option> 
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
@@ -63,7 +74,7 @@
             <input type="text" name="cari" class="form-control" placeholder="Cari Lapangan dan Tempat Olahraga...">
             {{-- <input type="text" name="cariPemilik" class="form-control" placeholder="Cari Tempat Olahraga..."> --}}
             <div class="input-group-append">
-                <button class="btn" type="submit" style="background-color: #007466; color:white;">
+                <button class="btn" type="submit" style="background-color: #007466; color:white;border-radius: 0 10px 10px 0;">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
@@ -107,6 +118,8 @@
                     </a>
                 </div>
             @endforeach
+        @else
+            <h5 class="text-center mt-5">Tidak ada lapangan olahraga yang tersedia!</h5>
         @endif
     </div>
 </div>

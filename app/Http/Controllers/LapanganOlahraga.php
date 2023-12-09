@@ -256,6 +256,10 @@ class LapanganOlahraga extends Controller
         if ($request->filled('kategori')) {
             $query->where('lapangan_olahraga.fk_id_kategori', $request->kategori);
         }
+
+        if ($request->filled('kota')) {
+            $query->where('lapangan_olahraga.kota_lapangan', $request->kota);
+        }
         
         if ($request->filled('cari')) {
             // $query->where('nama_lapangan', 'like', '%' . $request->cari . '%');
@@ -290,16 +294,19 @@ class LapanganOlahraga extends Controller
         $kat = new kategori();
         $kategori = $kat->get_all_data();
 
+        $kot = new ModelsLapanganOlahraga();
+        $kota = $kot->get_kota();
+
         // $files = new filesLapanganOlahraga();
 
         //Cek role siapa yang sedang search alat
         $role = Session::get("role");
         if ($role == "pemilik") {
             // mengirimkan data ke tampilan
-            return view('pemilik.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori]);
+            return view('pemilik.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'kota' => $kota]);
         }
         else if ($role == "admin") {
-            return view('admin.produk.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori]);
+            return view('admin.produk.cariLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'kota' => $kota]);
         }
     }
 
@@ -309,6 +316,10 @@ class LapanganOlahraga extends Controller
     
         if ($request->filled('kategori')) {
             $query->where('lapangan_olahraga.fk_id_kategori', $request->kategori);
+        }
+
+        if ($request->filled('kota')) {
+            $query->where('lapangan_olahraga.kota_lapangan', $request->kota);
         }
         
         if ($request->filled('cari')) {
@@ -336,12 +347,12 @@ class LapanganOlahraga extends Controller
         $kat = new kategori();
         $kategori = $kat->get_all_data();
 
+        $kot = new ModelsLapanganOlahraga();
+        $kota = $kot->get_kota();
+
         // $files = new filesLapanganOlahraga();
         // dd($hasil);
-        $param["lapangan"] = $hasil;
-        $param["kategori"] = $kategori;
-
-        return view('daftarLapangan')->with($param);
+        return view('daftarLapangan', ['lapangan' => $hasil, 'kategori' => $kategori, 'kota' =>$kota]);
     }
 
     public function searchLapanganCustomer(Request $request)
@@ -447,6 +458,9 @@ class LapanganOlahraga extends Controller
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
 
+        $kot = new ModelsLapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
+
         $data = DB::table('lapangan_olahraga')
                 ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
                 ->joinSub(function($query) {
@@ -466,6 +480,9 @@ class LapanganOlahraga extends Controller
     public function cariLapanganAdmin() {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
+
+        $kot = new ModelsLapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
 
         $data = DB::table('lapangan_olahraga')
                 ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan")
