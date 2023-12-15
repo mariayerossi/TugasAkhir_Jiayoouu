@@ -57,15 +57,15 @@
         @csrf
         <div class="d-flex justify-content-end mb-5">
             <select class="form-control" name="filter" style="width: 200px;">
-                <option value="1" selected>1 Bulan</option>
-                <option value="2">2 Bulan</option>
-                <option value="3">3 Bulan</option>
-                <option value="5">5 Bulan</option>
-                <option value="8">8 Bulan</option>
-                <option value="10">10 Bulan</option>
-                <option value="12">1 Tahun</option>
-                <option value="24">2 Tahun</option>
-                <option value="36">3 Tahun</option>
+                <option value="1" {{ $filter == "1 Bulan" ? 'selected' : '' }}>1 Bulan</option>
+                <option value="2" {{ $filter == "2 Bulan" ? 'selected' : '' }}>2 Bulan</option>
+                <option value="3" {{ $filter == "3 Bulan" ? 'selected' : '' }}>3 Bulan</option>
+                <option value="5" {{ $filter == "5 Bulan" ? 'selected' : '' }}>5 Bulan</option>
+                <option value="8" {{ $filter == "8 Bulan" ? 'selected' : '' }}>8 Bulan</option>
+                <option value="10" {{ $filter == "10 Bulan" ? 'selected' : '' }}>10 Bulan</option>
+                <option value="12" {{ $filter == "12 Bulan" ? 'selected' : '' }}>1 Tahun</option>
+                <option value="24" {{ $filter == "24 Bulan" ? 'selected' : '' }}>2 Tahun</option>
+                <option value="36" {{ $filter == "36 Bulan" ? 'selected' : '' }}>3 Tahun</option>
             </select>
             <button class="btn btn-primary" type="submit">Filter</button>
         </div>

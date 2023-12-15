@@ -29,7 +29,7 @@
 }
 
 .square-image-container img {
-    object-fit: cover;
+    <img style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $k->lampiran) }}" alt="">
     width: 100%;
     height: 100%;
 }

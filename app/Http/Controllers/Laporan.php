@@ -909,9 +909,12 @@ class Laporan extends Controller
         $totalData = array_values($total);
         // ...
 
+        $filter = "1 Bulan";
+
         $param["monthlyLabels"] = $labels;
         // dd($labels);
         // dd($monthlyIncomeData);
+        $param["filter"] = $filter;
         $param["monthlyIncome"] = $monthlyIncomeData;
         $param["alat"] = $dataAlat;
         $param["dtrans"] = $dataDtrans;
@@ -1001,10 +1004,12 @@ class Laporan extends Controller
             }
 
             $increasePercentage = number_format($increasePercentage, 2); // Format persentase dengan 2 desimal
-            // ...
+            
+            $filter = $request->filter . " Bulan";
 
             $param["monthlyLabels"] = $labels;
             $param["monthlyIncome"] = $monthlyIncomeData;
+            $param["filter"] = $filter;
             $param["alat"] = $dataAlat;
             $param["dtrans"] = $dataDtrans;
             $param["request"] = $req;
@@ -1013,57 +1018,7 @@ class Laporan extends Controller
             $param["total"] = $totalData;
             $param["increasePercentage"] = $increasePercentage;
         }
-        else if ($request->filter == "3") {
-            $monthlyIncome = [];
-            $total = [];
-            foreach ($dataDtrans as $data) {
-                $sewaDate = date('Y-m-d', strtotime($data->tanggal_sewa));
-
-                if ($sewaDate >= $startDate && $sewaDate <= $endDate) {
-                    $day = date('Y-m-d', strtotime($sewaDate));
-                    if (!isset($monthlyIncome[$day])) {
-                        $monthlyIncome[$day] = 1;
-                        $total[$day] = $data->total_komisi_tempat * 0.91;
-                    } else {
-                        $monthlyIncome[$day] += 1;
-                        $total[$day] += $data->total_komisi_tempat * 0.91;
-                    }
-                }
-            }
-
-            // Menghitung persentase kenaikan
-            $monthlyIncomeData = array_values($monthlyIncome); // Mengambil nilai dari array asosiatif
-            $totalData = array_values($total);
-            $currentMonth = end($monthlyIncomeData);
-            $previousMonth = prev($monthlyIncomeData);
-
-            if ($previousMonth === false) {
-                $increasePercentage = ($currentMonth > 0) ? 100 : 0;
-            } else {
-                $increasePercentage = round((($currentMonth - $previousMonth) / $previousMonth) * 100);
-            }
-
-            $increasePercentage = number_format($increasePercentage, 2);
-
-            $labels = array_keys($monthlyIncome); // Mengambil tanggal yang memiliki data
-            sort($labels); // Urutkan tanggal secara ascending
-            $labels = array_map(function ($date) {
-                return date('j M y', strtotime($date));
-            }, $labels);
-            // Mengambil tanggal yang memiliki data
-
-            $param["monthlyLabels"] = $labels;
-            $param["monthlyIncome"] = $monthlyIncomeData;
-            $param["alat"] = $dataAlat;
-            $param["dtrans"] = $dataDtrans;
-            $param["request"] = $req;
-            $param["mulai"] = $startDate;
-            $param["selesai"] = $endDate1;
-            $param["total"] = $totalData;
-            $param["increasePercentage"] = $increasePercentage;
-
-        }
-        else if ($request->filter >= "5") {
+        else if ($request->filter >= "3" && $request->filter < "36") {
             $endDate1 = date('Y-m-d');
             $endDate = date('Y-m-d', strtotime('+1 day', strtotime($endDate1)));
 
@@ -1115,8 +1070,80 @@ class Laporan extends Controller
 
             $increasePercentage = number_format($increasePercentage, 2);
 
+            $filter = $request->filter . " Bulan";
+
             $param["monthlyLabels"] = $labels;
             $param["monthlyIncome"] = $monthlyIncomeData;
+            $param["filter"] = $filter;
+            $param["alat"] = $dataAlat;
+            $param["dtrans"] = $dataDtrans;
+            $param["request"] = $req;
+            $param["mulai"] = $startDate;
+            $param["selesai"] = $endDate1;
+            $param["total"] = $totalData;
+            $param["increasePercentage"] = $increasePercentage;
+
+        }
+        else if ($request->filter == "36") {
+            // dd("ye");
+            $endDate1 = date('Y-m-d');
+            $endDate = date('Y-m-d', strtotime('+1 day', strtotime($endDate1)));
+
+            // Set the start date to July (7 months before the current date)
+            $startDate = date('Y-m-d', strtotime('-3 years', strtotime($endDate)));
+            $startDate = date('Y-m-d', strtotime('first day of next month', strtotime($startDate)));
+
+            $monthlyIncome = [];
+            $total = [];
+            foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
+                $dateStr = $date->format('Y');
+                $monthlyIncome[$dateStr] = 0;
+                $total[$dateStr] = 0;
+            }
+            // dd($monthlyIncome);
+        
+            foreach ($dataDtrans as $data) {
+                $sewaDate = date('Y', strtotime($data->tanggal_sewa));
+                // dd($sewaDate);
+            
+                if ($sewaDate >= $startDate && $sewaDate <= $endDate) {
+                    $year = date('Y', strtotime($sewaDate));
+                    // dd($day);
+                    $monthlyIncome[$year] += 1;
+                    $total[$year] += $data->total_komisi_tempat * 0.91;
+                }
+            }
+            // dd($monthlyIncome);
+            
+            $labels = [];
+            $currentDate = new DateTime($startDate);
+            $endDateTime = new DateTime();
+
+            while ($currentDate <= $endDateTime) {
+                $labels[] = $currentDate->format('Y');
+                $currentDate->add(new DateInterval('P1Y'));
+            }
+
+            $monthlyIncomeData = array_values($monthlyIncome);
+            // dd($monthlyIncomeData);
+            $totalData = array_values($total);
+
+            $currentMonth = end($monthlyIncomeData);
+            $previousMonth = prev($monthlyIncomeData);
+
+            if ($previousMonth == 0) {
+                $increasePercentage = ($currentMonth > 0) ? 100 : 0;
+            } else {
+                $increasePercentage = round((($currentMonth - $previousMonth) / $previousMonth) * 100);
+            }
+
+            $increasePercentage = number_format($increasePercentage, 2);
+
+            $filter = $request->filter . " Bulan";
+
+            $param["monthlyLabels"] = $labels;
+            $param["monthlyIncome"] = $monthlyIncomeData;
+            $param["filter"] = $filter;
             $param["alat"] = $dataAlat;
             $param["dtrans"] = $dataDtrans;
             $param["request"] = $req;
