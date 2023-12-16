@@ -53,10 +53,13 @@
         <h6>Tanggal Mulai Sewa: {{$tanggalBaru1}}</h6>
         <h6>Tanggal Selesai Sewa: {{$tanggalBaru2}}</h6>
     @endif
+    <div class="d-flex justify-content-end mb-5">
+        <a href="/tempat/laporan/pendapatan/CetakPDF/{{$mulai}}/{{$selesai}}" class="btn btn-primary" target="_blank">Cetak PDF</a>
+    </div>
     <form action="/tempat/laporan/disewakan/fiturPerAlat/{{$alat->id_alat}}" method="get">
         @csrf
         <div class="d-flex justify-content-end mb-5">
-            <select class="form-control" name="filter" style="width: 200px;">
+            <select class="form-control" name="filter" style="width: 200px;border-radius: 10px 0 0 10px;">
                 <option value="1" {{ $filter == "1 Bulan" ? 'selected' : '' }}>1 Bulan</option>
                 <option value="2" {{ $filter == "2 Bulan" ? 'selected' : '' }}>2 Bulan</option>
                 <option value="3" {{ $filter == "3 Bulan" ? 'selected' : '' }}>3 Bulan</option>
@@ -67,7 +70,7 @@
                 <option value="24" {{ $filter == "24 Bulan" ? 'selected' : '' }}>2 Tahun</option>
                 <option value="36" {{ $filter == "36 Bulan" ? 'selected' : '' }}>3 Tahun</option>
             </select>
-            <button class="btn btn-primary" type="submit">Filter</button>
+            <button class="btn btn-success" type="submit" style="border-radius: 0 10px 10px 0;">Filter</button>
         </div>
     </form>
 
