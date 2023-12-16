@@ -800,6 +800,7 @@ Route::prefix("/tempat")->group(function(){
             Route::get('/CetakPDF', [Laporan::class, "disewakanTempatCetakPDF"]);
             Route::get("/laporanPerAlat/{id}", [Laporan::class, "laporanPerAlatTempat"])->middleware([CekTempat::class]);
             Route::get("/fiturPerAlat/{id}", [Laporan::class, "fiturPerAlat"])->middleware([CekTempat::class]);
+            Route::get('/PerAlatCetakPDF/{id}/{filter}', [Laporan::class, "laporanPerAlatCetakPDF"]);
         });
 
         Route::prefix("/lapangan")->group(function(){

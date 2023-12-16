@@ -868,10 +868,12 @@ class Laporan extends Controller
     
         $monthlyIncome = [];
         $total = [];
+        $total2 = [];
         foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
             $dateStr = $date->format('Y-m-d');
             $monthlyIncome[$dateStr] = 0;
             $total[$dateStr] = 0;
+            $total2[$dateStr] = 0;
         }
         // dd($monthlyIncome);
     
@@ -882,6 +884,7 @@ class Laporan extends Controller
                 $day = date('Y-m-d', strtotime($sewaDate));
                 $monthlyIncome[$day] += 1;
                 $total[$day] += $data->total_komisi_tempat * 0.91;
+                $total2[$day] += $data->total_komisi_tempat;
             }
         }
         // dd($monthlyIncome);
@@ -907,6 +910,7 @@ class Laporan extends Controller
 
         $increasePercentage = number_format($increasePercentage, 2); // Format persentase dengan 2 desimal
         $totalData = array_values($total);
+        $totalData2 = array_values($total2);
         // ...
 
         $filter = "1 Bulan";
@@ -923,6 +927,7 @@ class Laporan extends Controller
         $param["selesai"] = $endDate1;
         $param["increasePercentage"] = $increasePercentage;
         $param["total"] = $totalData;
+        $param["totalKotor"] = $totalData2;
         return view("tempat.laporan.laporanPerAlat")->with($param);
     }
 
@@ -964,10 +969,12 @@ class Laporan extends Controller
         if ($request->filter == "1" || $request->filter == "2") {
             $monthlyIncome = [];
             $total = [];
+            $total2 = [];
             foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
                 $dateStr = $date->format('Y-m-d');
                 $monthlyIncome[$dateStr] = 0;
                 $total[$dateStr] = 0;
+                $total2[$dateStr] = 0;
             }
             // dd($monthlyIncome);
         
@@ -979,6 +986,7 @@ class Laporan extends Controller
                     // dd($day);
                     $monthlyIncome[$day] += 1;
                     $total[$day] += $data->total_komisi_tempat * 0.91;
+                    $total2[$day] += $data->total_komisi_tempat;
                 }
             }
             // dd($monthlyIncome);
@@ -993,6 +1001,7 @@ class Laporan extends Controller
         
             $monthlyIncomeData = array_values($monthlyIncome); // Mengambil nilai dari array asosiatif
             $totalData = array_values($total);
+            $totalData2 = array_values($total2);
 
             $currentMonth = end($monthlyIncomeData);
             $previousMonth = prev($monthlyIncomeData);
@@ -1016,6 +1025,7 @@ class Laporan extends Controller
             $param["mulai"] = $startDate;
             $param["selesai"] = $endDate1;
             $param["total"] = $totalData;
+            $param["totalKotor"] = $totalData2;
             $param["increasePercentage"] = $increasePercentage;
         }
         else if ($request->filter >= "3" && $request->filter < "36") {
@@ -1028,10 +1038,12 @@ class Laporan extends Controller
 
             $monthlyIncome = [];
             $total = [];
+            $total2 = [];
             foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
                 $dateStr = $date->format('Y-m');
                 $monthlyIncome[$dateStr] = 0;
                 $total[$dateStr] = 0;
+                $total2[$dateStr] = 0;
             }
             // dd($monthlyIncome);
         
@@ -1043,6 +1055,7 @@ class Laporan extends Controller
                     // dd($day);
                     $monthlyIncome[$day] += 1;
                     $total[$day] += $data->total_komisi_tempat * 0.91;
+                    $total2[$day] += $data->total_komisi_tempat;
                 }
             }
             // dd($total);
@@ -1058,6 +1071,7 @@ class Laporan extends Controller
 
             $monthlyIncomeData = array_values($monthlyIncome);
             $totalData = array_values($total);
+            $totalData2 = array_values($total2);
 
             $currentMonth = end($monthlyIncomeData);
             $previousMonth = prev($monthlyIncomeData);
@@ -1081,6 +1095,7 @@ class Laporan extends Controller
             $param["mulai"] = $startDate;
             $param["selesai"] = $endDate1;
             $param["total"] = $totalData;
+            $param["totalKotor"] = $totalData2;
             $param["increasePercentage"] = $increasePercentage;
 
         }
@@ -1095,10 +1110,12 @@ class Laporan extends Controller
 
             $monthlyIncome = [];
             $total = [];
+            $total2 = [];
             foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
                 $dateStr = $date->format('Y');
                 $monthlyIncome[$dateStr] = 0;
                 $total[$dateStr] = 0;
+                $total2[$dateStr] = 0;
             }
             // dd($monthlyIncome);
         
@@ -1111,6 +1128,7 @@ class Laporan extends Controller
                     // dd($day);
                     $monthlyIncome[$year] += 1;
                     $total[$year] += $data->total_komisi_tempat * 0.91;
+                    $total2[$year] += $data->total_komisi_tempat;
                 }
             }
             // dd($monthlyIncome);
@@ -1127,6 +1145,7 @@ class Laporan extends Controller
             $monthlyIncomeData = array_values($monthlyIncome);
             // dd($monthlyIncomeData);
             $totalData = array_values($total);
+            $totalData2 = array_values($total2);
 
             $currentMonth = end($monthlyIncomeData);
             $previousMonth = prev($monthlyIncomeData);
@@ -1150,10 +1169,261 @@ class Laporan extends Controller
             $param["mulai"] = $startDate;
             $param["selesai"] = $endDate1;
             $param["total"] = $totalData;
+            $param["totalKotor"] = $totalData2;
             $param["increasePercentage"] = $increasePercentage;
 
         }
         return view("tempat.laporan.laporanPerAlat")->with($param);
+    }
+
+    public function laporanPerAlatCetakPDF(Request $request) {
+        $arr = explode(" ", $request->filter);
+        $filter = $arr[0];
+
+        $endDate1 = date('Y-m-d');
+        $endDate = date('Y-m-d', strtotime('+1 day', strtotime($endDate1)));
+    
+        // Mengambil tanggal satu bulan sebelumnya dari tanggal hari ini
+        $startDate = date('Y-m-d', strtotime('-'.$filter.' month', strtotime($endDate)));
+        $startDate = date('Y-m-d', strtotime('+1 day', strtotime($startDate)));
+
+        $dataAlat = DB::table('alat_olahraga')
+            ->where("id_alat","=",$request->id)
+            ->get()
+            ->first();
+        
+        $req = DB::table('request_permintaan')
+            ->where("req_id_alat","=",$request->id)
+            ->where("fk_id_tempat","=",Session::get("dataRole")->id_tempat)
+            ->get()
+            ->first();
+        if ($req == null) {
+            $req = DB::table('request_penawaran')
+            ->where("req_id_alat","=",$request->id)
+            ->where("fk_id_tempat","=",Session::get("dataRole")->id_tempat)
+            ->get()
+            ->first();
+        }
+    
+        $dataDtrans = DB::table('dtrans')
+            ->select("htrans.tanggal_sewa","dtrans.total_komisi_tempat")
+            ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+            ->where("dtrans.fk_id_alat","=",$request->id)
+            ->whereBetween('htrans.tanggal_sewa', [$startDate, $endDate])
+            ->get();
+        // dd($dataDtrans);
+    
+        if ($filter == "1" || $filter == "2") {
+            $monthlyIncome = [];
+            $total = [];
+            $total2 = [];
+            foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
+                $dateStr = $date->format('Y-m-d');
+                $monthlyIncome[$dateStr] = 0;
+                $total[$dateStr] = 0;
+                $total2[$dateStr] = 0;
+            }
+            // dd($monthlyIncome);
+        
+            foreach ($dataDtrans as $data) {
+                $sewaDate = date('Y-m-d', strtotime($data->tanggal_sewa));
+            
+                if ($sewaDate >= $startDate && $sewaDate <= $endDate) {
+                    $day = date('Y-m-d', strtotime($sewaDate));
+                    // dd($day);
+                    $monthlyIncome[$day] += 1;
+                    $total[$day] += $data->total_komisi_tempat * 0.91;
+                    $total2[$day] += $data->total_komisi_tempat;
+                }
+            }
+            // dd($monthlyIncome);
+            
+            $labels = [];
+            $currentDate = $startDate;
+            
+            while (strtotime($currentDate) <= strtotime($endDate)) {
+                $labels[] = date('j M y', strtotime($currentDate));
+                $currentDate = date('Y-m-d', strtotime($currentDate . ' +1 day'));
+            }
+        
+            $monthlyIncomeData = array_values($monthlyIncome); // Mengambil nilai dari array asosiatif
+            $totalData = array_values($total);
+            $totalData2 = array_values($total2);
+
+            $currentMonth = end($monthlyIncomeData);
+            $previousMonth = prev($monthlyIncomeData);
+
+            if ($previousMonth == 0) {
+                $increasePercentage = ($currentMonth > 0) ? 100 : 0;
+            } else {
+                $increasePercentage = round((($currentMonth - $previousMonth) / $previousMonth) * 100);
+            }
+
+            $increasePercentage = number_format($increasePercentage, 2); // Format persentase dengan 2 desimal
+            
+            $filter = $filter . " Bulan";
+
+            $param["monthlyLabels"] = $labels;
+            $param["monthlyIncome"] = $monthlyIncomeData;
+            $param["filter"] = $filter;
+            $param["alat"] = $dataAlat;
+            $param["dtrans"] = $dataDtrans;
+            $param["request"] = $req;
+            $param["mulai"] = $startDate;
+            $param["selesai"] = $endDate1;
+            $param["total"] = $totalData;
+            $param["totalKotor"] = $totalData2;
+            $param["increasePercentage"] = $increasePercentage;
+        }
+        else if ($filter >= "3" && $filter < "36") {
+            $endDate1 = date('Y-m-d');
+            $endDate = date('Y-m-d', strtotime('+1 day', strtotime($endDate1)));
+
+            // Set the start date to July (7 months before the current date)
+            $startDate = date('Y-m-d', strtotime('-'.$filter.' months', strtotime($endDate)));
+            $startDate = date('Y-m-d', strtotime('first day of next month', strtotime($startDate)));
+
+            $monthlyIncome = [];
+            $total = [];
+            $total2 = [];
+            foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
+                $dateStr = $date->format('Y-m');
+                $monthlyIncome[$dateStr] = 0;
+                $total[$dateStr] = 0;
+                $total2[$dateStr] = 0;
+            }
+            // dd($monthlyIncome);
+        
+            foreach ($dataDtrans as $data) {
+                $sewaDate = date('Y-m', strtotime($data->tanggal_sewa));
+            
+                if ($sewaDate >= $startDate && $sewaDate <= $endDate) {
+                    $day = date('Y-m', strtotime($sewaDate));
+                    // dd($day);
+                    $monthlyIncome[$day] += 1;
+                    $total[$day] += $data->total_komisi_tempat * 0.91;
+                    $total2[$day] += $data->total_komisi_tempat;
+                }
+            }
+            // dd($total);
+            
+            $labels = [];
+            $currentDate = new DateTime($startDate);
+            $endDateTime = new DateTime();
+
+            while ($currentDate <= $endDateTime) {
+                $labels[] = $currentDate->format('M Y');
+                $currentDate->add(new DateInterval('P1M'));
+            }
+
+            $monthlyIncomeData = array_values($monthlyIncome);
+            $totalData = array_values($total);
+            $totalData2 = array_values($total2);
+
+            $currentMonth = end($monthlyIncomeData);
+            $previousMonth = prev($monthlyIncomeData);
+
+            if ($previousMonth == 0) {
+                $increasePercentage = ($currentMonth > 0) ? 100 : 0;
+            } else {
+                $increasePercentage = round((($currentMonth - $previousMonth) / $previousMonth) * 100);
+            }
+
+            $increasePercentage = number_format($increasePercentage, 2);
+
+            $filter = $filter . " Bulan";
+
+            $param["monthlyLabels"] = $labels;
+            $param["monthlyIncome"] = $monthlyIncomeData;
+            $param["filter"] = $filter;
+            $param["alat"] = $dataAlat;
+            $param["dtrans"] = $dataDtrans;
+            $param["request"] = $req;
+            $param["mulai"] = $startDate;
+            $param["selesai"] = $endDate1;
+            $param["total"] = $totalData;
+            $param["totalKotor"] = $totalData2;
+            $param["increasePercentage"] = $increasePercentage;
+
+        }
+        else if ($filter == "36") {
+            // dd("ye");
+            $endDate1 = date('Y-m-d');
+            $endDate = date('Y-m-d', strtotime('+1 day', strtotime($endDate1)));
+
+            // Set the start date to July (7 months before the current date)
+            $startDate = date('Y-m-d', strtotime('-3 years', strtotime($endDate)));
+            $startDate = date('Y-m-d', strtotime('first day of next month', strtotime($startDate)));
+
+            $monthlyIncome = [];
+            $total = [];
+            $total2 = [];
+            foreach (new DatePeriod(new DateTime($startDate), new DateInterval('P1D'), new DateTime($endDate)) as $date) {
+                $dateStr = $date->format('Y');
+                $monthlyIncome[$dateStr] = 0;
+                $total[$dateStr] = 0;
+                $total2[$dateStr] = 0;
+            }
+            // dd($monthlyIncome);
+        
+            foreach ($dataDtrans as $data) {
+                $sewaDate = date('Y', strtotime($data->tanggal_sewa));
+                // dd($sewaDate);
+            
+                if ($sewaDate >= $startDate && $sewaDate <= $endDate) {
+                    $year = date('Y', strtotime($sewaDate));
+                    // dd($day);
+                    $monthlyIncome[$year] += 1;
+                    $total[$year] += $data->total_komisi_tempat * 0.91;
+                    $total2[$year] += $data->total_komisi_tempat;
+                }
+            }
+            // dd($monthlyIncome);
+            
+            $labels = [];
+            $currentDate = new DateTime($startDate);
+            $endDateTime = new DateTime();
+
+            while ($currentDate <= $endDateTime) {
+                $labels[] = $currentDate->format('Y');
+                $currentDate->add(new DateInterval('P1Y'));
+            }
+
+            $monthlyIncomeData = array_values($monthlyIncome);
+            // dd($monthlyIncomeData);
+            $totalData = array_values($total);
+            $totalData2 = array_values($total2);
+
+            $currentMonth = end($monthlyIncomeData);
+            $previousMonth = prev($monthlyIncomeData);
+
+            if ($previousMonth == 0) {
+                $increasePercentage = ($currentMonth > 0) ? 100 : 0;
+            } else {
+                $increasePercentage = round((($currentMonth - $previousMonth) / $previousMonth) * 100);
+            }
+
+            $increasePercentage = number_format($increasePercentage, 2);
+
+            $filter = $filter . " Bulan";
+
+            $param["monthlyLabels"] = $labels;
+            $param["monthlyIncome"] = $monthlyIncomeData;
+            $param["filter"] = $filter;
+            $param["alat"] = $dataAlat;
+            $param["dtrans"] = $dataDtrans;
+            $param["request"] = $req;
+            $param["mulai"] = $startDate;
+            $param["selesai"] = $endDate1;
+            $param["total"] = $totalData;
+            $param["totalKotor"] = $totalData2;
+            $param["increasePercentage"] = $increasePercentage;
+
+        }
+        // dd($monthlyIncomeData);
+        $pdf = PDF::loadview('tempat.laporan.laporanPerAlat_pdf',['monthlyIncome'=> $monthlyIncomeData, 'monthlyLabels' => $labels, 'total' => $totalData, 'totalKotor' => $totalData2]);
+        // return $pdf->download('laporan-pendapatan-pdf');
+        return $pdf->stream();
     }
 
     public function laporanLapangan() {

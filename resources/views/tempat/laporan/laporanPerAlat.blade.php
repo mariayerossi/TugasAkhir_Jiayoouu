@@ -54,7 +54,7 @@
         <h6>Tanggal Selesai Sewa: {{$tanggalBaru2}}</h6>
     @endif
     <div class="d-flex justify-content-end mb-5">
-        <a href="/tempat/laporan/pendapatan/CetakPDF/{{$mulai}}/{{$selesai}}" class="btn btn-primary" target="_blank">Cetak PDF</a>
+        <a href="/tempat/laporan/disewakan/PerAlatCetakPDF/{{$alat->id_alat}}/{{$filter}}" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
     <form action="/tempat/laporan/disewakan/fiturPerAlat/{{$alat->id_alat}}" method="get">
         @csrf
@@ -101,6 +101,7 @@
                     <tr>
                         <th>Waktu Sewa</th>
                         <th>Total Sewa</th>
+                        <th>Total Pendapatan Kotor (sebelum biaya aplikasi)</th>
                         <th>Total Pendapatan Bersih</th>
                         <th>Persentase</th>
                     </tr>
@@ -115,6 +116,7 @@
                                 <tr>
                                     <td>{{ $label }}</td>
                                     <td>{{ $monthlyIncome[$index] }}</td>
+                                    <td>Rp {{ number_format($totalKotor[$index], 0, ',', '.') }}</td>
                                     <td>Rp {{ number_format($total[$index], 0, ',', '.') }}</td>
                                     <td>
                                         @if($index >= 0)
