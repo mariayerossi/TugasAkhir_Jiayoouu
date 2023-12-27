@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\notifikasiEmail;
 use App\Models\requestPenawaran;
 use App\Models\requestPermintaan;
+use DateInterval;
 use DateTime;
 
 class KomplainTrans extends Controller
@@ -34,6 +35,34 @@ class KomplainTrans extends Controller
         ]);
 
         date_default_timezone_set("Asia/Jakarta");
+
+        //cust hanya boleh ajukan komplain di jam sewa, contoh sewa jam 15:00 ya dikasih waktu ajukan komplain 14:40 - 15:20
+        $jam_sewa = DB::table('htrans')->where("deleted_at","=",null)->where("id_htrans","=",$request->id_htrans)->first()->jam_sewa;
+        $tgl_sewa = DB::table('htrans')->where("deleted_at","=",null)->where("id_htrans","=",$request->id_htrans)->first()->tanggal_sewa;
+        
+        $waktu_sewa = $tgl_sewa . " " . $jam_sewa;
+        $jam_skrg = date("Y-m-d H:i:s");
+        // dd($jam_skrg);
+        
+        $waktu_sewa2 = new DateTime($waktu_sewa);
+        $waktu_sewa2->sub(new DateInterval('PT20M'));//-20 menit
+        
+        $waktu_sewa3 = new DateTime($waktu_sewa);
+        $waktu_sewa3->add(new DateInterval('PT20M'));//+20 menit
+        // dd($waktu_sewa3);
+
+        $skrg = new DateTime($jam_skrg);
+
+        if ($skrg < $waktu_sewa2 || $skrg > $waktu_sewa3) {
+            // dd("gagal");
+            $formattedWaktuSewa2 = $waktu_sewa2->format("H:i");
+            $formattedWaktuSewa3 = $waktu_sewa3->format("H:i");
+    
+            return redirect()->back()->with("error", "Pengajuan Komplain Transaksi ini dapat dilakukan pada jam $formattedWaktuSewa2 - $formattedWaktuSewa3!");
+        }
+
+        // dd("berhasil");
+
         $tgl_komplain = date("Y-m-d H:i:s");
 
         $data = [
