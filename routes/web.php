@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AlatOlahraga;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\KategoriOlahraga;
 use App\Http\Controllers\KerusakanAlat;
 use App\Http\Controllers\KomplainRequest;
@@ -927,3 +928,5 @@ Route::prefix("/customer")->group(function(){
 
 //contoh
 Route::get("/sendEmail", [NotifikasiEmail::class, "sendEmail"]);
+
+Route::post("/hapusMsg", [Controller::class, "hapusSessionMsg"]);

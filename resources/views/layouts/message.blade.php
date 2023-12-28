@@ -52,7 +52,7 @@ d-flex align-items-center" role="alert">
     if (session()->has("error")) {
         $status_class = "error"; // Update to match SweetAlert class
         $msg = session()->get("error");
-        session()->forget("success");
+        session()->forget("error");
     }
 @endphp
 
@@ -71,7 +71,25 @@ d-flex align-items-center" role="alert">
                     closeModal: true,
                 }
             },
-        });
+        }, function(isConfirm) {
+                if (isConfirm) {
+                    //HAPUS SESSION NYA
+                    $.ajax({
+                        type: 'POST',
+                        url: '/hapusMsg', // Update the route to your actual route
+                        data: {
+                            "_token": '{{ csrf_token() }}',
+                        },
+                        success: function (data) {
+                            console.log("Session message deleted");
+                            window.location.reload();
+                        },
+                        error: function (data) {
+                            console.error("Error deleting session message");
+                        }
+                    });
+                }
+            });
     </script>
 @endif
 
@@ -100,8 +118,9 @@ d-flex align-items-center" role="alert">
             },
         }).then((result) => {
             if (result) {
+                console.log("yes");
                 // User clicked "Yes"
-                // Add your logic here
+                
             } else {
                 // User clicked "No" or closed the dialog
                 // Add your logic here
