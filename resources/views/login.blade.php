@@ -54,13 +54,19 @@ Sportiva
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Alamat Email</label>
-                  <input type="text" name="email" id="form3Example3" class="form-control" value="{{old('email')}}"/>
+                  <input type="text" name="email" id="form3Example3" class="form-control @error('email') is-invalid @enderror" value="{{old('email')}}"/>
+                  @error('email')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
   
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example4">Password</label>
-                  <input type="password" name="password" id="form3Example4" class="form-control" />
+                  <input type="password" name="password" id="form3Example4" class="form-control @error('password') is-invalid @enderror" />
+                  @error('password')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
   
                 {{-- <!-- Checkbox -->

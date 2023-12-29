@@ -53,31 +53,46 @@ Sportiva
                 <!-- Name input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example3">Nama Lengkap</label>
-                  <input type="text" name="nama" id="form3Example3" class="form-control" value="{{ old('nama') }}"/>
+                  <input type="text" name="nama" id="form3Example3" class="form-control @error('nama') is-invalid @enderror" value="{{ old('nama') }}"/>
+                  @error('nama')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
   
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Alamat Email</label>
-                  <input type="text" name="email" id="form3Example3" class="form-control" value="{{ old('email') }}"/>
+                    <input type="text" name="email" id="form3Example3" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}"/>
+                    @error('email')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Nomor input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example3">Nomer Telepon</label>
-                  <input type="number" name="telepon" id="form3Example3" class="form-control" value="{{ old('telepon') }}"/>
+                    <input type="number" name="telepon" id="form3Example3" class="form-control @error('telepon') is-invalid @enderror" value="{{ old('telepon') }}"/>
+                    @error('telepon')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
   
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                     <label class="form-label" for="form3Example4">Password</label>
-                  <input type="password" name="password" id="form3Example4" class="form-control"/>
+                    <input type="password" name="password" id="form3Example4" class="form-control @error('password') is-invalid @enderror"/>
+                    @error('password')
+                      <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <!-- Confirmation Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example2">Konfirmasi Password</label>
-                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control"/>
+                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control @error('konfirmasi') is-invalid @enderror"/>
+                  @error('konfirmasi')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
   
                 <!-- Submit button -->
