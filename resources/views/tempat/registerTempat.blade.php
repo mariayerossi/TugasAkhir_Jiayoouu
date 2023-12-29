@@ -58,7 +58,10 @@ Sportiva
                 <!-- Name input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nama Tempat Olahraga</label>
-                  <input type="text" name="nama" id="form2Example1" class="form-control" value="{{old('nama')}}"/>
+                  <input type="text" name="nama" id="form2Example1" class="form-control @error('nama') is-invalid @enderror" value="{{old('nama')}}"/>
+                  @error('nama')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
               </div>
               <div class="col-md-6 mb-4">
