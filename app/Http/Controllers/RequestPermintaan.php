@@ -40,7 +40,8 @@ class RequestPermintaan extends Controller
 
         //cek apakah request harga lebih kecil dari komisi
         if ((int)$harga <= (int)$komisi_alat) {
-            return redirect()->back()->withInput()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
+            // return redirect()->back()->withInput()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
+            return response()->json(['success' => false, 'message' => "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!"]);
         }
 
         date_default_timezone_set("Asia/Jakarta");
@@ -50,10 +51,12 @@ class RequestPermintaan extends Controller
         $date_selesai = new DateTime($tgl_selesai);
         
         if ($date_selesai <= $date_mulai) {
-            return redirect()->back()->withInput()->with("error", "Tanggal kembali tidak sesuai!");
+            // return redirect()->back()->withInput()->with("error", "Tanggal kembali tidak sesuai!");
+            return response()->json(['success' => false, 'message' => "Tanggal kembali tidak sesuai!"]);
         }
         else if ($date_mulai < new DateTime($tgl_minta) || $date_selesai < new DateTime($tgl_minta)) {
-            return redirect()->back()->withInput()->with("error", "Tanggal tidak valid!");
+            // return redirect()->back()->withInput()->with("error", "Tanggal tidak valid!");
+            return response()->json(['success' => false, 'message' => "Tanggal tidak valid!"]);
         }
         else {
             $data = [

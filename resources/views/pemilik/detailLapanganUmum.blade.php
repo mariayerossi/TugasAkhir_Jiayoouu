@@ -447,7 +447,7 @@
                     closeOnCancel: true
                 }, function(isConfirm) {
                     if (isConfirm) {
-                        form.submit();
+                        // form.submit();
                     }
                 });
             }

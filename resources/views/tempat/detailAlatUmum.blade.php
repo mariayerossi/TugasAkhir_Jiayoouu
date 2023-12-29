@@ -345,95 +345,107 @@
     document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const kotaAlatInput = document.querySelector('input[name="kota_alat"]');
+    const harga = document.querySelector('input[name="harga"]');
     const lapangan = document.querySelector('select[name="lapangan"]');
 
     form.addEventListener('submit', function(e) {
         let selectedOption = lapangan.options[lapangan.selectedIndex].value;
-        let kotaLapangan = selectedOption.split('-')[1];
+        e.preventDefault();
+        if (selectedOption !== "" && harga.value !== "") {
+            let kotaLapangan = selectedOption.split('-')[1];
 
-        if (kotaAlatInput.value !== kotaLapangan) {
-            e.preventDefault();
+            if (kotaAlatInput.value !== kotaLapangan) {
 
-            swal({
-                title: "Apakah anda yakin?",
-                text: "Alat olahraga ini berasal dari kota yang berbeda dengan kota tempat lapangan anda",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Lanjutkan",
-                cancelButtonText: "Batalkan",
-                closeOnConfirm: false,
-                closeOnCancel: true
-            }, function(isConfirm) {
-                if (isConfirm) {
-                    let formData = new FormData(form);
+                swal({
+                    title: "Apakah anda yakin?",
+                    text: "Alat olahraga ini berasal dari kota yang berbeda dengan kota tempat lapangan anda",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Lanjutkan",
+                    cancelButtonText: "Batalkan",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                }, function(isConfirm) {
+                    if (isConfirm) {
+                        let formData = new FormData(form);
 
-                    $.ajax({
-                        type: "POST",
-                        url: "/tempat/permintaan/requestPermintaanAlat",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(response) {
-                            if (response.success) {
-                                swal({
-                                    title: "Success!",
-                                    text: response.message,
-                                    type: "success",
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                });
-                            } else {
-                                // swal("Error!", response.message, "error");
-                                swal({
-                                    title: "Error!",
-                                    text: response.message,
-                                    type: "error",
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                });
+                        $.ajax({
+                            type: "POST",
+                            url: "/tempat/permintaan/requestPermintaanAlat",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                if (response.success) {
+                                    swal({
+                                        title: "Success!",
+                                        text: response.message,
+                                        type: "success",
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                } else {
+                                    // swal("Error!", response.message, "error");
+                                    swal({
+                                        title: "Error!",
+                                        text: response.message,
+                                        type: "error",
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    });
+                                }
+                                window.location.reload();
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
                             }
-                            window.location.reload();
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
-                        }
-                    });
-                }
-            });
-        }
-        else {
-            let formData = new FormData(form);
-
-            $.ajax({
-                type: "POST",
-                url: "/tempat/permintaan/requestPermintaanAlat",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    if (response.success) {
-                        swal({
-                            title: "Success!",
-                            text: response.message,
-                            type: "success",
-                            timer: 1500,
-                            showConfirmButton: false
-                        });
-                    } else {
-                        swal({
-                            title: "Error!",
-                            text: response.message,
-                            type: "error",
-                            timer: 1500,
-                            showConfirmButton: false
                         });
                     }
-                    window.location.reload();
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
-                }
+                });
+            }
+            else {
+                let formData = new FormData(form);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/tempat/permintaan/requestPermintaanAlat",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            swal({
+                                title: "Success!",
+                                text: response.message,
+                                type: "success",
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            swal({
+                                title: "Error!",
+                                text: response.message,
+                                type: "error",
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                        }
+                        window.location.reload();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                    }
+                });
+            }
+        }
+        else {
+            swal({
+                title: "Error!",
+                text: "Silahkan Isi Harga dan Pilih Lapangan Olahraga",
+                type: "error",
+                timer: 1500,
+                showConfirmButton: false
             });
         }
     });
