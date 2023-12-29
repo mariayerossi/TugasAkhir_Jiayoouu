@@ -150,7 +150,7 @@
     @php
         $dataTempat  = DB::table('pihak_tempat')->where("id_tempat","=",$lapangan->first()->pemilik_lapangan)->get()->first();
     @endphp
-    <p class="mb-2"><i class="bi bi-geo-alt"></i> {{$dataTempat->nama_tempat}}, Kota {{$lapangan->first()->kota_lapangan}}</p>
+    <p class="mb-2"><i class="bi bi-person"></i> {{$dataTempat->nama_tempat}}</p>
 
     @php
         $averageRating = DB::table('rating_lapangan')
@@ -178,9 +178,10 @@
     <div class="row">
         <div class="col-lg-6 left-section">
             <h4>Lokasi Lapangan</h4>
-            <p class="mb-5"><i class="bi bi-geo-alt"></i> {{$lapangan->first()->lokasi_lapangan}}</p>
+            <p><i class="bi bi-geo-alt"></i> {{$lapangan->first()->lokasi_lapangan}}</p>
+            <p class="ms-3">Kota {{$lapangan->first()->kota_lapangan}}</p>
 
-            <h4>Detail Lapangan</h4>
+            <h4 class="mt-5">Detail Lapangan</h4>
             <ul>
                 @php
                     $kat = DB::table('kategori')->where("id_kategori","=",$lapangan->first()->fk_id_kategori)->get()->first()->nama_kategori;
@@ -400,7 +401,7 @@
                                     <option value="" disabled selected>Pilih Alat Olahraga</option>
                                     @if (!$alat->isEmpty())
                                         @foreach ($alat as $item)
-                                        <option value="{{$item->id_alat}}-{{$item->kota_alat}}" {{ old('alat') == $item->id_alat ." - ". $item->kota_alat ? 'selected' : '' }}>{{$item->nama_alat}} - {{$item->kota_alat}}</option>
+                                        <option value="{{$item->id_alat}}-{{$item->kota_alat}}" {{ old('alat') == $item->id_alat ."-". $item->kota_alat ? 'selected' : '' }}>{{$item->nama_alat}} - {{$item->kota_alat}}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -430,25 +431,106 @@
 
         form.addEventListener('submit', function(e) {
             let selectedOption = alatSelect.options[alatSelect.selectedIndex].value;
-            let kotaAlat = selectedOption.split('-')[1];
+            e.preventDefault();
+            if (selectedOption !== "") {
+                let kotaAlat = selectedOption.split('-')[1];
+                console.log(kotaLapanganInput.value);
 
-            if (kotaLapanganInput.value !== kotaAlat) {
-                e.preventDefault();
+                if (kotaLapanganInput.value !== kotaAlat) {
+                    // e.preventDefault();
 
+                    swal({
+                        title: "Apakah anda yakin?",
+                        text: "Alat olahraga anda berasal dari kota yang berbeda dengan kota tempat lapangan",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Lanjutkan",
+                        cancelButtonText: "Batalkan",
+                        closeOnConfirm: false,
+                        closeOnCancel: true
+                    }, function(isConfirm) {
+                        if (isConfirm) {
+                            // form.submit();
+                            let formData = new FormData(form);
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/pemilik/penawaran/requestPenawaranAlat",
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function(response) {
+                                    if (response.success) {
+                                        swal({
+                                            title: "Success!",
+                                            text: response.message,
+                                            type: "success",
+                                            timer: 2000,
+                                            showConfirmButton: false
+                                        });
+                                    } else {
+                                        // swal("Error!", response.message, "error");
+                                        swal({
+                                            title: "Error!",
+                                            text: response.message,
+                                            type: "error",
+                                            timer: 2000,
+                                            showConfirmButton: false
+                                        });
+                                    }
+                                    // window.location.reload();
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    let formData = new FormData(form);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/pemilik/penawaran/requestPenawaranAlat",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.success) {
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                // swal("Error!", response.message, "error");
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            }
+                            // window.location.reload();
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                        }
+                    });
+                }
+            }
+            else {
                 swal({
-                    title: "Apakah anda yakin?",
-                    text: "Alat olahraga anda berasal dari kota yang berbeda dengan kota tempat lapangan",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Lanjutkan",
-                    cancelButtonText: "Batalkan",
-                    closeOnConfirm: false,
-                    closeOnCancel: true
-                }, function(isConfirm) {
-                    if (isConfirm) {
-                        // form.submit();
-                    }
+                    title: "Error!",
+                    text: "Silahkan pilih alat alahraga yang ingin ditawarkan",
+                    type: "error",
+                    timer: 2000,
+                    showConfirmButton: false
                 });
             }
         });

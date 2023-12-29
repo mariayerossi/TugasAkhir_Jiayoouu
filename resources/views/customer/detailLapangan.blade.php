@@ -181,7 +181,7 @@
     @php
         $dataTempat  = DB::table('pihak_tempat')->where("id_tempat","=",$lapangan->first()->pemilik_lapangan)->get()->first();
     @endphp
-    <p class="mb-2"><i class="bi bi-geo-alt"></i> {{$dataTempat->nama_tempat}}, Kota {{$lapangan->first()->kota_lapangan}}</p>
+    <p class="mb-2"><i class="bi bi-person"></i> {{$dataTempat->nama_tempat}}</p>
 
     @php
         $averageRating = DB::table('rating_lapangan')
@@ -210,8 +210,10 @@
     <div class="row">
         <div class="col-lg-6 left-section">
             <h4>Lokasi Lapangan</h4>
-            <p class="mb-5"><i class="bi bi-geo-alt"></i> {{$lapangan->first()->lokasi_lapangan}}</p>
-            <h4>Detail</h4>
+            <p><i class="bi bi-geo-alt"></i> {{$lapangan->first()->lokasi_lapangan}}</p>
+            <p>Kota {{$lapangan->first()->kota_lapangan}}</p>
+            
+            <h4 class="mt-5">Detail</h4>
             <ul>
                 @php
                     $kat = DB::table('kategori')->where("id_kategori","=",$lapangan->first()->fk_id_kategori)->get()->first()->nama_kategori;
@@ -671,7 +673,7 @@
             title: "error!",
             text: "Alat Olahraga sudah dipilih!",
             type: "error",
-            timer: 1500,  // Menampilkan selama 20 detik
+            timer: 2000,  // Menampilkan selama 20 detik
             showConfirmButton: false
             });
         });

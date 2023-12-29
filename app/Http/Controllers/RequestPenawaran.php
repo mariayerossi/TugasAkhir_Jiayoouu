@@ -58,7 +58,8 @@ class RequestPenawaran extends Controller
         $e = new notifikasiEmail();
         $e->sendEmail($email_tempat,$dataNotif);
 
-        return redirect()->back()->with("success", "Berhasil Menawarkan Alat!");
+        // return redirect()->back()->with("success", "Berhasil Menawarkan Alat!");
+        return response()->json(['success' => true, 'message' => "Berhasil Menawarkan Alat!"]);
     }
 
     public function batalPenawaran(Request $request) {

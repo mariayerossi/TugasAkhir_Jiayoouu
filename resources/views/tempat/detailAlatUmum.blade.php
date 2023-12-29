@@ -382,7 +382,7 @@
                                         title: "Success!",
                                         text: response.message,
                                         type: "success",
-                                        timer: 1500,
+                                        timer: 2000,
                                         showConfirmButton: false
                                     });
                                 } else {
@@ -391,11 +391,11 @@
                                         title: "Error!",
                                         text: response.message,
                                         type: "error",
-                                        timer: 1500,
+                                        timer: 2000,
                                         showConfirmButton: false
                                     });
                                 }
-                                window.location.reload();
+                                // window.location.reload();
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
@@ -419,7 +419,7 @@
                                 title: "Success!",
                                 text: response.message,
                                 type: "success",
-                                timer: 1500,
+                                timer: 2000,
                                 showConfirmButton: false
                             });
                         } else {
@@ -427,11 +427,11 @@
                                 title: "Error!",
                                 text: response.message,
                                 type: "error",
-                                timer: 1500,
+                                timer: 2000,
                                 showConfirmButton: false
                             });
                         }
-                        window.location.reload();
+                        // window.location.reload();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
@@ -444,7 +444,7 @@
                 title: "Error!",
                 text: "Silahkan Isi Harga dan Pilih Lapangan Olahraga",
                 type: "error",
-                timer: 1500,
+                timer: 2000,
                 showConfirmButton: false
             });
         }
