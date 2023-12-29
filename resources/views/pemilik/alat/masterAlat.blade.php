@@ -8,7 +8,7 @@
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Tambah Alat Olahraga</h3>
-    @include("layouts.message")
+    {{-- @include("layouts.message") --}}
     <div style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-3 mb-5">
         <i class="bi bi-exclamation-circle"></i> Syarat alat olahraga yang boleh disewakan adalah sebagai berikut: <br>
         <ul>
@@ -27,7 +27,10 @@
                 <h6>Nama Alat Olahraga</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <input type="text" class="form-control" name="alat" placeholder="Masukkan Nama Alat Olahraga" value="{{old('alat')}}">
+                <input type="text" class="form-control @error('alat') is-invalid @enderror"  name="alat" placeholder="Masukkan Nama Alat Olahraga" value="{{old('alat')}}">
+                @error('alat')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="row mt-5">
@@ -35,7 +38,7 @@
                 <h6>Kategori Alat Olahraga</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <select class="form-control" name="kategori">
+                <select class="form-control @error('kategori') is-invalid @enderror" name="kategori">
                     <option value="" disabled selected>Masukkan Kategori Alat Olahraga</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
@@ -43,6 +46,9 @@
                         @endforeach
                     @endif
                 </select>
+                @error('kategori')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="row mt-5">
@@ -50,9 +56,12 @@
                 <h6>Letak Kota <i class="bi bi-info-circle" data-toggle="tooltip" title="Masukkan kota Anda untuk menemukan tempat olahraga terdekat. Pastikan informasi akurat untuk hasil yang tepat."></i></h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <input type="text" class="form-control" id="search-kota" name="kota" placeholder="Ketik nama kota..." value="{{old('kota')}}">
+                <input type="text" class="form-control @error('kota') is-invalid @enderror" id="search-kota" name="kota" placeholder="Ketik nama kota..." value="{{old('kota')}}">
                 <ul class="list-group" id="suggestion-list"></ul>
                 <input type="hidden" id="selected-kota">
+                @error('kota')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="row mt-5">
@@ -60,7 +69,10 @@
                 <h6>Foto Alat Olahraga</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <input type="file" class="form-control" name="foto[]" multiple accept=".jpg,.png,.jpeg">
+                <input type="file" class="form-control @error('foto') is-invalid @enderror" name="foto[]" multiple accept=".jpg,.png,.jpeg">
+                @error('foto')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="row mt-5">
@@ -69,8 +81,11 @@
                 <span class="ml-2 ms-2" style="font-size: 15px">maksimal 500 kata</span>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <textarea id="myTextarea" class="form-control" name="deskripsi" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Deskripsi Alat Olahraga">{{ old('deskripsi') }}</textarea>
+                <textarea id="myTextarea" class="form-control @error('deskripsi') is-invalid @enderror" name="deskripsi" rows="4" cols="50" onkeyup="updateCount()" placeholder="Masukkan Deskripsi Alat Olahraga">{{ old('deskripsi') }}</textarea>
                 <p id="charCount">0/500</p>
+                @error('deskripsi')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="row mt-5">
@@ -79,10 +94,13 @@
             </div>
             <div class="col-md-6 col-12 mt-2 mt-md-0 d-flex align-items-center">
                 <div class="input-group mb-2">
-                    <input type="number" class="form-control" name="berat" step="0.01" min="0" placeholder="Masukkan Berat Alat Olahraga" value="{{old('berat')}}">
+                    <input type="number" class="form-control @error('berat') is-invalid @enderror" name="berat" step="0.01" min="0" placeholder="Masukkan Berat Alat Olahraga" value="{{old('berat')}}">
                     <div class="input-group-prepend">
                         <div class="input-group-text">gram</div>
                     </div>
+                    @error('berat')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
         </div>
@@ -92,26 +110,35 @@
             </div>
             <div class="col-md-3 col-12 mt-2 col-auto">
                 <div class="input-group mb-2">
-                    <input type="number" class="form-control" min="0" id="panjang" name="panjang" placeholder="Panjang" value="{{old('panjang')}}">
+                    <input type="number" class="form-control @error('panjang') is-invalid @enderror" min="0" id="panjang" name="panjang" placeholder="Panjang" value="{{old('panjang')}}">
                     <div class="input-group-prepend">
                         <div class="input-group-text">cm</div>
                     </div>
+                    @error('panjang')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="col-md-3 col-12 mt-2">
                 <div class="input-group mb-2">
-                    <input type="number" class="form-control" min="0" id="lebar" name="lebar" placeholder="Lebar" value="{{old('lebar')}}">
+                    <input type="number" class="form-control @error('lebar') is-invalid @enderror" min="0" id="lebar" name="lebar" placeholder="Lebar" value="{{old('lebar')}}">
                     <div class="input-group-prepend">
                         <div class="input-group-text">cm</div>
                     </div>
+                    @error('lebar')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
             <div class="col-md-3 col-12 mt-2">
                 <div class="input-group mb-2">
-                    <input type="number" class="form-control" min="0" id="tinggi" name="tinggi" placeholder="Tinggi" value="{{old('tinggi')}}">
+                    <input type="number" class="form-control @error('tinggi') is-invalid @enderror" min="0" id="tinggi" name="tinggi" placeholder="Tinggi" value="{{old('tinggi')}}">
                     <div class="input-group-prepend">
                         <div class="input-group-text">cm</div>
                     </div>
+                    @error('tinggi')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
         </div>
@@ -126,11 +153,14 @@
                         <div class="input-group-text">Rp</div>
                     </div>
                     <!-- Input yang terlihat oleh pengguna -->
-                    <input type="text" class="form-control" id="komisiDisplay" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber2(this)" value="{{old('komisi')}}">
+                    <input type="text" class="form-control @error('komisi') is-invalid @enderror" id="komisiDisplay" placeholder="Masukkan Komisi Alat Olahraga" oninput="formatNumber2(this)" value="{{old('komisi')}}">
 
                     <!-- Input tersembunyi untuk kirim ke server -->
                     <input type="hidden" name="komisi" id="komisiActual" value="{{old('komisi')}}">
                 </div>
+                @error('komisi')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="row mt-5">
@@ -143,11 +173,14 @@
                         <div class="input-group-text">Rp</div>
                     </div>
                     <!-- Input yang terlihat oleh pengguna -->
-                    <input type="text" class="form-control" id="gantiDisplay" placeholder="Masukkan Jumlah Ganti Rugi" oninput="formatNumber(this)" value="{{old('ganti')}}">
+                    <input type="text" class="form-control @error('ganti') is-invalid @enderror" id="gantiDisplay" placeholder="Masukkan Jumlah Ganti Rugi" oninput="formatNumber(this)" value="{{old('ganti')}}">
 
                     <!-- Input tersembunyi untuk kirim ke server -->
                     <input type="hidden" name="ganti" id="gantiActual" value="{{old('ganti')}}">
                 </div>
+                @error('ganti')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="row mt-5 mb-5">

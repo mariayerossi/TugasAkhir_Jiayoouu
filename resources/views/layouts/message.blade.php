@@ -93,7 +93,7 @@ d-flex align-items-center" role="alert">
     </script>
 @endif
 
-@if ($errors->any())
+{{-- @if ($errors->any())
     <script>
         // Display SweetAlert for validation errors with "Yes" and "No" buttons
         swal({
@@ -116,15 +116,6 @@ d-flex align-items-center" role="alert">
                     closeModal: true,
                 }
             },
-        }).then((result) => {
-            if (result) {
-                console.log("yes");
-                // User clicked "Yes"
-                
-            } else {
-                // User clicked "No" or closed the dialog
-                // Add your logic here
-            }
         });
     </script>
-@endif
+@endif --}}
