@@ -90,7 +90,8 @@ class RequestPermintaan extends Controller
             $e = new notifikasiEmail();
             $e->sendEmail($email_pemilik, $dataNotif);
     
-            return redirect()->back()->with("success", "Berhasil Mengirim Request!");
+            // return redirect()->back()->with("success", "Berhasil Mengirim Request!");
+            return response()->json(['success' => true, 'message' => "Berhasil Mengirim Request!"]);
         }
     }
 

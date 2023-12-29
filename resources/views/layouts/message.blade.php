@@ -76,7 +76,7 @@ d-flex align-items-center" role="alert">
                     //HAPUS SESSION NYA
                     $.ajax({
                         type: 'POST',
-                        url: '/hapusMsg', // Update the route to your actual route
+                        url: '/hapusMsg',
                         data: {
                             "_token": '{{ csrf_token() }}',
                         },

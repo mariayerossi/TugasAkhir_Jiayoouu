@@ -343,44 +343,144 @@
         }
     }
     document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form');
-        const kotaAlatInput = document.querySelector('input[name="kota_alat"]');
-        const lapangan = document.querySelector('select[name="lapangan"]');
+    const form = document.querySelector('form');
+    const kotaAlatInput = document.querySelector('input[name="kota_alat"]');
+    const lapangan = document.querySelector('select[name="lapangan"]');
 
-        form.addEventListener('submit', function(e) {
-            let selectedOption = lapangan.options[lapangan.selectedIndex].value;
-            let kotaLapangan = selectedOption.split('-')[1];
+    form.addEventListener('submit', function(e) {
+        let selectedOption = lapangan.options[lapangan.selectedIndex].value;
+        let kotaLapangan = selectedOption.split('-')[1];
 
-            if (kotaAlatInput.value !== kotaLapangan) {
-                e.preventDefault();
+        if (kotaAlatInput.value !== kotaLapangan) {
+            e.preventDefault();
 
-                swal({
-                    title: "Apakah anda yakin?",
-                    text: "Alat olahraga ini berasal dari kota yang berbeda dengan kota tempat lapangan anda",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Lanjutkan",
-                    cancelButtonText: "Batalkan",
-                    closeOnConfirm: false,
-                    closeOnCancel: true
-                }, function(isConfirm) {
-                    if (isConfirm) {
-                        form.submit();
+            swal({
+                title: "Apakah anda yakin?",
+                text: "Alat olahraga ini berasal dari kota yang berbeda dengan kota tempat lapangan anda",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Lanjutkan",
+                cancelButtonText: "Batalkan",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function(isConfirm) {
+                if (isConfirm) {
+                    let formData = new FormData(form);
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/tempat/permintaan/requestPermintaanAlat",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response.success) {
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                // swal("Error!", response.message, "error");
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                });
+                            }
+                            window.location.reload();
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            let formData = new FormData(form);
+
+            $.ajax({
+                type: "POST",
+                url: "/tempat/permintaan/requestPermintaanAlat",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
                     }
-                });
+                    window.location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+        }
+    });
+});
+
+
+    // $("form[action='/tempat/permintaan/requestPermintaanAlat']").submit(function(e) {
+    //     e.preventDefault(); // Menghentikan perilaku default (pengiriman form)
+
+    //     $.ajax({
+    //         type: "POST",
+    //         url: $(this).attr('action'),
+    //         data: $(this).serialize(),
+    //         success: function(response) {
+    //             if (response.success) {
+    //                 // swal("Success!", response.message, "success");
+    //                 swal({
+    //                 title: "Success!",
+    //                 text: response.message,
+    //                 type: "success",
+    //                 timer: 1500,  // Menampilkan selama 20 detik
+    //                 showConfirmButton: false
+    //                 });
+    //             }
+    //             else {
+    //                 swal("Error!", response.message, "error");
+    //             }
+    //             window.location.reload();
+    //             // alert('Berhasil Diterima!');
+    //             // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+    //             // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+    //         },
+    //         error: function(jqXHR, textStatus, errorThrown) {
+    //             alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+    //         }
+    //     });
+    // });
+
+    $(function() {
+        $('input[name="durasi_pinjam"]').daterangepicker({
+            startDate: moment().add(2, 'day'),
+            endDate: moment().add(6, 'day'),
+            locale: {
+            format: 'DD/MM/YYYY'
             }
         });
     });
-    $(function() {
-  $('input[name="durasi_pinjam"]').daterangepicker({
-    startDate: moment().add(2, 'day'),
-    endDate: moment().add(6, 'day'),
-    locale: {
-      format: 'DD/MM/YYYY'
-    }
-  });
-});
 </script>
 @else
     <h1>Alat Olahraga tidak tersedia</h1>
