@@ -434,7 +434,13 @@
                         // window.location.reload();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                        swal({
+                            title: "Error!",
+                            text: 'Ada masalah saat mengirim data. Silahkan coba lagi.',
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
                     }
                 });
             }

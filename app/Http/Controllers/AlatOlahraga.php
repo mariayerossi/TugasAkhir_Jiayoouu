@@ -19,12 +19,12 @@ class AlatOlahraga extends Controller
             "kota" => 'required',
             "foto" => 'required|max:5120',
             "deskripsi" => 'required|max:500',
-            "berat" => 'required|numeric|min:0',
-            "panjang" => 'required|numeric|min:0',
-            "lebar" => 'required|numeric|min:0',
-            "tinggi" => 'required|numeric|min:0',
-            "komisi" => 'required|numeric|min:0',
-            "ganti" => 'required|numeric|min:0'
+            "berat" => 'required|numeric|min:1',
+            "panjang" => 'required|numeric|min:1',
+            "lebar" => 'required|numeric|min:1',
+            "tinggi" => 'required|numeric|min:1',
+            "komisi" => 'required|numeric|min:1',
+            "ganti" => 'required|numeric|min:1'
         ],[
             "required" => ":attribute alat olahraga tidak boleh kosong!",
             "alat.required" => "nama :attribute olahraga tidak boleh kosong!",
@@ -106,12 +106,12 @@ class AlatOlahraga extends Controller
             "kategori" => 'required',
             "kota"=>'required',
             "deskripsi" => 'required|max:500',
-            "berat" => 'required|numeric|min:0',
-            "panjang" => 'required|numeric|min:0',
-            "lebar" => 'required|numeric|min:0',
-            "tinggi" => 'required|numeric|min:0',
-            "komisi" => 'required|numeric|min:0',
-            "ganti" => 'required|numeric|min:0'
+            "berat" => 'required|numeric|min:1',
+            "panjang" => 'required|numeric|min:1',
+            "lebar" => 'required|numeric|min:1',
+            "tinggi" => 'required|numeric|min:1',
+            "komisi" => 'required|numeric|min:1',
+            "ganti" => 'required|numeric|min:1'
         ],[
             "required" => ":attribute alat olahraga tidak boleh kosong!",
             "alat.required" => "nama :attribute olahraga tidak boleh kosong!",

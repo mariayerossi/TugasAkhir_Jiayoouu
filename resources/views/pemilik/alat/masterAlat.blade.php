@@ -8,7 +8,7 @@
 </style>
 <div class="container mt-5">
     <h3 class="text-center mb-5">Tambah Alat Olahraga</h3>
-    {{-- @include("layouts.message") --}}
+    @include("layouts.message")
     <div style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-3 mb-5">
         <i class="bi bi-exclamation-circle"></i> Syarat alat olahraga yang boleh disewakan adalah sebagai berikut: <br>
         <ul>

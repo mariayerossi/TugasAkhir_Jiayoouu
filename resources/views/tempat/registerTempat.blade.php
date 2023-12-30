@@ -68,7 +68,10 @@ Sportiva
                 <!-- Owner input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nama Lengkap Pemilik Tempat Olahraga</label>
-                  <input type="text" name="pemilik" id="form2Example1" class="form-control" value="{{old('pemilik')}}"/>
+                  <input type="text" name="pemilik" id="form2Example1" class="form-control @error('pemilik') is-invalid @enderror" value="{{old('pemilik')}}"/>
+                  @error('pemilik')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
               </div>
             </div>
@@ -76,7 +79,10 @@ Sportiva
             <!-- Lokasi input -->
             <div class="form-outline mb-4">
               <label class="form-label" for="form2Example1">Alamat Lengkap Tempat Olahraga</label>
-              <input type="text" name="alamat" id="form2Example1" class="form-control" value="{{old('alamat')}}"/>
+              <input type="text" name="alamat" id="form2Example1" class="form-control @error('alamat') is-invalid @enderror" value="{{old('alamat')}}"/>
+              @error('alamat')
+                <div class="alert alert-danger">{{ $message }}</div>
+              @enderror
             </div>
 
             <div class="row">
@@ -84,14 +90,20 @@ Sportiva
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Alamat Email</label>
-                  <input type="email" name="email" id="form2Example1" class="form-control" value="{{old('email')}}"/>
+                  <input type="email" name="email" id="form2Example1" class="form-control @error('email') is-invalid @enderror" value="{{old('email')}}"/>
+                  @error('email')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <!-- Nomor input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example1">Nomer Telepon</label>
-                  <input type="number" name="telepon" id="form2Example1" class="form-control" value="{{old('telepon')}}"/>
+                  <input type="number" name="telepon" id="form2Example1" class="form-control @error('telepon') is-invalid @enderror" value="{{old('telepon')}}"/>
+                  @error('telepon')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
               </div>
             </div>
@@ -101,13 +113,19 @@ Sportiva
               <div class="col-md-6 mb-4">
                 <div class="form-outline">
                   <label class="form-label" for="form3Example1">Foto KTP</label>
-                  <input type="file" name="ktp" id="form3Example1" class="form-control" accept=".jpg,.png,.jpeg" />
+                  <input type="file" name="ktp" id="form3Example1" class="form-control @error('ktp') is-invalid @enderror" accept=".jpg,.png,.jpeg" />
+                  @error('ktp')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <div class="form-outline">
                   <label class="form-label" for="form3Example2">Foto NPWP</label>
-                  <input type="file" name="npwp" id="form3Example2" class="form-control" accept=".jpg,.png,.jpeg"  />
+                  <input type="file" name="npwp" id="form3Example2" class="form-control @error('npwp') is-invalid @enderror" accept=".jpg,.png,.jpeg"  />
+                  @error('npwp')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
               </div>
             </div>
@@ -117,14 +135,20 @@ Sportiva
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example2">Password</label>
-                  <input type="password" name="password" id="form2Example2" class="form-control" />
+                  <input type="password" name="password" id="form2Example2" class="form-control @error('password') is-invalid @enderror" />
+                  @error('password')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <!-- Confirmation Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form2Example2">Konfirmasi Password</label>
-                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control" />
+                  <input type="password" name="konfirmasi" id="form2Example2" class="form-control @error('konfirmasi') is-invalid @enderror" />
+                  @error('konfirmasi')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                  @enderror
                 </div>
               </div>
             </div>
