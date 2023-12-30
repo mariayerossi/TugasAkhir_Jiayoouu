@@ -401,14 +401,14 @@ class RequestPenawaran extends Controller
             $alat = new alatOlahraga();
             $alat->updateStatus($data4);
 
-            //tolak penawaran lain yg terkait dgn alat ini
-            $minta = DB::table('request_permintaan')->where("req_id_alat","=",$dataReq->req_id_alat)->get();
-            $tawar = DB::table('request_penawaran')->where("req_id_alat","=",$dataReq->req_id_alat)->get();
+            //batalkan penawaran lain yg terkait dgn alat ini
+            $minta = DB::table('request_permintaan')->where("req_id_alat","=",$dataReq->req_id_alat)->where("status_permintaan","=","Menunggu")->get();
+            $tawar = DB::table('request_penawaran')->where("req_id_alat","=",$dataReq->req_id_alat)->where("status_penawaran","=","Menunggu")->get();
             if (!$minta->isEmpty()) {
                 foreach ($minta as $key => $value) {
                     $data2 = [
                         "id" => $value->id_permintaan,
-                        "status" => "Ditolak"
+                        "status" => "Dibatalkan"
                     ];
                     $per = new requestPermintaan();
                     $per->updateStatus($data2);
@@ -418,7 +418,7 @@ class RequestPenawaran extends Controller
                 foreach ($tawar as $key => $value) {
                     $data3 = [
                         "id" => $value->id_penawaran,
-                        "status" => "Ditolak"
+                        "status" => "Dibatalkan"
                     ];
                     $req->updateStatus($data3);
                 }
