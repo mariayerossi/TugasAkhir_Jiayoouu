@@ -212,13 +212,13 @@ display: block;
         <div class="container">
             <div class="row justify-content-end mb-3">
                 <div class="col-12 col-md-6">
-                    <form action="/pemilik/penawaran/konfirmasiPenawaran" method="post">
+                    <form id="konfirmasiForm" action="/pemilik/penawaran/konfirmasiPenawaran" method="post">
                         @csrf
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <hr>
                         @if ($penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == "Setuju")
                             <span style="font-size: 14px">Penawaran telah disetujui pihak pengelola tempat olahraga, Silahkan konfirmasi detail penawaran</span>
-                            <button type="submit" class="btn btn-success w-100">Konfirmasi</button>
+                            <button type="submit" id="konfirmasi" class="btn btn-success w-100">Konfirmasi</button>
                         @else
                             <span style="font-size: 14px">Konfirmasi detail penawaran setelah pihak pengelola tempat menyetujui penawaran</span>
                             <button type="submit" disabled class="btn btn-success w-100">Konfirmasi</button>
@@ -547,6 +547,48 @@ display: block;
         $(".btn-warning").click(function(e) {
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
             $(".form_komplain").show();   // Menampilkan div nego
+        });
+
+        $("#konfirmasi").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#konfirmasiForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/pemilik/penawaran/konfirmasiPenawaran",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
         });
     });
     function updateCount() {

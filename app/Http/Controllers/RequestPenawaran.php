@@ -149,7 +149,7 @@ class RequestPenawaran extends Controller
                 if ($request->harga_sewa != null) {
                     //cek apakah request harga lebih kecil dari komisi
                     if ((int)$request->harga_sewa <= (int)$request->komisi) {
-                        return redirect()->back()->withInput()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
+                        return response()->json(['success' => false, 'message' => "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!"]);
                     }
 
                     //update harga sewa
@@ -170,7 +170,7 @@ class RequestPenawaran extends Controller
                         $date_selesai = new DateTime($tgl_selesai);
                         
                         if ($date_selesai <= $date_mulai) {
-                            return redirect()->back()->withInput()->with("error", "Tanggal kembali tidak sesuai!");
+                            return response()->json(['success' => false, 'message' => "Tanggal kembali tidak sesuai!"]);
                         }
                         else {
                             //update tanggal mulai
@@ -187,11 +187,11 @@ class RequestPenawaran extends Controller
                                     $pen->updateTanggalMulai($data);
                                 }
                                 else {
-                                    return redirect()->back()->withInput()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
+                                    return response()->json(['success' => false, 'message' => "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!"]);
                                 }
                             }
                             else {
-                                return redirect()->back()->withInput()->with("error", "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran");
+                                return response()->json(['success' => false, 'message' => "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran"]);
                             }
 
                             //update tanggal selesai
@@ -208,11 +208,11 @@ class RequestPenawaran extends Controller
                                     $pen->updateTanggalSelesai($data);
                                 }
                                 else {
-                                    return redirect()->back()->withInput()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
+                                    return response()->json(['success' => false, 'message' => "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!"]);
                                 }
                             }
                             else {
-                                return redirect()->back()->withInput()->with("error", "Gagal mengedit tanggal selesai sewa! Status penawaran telah $request->status_penawaran");
+                                return response()->json(['success' => false, 'message' => "Gagal mengedit tanggal selesai sewa! Status penawaran telah $request->status_penawaran"]);
                             }
 
                             $data = [
@@ -238,23 +238,28 @@ class RequestPenawaran extends Controller
                             $e = new notifikasiEmail();
                             $e->sendEmail($pemilik->email_pemilik,$dataNotif);
                     
-                            return redirect()->back()->with("success", "Menunggu konfirmasi pemilik alat olahraga");
+                            // return redirect()->back()->with("success", "Menunggu konfirmasi pemilik alat olahraga");
+                            return response()->json(['success' => true, 'message' => 'Menunggu konfirmasi pemilik alat olahraga']);
                         }
                     }
                     else {
-                        return redirect()->back()->withInput()->with("error", "Masukkan tanggal mulai dan tanggal selesai terlebih dahulu!");
+                        // return redirect()->back()->withInput()->with("error", "Masukkan tanggal mulai dan tanggal selesai terlebih dahulu!");
+                        return response()->json(['success' => false, 'message' => "Masukkan tanggal mulai dan tanggal selesai terlebih dahulu!"]);
                     }
                 }
                 else {
-                    return redirect()->back()->with("error", "Masukkan harga sewa terlebih dahulu!");
+                    // return redirect()->back()->with("error", "Masukkan harga sewa terlebih dahulu!");
+                    return response()->json(['success' => false, 'message' => "Masukkan harga sewa terlebih dahulu!"]);
                 }
             }
             else {
-                return redirect()->back()->with("error", "Gagal menerima penawaran! status penawaran sudah $dataReq->status_penawaran");
+                // return redirect()->back()->with("error", "Gagal menerima penawaran! status penawaran sudah $dataReq->status_penawaran");
+                return response()->json(['success' => false, 'message' => "Gagal menerima penawaran! status penawaran sudah $dataReq->status_penawaran"]);
             }
         }
         else {
-            return redirect()->back()->with("error", "Gagal menerima penawaran! status alat tidak aktif!");
+            // return redirect()->back()->with("error", "Gagal menerima penawaran! status alat tidak aktif!");
+            return response()->json(['success' => false, 'message' => "Gagal menerima penawaran! status alat tidak aktif!"]);
         }
     }
 
@@ -460,10 +465,10 @@ class RequestPenawaran extends Controller
             $e2 = new notifikasiEmail();
             $e2->sendEmail($email_pemilik,$dataNotif2);
 
-            return redirect()->back()->with("success", "Berhasil mengkonfirmasi penawaran!");
+            return response()->json(['success' => true, 'message' => 'Berhasil mengkonfirmasi penawaran']);
         }
         else {
-            return redirect()->back()->with("error", "Gagal mengkonfirmasi penawaran! status penawaran sudah $dataReq->status_penawaran");
+            return response()->json(['success' => false, 'message' => 'Gagal mengkonfirmasi penawaran! status penawaran sudah $dataReq->status_penawaran']);
         }
     }
 

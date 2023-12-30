@@ -145,7 +145,7 @@
             </a>
         </div>
     </div>
-    <form action="/tempat/penawaran/terimaPenawaran" method="post">
+    <form id="terimaForm" action="/tempat/penawaran/terimaPenawaran" method="post">
         @csrf
         <div class="row mb-3 mt-3">
             <div class="col-md-6 col-sm-12 mb-3">
@@ -215,7 +215,7 @@
                         <hr>
                         @if ($penawaran->first()->status_tempat != "Setuju")
                             <span style="font-size: 14px">Silahkan konfirmasi dan terima penawaran yang diajukan pemilik</span>
-                            <button type="submit" class="btn btn-success w-100">Terima</button>
+                            <button type="submit" id="terima" class="btn btn-success w-100">Terima</button>
                         @else
                             <span style="font-size: 14px">Penawaran telah disetujui, tunggu konfirmasi dari pemilik alat olahraga</span>
                             <button type="submit" disabled class="btn btn-success w-100">Terima</button>
@@ -623,12 +623,25 @@
                         data: formData,
                         success: function(response) {
                             if (response.success) {
-                                swal("Success!", response.message, "success");
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                window.location.reload();
                             }
                             else {
-                                swal("Error!", response.message, "error");
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
                             }
-                            window.location.reload();
+                            // window.location.reload();
                             // alert('Berhasil Diterima!');
                             // Atau Anda dapat mengupdate halaman dengan respons jika perlu
                             // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
@@ -639,6 +652,48 @@
                     });
                 } else {
                     swal.close(); // Tutup SweetAlert jika user memilih "Tidak"
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#terima").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#terimaForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/tempat/penawaran/terimaPenawaran",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
                 }
             });
 
