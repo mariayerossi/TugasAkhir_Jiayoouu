@@ -206,10 +206,10 @@
     </div>
     @if ($permintaan->first()->status_permintaan == "Menunggu")
         <div class="d-flex justify-content-end">
-            <form action="/pemilik/permintaan/terimaPermintaan" method="post">
+            <form id="terimaForm" action="/pemilik/permintaan/terimaPermintaan" method="post">
                 @csrf
                 <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
-                <button type="submit" class="btn btn-success me-3">Terima</button>
+                <button type="submit" class="btn btn-success me-3" id="terima">Terima</button>
             </form>
             <button class="btn btn-secondary me-3">Negosiasi</button>
             <form id="tolakForm" action="/pemilik/permintaan/tolakPermintaan" method="post">
@@ -526,12 +526,25 @@
                         data: formData,
                         success: function(response) {
                             if (response.success) {
-                                swal("Success!", response.message, "success");
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                window.location.reload();
                             }
                             else {
-                                swal("Error!", response.message, "error");
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
                             }
-                            window.location.reload();
+                            // window.location.reload();
                             // alert('Berhasil Diterima!');
                             // Atau Anda dapat mengupdate halaman dengan respons jika perlu
                             // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
@@ -542,6 +555,47 @@
                     });
                 } else {
                     swal.close(); // Tutup SweetAlert jika user memilih "Tidak"
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#terima").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#terimaForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/pemilik/permintaan/terimaPermintaan",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
                 }
             });
 

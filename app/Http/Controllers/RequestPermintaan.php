@@ -257,14 +257,17 @@ class RequestPermintaan extends Controller
                 $e2 = new notifikasiEmail();
                 $e2->sendEmail($email_pemilik,$dataNotif2);
         
-                return redirect()->back()->with("success", "Berhasil menerima permintaan!");
+                // return redirect()->back()->with("success", "Berhasil menerima permintaan!");
+                return response()->json(['success' => true, 'message' => 'Berhasil menerima permintaan!']);
             }
             else {
-                return redirect()->back()->with("error", "Gagal menerima permintaan! status alat sudah $status");
+                // return redirect()->back()->with("error", "Gagal menerima permintaan! status alat sudah $status");
+                return response()->json(['success' => false, 'message' => "Gagal menerima permintaan! status alat sudah $status"]);
             }
         }
         else {
-            return redirect()->back()->with("error", "Gagal menerima request! status alat olahraga tidak aktif!");
+            // return redirect()->back()->with("error", "Gagal menerima request! status alat olahraga tidak aktif!");
+            return response()->json(['success' => false, 'message' => "Gagal menerima request! status alat olahraga tidak aktif!"]);
         }
     }
 
