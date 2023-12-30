@@ -93,10 +93,10 @@ class RequestPenawaran extends Controller
             $per = new ModelsRequestPenawaran();
             $per->updateStatus($data);
     
-            return redirect()->back()->with("success", "Berhasil membatalkan penawaran!");
+            return response()->json(['success' => true, 'message' => "Berhasil membatalkan penawaran!"]);
         }
         else {
-            return redirect()->back()->with("error", "Gagal membatalkan penawaran! status alat sudah $status");
+            return response()->json(['success' => false, 'message' => "Gagal membatalkan penawaran! status alat sudah $status"]);
         }
     }
 

@@ -129,10 +129,10 @@ class RequestPermintaan extends Controller
             $per = new ModelsRequestPermintaan();
             $per->updateStatus($data);
     
-            return redirect()->back()->with("success", "Berhasil membatalkan permintaan!");
+            return response()->json(['success' => true, 'message' => "Berhasil membatalkan permintaan!"]);
         }
         else {
-            return redirect()->back()->with("error", "Gagal membatalkan permintaan! status alat sudah $status");
+            return response()->json(['success' => false, 'message' => "Gagal membatalkan permintaan! status alat sudah $status"]);
         }
     }
 

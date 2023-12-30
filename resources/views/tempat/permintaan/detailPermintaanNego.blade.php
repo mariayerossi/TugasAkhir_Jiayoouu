@@ -598,7 +598,42 @@
         }, function(isConfirm) {
             if (isConfirm) {
                 // Jika user mengklik "Ya", submit form
-                document.getElementById('cancelForm').submit();
+                // document.getElementById('cancelForm').submit();
+                var formData = $("#cancelForm").serialize(); // Mengambil data dari form
+    
+                $.ajax({
+                    url: "/tempat/permintaan/batalPermintaan",
+                    type: "POST",
+                    data: formData,
+                    success: function(response) {
+                        if (response.success) {
+                            swal({
+                                title: "Success!",
+                                text: response.message,
+                                type: "success",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                            window.location.reload();
+                        }
+                        else {
+                            swal({
+                                title: "Error!",
+                                text: response.message,
+                                type: "error",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        }
+                        // window.location.reload();
+                        // alert('Berhasil Diterima!');
+                        // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                        // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                    }
+                });
             } else {
                 swal.close(); // Tutup SweetAlert jika user memilih "Tidak"
             }
