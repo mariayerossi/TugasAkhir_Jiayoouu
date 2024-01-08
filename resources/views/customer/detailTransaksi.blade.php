@@ -152,14 +152,14 @@
     
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
             <a href="javascript:history.back()" class="btn btn-danger me-3" type="submit">Cancel</a>
-            <form action="/customer/transaksi/tambahTransaksi" method="post">
+            <form id="bookingForm" action="/customer/transaksi/tambahTransaksi" method="post">
                 @csrf
                 <input type="hidden" name="id_lapangan" value="{{$data['id_lapangan']}}">
                 <input type="hidden" name="id_tempat" value="{{$data['id_tempat']}}">
                 <input type="hidden" name="tanggal" value="{{$data['tanggal']}}">
                 <input type="hidden" name="mulai" value="{{$data['mulai']}}">
                 <input type="hidden" name="selesai" value="{{$data['selesai']}}">
-                <button class="btn btn-success" type="submit" id="bookingBtn">Booking Sekarang</button>
+                <button id="booking" class="btn btn-success" type="submit" id="bookingBtn">Booking Sekarang</button>
             </form>
         </div>
         <!-- Modal -->
@@ -209,7 +209,43 @@
                     }
                 });
             });
+            // $("#booking").click(function(event) {
+            //     event.preventDefault(); // Mencegah perilaku default form
 
+            //     var formData = $("#bookingForm").serialize(); // Mengambil data dari form
+        
+            //     $.ajax({
+            //         url: "/customer/transaksi/tambahTransaksi",
+            //         type: "POST",
+            //         data: formData,
+            //         success: function(response) {
+            //             if (response.success) {
+            //                 swal({
+            //                     title: "Success!",
+            //                     text: response.message,
+            //                     type: "success",
+            //                     timer: 2000,
+            //                     showConfirmButton: false
+            //                 });
+            //                 window.location.reload();
+            //             }
+            //             else {
+            //                 swal({
+            //                     title: "Error!",
+            //                     text: response.message,
+            //                     type: "error",
+            //                     timer: 2000,
+            //                     showConfirmButton: false
+            //                 });
+            //             }
+            //         },
+            //         error: function(jqXHR, textStatus, errorThrown) {
+            //             alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+            //         }
+            //     });
+
+            //     return false; // Mengembalikan false untuk mencegah submission form
+            // });
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
