@@ -131,65 +131,65 @@ class KerusakanAlat extends Controller
                     }
                 }
 
-                //hapus request alat (Disewakan) di tempat
+                //hapus request alat ini di tempat
                 $permintaan = DB::table('request_permintaan')
                             ->where("req_id_alat","=",$dataTrans->fk_id_alat)
+                            ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
                             ->where("status_permintaan","=","Disewakan")
                             ->get();
                 if (!$permintaan->isEmpty()) {
-                    foreach ($permintaan as $key => $value) {
-                        $id = $value->id_permintaan;
+                    $id = $permintaan->first()->id_permintaan;
                     
-                        $data3 = [
-                            "id" => $id,
-                            "status" => "Selesai"
-                        ];
-                        $per = new requestPermintaan();
-                        $per->updateStatus($data3);
+                    $data3 = [
+                        "id" => $id,
+                        "status" => "Selesai"
+                    ];
+                    $per = new requestPermintaan();
+                    $per->updateStatus($data3);
 
-                        //memasukkan total komisi ke saldo tempat
-                        $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
-                        $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
+                    //memasukkan total komisi ke saldo tempat
+                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->first()->fk_id_tempat)->get()->first();
+                    $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
-                        $transaksi = DB::table('dtrans')
-                                    ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
-                                    ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
-                                    ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
-                                    ->where("dtrans.fk_id_alat","=",$dataTrans->fk_id_alat)
-                                    ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
-                                    ->where("htrans.status_trans","=","Selesai")
-                                    ->get();
-                        $total = 0;
-                        if (!$transaksi->isEmpty()) {
-                            foreach ($transaksi as $key => $value2) {
-                                if ($value2->total_ext != null) {
-                                    $total += $value2->total_komisi_tempat + $value2->total_ext;
-                                }
-                                else {
-                                    $total += $value2->total_komisi_tempat;
-                                }
+                    $transaksi = DB::table('dtrans')
+                                ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
+                                ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                                ->where("dtrans.fk_id_alat","=",$dataTrans->fk_id_alat)
+                                ->where("htrans.fk_id_tempat","=",$permintaan->first()->fk_id_tempat)
+                                ->where("htrans.status_trans","=","Selesai")
+                                ->get();
+                    $total = 0;
+                    if (!$transaksi->isEmpty()) {
+                        foreach ($transaksi as $key => $value2) {
+                            if ($value2->total_ext != null) {
+                                $total += $value2->total_komisi_tempat + $value2->total_ext;
+                            }
+                            else {
+                                $total += $value2->total_komisi_tempat;
                             }
                         }
-
-                        $saldoTempat += $total;
-                        $enkrip = $this->encodePrice((string)$saldoTempat, "mysecretkey");
-
-                        $temp = new pihakTempat();
-                        $dataSaldo3 = [
-                            "id" => $value->fk_id_tempat,
-                            "saldo" => $enkrip
-                        ];
-                        $temp->updateSaldo($dataSaldo3);
                     }
+
+                    $saldoTempat += $total;
+                    $enkrip = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+
+                    $temp = new pihakTempat();
+                    $dataSaldo3 = [
+                        "id" => $permintaan->first()->fk_id_tempat,
+                        "saldo" => $enkrip
+                    ];
+                    $temp->updateSaldo($dataSaldo3);
                 }
-                $penawaran = DB::table('request_penawaran')
-                        ->where("req_id_alat","=",$dataTrans->fk_id_alat)
-                        ->where("status_penawaran","=","Disewakan")
-                        ->get();
-                if (!$penawaran->isEmpty()) {
-                    foreach ($penawaran as $key => $value) {
-                        $id = $value->id_penawaran;
-                    
+                else {
+                    $penawaran = DB::table('request_penawaran')
+                            ->where("req_id_alat","=",$dataTrans->fk_id_alat)
+                            ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
+                            ->where("status_penawaran","=","Disewakan")
+                            ->get();
+                    if (!$penawaran->isEmpty()) {
+                        $id = $penawaran->first()->id_penawaran;
+                        
                         $data3 = [
                             "id" => $id,
                             "status" => "Selesai"
@@ -198,15 +198,15 @@ class KerusakanAlat extends Controller
                         $pen->updateStatus($data3);
 
                         //memasukkan total komisi ke saldo tempat
-                        $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+                        $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->first()->fk_id_tempat)->get()->first();
                         $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
 
                         $transaksi = DB::table('dtrans')
                                     ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
                                     ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
                                     ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
-                                    ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
-                                    ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
+                                    ->where("dtrans.fk_id_alat","=",$penawaran->first()->req_id_alat)
+                                    ->where("htrans.fk_id_tempat","=",$penawaran->first()->fk_id_tempat)
                                     ->where("htrans.status_trans","=","Selesai")
                                     ->where("dtrans.deleted_at","=",null)
                                     ->get();
@@ -227,30 +227,34 @@ class KerusakanAlat extends Controller
                         $enkrip = $this->encodePrice((string)$saldoTempat, "mysecretkey");
 
                         $dataSaldo3 = [
-                            "id" => $value->fk_id_tempat,
+                            "id" => $penawaran->first()->fk_id_tempat,
                             "saldo" => $enkrip
                         ];
                         $temp = new pihakTempat();
                         $temp->updateSaldo($dataSaldo3);
                     }
-                }
-                
-                $sewa = DB::table('sewa_sendiri')
-                    ->where("req_id_alat","=",$dataTrans->fk_id_alat)
-                    ->get();
+                    else {
+                        $sewa = DB::table('sewa_sendiri')
+                            ->where("req_id_alat","=",$dataTrans->fk_id_alat)
+                            ->where("req_lapangan","=",$dataTrans->fk_id_lapangan)
+                            ->get();
 
-                if (!$sewa->isEmpty()) {
-                    $id = $sewa->first()->id_sewa;
+                        if (!$sewa->isEmpty()) {
+                            $id = $sewa->first()->id_sewa;
 
-                    date_default_timezone_set("Asia/Jakarta");
-                    
-                    $data3 = [
-                        "id" => $id,
-                        "delete" => date("Y-m-d H:i:s")
-                    ];
-                    $pen = new sewaSendiri();
-                    $pen->deleteSewa($data3);
+                            date_default_timezone_set("Asia/Jakarta");
+                            
+                            $data3 = [
+                                "id" => $id,
+                                "delete" => date("Y-m-d H:i:s")
+                            ];
+                            $pen = new sewaSendiri();
+                            $pen->deleteSewa($data3);
+                        }
+                    }
                 }
+                //ga tak kasih notif soal e 1 alat kan hanya disewakan di 1 lapangan olahraga
+
 
                 //hapus request (menunggu, diterima)
                 $permintaan1 = DB::table('request_permintaan')

@@ -133,12 +133,12 @@ class AlatOlahraga extends Controller
         $per = DB::table('request_permintaan')->where("req_id_alat","=",$request->id)->where("status_permintaan","=","Disewakan")->get();
         $alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id)->get()->first();
         if (!$per->isEmpty()) {
-            return redirect()->back()->with("error", "Tidak dapat mengubah status! Alat Olahraga sedang disewa!");
+            return redirect()->back()->with("error", "Tidak dapat mengubah data! Alat Olahraga sedang disewa!");
         }
         else {
             $pen = DB::table('request_penawaran')->where("req_id_alat","=",$request->id)->where("status_penawaran","=","Disewakan")->get();
             if (!$pen->isEmpty()) {
-                return redirect()->back()->with("error", "Tidak dapat mengubah status! Alat Olahraga sedang disewa!");
+                return redirect()->back()->with("error", "Tidak dapat mengubah data! Alat Olahraga sedang disewa!");
             }
         }
 
