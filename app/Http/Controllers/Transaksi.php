@@ -1068,7 +1068,7 @@ class Transaksi extends Controller
         $e = new notifikasiEmail();
         $e->sendEmail($cust->email_user, $dataNotif);
 
-        return response()->json(['success' => true, 'message' => 'Berhasil Ditolak!']);
+        return response()->json(['success' => true, 'message' => 'Transaksi Berhasil Ditolak!']);
     }
 
     public function batalBooking(Request $request) {

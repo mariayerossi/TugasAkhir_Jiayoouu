@@ -1,6 +1,5 @@
 @extends('layouts.sidebarNavbar_tempat')
-<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
 @section('content')
 <style>
 .square-image-container {
@@ -74,7 +73,28 @@
     right: 20px;   /* Anda bisa menyesuaikan jarak dari sisi kanan */
     z-index: 1000; /* Z-index tinggi agar button berada di atas elemen lainnya */
 }
-
+.form_rusak {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1100;
+    display: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    background-color:white;
+}
+@media (max-width: 767px) {
+    /* Untuk layar dengan lebar maksimum 767px (tampilan mobile) */
+    .form_rusak {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%; /* Menyebabkan lebar elemen menjadi 100% dari lebar layar */
+        height: 100vh; /* Menyebabkan tinggi elemen menjadi 100% dari tinggi layar */
+    }
+}
 </style>
 @include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
@@ -181,20 +201,57 @@
                                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                                 <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>
                                             </div>
-                                            @if ($htrans->first()->status_trans == "Berlangsung")
-                                                <form id="uploadForm" enctype="multipart/form-data" action="/tempat/kerusakan/ajukanKerusakan" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
-                                                    <input type="hidden" name="unsur" id="unsurInput" value="">
-                                                    <input type="hidden" name="file" id="fileInput" value="">
-                                                    <button type="submit" class="ajukan btn btn-warning btn-sm">Ajukan Kerusakan</button>
-                                                </form>
+                                            @php
+                                                $cek = DB::table('kerusakan_alat')->where("fk_id_dtrans","=",$item->id_dtrans)->first();
+                                            @endphp
+                                            @if ($htrans->first()->status_trans == "Berlangsung" && $cek == null)
+                                                <button class="ajukan btn btn-warning btn-sm" data-id="{{$item->id_dtrans}}">Ajukan Kerusakan</button>
+                                            @elseif ($htrans->first()->status_trans == "Berlangsung" && $cek != null)
+                                                <button disabled class="ajukan btn btn-warning btn-sm" data-id="{{$item->id_dtrans}}">Alat Olahraga Rusak</button>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </a>
+                        <div class="row form_rusak mb-5" data-id="{{$item->id_dtrans}}">
+                            <div class="col-md-12">
+                                <div class="d-flex justify-content-end me-3">
+                                    <button class="close-chat-btn" data-id="{{$item->id_dtrans}}">&times;</button>
+                                </div>
+                                <form id="form{{$item->id_dtrans}}" action="/tempat/kerusakan/ajukanKerusakan" method="post" enctype="multipart/form-data" >
+                                    @csrf
+                                    <div class="d-flex justify-content-center">
+                                        <h5><b>Form Ajukan Kerusakan</b></h5>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-12 mt-2">
+                                            <h6>Apakah ada unsur kesengajaan dalam kerusakan alat olahraga?</h6>
+                                        </div>
+                                        <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                            <input type="radio" class="btn-check" name="unsur" id="danger-outlined{{$item->id_dtrans}}" autocomplete="off" value="Ya, Disengaja">
+                                            <label class="btn btn-outline-danger" for="danger-outlined{{$item->id_dtrans}}"><i class="bi bi-box2 me-2"></i>Ya, Disengaja</label>
+            
+                                            <input type="radio" class="btn-check" name="unsur" id="primary-outlined{{$item->id_dtrans}}" autocomplete="off" value="Tidak Disengaja">
+                                            <label class="btn btn-outline-primary" for="primary-outlined{{$item->id_dtrans}}"><i class="bi bi-justify-left me-2"></i></i>Tidak Disengaja</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-12 mt-2">
+                                            <h6>Lampirkan Bukti <i class="bi bi-info-circle" data-toggle="tooltip" title="Lampirkan foto alat olahraga yang rusak"></i></h6>
+                                            <span style="font-size: 14px">(.jpg,.png,.jpeg)</span>
+                                        </div>
+                                        <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                            <input type="file" class="form-control" name="file" data-id="{{$item->id_dtrans}}" accept=".jpg,.png,.jpeg">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
+                                    <div class="d-flex justify-content-end">
+                                        <button data-id="{{$item->id_dtrans}}" type="submit" class="rusak btn btn-success">Kirim</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     @else
                         <a href="/tempat/detailAlatUmum/{{$dataAlat->id_alat}}">
                             <div class="card h-70 mb-3">
@@ -213,20 +270,57 @@
                                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                                 <p class="card-text">Rp {{number_format($item->harga_sewa_alat, 0, ',', '.')}} x {{$htrans->first()->durasi_sewa}} Jam</p>
                                             </div>
-                                            @if ($htrans->first()->status_trans == "Berlangsung")
-                                                <form id="uploadForm" enctype="multipart/form-data" action="/tempat/kerusakan/ajukanKerusakan" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
-                                                    <input type="hidden" name="unsur" id="unsurInput" value="">
-                                                    <input type="hidden" name="file" id="fileInput" value="">
-                                                    <button type="submit" class="ajukan btn btn-warning btn-sm">Ajukan Kerusakan</button>
-                                                </form>
+                                            @php
+                                                $cek = DB::table('kerusakan_alat')->where("fk_id_dtrans","=",$item->id_dtrans)->first();
+                                            @endphp
+                                            @if ($htrans->first()->status_trans == "Berlangsung" && $cek == null)
+                                                <button class="ajukan btn btn-warning btn-sm" data-id="{{$item->id_dtrans}}">Ajukan Kerusakan</button>
+                                            @elseif ($htrans->first()->status_trans == "Berlangsung" && $cek != null)
+                                                <button disabled class="ajukan btn btn-warning btn-sm" data-id="{{$item->id_dtrans}}">Alat Olahraga Rusak</button>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </a>
+                        <div class="row form_rusak mb-5" data-id="{{$item->id_dtrans}}">
+                            <div class="col-md-12">
+                                <div class="d-flex justify-content-end me-3">
+                                    <button class="close-chat-btn" data-id="{{$item->id_dtrans}}">&times;</button>
+                                </div>
+                                <form id="form{{$item->id_dtrans}}" action="/tempat/kerusakan/ajukanKerusakan" method="post" enctype="multipart/form-data" >
+                                    @csrf
+                                    <div class="d-flex justify-content-center">
+                                        <h5><b>Form Ajukan Kerusakan</b></h5>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-12 mt-2">
+                                            <h6>Apakah ada unsur kesengajaan dalam kerusakan alat olahraga?</h6>
+                                        </div>
+                                        <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                            <input type="radio" class="btn-check" name="unsur" id="danger-outlined{{$item->id_dtrans}}" autocomplete="off" value="Ya, Disengaja">
+                                            <label class="btn btn-outline-danger" for="danger-outlined{{$item->id_dtrans}}"><i class="bi bi-box2 me-2"></i>Ya, Disengaja</label>
+            
+                                            <input type="radio" class="btn-check" name="unsur" id="primary-outlined{{$item->id_dtrans}}" autocomplete="off" value="Tidak Disengaja">
+                                            <label class="btn btn-outline-primary" for="primary-outlined{{$item->id_dtrans}}"><i class="bi bi-justify-left me-2"></i></i>Tidak Disengaja</label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-12 mt-2">
+                                            <h6>Lampirkan Bukti <i class="bi bi-info-circle" data-toggle="tooltip" title="Lampirkan foto alat olahraga yang rusak"></i></h6>
+                                            <span style="font-size: 14px">(.jpg,.png,.jpeg)</span>
+                                        </div>
+                                        <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
+                                            <input type="file" class="form-control" name="file" data-id="{{$item->id_dtrans}}" accept=".jpg,.png,.jpeg">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
+                                    <div class="d-flex justify-content-end">
+                                        <button data-id="{{$item->id_dtrans}}" type="submit" class="rusak btn btn-success">Kirim</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     @endif
                 @endforeach
             @else
@@ -328,7 +422,7 @@
                     <h6>Tanggal Sewa: {{$tanggalBaru4}}</h6>
                 </div>
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <h6>Jam Sewa: {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i:s') }} WIB - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i:s') }} WIB ({{$extend->first()->durasi_extend}} jam)</h6>
+                    <h6>Jam Sewa: {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i') }} WIB - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i') }} WIB ({{$extend->first()->durasi_extend}} jam)</h6>
                 </div>
             </div>
 
@@ -676,71 +770,58 @@
             });
         });
 
-        $(".ajukan").click(async function(event) {
-            event.preventDefault(); // Mencegah perilaku default form
+        $(".close-chat-btn").click(function(e) {
+            e.preventDefault();  // Menghentikan perilaku default (navigasi)
+            let transaksiId = $(this).data('id'); // Mengambil data-id dari tombol yang ditekan
+            $(`.form_rusak[data-id=${transaksiId}]`).hide();
+        });
 
-            const inputOptions = new Promise((resolve) => {
-                resolve({
-                    'Ya': 'Ya, Disengaja',
-                    'Tidak': 'Tidak Sengaja'
-                });
-                });
+        $(".ajukan").click(function(e) {
+            e.preventDefault();
+            let transaksiId = $(this).data('id'); // Mengambil data-id dari tombol yang ditekan
+            $(`.form_rusak[data-id=${transaksiId}]`).show();
+        });
 
-                let unsur;
-                let uploadedFile;
-
-                await Swal.fire({
-                title: 'Apakah terdapat unsur kesengajaan dalam kerusakan alat olahraga?',
-                input: 'radio',
-                inputOptions: inputOptions,
-                inputValidator: (value) => {
-                    if (!value) {
-                    return 'Anda harus memasukan unsur kesengajaan!';
+        $(".rusak").click(function(e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            
+            var formData = new FormData($("#form" + id)[0]);
+            
+            $.ajax({
+                url: "/tempat/kerusakan/ajukanKerusakan",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 5000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
                     }
                 },
-                theme: 'light'
-                }).then((result) => {
-                unsur = result.value;
-                }).then(async () => {
-                const { value: file } = await Swal.fire({
-                    title: 'Lampirkan Bukti Foto (.jpg/.png/.jpeg)',
-                    input: 'file',
-                    inputAttributes: {
-                    'accept': 'image/*',
-                    'aria-label': 'Tambahkan Bukti Foto yang Valid'
-                    },
-                    inputValidator: (value) => {
-                        if (!value) {
-                        return 'Anda harus memasukan Bukti Foto!';
-                        }
-                    },
-                    theme: 'light'
-                });
-
-                // if (file) {
-                //     const reader = new FileReader();
-                //     reader.onload = (e) => {
-                //         Swal.fire({
-                //             title: 'Your uploaded picture',
-                //             imageUrl: e.target.result,
-                //             imageAlt: 'The uploaded picture'
-                //         });
-                //     };
-                //     reader.readAsDataURL(file);
-                // }
-
-                // Set the values of the hidden inputs in the form
-                console.log(file);
-                document.getElementById('unsurInput').value = unsur;
-                document.getElementById('fileInput').value = file ? file.name : '';
-                console.log(document.getElementById('unsurInput').value);
-
-                // Submit the form to the server
-                document.getElementById('uploadForm').submit();
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
             });
 
+            return false;
         });
-        
+
         $("#tolakTrans").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
 
@@ -764,10 +845,25 @@
                         type: "POST",
                         data: formData,
                         success: function(response) {
-                            window.location.reload();
-                            // alert('Berhasil Diterima!');
-                            // Atau Anda dapat mengupdate halaman dengan respons jika perlu
-                            // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                            if (response.success) {
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                window.location.reload();
+                            }
+                            else {
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
                             alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
@@ -789,10 +885,25 @@
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
-                    // Handle success. 
-                    // You can update the frontend or show a success message here
-                    window.location.reload();
-                    swal("Success!", "Berhasil mengkonfirmasi transaksi!", "success");
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
                 },
                 error: function(xhr, status, error) {
                     // Handle errors
@@ -867,8 +978,25 @@
                         type: "POST",
                         data: formData,
                         success: function(response) {
-                            window.location.reload();
-                            // alert('Berhasil Diterima!');
+                            if (response.success) {
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                window.location.reload();
+                            }
+                            else {
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            }
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
                             alert(errorThrown);
@@ -905,15 +1033,24 @@
                         data: formData,
                         success: function(response) {
                             if (response.success) {
-                                swal("Success!", response.message, "success");
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                window.location.reload();
                             }
                             else {
-                                swal("Error!", response.message, "error");
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
                             }
-                            window.location.reload();
-                            // alert('Berhasil Diterima!');
-                            // Atau Anda dapat mengupdate halaman dengan respons jika perlu
-                            // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
                         },
                         error: function(jqXHR, textStatus, errorThrown) {
                             alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
@@ -929,6 +1066,6 @@
         //     $(`.form_rusak`).show();
         // });
     });
-</script>    
+</script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

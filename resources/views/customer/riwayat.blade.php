@@ -207,8 +207,6 @@
                                             <input type="hidden" name="durasi" id="durasi_jam" data-id="{{$item->id_htrans}}">
                                             <button type="submit" class="btn btn-success me-2" data-id="{{$item->id_htrans}}" onclick="showSweetAlert(this)">Extend Waktu Sewa <i class="bi bi-alarm"></i></button>
                                         </form>
-                                    @elseif (!$cek->isEmpty())
-                                        <h6 class="mt-4">Status Extend Waktu {{$cek->first()->status_extend}} Admin</h6>
                                     @endif
                                 @elseif ($item->status_trans == "Dikomplain")
                                     <div class="mt-3">
@@ -246,9 +244,12 @@
                             @if (!$extend->isEmpty())
                                 <hr>
                                 <p class="card-text"><strong>Extend Durasi: </strong>{{$extend->first()->durasi_extend}} jam</p>
-                                <p class="card-text"><strong>Extend Jam Sewa: </strong>{{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i:s') }} - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i:s') }}</p>
+                                <p class="card-text"><strong>Extend Jam Sewa: </strong>{{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->format('H:i') }} - {{ \Carbon\Carbon::parse($extend->first()->jam_sewa)->addHours($extend->first()->durasi_extend)->format('H:i') }}</p>
                                 <div class="d-flex justify-content-end">
                                     <h4><b>Total Extend: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h4>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <h6 class="mt-4">Status Extend Waktu {{$cek->first()->status_extend}} Admin</h6>
                                 </div>
                             @endif
                         </div>
