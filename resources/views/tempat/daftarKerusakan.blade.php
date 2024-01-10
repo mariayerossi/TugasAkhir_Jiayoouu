@@ -53,9 +53,9 @@
                                 <td>{{$item->nama_alat}}</td>
                                 <td>Rp {{ number_format($item->ganti_rugi_alat, 0, ',', '.') }}</td>
                                 @if ($item->kesengajaan == "Ya")
-                                    <td style="color: red">{{$item->kesengajaan}}, Disengaja</td>
+                                    <td style="color: green">{{$item->kesengajaan}}, Disengaja</td>
                                 @else
-                                    <td style="color:green">{{$item->status_alat}}</td>
+                                    <td style="color:red">{{$item->kesengajaan}}</td>
                                 @endif
                                 <td>{{$item->nama_pemilik}}</td>
                             </tr>

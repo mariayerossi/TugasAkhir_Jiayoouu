@@ -224,7 +224,12 @@
                                     <div class="d-flex justify-content-center">
                                         <h5><b>Form Ajukan Kerusakan</b></h5>
                                     </div>
-                                    <div class="row">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="alert alert-warning" role="alert">
+                                            <i class="bi bi-exclamation-circle"></i>Perhatikan! Jika Alat Olahraga rusak karena kesengajaan customer, customer diharuskan membayar ganti rugi sebesar yang telah ditentukan oleh pemilik alat olahraga (dapat dilihat di menu "Daftar Alat yang Rusak"). Ganti rugi ini nantinya diberikan kepada pemilik alat olahraga ketika pemilik mengambil alat miliknya.
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
                                         <div class="col-md-4 col-12 mt-2">
                                             <h6>Apakah ada unsur kesengajaan dalam kerusakan alat olahraga?</h6>
                                         </div>
