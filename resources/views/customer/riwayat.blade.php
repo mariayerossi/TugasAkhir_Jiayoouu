@@ -249,6 +249,11 @@
                                     <h4><b>Total Extend: Rp {{number_format($extend->first()->total, 0, ',', '.')}}</b></h4>
                                 </div>
                                 <div class="d-flex justify-content-end">
+                                    @php
+                                        $cek = DB::table('extend_htrans')
+                                                ->where("fk_id_htrans", "=",$item->id_htrans)
+                                                ->get();
+                                    @endphp
                                     <h6 class="mt-4">Status Extend Waktu {{$cek->first()->status_extend}} Admin</h6>
                                 </div>
                             @endif
