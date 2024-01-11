@@ -85,7 +85,13 @@ Sportiva
             background-color: #007466;
             color: white;
         }
-
+        .truncate-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            display: block;
+        }
 
         /* Tambahkan CSS untuk navbar sederhana */
         nav {
@@ -149,6 +155,45 @@ Sportiva
 
         .dropdown-content.active {
             display: block;
+        }
+        /* ---------------------- */
+        .notif-dropdown {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .notif-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            max-width: 290px;
+            max-height: 400px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5%;
+        }
+
+        .notif-dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .notif-dropdown-content.active {
+            display: block;
+        }
+        .notif-isi {
+            max-height: 250px;
+        }
+        /* .notif-isi a {
+            height: 100px
+        } */
+        nav .coba .notif-isi a:hover {
+            color: white;
+            background-color: #007466
         }
     </style>
     
@@ -214,11 +259,46 @@ Sportiva
                 $saldo = decodePrice(Session::get("dataRole")->saldo_pemilik, "mysecretkey");
             @endphp
             <div class="coba">
-                <a href="" title="Notifikasi">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
-                    </svg>
-                </a>
+                <div class="notif-dropdown me-3">
+                    <div title="Notifikasi">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+                        </svg>
+                    </div>
+                    <div class="notif-dropdown-content ">
+                        <h6 class="text-center m-3">Notifikasi</h6>
+                        <hr>
+                        <div class="notif-isi truncate-text">
+                            <a href="">
+                                <div>
+                                    <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa pariatur ipsa dolore! Quis hic quasi nihil</h6>
+                                    <label style="font-size:14px">1 Januari 2024</label>
+                                </div>
+                            </a>
+                            <a href="">
+                                <div>
+                                    <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa pariatur ipsa dolore! Quis hic quasi nihil</h6>
+                                    <label style="font-size:14px">1 Januari 2024</label>
+                                </div>
+                            </a>
+                            <a href="">
+                                <div>
+                                    <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa pariatur ipsa dolore! Quis hic quasi nihil</h6>
+                                    <label style="font-size:14px">1 Januari 2024</label>
+                                </div>
+                            </a>
+                            <a href="">
+                                <div>
+                                    <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa pariatur ipsa dolore! Quis hic quasi nihil</h6>
+                                    <label style="font-size:14px">1 Januari 2024</label>
+                                </div>
+                            </a>
+                            
+                        </div>
+                        <hr>
+                        <a href="">Lihat Semua Notifikasi</a>
+                    </div>
+                </div>
                 <div class="profile-dropdown">
                     <img src="{{ asset('assets/img/user_icon4.png')}}" alt="Profile" class="profile-image">
                     <div class="dropdown-content">
@@ -305,11 +385,27 @@ Sportiva
                 content.classList.add('active');
             }
         });
-
+        document.querySelector('.notif-dropdown').addEventListener('click', function() {
+            let content = this.querySelector('.notif-dropdown-content');
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+            } else {
+                // Tutup semua dropdown lain yang aktif
+                document.querySelectorAll('.notif-dropdown-content.active').forEach((activeContent) => {
+                    activeContent.classList.remove('active');
+                });
+                content.classList.add('active');
+            }
+        });
         // Jika user mengklik di luar dropdown, tutup dropdown
         document.addEventListener('click', function(event) {
             if (!event.target.closest('.profile-dropdown')) {
                 document.querySelectorAll('.dropdown-content.active').forEach((activeContent) => {
+                    activeContent.classList.remove('active');
+                });
+            }
+            if (!event.target.closest('.notif-dropdown')) {
+                document.querySelectorAll('.notif-dropdown-content.active').forEach((activeContent) => {
                     activeContent.classList.remove('active');
                 });
             }
