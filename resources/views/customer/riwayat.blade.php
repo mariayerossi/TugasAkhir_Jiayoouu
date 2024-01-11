@@ -111,7 +111,7 @@
                                     <h6><b>Tanggal Transaksi: {{$tanggalBaru1}}</b></h6>
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <h6>Status: </h6>
+                                    <h6>Status:</h6>
                                     @if ($item->status_trans == "Diterima")
                                         <h6 style="color: rgb(0, 145, 0)">{{$item->status_trans}}</h6>
                                     @elseif ($item->status_trans == "Ditolak")
