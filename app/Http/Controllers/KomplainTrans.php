@@ -24,15 +24,19 @@ use DateTime;
 class KomplainTrans extends Controller
 {
     public function ajukanKomplain(Request $request) {
-        $request->validate([
-            "jenis" => "required",
-            "keterangan" => "required",
-            "foto" => 'required|max:5120'
-        ],[
-            "foto.max" => "ukuran foto alat olahraga tidak boleh melebihi 5MB!",
-            "required" => ":attribute komplain tidak boleh kosong!",
-            "foto.required" => "foto bukti komplain tidak boleh kosong atau minimal lampirkan 1 foto bukti!"
-        ]);
+        // $request->validate([
+        //     "jenis" => "required",
+        //     "keterangan" => "required",
+        //     "foto" => 'required|max:5120'
+        // ],[
+        //     "foto.max" => "ukuran foto alat olahraga tidak boleh melebihi 5MB!",
+        //     "required" => ":attribute komplain tidak boleh kosong!",
+        //     "foto.required" => "foto bukti komplain tidak boleh kosong atau minimal lampirkan 1 foto bukti!"
+        // ]);
+
+        if ($request->jenis == null || $request->keterangan == null || $request->foto == null) {
+            return response()->json(['success' => false, 'message' => "Silahkan isi data pengajuan komplain!"]);
+        }
 
         date_default_timezone_set("Asia/Jakarta");
 
@@ -58,7 +62,7 @@ class KomplainTrans extends Controller
             $formattedWaktuSewa2 = $waktu_sewa2->format("H:i");
             $formattedWaktuSewa3 = $waktu_sewa3->format("H:i");
     
-            return redirect()->back()->with("error", "Pengajuan Komplain Transaksi ini dapat dilakukan pada jam $formattedWaktuSewa2 - $formattedWaktuSewa3!");
+            return response()->json(['success' => false, 'message' => "Pengajuan Komplain Transaksi ini dapat dilakukan pada jam $formattedWaktuSewa2 - $formattedWaktuSewa3!"]);
         }
 
         // dd("berhasil");
@@ -116,7 +120,7 @@ class KomplainTrans extends Controller
         $e = new notifikasiEmail();
         $e->sendEmail("admin@gmail.com",$dataNotif);
 
-        return redirect()->back()->with("success", "Berhasil Mengajukan Komplain!");
+        return response()->json(['success' => true, 'message' => "Berhasil Mengajukan Komplain!"]);
     }
 
     private function encodePrice($price, $key) {

@@ -261,10 +261,10 @@
                     <div class="d-flex justify-content-end me-3">
                         <button class="close-chat-btn" data-id="{{$item->id_htrans}}">&times;</button>
                     </div>
-                    <form action="/customer/komplain/ajukanKomplain" method="post" enctype="multipart/form-data" >
+                    <form id="form{{$item->id_htrans}}" action="/customer/komplain/ajukanKomplain" method="post" enctype="multipart/form-data" >
                         @csrf
                         <div class="d-flex justify-content-center">
-                            <h5><b>Ajukan Komplain</b></h5>
+                            <h5><b>Form Ajukan Komplain</b></h5>
                         </div>
                         <div class="row">
                             <div class="col-md-4 col-12 mt-2">
@@ -301,7 +301,7 @@
                         </div>
                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-success">Kirim</button>
+                            <button data-id="{{$item->id_htrans}}" type="submit" class="komplain btn btn-success">Kirim</button>
                         </div>
                     </form>
                 </div>
@@ -380,6 +380,46 @@
             e.preventDefault();  // Menghentikan perilaku default (navigasi)
             let transaksiId = $(this).data('id'); // Mengambil data-id dari tombol yang ditekan
             $(`.form_komplain[data-id=${transaksiId}]`).show();
+        });
+
+        $(".komplain").click(function(e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            
+            var formData = new FormData($("#form" + id)[0]);
+            
+            $.ajax({
+                url: "/customer/komplain/ajukanKomplain",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 5000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+
+            return false;
         });
     });
     function updateCount(textarea) {
