@@ -85,14 +85,6 @@ Sportiva
             background-color: #007466;
             color: white;
         }
-        .truncate-text {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-            display: block;
-        }
-
         /* Tambahkan CSS untuk navbar sederhana */
         nav {
             background-color: white;
@@ -109,7 +101,7 @@ Sportiva
         }
         nav a {
             color: black;
-            margin: 0 10px;
+            /* margin: 0 10px; */
             text-decoration: none;
         }
 
@@ -157,6 +149,14 @@ Sportiva
             display: block;
         }
         /* ---------------------- */
+        .truncate-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            display: block;
+        }
+        
         .notif-dropdown {
             position: relative;
             display: inline-block;
@@ -187,10 +187,14 @@ Sportiva
         }
         .notif-isi {
             max-height: 250px;
+            border-bottom-style: solid;
+            border-bottom-width: thin;
+            border-top-style: solid;
+            border-top-width: thin;
         }
-        /* .notif-isi a {
-            height: 100px
-        } */
+        .notif-isi a {
+            background-color: rgb(225, 225, 225);
+        }
         nav .coba .notif-isi a:hover {
             color: white;
             background-color: #007466
@@ -267,7 +271,6 @@ Sportiva
                     </div>
                     <div class="notif-dropdown-content ">
                         <h6 class="text-center m-3">Notifikasi</h6>
-                        <hr>
                         <div class="notif-isi truncate-text">
                             <a href="">
                                 <div>
@@ -295,7 +298,6 @@ Sportiva
                             </a>
                             
                         </div>
-                        <hr>
                         <a href="">Lihat Semua Notifikasi</a>
                     </div>
                 </div>
