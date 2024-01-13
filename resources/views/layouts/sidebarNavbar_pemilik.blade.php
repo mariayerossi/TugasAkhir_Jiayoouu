@@ -193,14 +193,15 @@ Sportiva
             border-top-width: thin;
         }
         .notif-isi a {
-            background-color: rgb(225, 225, 225);
+            background-color: rgb(239, 239, 239);
+            margin-bottom: 1px;
         }
         nav .coba .notif-isi a:hover {
             color: white;
             background-color: #007466
         }
     </style>
-    
+
     <div id="sidebar">
         <a href="/pemilik/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
         <a href="/pemilik/cariLapangan"><i class="bi bi-search me-3"></i>Cari Lapangan Olahraga</a>
@@ -272,31 +273,23 @@ Sportiva
                     <div class="notif-dropdown-content ">
                         <h6 class="text-center m-3">Notifikasi</h6>
                         <div class="notif-isi truncate-text">
-                            <a href="">
-                                <div>
-                                    <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa pariatur ipsa dolore! Quis hic quasi nihil</h6>
-                                    <label style="font-size:14px">1 Januari 2024</label>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div>
-                                    <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa pariatur ipsa dolore! Quis hic quasi nihil</h6>
-                                    <label style="font-size:14px">1 Januari 2024</label>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div>
-                                    <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa pariatur ipsa dolore! Quis hic quasi nihil</h6>
-                                    <label style="font-size:14px">1 Januari 2024</label>
-                                </div>
-                            </a>
-                            <a href="">
-                                <div>
-                                    <h6>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa pariatur ipsa dolore! Quis hic quasi nihil</h6>
-                                    <label style="font-size:14px">1 Januari 2024</label>
-                                </div>
-                            </a>
-                            
+                            @php
+                                $data = DB::table('notifikasi')->where("fk_id_pemilik","=",Session::get("dataRole")->id_pemilik)->get();    
+                            @endphp
+                            @foreach ($data as $item)
+                                @php
+                                    $tanggalAwal3 = $item->waktu_notifikasi;
+                                    $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
+                                    $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
+                                    $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm');
+                                @endphp
+                                <a href="{{$item->link_notifikasi}}">
+                                    <div>
+                                        <h6>{{$item->keterangan_notifikasi}}</h6>
+                                        <label style="font-size:14px">{{$tanggalBaru3}}</label>
+                                    </div>
+                                </a>
+                            @endforeach
                         </div>
                         <a href="">Lihat Semua Notifikasi</a>
                     </div>

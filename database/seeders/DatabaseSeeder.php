@@ -509,7 +509,7 @@ class DatabaseSeeder extends Seeder
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
             'tanggal_minta' => date("Y-m-d H:i:s"),
-            'status_permintaan' => "Diterima",
+            'status_permintaan' => "Menunggu",
             'kode_mulai' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -685,5 +685,17 @@ class DatabaseSeeder extends Seeder
         //     'fk_id_komplain_trans' => 1,
         //     'created_at' => date("Y-m-d H:i:s"),
         // ]);
+
+        DB::table('notifikasi')->insert([
+            'keterangan_notifikasi' => "Permintaan alat olahraga Bola Basket Molten",
+            'waktu_notifikasi' => date("Y-m-d H:i:s"),
+            'link_notifikasi' => "/pemilik/permintaan/detailPermintaanNego/1",
+            'fk_id_user' => null,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'admin' => null,
+            'status_notifikasi' => "Tidak",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
     }
 }
