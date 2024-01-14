@@ -10,6 +10,7 @@ use App\Http\Controllers\LapanganOlahraga;
 use App\Http\Controllers\Laporan;
 use App\Http\Controllers\LoginRegister;
 use App\Http\Controllers\Negosiasi;
+use App\Http\Controllers\Notifikasi;
 use App\Http\Controllers\NotifikasiEmail;
 use App\Http\Controllers\Rating;
 use App\Http\Controllers\RequestPenawaran;
@@ -924,6 +925,10 @@ Route::prefix("/customer")->group(function(){
     Route::prefix("/komplain")->group(function(){
         Route::post("/ajukanKomplain", [KomplainTrans::class, "ajukanKomplain"]);
     });
+});
+
+Route::prefix("/notifikasi")->group(function(){
+    Route::post("/editStatusDibaca/{id}", [Notifikasi::class, "editStatusDibaca"]);
 });
 
 //contoh

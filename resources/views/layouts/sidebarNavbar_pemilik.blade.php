@@ -283,7 +283,7 @@ Sportiva
                                     $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
                                     $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm');
                                 @endphp
-                                <a href="{{$item->link_notifikasi}}">
+                                <a href="{{$item->link_notifikasi}}" id="notificationLink{{$item->id_notifikasi}}">
                                     <div>
                                         <h6>{{$item->keterangan_notifikasi}}</h6>
                                         <label style="font-size:14px">{{$tanggalBaru3}}</label>
@@ -404,6 +404,28 @@ Sportiva
                     activeContent.classList.remove('active');
                 });
             }
+        });
+        $(document).ready(function () {
+            // Click event for the notification links
+            $('a[id^="notificationLink"]').on('click', function (e) {
+                e.preventDefault(); // Prevent the default behavior of the link
+
+                // Extract notification ID from the link's id attribute
+                var notificationId = $(this).attr('id').replace('notificationLink', '');
+
+                // AJAX request to update the status
+                $.ajax({
+                    url: '/notifikasi/editStatusDibaca/' + notificationId, // Replace with your backend endpoint
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log('Notification status updated successfully.');
+                    },
+                    error: function (error) {
+                        console.error('Error updating notification status:', error);
+                    }
+                });
+            });
         });
     </script>
     

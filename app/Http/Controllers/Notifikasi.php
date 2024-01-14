@@ -6,5 +6,7 @@ use Illuminate\Http\Request;
 
 class Notifikasi extends Controller
 {
-    //
+    public function editStatusDibaca() {
+        
+    }
 }
