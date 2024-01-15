@@ -291,7 +291,7 @@ Sportiva
                                 </a>
                             @endforeach
                         </div>
-                        <a href="">Lihat Semua Notifikasi</a>
+                        <a href="/notifikasi/pemilik/lihatNotifikasi">Lihat Semua Notifikasi</a>
                     </div>
                 </div>
                 <div class="profile-dropdown">

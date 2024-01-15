@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\notifikasi as ModelsNotifikasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class Notifikasi extends Controller
 {
@@ -18,5 +20,14 @@ class Notifikasi extends Controller
         $tujuan = $request->input('tujuan');
 
         return response()->json(['success' => true, 'redirect' => $tujuan]);
+    }
+
+    public function lihatNotifikasiPemilik() {
+        $id = Session::get("dataRole")->id_pemilik;
+
+        $data = DB::table('notifikasi')->where("fk_id_pemilik","=",$id)->get();
+
+        $param["notif"] = $data;
+        return view("pemilik.notifikasi")->with($param);
     }
 }

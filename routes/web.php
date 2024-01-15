@@ -929,6 +929,9 @@ Route::prefix("/customer")->group(function(){
 
 Route::prefix("/notifikasi")->group(function(){
     Route::post("/editStatusDibaca/{id}", [Notifikasi::class, "editStatusDibaca"]);
+    Route::prefix("/pemilik")->group(function(){
+        Route::get("/lihatNotifikasi", [Notifikasi::class, "lihatNotifikasiPemilik"]);
+    });
 });
 
 //contoh
