@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedInteger("fk_id_pemilik")->nullable();
             $table->unsignedInteger("fk_id_tempat")->nullable();
             $table->unsignedInteger("admin")->nullable();
-            $table->string("status_notifikasi");//ya / tidak
+            $table->string("status_notifikasi");//Dibaca / Tidak
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('fk_id_user')

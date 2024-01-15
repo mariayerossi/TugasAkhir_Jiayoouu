@@ -193,13 +193,13 @@ Sportiva
             border-top-width: thin;
         }
         .notif-isi a {
-            background-color: rgb(239, 239, 239);
+            /* background-color: rgb(239, 239, 239); */
             margin-bottom: 1px;
         }
-        nav .coba .notif-isi a:hover {
+        /* nav .notif-isi a:hover {
             color: white;
-            background-color: #007466
-        }
+            background-color: #007466;
+        } */
     </style>
 
     <div id="sidebar">
@@ -283,7 +283,7 @@ Sportiva
                                     $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
                                     $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm');
                                 @endphp
-                                <a href="{{$item->link_notifikasi}}" id="notificationLink{{$item->id_notifikasi}}">
+                                <a href="{{$item->link_notifikasi}}" id="notificationLink{{$item->id_notifikasi}}" style="background-color: {{$item->status_notifikasi === 'Dibaca' ? 'white' : 'rgb(239, 239, 239)'}};">
                                     <div>
                                         <h6>{{$item->keterangan_notifikasi}}</h6>
                                         <label style="font-size:14px">{{$tanggalBaru3}}</label>
@@ -409,17 +409,28 @@ Sportiva
             // Click event for the notification links
             $('a[id^="notificationLink"]').on('click', function (e) {
                 e.preventDefault(); // Prevent the default behavior of the link
-
+                
                 // Extract notification ID from the link's id attribute
                 var notificationId = $(this).attr('id').replace('notificationLink', '');
+                var hlmTujuan = $(this).attr('href');
+                
+                var formData = {
+                    _token: '{{ csrf_token() }}', // Laravel CSRF token
+                    notificationId: notificationId,
+                    tujuan: hlmTujuan
+                };
 
                 // AJAX request to update the status
                 $.ajax({
                     url: '/notifikasi/editStatusDibaca/' + notificationId, // Replace with your backend endpoint
                     type: 'POST',
+                    data: formData,
                     dataType: 'json',
                     success: function (data) {
                         console.log('Notification status updated successfully.');
+                        if (data.redirect) { // Change 'response' to 'data'
+                            window.location.href = data.redirect; // Change 'response' to 'data'
+                        }
                     },
                     error: function (error) {
                         console.error('Error updating notification status:', error);
