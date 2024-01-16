@@ -195,6 +195,8 @@ Sportiva
         .notif-isi a {
             /* background-color: rgb(239, 239, 239); */
             margin-bottom: 1px;
+            border-top-style: solid;
+            border-top-width: thin;
         }
         /* nav .notif-isi a:hover {
             color: white;
