@@ -25,7 +25,7 @@ class Notifikasi extends Controller
     public function lihatNotifikasiPemilik() {
         $id = Session::get("dataRole")->id_pemilik;
 
-        $data = DB::table('notifikasi')->where("fk_id_pemilik","=",$id)->get();
+        $data = DB::table('notifikasi')->where("fk_id_pemilik","=",$id)->orderBy("waktu_notifikasi","DESC")->get();
 
         $param["notif"] = $data;
         return view("pemilik.notifikasi")->with($param);

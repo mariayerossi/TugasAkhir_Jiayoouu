@@ -276,7 +276,7 @@ Sportiva
                         <h6 class="text-center m-3">Notifikasi</h6>
                         <div class="notif-isi truncate-text">
                             @php
-                                $data = DB::table('notifikasi')->where("fk_id_pemilik","=",Session::get("dataRole")->id_pemilik)->get();    
+                                $data = DB::table('notifikasi')->where("fk_id_pemilik","=",Session::get("dataRole")->id_pemilik)->orderBy("waktu_notifikasi","DESC")->get();    
                             @endphp
                             @foreach ($data as $item)
                                 @php
