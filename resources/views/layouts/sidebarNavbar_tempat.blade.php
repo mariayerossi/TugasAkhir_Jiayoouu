@@ -103,7 +103,6 @@ Sportiva
         }
         nav a {
             color: black;
-            margin: 0 10px;
             text-decoration: none;
         }
         nav .coba .profile-dropdown a:hover {
@@ -148,6 +147,56 @@ Sportiva
 
         .dropdown-content.active {
             display: block;
+        }
+        /* ---------------------- */
+        .truncate-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            display: block;
+        }
+        
+        .notif-dropdown {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .notif-dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            max-width: 290px;
+            max-height: 400px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5%;
+        }
+
+        .notif-dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .notif-dropdown-content.active {
+            display: block;
+        }
+        .notif-isi {
+            max-height: 250px;
+            border-bottom-style: solid;
+            border-bottom-width: thin;
+            border-top-style: solid;
+            border-top-width: thin;
+        }
+        .notif-isi a {
+            /* background-color: rgb(239, 239, 239); */
+            margin-bottom: 1px;
+            border-top-style: solid;
+            border-top-width: thin;
         }
     </style>
 
@@ -222,11 +271,44 @@ Sportiva
                 $saldo = decodePrice(Session::get("dataRole")->saldo_tempat, "mysecretkey");
             @endphp
             <div class="coba">
-                <a href="" title="Notifikasi">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
-                    </svg>
-                </a>
+                <div class="notif-dropdown me-3">
+                    <div title="Notifikasi">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6"/>
+                        </svg>
+                    </div>
+                    <div class="notif-dropdown-content ">
+                        <h6 class="text-center m-3">Notifikasi</h6>
+                        <div class="notif-isi truncate-text">
+                            @php
+                                $data = DB::table('notifikasi')->where("fk_id_tempat","=",Session::get("dataRole")->id_tempat)->orderBy("waktu_notifikasi","DESC")->get();    
+                            @endphp
+                            @if (!$data->isEmpty())
+                                @foreach ($data as $item)
+                                    @php
+                                        $tanggalAwal3 = $item->waktu_notifikasi;
+                                        $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
+                                        $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
+                                        $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm');
+                                    @endphp
+                                    <a href="{{$item->link_notifikasi}}" id="notificationLink{{$item->id_notifikasi}}" style="background-color: {{$item->status_notifikasi === 'Dibaca' ? 'white' : 'rgb(239, 239, 239)'}};">
+                                        <div>
+                                            <h6>{{$item->keterangan_notifikasi}}</h6>
+                                            <label style="font-size:14px">{{$tanggalBaru3}}</label>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @else
+                                <a>
+                                    <div>
+                                        <h5>Tidak ada notifikasi!</h5>
+                                    </div>
+                                </a>
+                            @endif
+                        </div>
+                        <a href="/notifikasi/tempat/lihatNotifikasi">Lihat Semua Notifikasi</a>
+                    </div>
+                </div>
                 <div class="profile-dropdown">
                     <img src="{{ asset('assets/img/user_icon4.png')}}" alt="Profile" class="profile-image">
                     <div class="dropdown-content">
@@ -313,7 +395,18 @@ Sportiva
                 content.classList.add('active');
             }
         });
-
+        document.querySelector('.notif-dropdown').addEventListener('click', function() {
+            let content = this.querySelector('.notif-dropdown-content');
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+            } else {
+                // Tutup semua dropdown lain yang aktif
+                document.querySelectorAll('.notif-dropdown-content.active').forEach((activeContent) => {
+                    activeContent.classList.remove('active');
+                });
+                content.classList.add('active');
+            }
+        });
         // Jika user mengklik di luar dropdown, tutup dropdown
         document.addEventListener('click', function(event) {
             if (!event.target.closest('.profile-dropdown')) {
@@ -321,9 +414,44 @@ Sportiva
                     activeContent.classList.remove('active');
                 });
             }
+            if (!event.target.closest('.notif-dropdown')) {
+                document.querySelectorAll('.notif-dropdown-content.active').forEach((activeContent) => {
+                    activeContent.classList.remove('active');
+                });
+            }
         });
-        function goBack() {
-            window.history.back();
-        }
+        $(document).ready(function () {
+            // Click event for the notification links
+            $('a[id^="notificationLink"]').on('click', function (e) {
+                e.preventDefault(); // Prevent the default behavior of the link
+                
+                // Extract notification ID from the link's id attribute
+                var notificationId = $(this).attr('id').replace('notificationLink', '');
+                var hlmTujuan = $(this).attr('href');
+                
+                var formData = {
+                    _token: '{{ csrf_token() }}', // Laravel CSRF token
+                    notificationId: notificationId,
+                    tujuan: hlmTujuan
+                };
+
+                // AJAX request to update the status
+                $.ajax({
+                    url: '/notifikasi/editStatusDibaca/' + notificationId, // Replace with your backend endpoint
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log('Notification status updated successfully.');
+                        if (data.redirect) { // Change 'response' to 'data'
+                            window.location.href = data.redirect; // Change 'response' to 'data'
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error updating notification status:', error);
+                    }
+                });
+            });
+        });
     </script>
 </body>

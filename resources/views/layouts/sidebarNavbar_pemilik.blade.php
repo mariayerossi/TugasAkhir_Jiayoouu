@@ -101,7 +101,6 @@ Sportiva
         }
         nav a {
             color: black;
-            /* margin: 0 10px; */
             text-decoration: none;
         }
 
@@ -278,20 +277,28 @@ Sportiva
                             @php
                                 $data = DB::table('notifikasi')->where("fk_id_pemilik","=",Session::get("dataRole")->id_pemilik)->orderBy("waktu_notifikasi","DESC")->get();    
                             @endphp
-                            @foreach ($data as $item)
-                                @php
-                                    $tanggalAwal3 = $item->waktu_notifikasi;
-                                    $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
-                                    $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
-                                    $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm');
-                                @endphp
-                                <a href="{{$item->link_notifikasi}}" id="notificationLink{{$item->id_notifikasi}}" style="background-color: {{$item->status_notifikasi === 'Dibaca' ? 'white' : 'rgb(239, 239, 239)'}};">
+                            @if (!$data->isEmpty())
+                                @foreach ($data as $item)
+                                    @php
+                                        $tanggalAwal3 = $item->waktu_notifikasi;
+                                        $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
+                                        $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
+                                        $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm');
+                                    @endphp
+                                    <a href="{{$item->link_notifikasi}}" id="notificationLink{{$item->id_notifikasi}}" style="background-color: {{$item->status_notifikasi === 'Dibaca' ? 'white' : 'rgb(239, 239, 239)'}};">
+                                        <div>
+                                            <h6>{{$item->keterangan_notifikasi}}</h6>
+                                            <label style="font-size:14px">{{$tanggalBaru3}}</label>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @else
+                                <a>
                                     <div>
-                                        <h6>{{$item->keterangan_notifikasi}}</h6>
-                                        <label style="font-size:14px">{{$tanggalBaru3}}</label>
+                                        <h5>Tidak ada notifikasi!</h5>
                                     </div>
                                 </a>
-                            @endforeach
+                            @endif
                         </div>
                         <a href="/notifikasi/pemilik/lihatNotifikasi">Lihat Semua Notifikasi</a>
                     </div>

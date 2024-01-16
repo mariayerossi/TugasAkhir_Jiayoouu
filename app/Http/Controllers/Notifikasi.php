@@ -30,4 +30,13 @@ class Notifikasi extends Controller
         $param["notif"] = $data;
         return view("pemilik.notifikasi")->with($param);
     }
+
+    public function lihatNotifikasiTempat() {
+        $id = Session::get("dataRole")->id_tempat;
+
+        $data = DB::table('notifikasi')->where("fk_id_tempat","=",$id)->orderBy("waktu_notifikasi","DESC")->get();
+
+        $param["notif"] = $data;
+        return view("tempat.notifikasi")->with($param);
+    }
 }
