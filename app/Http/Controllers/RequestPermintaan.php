@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\alatOlahraga;
+use App\Models\notifikasi;
 use App\Models\requestPermintaan as ModelsRequestPermintaan;
 use DateInterval;
 use DateTime;
@@ -73,10 +74,24 @@ class RequestPermintaan extends Controller
             $per = new ModelsRequestPermintaan();
             $id = $per->insertPermintaan($data);
 
+            //kirim notif web ke pemilik
+            $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->nama_alat;
+
+            $dataNotifWeb = [
+                "keterangan" => "Permintaan alat olahraga ".$nama_alat,
+                "waktu" => $tgl_minta,
+                "link" => "/pemilik/permintaan/detailPermintaanNego/".$id,
+                "user" => null,
+                "pemilik" => $request->id_pemilik,
+                "tempat" => null,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
             //notif email ke pemilik
             $email_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->email_pemilik;
             $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$request->id_pemilik)->get()->first()->nama_pemilik;
-            $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->nama_alat;
             // $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->komisi_alat;
 
             $dataNotif = [

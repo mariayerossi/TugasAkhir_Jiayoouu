@@ -24,7 +24,7 @@ class notifikasi extends Model
         $notif->fk_id_pemilik = $data["pemilik"];
         $notif->fk_id_tempat = $data["tempat"];
         $notif->admin = $data["admin"];
-        $notif->status_notifikasi = $data["status"];
+        $notif->status_notifikasi = "Tidak";
         $notif->save();
     }
 
