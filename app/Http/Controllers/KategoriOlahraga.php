@@ -9,11 +9,20 @@ use Illuminate\Support\Facades\DB;
 class KategoriOlahraga extends Controller
 {
     public function tambahKategori(Request $request){
-        $request->validate([
-            "kategori" => 'required',
-        ], [
-            "required" => "nama :attribute tidak boleh kosong!"
-        ]);
+        // $request->validate([
+        //     "kategori" => 'required',
+        // ], [
+        //     "required" => "nama :attribute tidak boleh kosong!"
+        // ]);
+        
+        if ($request->kategori == null || $request->kategori == "") {
+            return response()->json(['success' => false, 'message' => 'Nama kategori tidak boleh kosong!']);
+        }
+
+        $kateg = DB::table('kategori')->where("nama_kategori","=",ucwords($request->kategori))->get();
+        if (!$kateg->isEmpty()) {
+            return response()->json(['success' => false, 'message' => 'Kategori sudah ada!']);
+        }
 
         $data = [
             "nama"=>ucwords($request->kategori)
@@ -21,7 +30,7 @@ class KategoriOlahraga extends Controller
         $kat = new kategori();
         $kat->insertKategori($data);
 
-        return redirect()->back()->with("success", "Berhasil Menambah Kategori!");
+        return response()->json(['success' => true, 'message' => 'Berhasil Menambah Kategori!']);
     }
 
     public function hapusKategori(Request $request) {
@@ -45,6 +54,15 @@ class KategoriOlahraga extends Controller
     }
 
     public function editKategori(Request $request) {
+        if ($request->kategori == null || $request->kategori == "") {
+            return response()->json(['success' => false, 'message' => 'Nama kategori tidak boleh kosong!']);
+        }
+
+        $kateg = DB::table('kategori')->where("nama_kategori","=",ucwords($request->kategori))->get();
+        if (!$kateg->isEmpty()) {
+            return response()->json(['success' => false, 'message' => 'Kategori sudah ada!']);
+        }
+
         $data = [
             "id" => $request->id,
             "nama" => ucwords($request->kategori)
@@ -52,6 +70,6 @@ class KategoriOlahraga extends Controller
         $kat = new kategori();
         $kat->updateKategori($data);
 
-        return redirect("/admin/masterKategori");
+        return response()->json(['success' => true, 'message' => 'Berhasil Mengedit Kategori!']);
     }
 }
