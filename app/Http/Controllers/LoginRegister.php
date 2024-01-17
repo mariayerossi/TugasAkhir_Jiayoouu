@@ -456,7 +456,7 @@ class LoginRegister extends Controller
         $regis = new registerTempat();
         $regis->deleteRegister($data2);
 
-        return redirect()->back()->with("success", "Berhasil Konfirmasi Register!");
+        return response()->json(['success' => true, 'message' => 'Berhasil Konfirmasi Register!']);
     }
 
     public function tolakKonfirmasiTempat(Request $request){
@@ -466,6 +466,6 @@ class LoginRegister extends Controller
         $regis = new registerTempat();
         $regis->deleteRegister($data2);
 
-        return redirect()->back()->with("success", "Berhasil Menolak Register!");
+        return response()->json(['success' => true, 'message' => 'Berhasil Menolak Register!']);
     }
 }

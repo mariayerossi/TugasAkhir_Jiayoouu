@@ -39,14 +39,14 @@ Sportiva
             transition: 0.3s;
         }
     
-        #sidebar a:hover {
+        #sidebar .coba a:hover {
             background-color: white;
             color: #007466;
         }
     
         #sidebar .closebtn {
             position: absolute;
-            top: 45px;
+            top: 0;
             right: 25px;
             font-size: 36px;
             margin-left: 50px;

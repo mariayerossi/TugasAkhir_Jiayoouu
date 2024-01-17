@@ -42,8 +42,8 @@
                                     <td><img onclick="showImage('{{ asset('upload/'.$item->ktp_tempat_reg) }}')" style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $item->ktp_tempat_reg) }}" alt=""></td>
                                     <td><img onclick="showImage('{{ asset('upload/'.$item->npwp_tempat_reg) }}')" style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $item->npwp_tempat_reg) }}" alt=""></td>
                                     <td>
-                                        <a href="/admin/konfirmasiTempat/{{$item->id_register}}" class="btn btn-primary">Terima</a>
-                                        <a href="/admin/tolakKonfirmasiTempat/{{$item->id_register}}" class="btn btn-danger">Tolak</a>
+                                        <a href="/admin/konfirmasiTempat/{{$item->id_register}}" class="btn btn-success confirm-btn" data-id="{{$item->id_register}}"><i class="bi bi-check2"></i></a>
+                                        <a href="/admin/tolakKonfirmasiTempat/{{$item->id_register}}" class="btn btn-danger reject-btn" data-id="{{$item->id_register}}"><i class="bi bi-x-lg"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -75,6 +75,92 @@
     }
     $(document).ready(function() {
         $('.table').DataTable();
+    });
+    $('.confirm-btn').on('click', function(e) {
+        e.preventDefault();
+        var registerId = $(this).data('id');
+        
+        var formData = {
+            _token: '{{ csrf_token() }}', // Laravel CSRF token
+            registerId: registerId
+        };
+        
+        $.ajax({
+            url: '/admin/konfirmasiTempat/' + registerId,
+            type: 'GET',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                // Handle response jika diperlukan
+                if (response.success) {
+                    swal({
+                        title: "Success!",
+                        text: response.message,
+                        type: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    window.location.reload();
+                }
+                else {
+                    swal({
+                        title: "Error!",
+                        text: response.message,
+                        type: "error",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            },
+            error: function(error) {
+                // Handle error jika diperlukan
+                console.error(error);
+            }
+        });
+    });
+
+    // Fungsi untuk menangani penolakan
+    $('.reject-btn').on('click', function(e) {
+        e.preventDefault();
+        var registerId = $(this).data('id');
+
+        var formData = {
+            _token: '{{ csrf_token() }}', // Laravel CSRF token
+            registerId: registerId
+        };
+
+        $.ajax({
+            url: '/admin/tolakKonfirmasiTempat/' + registerId,
+            type: 'GET',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                // Handle response jika diperlukan
+                if (response.success) {
+                    swal({
+                        title: "Success!",
+                        text: response.message,
+                        type: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    window.location.reload();
+                }
+                else {
+                    swal({
+                        title: "Error!",
+                        text: response.message,
+                        type: "error",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            },
+            error: function(error) {
+                // Handle error jika diperlukan
+                console.error(error);
+            }
+        });
     });
 </script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
