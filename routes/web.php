@@ -935,6 +935,9 @@ Route::prefix("/notifikasi")->group(function(){
     Route::prefix("/tempat")->group(function(){
         Route::get("/lihatNotifikasi", [Notifikasi::class, "lihatNotifikasiTempat"])->middleware([CekTempat::class]);
     });
+    Route::prefix("/admin")->group(function(){
+        Route::get("/lihatNotifikasi", [Notifikasi::class, "lihatNotifikasiAdmin"])->middleware([CekAdmin::class]);
+    });
 });
 
 //contoh
