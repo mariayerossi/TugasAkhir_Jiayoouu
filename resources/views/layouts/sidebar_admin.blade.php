@@ -155,7 +155,6 @@ Sportiva
         .notif-dropdown {
             position: relative;
             display: inline-block;
-            cursor: pointer;
         }
 
         .notif-dropdown-content {
@@ -175,6 +174,7 @@ Sportiva
             padding: 12px 16px;
             text-decoration: none;
             display: block;
+            cursor: pointer;
         }
 
         .notif-dropdown-content.active {

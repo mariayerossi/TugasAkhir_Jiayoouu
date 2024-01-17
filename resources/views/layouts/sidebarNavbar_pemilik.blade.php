@@ -159,7 +159,6 @@ Sportiva
         .notif-dropdown {
             position: relative;
             display: inline-block;
-            cursor: pointer;
         }
 
         .notif-dropdown-content {
@@ -179,6 +178,7 @@ Sportiva
             padding: 12px 16px;
             text-decoration: none;
             display: block;
+            cursor: pointer;
         }
 
         .notif-dropdown-content.active {
@@ -197,10 +197,10 @@ Sportiva
             border-top-style: solid;
             border-top-width: thin;
         }
-        /* nav .notif-isi a:hover {
-            color: white;
-            background-color: #007466;
-        } */
+        svg:hover {
+            color: #007466;
+            cursor: pointer;
+        }
     </style>
 
     <div id="sidebar">
