@@ -285,7 +285,7 @@ Sportiva
                                 </a>
                             @endif
                         </div>
-                        <a href="/notifikasi/admin/lihatNotifikasi">Lihat Semua Notifikasi</a>
+                        <a href="/notifikasi/admin/lihatNotifikasi" class="text-center">Lihat Semua Notifikasi</a>
                     </div>
                 </div>
             </div>
