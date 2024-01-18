@@ -84,6 +84,25 @@
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
         $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY HH:mm');
     @endphp
+
+    <div class="d-flex justify-content-end mt-4 me-3">
+        @if ($penawaran->first()->status_penawaran == "Menunggu")
+            <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$penawaran->first()->status_penawaran}}</b></h6>
+        @elseif($penawaran->first()->status_penawaran == "Diterima")
+            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$penawaran->first()->status_penawaran}}</b></h6>
+        @elseif($penawaran->first()->status_penawaran == "Ditolak")
+            <h6><b>Status Komplain: </b><b style="color:red">{{$penawaran->first()->status_penawaran}}</b></h6>
+        @elseif($penawaran->first()->status_penawaran == "Dibatalkan")
+            <h6><b>Status Komplain: </b><b style="color:red">{{$penawaran->first()->status_penawaran}}</b></h6>
+        @elseif($penawaran->first()->status_penawaran == "Dikomplain")
+            <h6><b>Status Komplain: </b><b style="color:red">{{$penawaran->first()->status_penawaran}}</b></h6>
+        @elseif($penawaran->first()->status_penawaran == "Disewakan")
+            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$penawaran->first()->status_penawaran}}</b></h6>
+        @elseif($penawaran->first()->status_penawaran == "Selesai")
+            <h6><b>Status Komplain: </b><b style="color:blue">{{$penawaran->first()->status_penawaran}}</b></h6>
+        @endif
+    </div>
+
     <div class="row mb-5 mt-5">
         <!-- Nama Pengirim -->
         <div class="col-md-6 col-sm-12 mb-3">

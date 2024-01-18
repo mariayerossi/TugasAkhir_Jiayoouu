@@ -48,14 +48,34 @@
 
         if ($jenis == "Permintaan") {
             $tanggalAwal1 = $request->first()->tanggal_minta;
+            $status = $request->first()->status_permintaan;
         }
         else {
             $tanggalAwal1 = $request->first()->tanggal_tawar;
+            $status = $request->first()->status_penawaran;
         }
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
         $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY H:mm');
     @endphp
+
+    <div class="d-flex justify-content-end mt-4 me-3">
+        @if ($status == "Menunggu")
+            <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$status}}</b></h6>
+        @elseif($status == "Diterima")
+            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$status}}</b></h6>
+        @elseif($status == "Ditolak")
+            <h6><b>Status Komplain: </b><b style="color:red">{{$status}}</b></h6>
+        @elseif($status == "Dibatalkan")
+            <h6><b>Status Komplain: </b><b style="color:red">{{$status}}</b></h6>
+        @elseif($status == "Dikomplain")
+            <h6><b>Status Komplain: </b><b style="color:red">{{$status}}</b></h6>
+        @elseif($status == "Disewakan")
+            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$status}}</b></h6>
+        @elseif($status == "Selesai")
+            <h6><b>Status Komplain: </b><b style="color:blue">{{$status}}</b></h6>
+        @endif
+    </div>
 
     <div class="row mb-5 mt-5">
         <!-- Nama Pengirim -->
