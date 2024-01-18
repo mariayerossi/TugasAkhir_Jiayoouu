@@ -78,7 +78,7 @@ class RequestPermintaan extends Controller
             $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first()->nama_alat;
 
             $dataNotifWeb = [
-                "keterangan" => "Permintaan alat olahraga ".$nama_alat,
+                "keterangan" => "Permintaan Baru Alat Olahraga ".$nama_alat,
                 "waktu" => $tgl_minta,
                 "link" => "/pemilik/permintaan/detailPermintaanNego/".$id,
                 "user" => null,
@@ -120,22 +120,40 @@ class RequestPermintaan extends Controller
         if ($status == "Menunggu") {
             $per = $req->get_all_data_by_id($request->id_permintaan)->first();
 
-            $temp = DB::table('pihak_tempat')->where("id_tempat","=",$per->fk_id_tempat)->get()->first();
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$per->fk_id_pemilik)->get()->first();
+
             $alat = DB::table('alat_olahraga')->where("id_alat","=",$per->req_id_alat)->get()->first();
 
+            date_default_timezone_set("Asia/Jakarta");
+            $tgl = date("Y-m-d H:i:s");
+
+            $dataNotifWeb = [
+                "keterangan" => "Permintaan Alat Olahraga ".$alat->nama_alat." Dibatalkan Pihak Tempat",
+                "waktu" => $tgl,
+                "link" => "/pemilik/permintaan/detailPermintaanNego/".$request->id_permintaan,
+                "user" => null,
+                "pemilik" => $per->fk_id_pemilik,
+                "tempat" => null,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
+            // dd($pemilik);
+
             $dataNotif = [
-                "subject" => "🔔Permintaan Alat Olahraga Telah Dibatalkan Pemilik Alat!🔔",
-                "judul" => "Permintaan Alat Olahraga Telah Dibatalkan Pemilik Alat",
-                "nama_user" => $temp->nama_tempat,
-                "url" => "https://sportiva.my.id/tempat/cariAlat",
-                "button" => "Lihat dan Temukan Alat Olahraga Menarik Lainnya",
+                "subject" => "🔔Permintaan Alat Olahraga Telah Dibatalkan Pihak Tempat Olahraga!🔔",
+                "judul" => "Permintaan Alat Olahraga Telah Dibatalkan Pihak Tempat Olahraga",
+                "nama_user" => $pemilik->nama_pemilik,
+                "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$request->id_permintaan,
+                "button" => "Lihat Detail Permintaan",
                 "isi" => "Permintaan alat olahraga:<br><br>
                         <b>Nama Alat Olahraga  : ".$alat->nama_alat."</b><br>
-                        <b>Komisi Pemilik Alat : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
+                        <b>Komisi Alat Olahraga : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
                         Telah dibatalkan! Cari dan temukan alat olahraga lain untuk disewakan!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail($temp->email_tempat,$dataNotif);
+            $e->sendEmail($pemilik->email_pemilik,$dataNotif);
 
             $data = [
                 "id" => $request->id_permintaan,
