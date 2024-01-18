@@ -197,7 +197,7 @@ Sportiva
             border-top-style: solid;
             border-top-width: thin;
         }
-        svg:hover {
+        nav svg:hover {
             color: #007466;
             cursor: pointer;
         }
