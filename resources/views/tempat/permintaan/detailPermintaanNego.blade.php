@@ -86,19 +86,19 @@
 
     <div class="d-flex justify-content-end mt-4 me-3">
         @if ($permintaan->first()->status_permintaan == "Menunggu")
-            <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$permintaan->first()->status_permintaan}}</b></h6>
+            <h6><b>Status: </b><b style="color:rgb(239, 203, 0)">{{$permintaan->first()->status_permintaan}}</b></h6>
         @elseif($permintaan->first()->status_permintaan == "Diterima")
-            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$permintaan->first()->status_permintaan}}</b></h6>
+            <h6><b>Status: </b><b style="color:rgb(0, 145, 0)">{{$permintaan->first()->status_permintaan}}</b></h6>
         @elseif($permintaan->first()->status_permintaan == "Ditolak")
-            <h6><b>Status Komplain: </b><b style="color:red">{{$permintaan->first()->status_permintaan}}</b></h6>
+            <h6><b>Status: </b><b style="color:red">{{$permintaan->first()->status_permintaan}}</b></h6>
         @elseif($permintaan->first()->status_permintaan == "Dibatalkan")
-            <h6><b>Status Komplain: </b><b style="color:red">{{$permintaan->first()->status_permintaan}}</b></h6>
+            <h6><b>Status: </b><b style="color:red">{{$permintaan->first()->status_permintaan}}</b></h6>
         @elseif($permintaan->first()->status_permintaan == "Dikomplain")
-            <h6><b>Status Komplain: </b><b style="color:red">{{$permintaan->first()->status_permintaan}}</b></h6>
+            <h6><b>Status: </b><b style="color:red">{{$permintaan->first()->status_permintaan}}</b></h6>
         @elseif($permintaan->first()->status_permintaan == "Disewakan")
-            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$permintaan->first()->status_permintaan}}</b></h6>
+            <h6><b>Status: </b><b style="color:rgb(0, 145, 0)">{{$permintaan->first()->status_permintaan}}</b></h6>
         @elseif($permintaan->first()->status_permintaan == "Selesai")
-            <h6><b>Status Komplain: </b><b style="color:blue">{{$permintaan->first()->status_permintaan}}</b></h6>
+            <h6><b>Status: </b><b style="color:blue">{{$permintaan->first()->status_permintaan}}</b></h6>
         @endif
     </div>
 

@@ -117,6 +117,23 @@
         $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
         $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm');
     @endphp
+    <div class="d-flex justify-content-end mt-4 me-3">
+        @if ($htrans->first()->status_trans == "Menunggu")
+            <h6><b>Status: </b><b style="color:rgb(239, 203, 0)">{{$htrans->first()->status_trans}}</b></h6>
+        @elseif($htrans->first()->status_trans == "Diterima")
+            <h6><b>Status: </b><b style="color:rgb(0, 145, 0)">{{$htrans->first()->status_trans}}</b></h6>
+        @elseif($htrans->first()->status_trans == "Ditolak")
+            <h6><b>Status: </b><b style="color:red">{{$htrans->first()->status_trans}}</b></h6>
+        @elseif($htrans->first()->status_trans == "Dibatalkan")
+            <h6><b>Status: </b><b style="color:red">{{$htrans->first()->status_trans}}</b></h6>
+        @elseif($htrans->first()->status_trans == "Dikomplain")
+            <h6><b>Status: </b><b style="color:red">{{$htrans->first()->status_trans}}</b></h6>
+        @elseif($htrans->first()->status_trans == "Berlangsung")
+            <h6><b>Status: </b><b style="color:rgb(255, 145, 0)">{{$htrans->first()->status_trans}}</b></h6>
+        @elseif($htrans->first()->status_trans == "Selesai")
+            <h6><b>Status: </b><b style="color:blue">{{$htrans->first()->status_trans}}</b></h6>
+        @endif
+    </div>
     <div class="row mt-5">
         <!-- Nama Pengirim -->
         <div class="col-md-6 col-sm-12 mb-3">

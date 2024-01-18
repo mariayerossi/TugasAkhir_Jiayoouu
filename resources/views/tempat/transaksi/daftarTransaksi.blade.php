@@ -147,7 +147,9 @@
                                                 <td><span style="color:red">{{$extend->first()->status_extend}}</span></td>
                                             @endif
                                         @else
-                                            <td>Tidak ada extend</td>
+                                            <td>Tidak ada 
+                                                
+                                            </td>
                                         @endif
                                         <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
                                     </tr>

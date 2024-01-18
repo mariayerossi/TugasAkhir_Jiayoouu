@@ -87,19 +87,19 @@
 
     <div class="d-flex justify-content-end mt-4 me-3">
         @if ($penawaran->first()->status_penawaran == "Menunggu")
-            <h6><b>Status Komplain: </b><b style="color:rgb(239, 203, 0)">{{$penawaran->first()->status_penawaran}}</b></h6>
+            <h6><b>Status: </b><b style="color:rgb(239, 203, 0)">{{$penawaran->first()->status_penawaran}}</b></h6>
         @elseif($penawaran->first()->status_penawaran == "Diterima")
-            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$penawaran->first()->status_penawaran}}</b></h6>
+            <h6><b>Status: </b><b style="color:rgb(0, 145, 0)">{{$penawaran->first()->status_penawaran}}</b></h6>
         @elseif($penawaran->first()->status_penawaran == "Ditolak")
-            <h6><b>Status Komplain: </b><b style="color:red">{{$penawaran->first()->status_penawaran}}</b></h6>
+            <h6><b>Status: </b><b style="color:red">{{$penawaran->first()->status_penawaran}}</b></h6>
         @elseif($penawaran->first()->status_penawaran == "Dibatalkan")
-            <h6><b>Status Komplain: </b><b style="color:red">{{$penawaran->first()->status_penawaran}}</b></h6>
+            <h6><b>Status: </b><b style="color:red">{{$penawaran->first()->status_penawaran}}</b></h6>
         @elseif($penawaran->first()->status_penawaran == "Dikomplain")
-            <h6><b>Status Komplain: </b><b style="color:red">{{$penawaran->first()->status_penawaran}}</b></h6>
+            <h6><b>Status: </b><b style="color:red">{{$penawaran->first()->status_penawaran}}</b></h6>
         @elseif($penawaran->first()->status_penawaran == "Disewakan")
-            <h6><b>Status Komplain: </b><b style="color:rgb(0, 145, 0)">{{$penawaran->first()->status_penawaran}}</b></h6>
+            <h6><b>Status: </b><b style="color:rgb(0, 145, 0)">{{$penawaran->first()->status_penawaran}}</b></h6>
         @elseif($penawaran->first()->status_penawaran == "Selesai")
-            <h6><b>Status Komplain: </b><b style="color:blue">{{$penawaran->first()->status_penawaran}}</b></h6>
+            <h6><b>Status: </b><b style="color:blue">{{$penawaran->first()->status_penawaran}}</b></h6>
         @endif
     </div>
 
