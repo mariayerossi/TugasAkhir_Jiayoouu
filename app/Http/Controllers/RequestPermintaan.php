@@ -128,7 +128,7 @@ class RequestPermintaan extends Controller
             $tgl = date("Y-m-d H:i:s");
 
             $dataNotifWeb = [
-                "keterangan" => "Permintaan Alat Olahraga ".$alat->nama_alat." Dibatalkan Pihak Tempat",
+                "keterangan" => "Permintaan Alat Olahraga ".$alat->nama_alat." Dibatalkan Pihak Tempat Olahraga",
                 "waktu" => $tgl,
                 "link" => "/pemilik/permintaan/detailPermintaanNego/".$request->id_permintaan,
                 "user" => null,
