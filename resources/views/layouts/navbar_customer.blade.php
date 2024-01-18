@@ -294,7 +294,7 @@ Sportiva
                                 </a>
                             @endif
                         </div>
-                        <a href="/notifikasi/pemilik/lihatNotifikasi" class="text-center">Lihat Semua Notifikasi</a>
+                        <a href="/notifikasi/customer/lihatNotifikasi" class="text-center">Lihat Semua Notifikasi</a>
                     </div>
                 </div>
                 @php
@@ -358,7 +358,7 @@ Sportiva
             {{-- <a href="/customer/editProfile" class="ms-3"><i class="bi bi-pencil-square me-2"></i>Edit Profile</a> --}}
             <a href="/logout" class="ms-3"><i class="bi bi-power me-2"></i>Logout</a>
             <hr>
-            <a href="" class="ms-3"><i class="bi bi-bell me-2"></i>Lihat Semua Notifikasi</a>
+            <a href="/notifikasi/customer/lihatNotifikasi" class="ms-3"><i class="bi bi-bell me-2"></i>Lihat Semua Notifikasi</a>
             <a href="/customer/daftarKeranjang" class="ms-3"><i class="bi bi-heart me-2"></i>Daftar Favorit</a>
             <a href="/customer/daftarRiwayat" class="ms-3"><i class="bi bi-clock-history me-2"></i>Riwayat Transaksi</a>
             <a href="/customer/daftarRiwayat" class="ms-3"><i class="bi bi-pencil-square me-2"></i>Daftar Komplain</a>

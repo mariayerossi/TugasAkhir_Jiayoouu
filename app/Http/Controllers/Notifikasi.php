@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\kategori;
+use App\Models\lapanganOlahraga;
 use App\Models\notifikasi as ModelsNotifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,5 +48,20 @@ class Notifikasi extends Controller
 
         $param["notif"] = $data;
         return view("admin.notifikasi")->with($param);
+    }
+
+    public function lihatNotifikasiCustomer() {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+
+        $kot = new lapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
+
+        $id = Session::get("dataRole")->id_user;
+
+        $data = DB::table('notifikasi')->where("fk_id_user","=",$id)->orderBy("waktu_notifikasi","DESC")->get();
+
+        $param["notif"] = $data;
+        return view("customer.notifikasi")->with($param);
     }
 }
