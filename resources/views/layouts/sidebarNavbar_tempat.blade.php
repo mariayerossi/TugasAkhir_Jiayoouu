@@ -39,14 +39,14 @@ Sportiva
             transition: 0.3s;
         }
     
-        #sidebar .coba a:hover {
+        #sidebar a:hover {
             background-color: white;
             color: #007466;
         }
     
         #sidebar .closebtn {
             position: absolute;
-            top: 0;
+            top: 45px;
             right: 25px;
             font-size: 36px;
             margin-left: 50px;
@@ -85,8 +85,6 @@ Sportiva
             background-color: #007466;
             color: white;
         }
-
-
         /* Tambahkan CSS untuk navbar sederhana */
         nav {
             background-color: white;
@@ -105,13 +103,14 @@ Sportiva
             color: black;
             text-decoration: none;
         }
-        nav .coba .profile-dropdown a:hover {
-            color: white;
-            background-color: #007466
-        }
 
         nav a:hover {
             color: #007466;
+        }
+
+        nav .coba .profile-dropdown a:hover {
+            color: white;
+            background-color: #007466
         }
 
         /* Style untuk foto profil dan dropdown */
@@ -197,6 +196,10 @@ Sportiva
             margin-bottom: 1px;
             border-top-style: solid;
             border-top-width: thin;
+        }
+        svg:hover {
+            color: #007466;
+            cursor: pointer;
         }
     </style>
 
