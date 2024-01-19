@@ -336,7 +336,7 @@
 
             <div class="row form_komplain mt-4">
                 <div class="col-md-8">
-                    <form action="/pemilik/komplain/tambahKomplain" method="post" class="mt-3" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <form id="komplainForm" action="/pemilik/komplain/tambahKomplain" method="post" class="mt-3" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         @csrf
                         <div class="d-flex justify-content-center">
                             <h5><b>Ajukan Komplain</b></h5>
@@ -377,7 +377,7 @@
                         <input type="hidden" name="fk_id_request" value="{{$permintaan->first()->id_permintaan}}">
                         <input type="hidden" name="jenis_request" value="Permintaan">
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-success">Kirim</button>
+                            <button type="submit" class="btn btn-success" id="komplain">Kirim</button>
                         </div>
                     </form>
                 </div>
@@ -586,6 +586,47 @@
     
             $.ajax({
                 url: "/pemilik/permintaan/terimaPermintaan",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#komplain").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#komplainForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/pemilik/komplain/tambahKomplain",
                 type: "POST",
                 data: formData,
                 success: function(response) {

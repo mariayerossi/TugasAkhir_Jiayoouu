@@ -47,15 +47,21 @@ class KomplainRequest extends Controller
     }
 
     public function tambahKomplain(Request $request){
-        $request->validate([
-            "jenis" => "required",
-            "keterangan" => "required",
-            "foto" => 'required|max:5120'
-        ],[
-            "foto.max" => "ukuran foto alat olahraga tidak boleh melebihi 5MB!",
-            "required" => ":attribute komplain tidak boleh kosong!",
-            "foto.required" => "foto bukti komplain tidak boleh kosong atau minimal lampirkan 1 foto bukti!"
-        ]);
+        // $request->validate([
+        //     "jenis" => "required",
+        //     "keterangan" => "required",
+        //     "foto" => 'required|max:5120'
+        // ],[
+        //     "foto.max" => "ukuran foto alat olahraga tidak boleh melebihi 5MB!",
+        //     "required" => ":attribute komplain tidak boleh kosong!",
+        //     "foto.required" => "foto bukti komplain tidak boleh kosong atau minimal lampirkan 1 foto bukti!"
+        // ]);
+        // dd($request->all());
+
+        //kok ga bisa
+        if ($request->jenis == null || $request->keterangan == null || $request->foto == null) {
+            return response()->json(['success' => false, 'message' => "Silahkan isi data pengajuan komplain!"]);
+        }
 
         date_default_timezone_set("Asia/Jakarta");
         $tgl_komplain = date("Y-m-d H:i:s");
@@ -64,6 +70,17 @@ class KomplainRequest extends Controller
             $pemilik = Session::get("dataRole")->id_pemilik;
 
             if ($request->jenis_request == "Permintaan") {
+                //pemilik dan tempat hanya boleh ajukan komplain di tanggal mulai pinjam, contoh tanggal mulai pinjam yaitu tgl 20 Januari 2024 ya dikasih waktu ajukan komplain hanya bisa di tanggal tersebut
+                $tgl_pinjam = DB::table('request_permintaan')->where("id_permintaan","=",$request->fk_id_request)->get()->first()->req_tanggal_mulai;
+                $tgl_skrg = date("Y-m-d");
+                if ($tgl_skrg != $tgl_pinjam) {
+                    $tanggalAwal1 = $tgl_pinjam;
+                    $tanggalObjek1 = DateTime::createFromFormat('Y-m-d', $tanggalAwal1);
+                    $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
+                    $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY');
+                    return response()->json(['success' => false, 'message' => "Komplain dapat diajukan di hari pengiriman alat olahraga yaitu $tanggalBaru1"]);
+                }
+
                 $data = [
                     "jenis" => $request->jenis,
                     "keterangan" => $request->keterangan,
