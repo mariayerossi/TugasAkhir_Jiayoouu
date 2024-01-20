@@ -164,8 +164,10 @@
             </a>
         </div>
     </div>
+    @if ($penawaran->first()->status_penawaran == "Menunggu")
     <form id="terimaForm" action="/tempat/penawaran/terimaPenawaran" method="post">
         @csrf
+    @endif
         <div class="row mb-3 mt-3">
             <div class="col-md-6 col-sm-12 mb-3">
                 <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
@@ -256,52 +258,6 @@
                 </div>
             </div>
         </div>
-        {{-- <hr>
-        <div class="nego" id="negoDiv">
-            <!-- Detail Negosiasi -->
-            <h3>Negosiasi</h3>
-            <div class="row justify-content-center">
-                <div class="col-12 p-4">
-                    <!-- Form Balasan -->
-                    <form action="/tempat/penawaran/negosiasi/tambahNego" method="post">
-                        @csrf
-                        <input type="hidden" name="penawaran" value="{{$penawaran->first()->id_penawaran}}">
-                        <textarea class="form-control mb-3" rows="4" name="isi" placeholder="Tulis pesan Anda di sini..."></textarea>
-                        <button type="submit" class="btn btn-primary w-100 mb-5">Kirim</button>
-                    </form>
-                    
-                    <div class="history">
-                        @if (!$nego->isEmpty())
-                            @foreach ($nego as $item)
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        @if ($item->fk_id_pemilik != null)
-                                            @php
-                                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$item->fk_id_pemilik)->get()->first();
-                                            @endphp
-                                            <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
-                                        @elseif ($item->fk_id_tempat != null)
-                                            @php
-                                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$item->fk_id_tempat)->get()->first();
-                                            @endphp
-                                            <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
-                                        @endif
-                                        @php
-                                            $tanggalAwal4 = $item->waktu_negosiasi;
-                                            $tanggalObjek4 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal4);
-                                            $carbonDate4 = \Carbon\Carbon::parse($tanggalObjek4)->locale('id');
-                                            $tanggalBaru4 = $carbonDate4->isoFormat('D MMMM YYYY HH:mm:ss');
-                                        @endphp
-                                        <p>{{$tanggalBaru4}}</p>
-                                        <p class="mt-2">{{$item->isi_negosiasi}}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div> --}}
     @endif
 
     @if ($penawaran->first()->status_penawaran == "Selesai" && $penawaran->first()->status_alat == null)
@@ -339,12 +295,12 @@
 
         <hr>
         
-        @if ($komplain->isEmpty())
+        @if ($komplain->isEmpty() && $penawaran->first()->status_penawaran == "Diterima")
             <button class="btn btn-warning">Ajukan Komplain</button>
 
             <div class="row form_komplain mt-4">
                 <div class="col-md-8">
-                    <form action="/tempat/komplain/tambahKomplain" method="post" class="mt-3" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <form id="komplainForm" action="/tempat/komplain/tambahKomplain" method="post" class="mt-3" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                         @csrf
                         <div class="d-flex justify-content-center">
                             <h5><b>Ajukan Komplain</b></h5>
@@ -385,7 +341,7 @@
                         <input type="hidden" name="fk_id_request" value="{{$penawaran->first()->id_penawaran}}">
                         <input type="hidden" name="jenis_request" value="Penawaran">
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-success">Kirim</button>
+                            <button type="submit" class="btn btn-success" id="komplain">Kirim</button>
                         </div>
                     </form>
                 </div>
@@ -707,6 +663,49 @@
                         });
                     }
                     // window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#komplain").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = new FormData($("#komplainForm")[0]);
+
+            $.ajax({
+                url: "/tempat/komplain/tambahKomplain",
+                type: "POST",
+                data: formData,
+                processData: false,  // Important: Don't process the data
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
                     // alert('Berhasil Diterima!');
                     // Atau Anda dapat mengupdate halaman dengan respons jika perlu
                     // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server

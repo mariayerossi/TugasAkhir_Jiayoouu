@@ -623,12 +623,14 @@
         $("#komplain").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
 
-            var formData = $("#komplainForm").serialize(); // Mengambil data dari form
-    
+            var formData = new FormData($("#komplainForm")[0]);
+
             $.ajax({
                 url: "/pemilik/komplain/tambahKomplain",
                 type: "POST",
                 data: formData,
+                processData: false,  // Important: Don't process the data
+                contentType: false,
                 success: function(response) {
                     if (response.success) {
                         swal({

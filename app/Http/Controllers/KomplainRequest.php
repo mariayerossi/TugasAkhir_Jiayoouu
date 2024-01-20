@@ -78,6 +78,7 @@ class KomplainRequest extends Controller
                     $tanggalObjek1 = DateTime::createFromFormat('Y-m-d', $tanggalAwal1);
                     $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
                     $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY');
+
                     return response()->json(['success' => false, 'message' => "Komplain dapat diajukan di hari pengiriman alat olahraga yaitu $tanggalBaru1"]);
                 }
 
@@ -92,6 +93,17 @@ class KomplainRequest extends Controller
                 ];
             }
             else {
+                $tgl_pinjam = DB::table('request_penawaran')->where("id_penawaran","=",$request->fk_id_request)->get()->first()->req_tanggal_mulai;
+                $tgl_skrg = date("Y-m-d");
+                if ($tgl_skrg != $tgl_pinjam) {
+                    $tanggalAwal1 = $tgl_pinjam;
+                    $tanggalObjek1 = DateTime::createFromFormat('Y-m-d', $tanggalAwal1);
+                    $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
+                    $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY');
+                    
+                    return response()->json(['success' => false, 'message' => "Komplain dapat diajukan di hari pengiriman alat olahraga yaitu $tanggalBaru1"]);
+                }
+
                 $data = [
                     "jenis" => $request->jenis,
                     "keterangan" => $request->keterangan,
@@ -107,6 +119,17 @@ class KomplainRequest extends Controller
             $pemilik = Session::get("dataRole")->id_tempat;
 
             if ($request->jenis_request == "Permintaan") {
+                $tgl_pinjam = DB::table('request_permintaan')->where("id_permintaan","=",$request->fk_id_request)->get()->first()->req_tanggal_mulai;
+                $tgl_skrg = date("Y-m-d");
+                if ($tgl_skrg != $tgl_pinjam) {
+                    $tanggalAwal1 = $tgl_pinjam;
+                    $tanggalObjek1 = DateTime::createFromFormat('Y-m-d', $tanggalAwal1);
+                    $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
+                    $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY');
+                    
+                    return response()->json(['success' => false, 'message' => "Komplain dapat diajukan di hari pengiriman alat olahraga yaitu $tanggalBaru1"]);
+                }
+
                 $data = [
                     "jenis" => $request->jenis,
                     "keterangan" => $request->keterangan,
@@ -118,6 +141,17 @@ class KomplainRequest extends Controller
                 ];
             }
             else {
+                $tgl_pinjam = DB::table('request_penawaran')->where("id_penawaran","=",$request->fk_id_request)->get()->first()->req_tanggal_mulai;
+                $tgl_skrg = date("Y-m-d");
+                if ($tgl_skrg != $tgl_pinjam) {
+                    $tanggalAwal1 = $tgl_pinjam;
+                    $tanggalObjek1 = DateTime::createFromFormat('Y-m-d', $tanggalAwal1);
+                    $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
+                    $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY');
+                    
+                    return response()->json(['success' => false, 'message' => "Komplain dapat diajukan di hari pengiriman alat olahraga yaitu $tanggalBaru1"]);
+                }
+                
                 $data = [
                     "jenis" => $request->jenis,
                     "keterangan" => $request->keterangan,
