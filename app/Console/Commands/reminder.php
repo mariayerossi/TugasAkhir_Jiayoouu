@@ -68,6 +68,8 @@ class reminder extends Command
             foreach ($data as $key => $value) {
                 date_default_timezone_set('Asia/Jakarta');
                 $sekarang = date('Y-m-d H:i:s');
+
+                $sekarang2 = date('Y-m-d H:i');
                 
                 //KODE KONFIRMASI DIANTAR
                 if ($value->status_permintaan == "Diterima" && $value->updated_at != null) {
@@ -144,7 +146,7 @@ class reminder extends Command
                         $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
                     }
                 }
-                else if ($value->status_permintaan == "Disewakan" && $value->req_tanggal_selesai." 12:00:00" == $sekarang) {
+                else if ($value->status_permintaan == "Disewakan" && $value->req_tanggal_selesai." 06:00" == $sekarang2) {
                     // MASA SEWA ALAT SUDAH SELESAI
                     $data3 = [
                         "id" => $value->id_permintaan,
@@ -233,6 +235,7 @@ class reminder extends Command
             foreach ($dataPen as $key => $value) {
                 date_default_timezone_set('Asia/Jakarta');
                 $sekarang = date('Y-m-d H:i:s');
+                $sekarang2 = date('Y-m-d H:i');
                 //KODE KONFIRMASI DIANTAR
                 if ($value->status_penawaran == "Diterima" && $value->updated_at != null) {
 
@@ -308,7 +311,7 @@ class reminder extends Command
                         $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
                     }
                 }
-                else if ($value->status_penawaran == "Disewakan" && $value->req_tanggal_selesai." 12:00:00" == $sekarang) {
+                else if ($value->status_penawaran == "Disewakan" && $value->req_tanggal_selesai." 06:00" == $sekarang2) {
                     //MASA SEWA ALAT SUDAH SELESAI
                     $data3 = [
                         "id" => $value->id_penawaran,

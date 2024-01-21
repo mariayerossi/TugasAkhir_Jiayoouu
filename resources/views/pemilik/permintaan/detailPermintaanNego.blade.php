@@ -306,19 +306,19 @@
         </div> --}}
     @endif
 
-    @if ($permintaan->first()->status_permintaan == "Selesai")
-        <form action="/pemilik/permintaan/confirmKodeSelesai" method="post">
+    @if ($permintaan->first()->status_permintaan == "Selesai" && $permintaan->first()->status_alat == null)
+        <form id="konfirmasiDikembalikanForm" action="/pemilik/permintaan/confirmKodeSelesai" method="post">
             @csrf
             <div class="row mb-5 mt-5">
                 <!-- Nama Pengirim -->
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk konfirmasi pengambilan alat olahraga</p>
+                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk mengkonfirmasi pengambilan alat olahraga</p>
                     <div class="input-group">
                         <input type="hidden" name="id" value="{{$permintaan->first()->id_permintaan}}">
                         <input type="hidden" name="kode" value="{{$permintaan->first()->kode_selesai}}">
                         <input type="text" name="isi" class="form-control" placeholder="Masukkan kode konfirmasi">
                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary"id="submitBtn">Konfirmasi</button>
+                            <button type="submit" class="btn btn-primary"id="konfirmasiDikembalikan">Konfirmasi</button>
                         </div>
                     </div>
                 </div>
@@ -328,21 +328,23 @@
                 </div>
             </div>
         </form>
+    @elseif ($permintaan->first()->status_permintaan == "Selesai" && $permintaan->first()->status_alat == "Dikembalikan")
+        <h5 class="text-center">Alat Olahraga Telah Dikembalikan kepada Pemilik Alat Olahraga</h5>
     @endif
 
     @if ($permintaan->first()->status_permintaan == "Diterima")
-        <form action="/pemilik/permintaan/confirmKodeMulai" method="post">
+        <form id="konfirmasiDisewakanForm" action="/pemilik/permintaan/confirmKodeMulai" method="post">
             @csrf
             <div class="row mb-5 mt-5">
                 <!-- Nama Pengirim -->
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk konfirmasi penyewaan alat olahraga</p>
+                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk mengkonfirmasi alat olahraga anda telah disewakan</p>
                     <div class="input-group">
                         <input type="hidden" name="id" value="{{$permintaan->first()->id_permintaan}}">
                         <input type="hidden" name="kode" value="{{$permintaan->first()->kode_mulai}}">
                         <input type="text" name="isi" class="form-control" placeholder="Masukkan kode konfirmasi">
                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary"id="submitBtn">Konfirmasi</button>
+                            <button type="submit" class="btn btn-primary"id="konfirmasiDisewakan">Konfirmasi</button>
                         </div>
                     </div>
                 </div>
@@ -658,6 +660,88 @@
                 data: formData,
                 processData: false,  // Important: Don't process the data
                 contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#konfirmasiDisewakan").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#konfirmasiDisewakanForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/pemilik/permintaan/confirmKodeMulai",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#konfirmasiDikembalikan").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#konfirmasiDikembalikanForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/pemilik/permintaan/confirmKodeSelesai",
+                type: "POST",
+                data: formData,
                 success: function(response) {
                     if (response.success) {
                         swal({

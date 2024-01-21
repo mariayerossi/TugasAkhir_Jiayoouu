@@ -193,7 +193,7 @@
             
             @if ($permintaan->first()->status_permintaan == "Menunggu")
                 <!-- Form Edit Harga Sewa -->
-                <form action="/tempat/permintaan/editHargaSewa" method="post">
+                <form id="editForm" action="/tempat/permintaan/editHargaSewa" method="post">
                     @csrf
                     <div class="input-group">
                         <input type="hidden" name="id_permintaan" value="{{$permintaan->first()->id_permintaan}}">
@@ -203,7 +203,7 @@
                         <!-- Input tersembunyi untuk kirim ke server -->
                         <input type="hidden" name="harga_sewa" id="sewaActual" value="{{$permintaan->first()->req_harga_sewa}}">
                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary">Edit Harga</button>
+                            <button type="submit" class="btn btn-primary" id="edit">Edit Harga</button>
                         </div>
                     </div>
                 </form>
@@ -315,7 +315,7 @@
         </div> --}}
     @endif
 
-    @if ($permintaan->first()->status_permintaan == "Selesai")
+    @if ($permintaan->first()->status_permintaan == "Selesai" && $permintaan->first()->status_alat == null)
         {{-- konfirmasi alat telah selesai disewakan oleh pemilik ke pihak tempat --}}
         <p>Konfirmasi pengembalian alat olahraga</p>
         @if ($permintaan->first()->kode_selesai != null)
@@ -329,7 +329,9 @@
             <div class="kode mt-3 mb-4">
 
             </div>
-        @endif 
+        @endif
+    @elseif ($permintaan->first()->status_permintaan == "Selesai" && $permintaan->first()->status_alat == "Dikembalikan")
+        <h5 class="text-center">Alat Olahraga Telah Dikembalikan kepada Pemilik Alat Olahraga</h5>
     @endif
 
     @if ($permintaan->first()->status_permintaan == "Diterima")
@@ -638,6 +640,47 @@
                 data: formData,
                 processData: false,  // Important: Don't process the data
                 contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#edit").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#editForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/tempat/permintaan/editHargaSewa",
+                type: "POST",
+                data: formData,
                 success: function(response) {
                     if (response.success) {
                         swal({

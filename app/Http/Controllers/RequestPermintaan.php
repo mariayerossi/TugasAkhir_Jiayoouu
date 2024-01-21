@@ -170,11 +170,16 @@ class RequestPermintaan extends Controller
     }
 
     public function editHargaSewa(Request $request){
-        $request->validate([
-            "harga_sewa"=>"required"
-        ],[
-            "required"=> "Harga sewa alat olahraga tidak boleh kosong!"
-        ]);
+        // $request->validate([
+        //     "harga_sewa"=>"required"
+        // ],[
+        //     "required"=> "Harga sewa alat olahraga tidak boleh kosong!"
+        // ]);
+
+        if ($request->harga_sewa == null || $request->harga_sewa == "") {
+            return response()->json(['success' => false, 'message' => "Harga sewa alat olahraga tidak boleh kosong!"]);
+        }
+
         $req = new ModelsRequestPermintaan();
         $fk = $req->get_all_data_by_id($request->id_permintaan)->first()->req_id_alat;
 
@@ -183,7 +188,8 @@ class RequestPermintaan extends Controller
 
         //cek apakah request harga lebih kecil dari komisi
         if ((int)$request->harga_sewa <= (int)$komisi_alat) {
-            return redirect()->back()->withInput()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
+            // return redirect()->back()->withInput()->with("error", "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!");
+            return response()->json(['success' => false, 'message' => "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!"]);
         }
 
         $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
@@ -196,10 +202,12 @@ class RequestPermintaan extends Controller
             $per = new ModelsRequestPermintaan();
             $per->updateHargaSewa($data);
     
-            return redirect()->back()->with("success", "Berhasil mengubah harga sewa!");
+            // return redirect()->back()->with("success", "Berhasil mengubah harga sewa!");
+            return response()->json(['success' => true, 'message' => "Berhasil mengubah harga sewa!"]);
         }
         else {
-            return redirect()->back()->with("error", "Gagal mengedit harga sewa! status alat sudah $status");
+            // return redirect()->back()->with("error", "Gagal mengedit harga sewa! status alat sudah $status");
+            return response()->json(['success' => false, 'message' => "Gagal mengedit harga sewa! status alat sudah $status"]);
         }
     }
 
@@ -377,11 +385,15 @@ class RequestPermintaan extends Controller
     }
 
     public function confirmKodeMulai(Request $request){
-        $request->validate([
-            "isi" => "required"
-        ],[
-            "required" => "kode konfirmasi tidak boleh kosong!"
-        ]);
+        // $request->validate([
+        //     "isi" => "required"
+        // ],[
+        //     "required" => "kode konfirmasi tidak boleh kosong!"
+        // ]);
+
+        if ($request->isi == null || $request->isi == "") {
+            return response()->json(['success' => false, 'message' => 'Kode tidak boleh kosong!']);
+        }
 
         if ($request->isi == $request->kode) {
             $data = [
@@ -426,19 +438,23 @@ class RequestPermintaan extends Controller
             ];
             $e = new notifikasiEmail();
             $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
-            return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
+            return response()->json(['success' => true, 'message' => 'Berhasil melakukan konfirmasi!']);
         }
         else {
-            return redirect()->back()->with("error", "Kode Konfirmasi salah!");
+            return response()->json(['success' => false, 'message' => 'Kode konfirmasi salah!']);
         }
     }
 
     public function confirmKodeSelesai(Request $request){
-        $request->validate([
-            "isi" => "required"
-        ],[
-            "required" => "kode konfirmasi tidak boleh kosong!"
-        ]);
+        // $request->validate([
+        //     "isi" => "required"
+        // ],[
+        //     "required" => "kode konfirmasi tidak boleh kosong!"
+        // ]);
+
+        if ($request->isi == null || $request->isi == "") {
+            return response()->json(['success' => false, 'message' => 'Kode tidak boleh kosong!']);
+        }
 
         if ($request->isi == $request->kode) {
             $data = [
@@ -450,6 +466,15 @@ class RequestPermintaan extends Controller
 
             $req = new ModelsRequestPermintaan();
             $permintaan = $req->get_all_data_by_id($request->id)->first();
+
+            //ubah status alat olahraga kembali aktif
+            $dataStatus = [
+                "id" => $permintaan->req_id_alat,
+                "status" => "Aktif"
+            ];
+            $alat = new alatOlahraga();
+            $alat->updateStatus($dataStatus);
+
             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$permintaan->fk_id_pemilik)->get()->first();
             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->req_id_alat)->get()->first();
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();
@@ -484,10 +509,10 @@ class RequestPermintaan extends Controller
             $e = new notifikasiEmail();
             $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
 
-            return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
+            return response()->json(['success' => true, 'message' => 'Berhasil melakukan konfirmasi!']);
         }
         else {
-            return redirect()->back()->with("error", "Kode Konfirmasi salah!");
+            return response()->json(['success' => false, 'message' => 'Kode konfirmasi salah!']);
         }
     }
 
