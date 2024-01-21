@@ -392,7 +392,7 @@ class RequestPermintaan extends Controller
         // ]);
 
         if ($request->isi == null || $request->isi == "") {
-            return response()->json(['success' => false, 'message' => 'Kode tidak boleh kosong!']);
+            return response()->json(['success' => false, 'message' => 'Input kode tidak boleh kosong!']);
         }
 
         if ($request->isi == $request->kode) {
@@ -453,7 +453,7 @@ class RequestPermintaan extends Controller
         // ]);
 
         if ($request->isi == null || $request->isi == "") {
-            return response()->json(['success' => false, 'message' => 'Kode tidak boleh kosong!']);
+            return response()->json(['success' => false, 'message' => 'Input kode tidak boleh kosong!']);
         }
 
         if ($request->isi == $request->kode) {

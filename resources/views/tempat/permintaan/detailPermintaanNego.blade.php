@@ -322,7 +322,7 @@
             <button class="btn btn-primary" onclick="generateCodeSelesai()" disabled>Konfirmasi</button>
             <div class="kode mt-3 mb-4">
                 <h5><b>{{$permintaan->first()->kode_selesai}}</b></h5>
-                <p>Berikan kode ini kepada pemiliki alat olahraga untuk mengkonfirmasi</p>
+                <p>Berikan kode ini kepada pemilik alat olahraga untuk mengkonfirmasi bahwa alat olahraga telah dikembalikan</p>
             </div>
         @else
             <button class="btn btn-primary" onclick="generateCodeSelesai()">Konfirmasi</button>
@@ -341,7 +341,7 @@
             <button class="btn btn-primary" onclick="generateCode()" disabled>Konfirmasi</button>
             <div class="kode mt-3 mb-4">
                 <h5><b>{{$permintaan->first()->kode_mulai}}</b></h5>
-                <p>Berikan kode ini kepada pemiliki alat olahraga untuk mengkonfirmasi</p>
+                <p>Berikan kode ini kepada pemilik alat olahraga untuk mengkonfirmasi bahwa alat olahraga mulai disewakan</p>
             </div>
         @else
             <button class="btn btn-primary" onclick="generateCode()">Konfirmasi</button>
@@ -529,7 +529,7 @@
 
         const code = `REQMM${formattedDate}<?=$permintaan->first()->id_permintaan;?>`;
         const kodeElement = document.querySelector('.kode');
-        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan Kode Konfirmasi ini kepada pemilik alat olahraga untuk mengkonfirmasi</p>`;
+        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan kode ini kepada pemilik alat olahraga untuk mengkonfirmasi bahwa alat olahraga mulai disewakan</p>`;
         // kodeElement.style.fontWeight = 'bold';
 
         // Kirim kode ke server:
@@ -563,7 +563,7 @@
 
         const code = `REQMS${formattedDate}<?=$permintaan->first()->id_permintaan;?>`;
         const kodeElement = document.querySelector('.kode');
-        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan Kode Konfirmasi ini kepada pemilik alat olahraga untuk mengkonfirmasi</p>`;
+        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan kode ini kepada pemilik alat olahraga untuk mengkonfirmasi bahwa alat olahraga telah dikembalikan</p>`;
         // kodeElement.style.fontWeight = 'bold';
 
         // Kirim kode ke server:

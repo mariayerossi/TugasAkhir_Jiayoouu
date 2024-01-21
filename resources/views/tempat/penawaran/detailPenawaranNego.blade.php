@@ -194,7 +194,7 @@
             <div class="col-md-6 col-sm-12 mb-3">
                 <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
                 @if ($penawaran->first()->req_harga_sewa != null)
-                    <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}</p>
+                    <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}/jam</p>
                 @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
                     <div class="input-group">
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
@@ -260,7 +260,7 @@
                             <span style="font-size: 14px">Silahkan konfirmasi dan terima penawaran yang diajukan pemilik</span>
                             <button type="submit" id="terima" class="btn btn-success w-100">Terima</button>
                         @else
-                            <span style="font-size: 14px">Penawaran telah disetujui, tunggu konfirmasi dari pemilik alat olahraga</span>
+                            <span style="font-size: 14px">Anda telah menerima penawaran, tunggu konfirmasi detail dari pemilik alat olahraga</span>
                             <button type="submit" disabled class="btn btn-success w-100">Terima</button>
                         @endif
                     <hr>
@@ -289,7 +289,7 @@
             <button class="btn btn-primary" onclick="generateCodeSelesai()" disabled>Konfirmasi</button>
             <div class="kode mt-3 mb-4">
                 <h5><b>{{$penawaran->first()->kode_selesai}}</b></h5>
-                <p>Berikan kode ini kepada pemiliki alat olahraga untuk mengkonfirmasi</p>
+                <p>Berikan kode ini kepada pemilik alat olahraga untuk mengkonfirmasi bahwa alat olahraga telah dikembalikan</p>
             </div>
         @else
             <button class="btn btn-primary" onclick="generateCodeSelesai()">Konfirmasi</button>
@@ -297,6 +297,8 @@
 
             </div>
         @endif
+    @elseif ($penawaran->first()->status_penawaran == "Selesai" && $penawaran->first()->status_alat == "Dikembalikan")
+        <h5 class="text-center">Alat Olahraga Telah Dikembalikan kepada Pemilik Alat Olahraga</h5>
     @endif
 
     @if ($penawaran->first()->status_penawaran == "Diterima")
@@ -306,7 +308,7 @@
             <button class="btn btn-primary" onclick="generateCode()" disabled>Konfirmasi</button>
             <div class="kode mt-3 mb-4">
                 <h5><b>{{$penawaran->first()->kode_mulai}}</b></h5>
-                <p>Berikan kode ini kepada pemiliki alat olahraga untuk mengkonfirmasi</p>
+                <p>Berikan kode ini kepada pemilik alat olahraga untuk mengkonfirmasi bahwa alat olahraga mulai disewakan</p>
             </div>
         @else
             <button class="btn btn-primary" onclick="generateCode()">Konfirmasi</button>
@@ -501,7 +503,7 @@
 
         const code = `REQTM${formattedDate}<?=$penawaran->first()->id_penawaran;?>`;
         const kodeElement = document.querySelector('.kode');
-        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan Kode Konfirmasi ini kepada pemilik alat olahraga untuk mengkonfirmasi</p>`;
+        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan kode ini kepada pemilik alat olahraga untuk mengkonfirmasi bahwa alat olahraga mulai disewakan</p>`;
         // kodeElement.style.fontWeight = 'bold';
 
         // Kirim kode ke server:
@@ -535,7 +537,7 @@
 
         const code = `REQMS${formattedDate}<?=$penawaran->first()->id_penawaran;?>`;
         const kodeElement = document.querySelector('.kode');
-        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan Kode Konfirmasi ini kepada pemilik alat olahraga untuk mengkonfirmasi</p>`;
+        kodeElement.innerHTML = `<h5><b>${code}</b></h5> <br><p>Berikan kode ini kepada pemilik alat olahraga untuk mengkonfirmasi bahwa alat olahraga telah dikembalikan</p>`;
         // kodeElement.style.fontWeight = 'bold';
 
         // Kirim kode ke server:

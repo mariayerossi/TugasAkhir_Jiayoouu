@@ -517,11 +517,15 @@ class RequestPenawaran extends Controller
     }
 
     public function confirmKodeMulai(Request $request){
-        $request->validate([
-            "isi" => "required"
-        ],[
-            "required" => "kode konfirmasi tidak boleh kosong!"
-        ]);
+        // $request->validate([
+        //     "isi" => "required"
+        // ],[
+        //     "required" => "kode konfirmasi tidak boleh kosong!"
+        // ]);
+
+        if ($request->isi == null || $request->isi == "") {
+            return response()->json(['success' => false, 'message' => 'Input kode tidak boleh kosong!']);
+        }
 
         if ($request->isi == $request->kode) {
             $data = [
@@ -567,19 +571,23 @@ class RequestPenawaran extends Controller
             $e = new notifikasiEmail();
             $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
 
-            return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
+            return response()->json(['success' => true, 'message' => 'Berhasil melakukan konfirmasi!']);
         }
         else {
-            return redirect()->back()->with("error", "Kode Konfirmasi salah!");
+            return response()->json(['success' => false, 'message' => 'Kode konfirmasi salah!']);
         }
     }
 
     public function confirmKodeSelesai(Request $request){
-        $request->validate([
-            "isi" => "required"
-        ],[
-            "required" => "kode konfirmasi tidak boleh kosong!"
-        ]);
+        // $request->validate([
+        //     "isi" => "required"
+        // ],[
+        //     "required" => "kode konfirmasi tidak boleh kosong!"
+        // ]);
+
+        if ($request->isi == null || $request->isi == "") {
+            return response()->json(['success' => false, 'message' => 'Input kode tidak boleh kosong!']);
+        }
 
         if ($request->isi == $request->kode) {
             $data = [
@@ -625,10 +633,10 @@ class RequestPenawaran extends Controller
             $e = new notifikasiEmail();
             $e->sendEmail($pemilik->email_pemilik,$dataNotif2);
 
-            return redirect()->back()->with("success", "Berhasil melakukan konfirmasi!");
+            return response()->json(['success' => true, 'message' => 'Berhasil melakukan konfirmasi!']);
         }
         else {
-            return redirect()->back()->with("error", "Kode Konfirmasi salah!");
+            return response()->json(['success' => false, 'message' => 'Kode konfirmasi salah!']);
         }
     }
 

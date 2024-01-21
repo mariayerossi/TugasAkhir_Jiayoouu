@@ -155,7 +155,7 @@ display: block;
                             <div class="col-8 d-flex flex-column justify-content-center">
                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
                                 @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_tempat == null)
-                                    <form action="/pemilik/editHargaKomisi" method="post" id="noRedirectInput">
+                                    <form id="komisiForm" action="/pemilik/editHargaKomisi" method="post" id="komisiForm">
                                         @csrf
                                         Komisi: 
                                         <div class="input-group">
@@ -166,7 +166,7 @@ display: block;
                                             <!-- Input tersembunyi untuk kirim ke server -->
                                             <input type="hidden" name="harga_komisi" id="komisiActual" value="{{$dataAlat->komisi_alat}}">
                                             <div class="input-group-append">
-                                                <button type="submit" class="btn btn-primary"id="submitBtn">Edit Harga</button>
+                                                <button type="submit" class="btn btn-primary"id="komisi">Edit Harga</button>
                                             </div>
                                         </div>
                                     </form>
@@ -208,7 +208,7 @@ display: block;
         <div class="col-md-6 col-sm-12 mb-3">
             <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
             @if ($penawaran->first()->req_harga_sewa != null)
-                <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}</p>
+                <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}/jam</p>
             @else
                 <p>(Harga sewa belum diisi oleh pihak pengelola tempat)</p>
             @endif
@@ -257,10 +257,10 @@ display: block;
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <hr>
                         @if ($penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == "Setuju")
-                            <span style="font-size: 14px">Penawaran telah disetujui pihak pengelola tempat olahraga, Silahkan konfirmasi detail penawaran</span>
+                            <span style="font-size: 14px">Penawaran telah diterima pihak pengelola tempat olahraga, Silahkan konfirmasi detail penawaran</span>
                             <button type="submit" id="konfirmasi" class="btn btn-success w-100">Konfirmasi</button>
                         @else
-                            <span style="font-size: 14px">Konfirmasi detail penawaran setelah pihak pengelola tempat menyetujui penawaran</span>
+                            <span style="font-size: 14px">Konfirmasi detail penawaran setelah pihak pengelola tempat menerima penawaran</span>
                             <button type="submit" disabled class="btn btn-success w-100">Konfirmasi</button>
                         @endif
                     </form>
@@ -340,18 +340,18 @@ display: block;
     @endif
 
     @if ($penawaran->first()->status_penawaran == "Selesai" && $penawaran->first()->status_alat == null)
-        <form action="/pemilik/penawaran/confirmKodeSelesai" method="post">
+        <form id="konfirmasiDikembalikanForm" action="/pemilik/penawaran/confirmKodeSelesai" method="post">
             @csrf
             <div class="row mb-5 mt-5">
                 <!-- Nama Pengirim -->
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk konfirmasi pengambilan alat olahraga</p>
+                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk mengkonfirmasi pengambilan alat olahraga</p>
                     <div class="input-group">
                         <input type="hidden" name="id" value="{{$penawaran->first()->id_penawaran}}">
                         <input type="hidden" name="kode" value="{{$penawaran->first()->kode_selesai}}">
                         <input type="text" name="isi" class="form-control" placeholder="Masukkan kode konfirmasi">
                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary"id="submitBtn">Konfirmasi</button>
+                            <button type="submit" class="btn btn-primary" id="konfirmasiDikembalikan">Konfirmasi</button>
                         </div>
                     </div>
                 </div>
@@ -361,21 +361,23 @@ display: block;
                 </div>
             </div>
         </form>
+    @elseif ($penawaran->first()->status_penawaran == "Selesai" && $penawaran->first()->status_alat == "Dikembalikan")
+        <h5 class="text-center">Alat Olahraga Telah Dikembalikan kepada Pemilik Alat Olahraga</h5>
     @endif
 
     @if ($penawaran->first()->status_penawaran == "Diterima")
-        <form action="/pemilik/penawaran/confirmKodeMulai" method="post">
+        <form id="konfirmasiDisewakanForm" action="/pemilik/penawaran/confirmKodeMulai" method="post">
             @csrf
             <div class="row mb-5 mt-5">
                 <!-- Nama Pengirim -->
                 <div class="col-md-6 col-sm-12 mb-3">
-                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk konfirmasi penyewaan alat olahraga</p>
+                    <p>Masukkan kode konfirmasi dari pengelola tempat untuk mengkonfirmasi penyewaan alat olahraga</p>
                     <div class="input-group">
                         <input type="hidden" name="id" value="{{$penawaran->first()->id_penawaran}}">
                         <input type="hidden" name="kode" value="{{$penawaran->first()->kode_mulai}}">
                         <input type="text" name="isi" class="form-control" placeholder="Masukkan kode konfirmasi">
                         <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary"id="submitBtn">Konfirmasi</button>
+                            <button type="submit" class="btn btn-primary"id="konfirmasiDisewakan">Konfirmasi</button>
                         </div>
                     </div>
                 </div>
@@ -678,6 +680,133 @@ display: block;
 
             return false; // Mengembalikan false untuk mencegah submission form
         });
+
+        $("#komisi").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = new FormData($("#komisiForm")[0]);
+
+            $.ajax({
+                url: "/pemilik/editHargaKomisi",
+                type: "POST",
+                data: formData,
+                processData: false,  // Important: Don't process the data
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#konfirmasiDisewakan").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#konfirmasiDisewakanForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/pemilik/penawaran/confirmKodeMulai",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#konfirmasiDikembalikan").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#konfirmasiDikembalikanForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/pemilik/penawaran/confirmKodeSelesai",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
     });
     function updateCount() {
         let textarea = document.getElementById('myTextarea');
@@ -794,7 +923,7 @@ display: block;
         });
     });
     document.addEventListener('DOMContentLoaded', function() {
-        var input = document.getElementById('noRedirectInput');
+        var input = document.getElementById('komisiForm');
         var submitBtn = document.getElementById('submitBtn');
 
         // Mencegah perilaku default dari <a> saat input diklik

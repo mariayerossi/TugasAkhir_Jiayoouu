@@ -266,11 +266,15 @@ class AlatOlahraga extends Controller
     }
 
     public function editHargaKomisi(Request $request){
-        $request->validate([
-            "harga_komisi" => "required"
-        ],[
-            "required" => "Harga komisi tidak boleh kosong!"
-        ]);
+        // $request->validate([
+        //     "harga_komisi" => "required"
+        // ],[
+        //     "required" => "Harga komisi tidak boleh kosong!"
+        // ]);
+
+        if ($request->harga_komisi == null || $request->harga_komisi == "") {
+            return response()->json(['success' => false, 'message' => "Input harga komisi tidak boleh kosong!"]);
+        }
 
         $data = [
             "id" => $request->id_alat,
@@ -279,7 +283,7 @@ class AlatOlahraga extends Controller
         $alat = new ModelsAlatOlahraga();
         $alat->updateKomisi($data);
         
-        return redirect()->back()->with("success", "Berhasil Mengubah Komisi Alat Olahraga!");
+        return response()->json(['success' => true, 'message' => "Berhasil mengubah komisi alat olahraga!"]);
     }
 
     public function daftarAlatTempat() {
