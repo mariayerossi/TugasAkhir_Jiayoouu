@@ -64,6 +64,28 @@
 .chat-footer {
     padding: 10px;
 }
+.form_komplain {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1100;
+    display: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    background-color:white;
+}
+@media (max-width: 767px) {
+    /* Untuk layar dengan lebar maksimum 767px (tampilan mobile) */
+    .form_komplain {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%; /* Menyebabkan lebar elemen menjadi 100% dari lebar layar */
+        height: 100vh; /* Menyebabkan tinggi elemen menjadi 100% dari tinggi layar */
+    }
+}
 </style>
 @include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
@@ -298,12 +320,15 @@
         @if ($komplain->isEmpty() && $penawaran->first()->status_penawaran == "Diterima")
             <button class="btn btn-warning">Ajukan Komplain</button>
 
-            <div class="row form_komplain mt-4">
-                <div class="col-md-8">
-                    <form id="komplainForm" action="/tempat/komplain/tambahKomplain" method="post" class="mt-3" enctype="multipart/form-data" style="border: 1px solid #e5e5e5; padding: 10px; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <div class="row form_komplain mb-5">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-end me-3">
+                        <button class="close-chat-btn2">&times;</button>
+                    </div>
+                    <form id="komplainForm" action="/tempat/komplain/tambahKomplain" method="post" class="mt-3" enctype="multipart/form-data">
                         @csrf
                         <div class="d-flex justify-content-center">
-                            <h5><b>Ajukan Komplain</b></h5>
+                            <h5><b>Form Ajukan Komplain</b></h5>
                         </div>
                         <div class="row">
                             <div class="col-md-4 col-12 mt-2">
@@ -344,9 +369,6 @@
                             <button type="submit" class="btn btn-success" id="komplain">Kirim</button>
                         </div>
                     </form>
-                </div>
-                <div class="col-md-4">
-                    <!-- Kosong atau Anda dapat menambahkan konten lain di sini jika diperlukan -->
                 </div>
             </div>
         @endif
@@ -538,6 +560,11 @@
     }
     $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip();
+
+        $(".close-chat-btn2").click(function(e) {
+            e.preventDefault();  // Menghentikan perilaku default (navigasi)
+            $(`.form_komplain`).hide();
+        });
         
         @if($penawaran->first()->status_penawaran == "Menunggu")
             @if($nego->isEmpty())
