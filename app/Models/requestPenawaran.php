@@ -25,6 +25,8 @@ class requestPenawaran extends Model
         $req->tanggal_tawar = $data["tgl_tawar"];
         $req->status_penawaran = $data["status"];
         $req->save();
+
+        return $req->id_penawaran;
     }
 
     public function get_all_data_by_id($id){

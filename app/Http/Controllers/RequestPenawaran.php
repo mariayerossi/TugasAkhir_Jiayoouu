@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\alatOlahraga;
+use App\Models\notifikasi;
 use App\Models\requestPenawaran as ModelsRequestPenawaran;
 use DateInterval;
 use App\Models\notifikasiEmail;
@@ -36,19 +37,32 @@ class RequestPenawaran extends Controller
             "status" => "Menunggu"
         ];
         $req = new ModelsRequestPenawaran();
-        $req->insertPenawaran($data);
+        $id = $req->insertPenawaran($data);
+
+        $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first()->nama_alat;
+
+        $dataNotifWeb = [
+            "keterangan" => "Penawaran Baru Alat Olahraga ".$nama_alat,
+            "waktu" => $tgl_tawar,
+            "link" => "/tempat/penawaran/detailPenawaranNego/".$id,
+            "user" => null,
+            "pemilik" => null,
+            "tempat" => $request->id_tempat,
+            "admin" => null
+        ];
+        $notifWeb = new notifikasi();
+        $notifWeb->insertNotifikasi($dataNotifWeb);
 
         //kasih notif ke pihak tempat klo ada penawaran alat baru
         $email_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_tempat)->get()->first()->email_tempat;
         $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_tempat)->get()->first()->nama_tempat;
-        $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first()->nama_alat;
         $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first()->komisi_alat;
         // dd($email_tempat);
         $dataNotif = [
             "subject" => "✨Penawaran Alat Olahraga Baru!✨",
             "judul" => "Penawaran Alat Olahraga Baru",
             "nama_user" => $nama_tempat,
-            "url" => "https://sportiva.my.id/tempat/permintaan/daftarPermintaan",
+            "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$id,
             "button" => "Lihat dan Terima Penawaran",
             "isi" => "Anda memiliki satu penawaran alat olahraga baru:<br><br>
                     <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
