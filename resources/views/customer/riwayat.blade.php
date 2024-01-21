@@ -361,12 +361,24 @@
                         data: formData,
                         success: function(response) {
                             if (response.success) {
-                                swal("Success!", response.message, "success");
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                window.location.reload();
                             }
                             else {
-                                swal("Error!", response.message, "error");
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
                             }
-                            window.location.reload();
                             // alert('Berhasil Diterima!');
                             // Atau Anda dapat mengupdate halaman dengan respons jika perlu
                             // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server

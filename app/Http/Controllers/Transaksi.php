@@ -1347,8 +1347,8 @@ class Transaksi extends Controller
                 ->select("jam_sewa", "durasi_sewa")
                 ->where("status_trans","=","Diterima")
                 ->orWhere("status_trans","=","Berlangsung")
-                ->where("tanggal_sewa", "=", $request->tanggal)
-                ->where("fk_id_lapangan","=",$request->id_lapangan)
+                ->where("tanggal_sewa", "=", $htrans->tanggal_sewa)
+                ->where("fk_id_lapangan","=",$htrans->id_lapangan)
                 ->get();
 
         //kasi pengecekan apakah tanggal dan jamnya bertubrukan
@@ -1372,6 +1372,49 @@ class Transaksi extends Controller
             }
         }
 
+        //cek apakah jam booking pas lapangan buka (operasional)
+        $mulai = $htrans->tanggal_sewa . ' ' . $booking_jam_selesai1;
+        $selesai = $htrans->tanggal_sewa . ' ' . $booking_jam_selesai2;
+
+        // dd($htrans->tanggal_sewa);
+
+        // Mengonversi string menjadi objek DateTime
+        $mulaiDateTime = new DateTime($mulai);
+        $selesaiDateTime = new DateTime($selesai);
+
+        // Daftar hari dalam bahasa Indonesia
+        $daftarHari = array(
+            'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
+        );
+
+        // Mendapatkan hari dari tanggal awal
+        $hariIndex = $mulaiDateTime->format('w');
+        $hari = $daftarHari[$hariIndex];
+
+        $mulaiDateTime1 = new DateTime($booking_jam_selesai1);
+        $selesaiDateTime1 = new DateTime($booking_jam_selesai2);
+
+        // dd($mulaiDateTime1);
+
+        $cek = 0;
+        $slot = DB::table('slot_waktu')->where("fk_id_lapangan","=",$htrans->id_lapangan)->get();
+        if (!$slot->isEmpty()) {
+            foreach ($slot as $key => $value) {
+                if ($value->hari == $hari) {
+                    $jamOperasionalMulai = new DateTime($value->jam_buka);
+                    $jamOperasionalSelesai = new DateTime($value->jam_tutup);
+
+                    if ($mulaiDateTime1 >= $jamOperasionalMulai && $selesaiDateTime1 <= $jamOperasionalSelesai) {
+                        $cek = 1;
+                    }
+                }
+            }
+        }
+
+        if ($cek == 0) {
+            return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
+        }
+
         $param["durasi"] = $request->durasi;
         $param["jam_mulai"] = $booking_jam_selesai1;
         $param["jam_selesai"] = $booking_jam_selesai2;
@@ -1381,58 +1424,6 @@ class Transaksi extends Controller
     }
 
     public function tambahWaktu(Request $request) {
-        // $htrans = DB::table('htrans')
-        //         ->select("htrans.id_htrans","htrans.kode_trans","lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan","files_lapangan.nama_file_lapangan","lapangan_olahraga.harga_sewa_lapangan","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa")
-        //         ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
-        //         ->joinSub(function($query) {
-        //             $query->select("fk_id_lapangan", "nama_file_lapangan")
-        //                 ->from('files_lapangan')
-        //                 ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
-        //         }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
-        //         ->where("htrans.id_htrans","=",$request->id_htrans)
-        //         ->get()
-        //         ->first();
-        
-        // $jam_sewa = $htrans->jam_sewa;
-        // $durasi_sewa = $htrans->durasi_sewa;
-        // $booking_jam_selesai1 = date('H:i', strtotime("+$durasi_sewa hour", strtotime($jam_sewa)));
-
-        // $booking_jam_selesai2 = date('H:i', strtotime("+$request->durasi hour", strtotime($booking_jam_selesai1)));
-        // // dd($booking_jam_selesai1);
-
-        // $cek = DB::table('htrans')
-        //     ->select("jam_sewa", "durasi_sewa", "fk_id_lapangan")
-        //     ->where("tanggal_sewa","=", $request->tanggal)
-        //     ->where("fk_id_lapangan","=",$request->id_lapangan)
-        //     ->where(function($query) {
-        //         $query->where("status_trans","=","Diterima")
-        //               ->orWhere("status_trans","=","Berlangsung");
-        //     })
-        //     ->get();
-
-        // // dd($cek);
-
-        // //kasi pengecekan apakah tanggal dan jamnya bertubrukan
-        // if (!$cek->isEmpty()) {
-        //     $conflict = false;
-        //     foreach ($cek as $value) {
-        //         $booking_jam_selesai3 = date('H:i', strtotime("+$value->durasi_sewa hour", strtotime($value->jam_sewa)));
-                
-        //         if (($booking_jam_selesai1 >= $value->jam_sewa && $booking_jam_selesai1 < $booking_jam_selesai3) || 
-        //             ($booking_jam_selesai2 > $value->jam_sewa && $booking_jam_selesai2 <= $booking_jam_selesai3) ||
-        //             ($booking_jam_selesai1 <= $value->jam_sewa && $booking_jam_selesai2 >= $booking_jam_selesai3)) {
-                    
-        //             $conflict = true;
-        //             break;
-        //         }
-        //     }
-
-        //     if ($conflict) {
-        //         // Ada konflik dengan booking yang ada
-        //         return back()->with('error', 'Maaf, slot ini sudah dibooking di jam '.$value->jam_sewa.'!');
-        //     }
-        // }
-        // dd($cek);
         $htrans = DB::table('htrans')
                 ->where("htrans.id_htrans","=",$request->id_htrans)
                 ->get()

@@ -87,7 +87,7 @@
         @endphp
         
         <div class="row mt-5">
-            <div class="col-md-6 col-sm-12">
+            <div>
                 <h5>Alat Olahraga yang Disewa</h5>
                 @if (!$dtrans->isEmpty())
                     @foreach ($dtrans as $item)
@@ -139,7 +139,7 @@
             @endphp
             @if ($cek->isEmpty())
                 <a href="javascript:history.back()" class="btn btn-danger me-3" type="submit">Cancel</a>
-                <form action="/customer/extend/tambahWaktu" method="post">
+                <form id="bookingForm" action="/customer/extend/tambahWaktu" method="post">
                     @csrf
                     <input type="hidden" name="id_lapangan" value="{{$trans->id_lapangan}}">
                     <input type="hidden" name="tanggal" value="{{$trans->tanggal_sewa}}">
@@ -177,9 +177,50 @@
             $('#agreementModal').modal('show');
         });
     
-        document.getElementById('confirmBooking').addEventListener('click', function() {
+        // document.getElementById('confirmBooking').addEventListener('click', function() {
+        //     $('#agreementModal').modal('hide');
+        //     document.querySelector('form[action="/customer/extend/tambahWaktu"]').submit();
+        // });
+
+        document.getElementById('confirmBooking').addEventListener('click', function(event) {
             $('#agreementModal').modal('hide');
-            document.querySelector('form[action="/customer/extend/tambahWaktu"]').submit();
+
+            event.preventDefault(); // Mencegah perilaku default form
+            var formData = $("#bookingForm").serialize(); // Mengambil data dari form
+
+            $.ajax({
+                url: "/customer/extend/tambahWaktu",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: 'Success!',
+                            text: response.message,
+                            type: 'success',
+                            showConfirmButton: false
+                        });
+
+                        setTimeout(() => {
+                            window.history.back();
+                        }, 2000); // Setelah 5 detik
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false;
         });
     </script>
 @endsection
