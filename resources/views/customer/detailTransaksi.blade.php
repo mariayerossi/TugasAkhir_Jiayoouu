@@ -159,7 +159,7 @@
                 <input type="hidden" name="tanggal" value="{{$data['tanggal']}}">
                 <input type="hidden" name="mulai" value="{{$data['mulai']}}">
                 <input type="hidden" name="selesai" value="{{$data['selesai']}}">
-                <button id="booking" class="btn btn-success" type="submit" id="bookingBtn">Booking Sekarang</button>
+                <button class="btn btn-success" type="submit" id="bookingBtn">Booking Sekarang</button>
             </form>
         </div>
         <!-- Modal -->
@@ -186,9 +186,51 @@
             $('#agreementModal').modal('show');
         });
     
+        // document.getElementById('confirmBooking').addEventListener('click', function() {
+        //     $('#agreementModal').modal('hide');
+        //     document.querySelector('form[action="/customer/transaksi/tambahTransaksi"]').submit();
+        // });
+
         document.getElementById('confirmBooking').addEventListener('click', function() {
             $('#agreementModal').modal('hide');
-            document.querySelector('form[action="/customer/transaksi/tambahTransaksi"]').submit();
+
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#bookingForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/customer/transaksi/tambahTransaksi",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: 'Success!',
+                            text: response.message,
+                            type: 'success',
+                            showConfirmButton: false
+                        });
+
+                        setTimeout(() => {
+                            window.history.back();
+                        }, 2000); // Setelah 5 detik
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false;
         });
         $(document).ready(function(){
             $('.delete-link').on('click', function(e) {
@@ -209,7 +251,7 @@
                     }
                 });
             });
-            // $("#booking").click(function(event) {
+            // $("#bookingBtn").click(function(event) {
             //     event.preventDefault(); // Mencegah perilaku default form
 
             //     var formData = $("#bookingForm").serialize(); // Mengambil data dari form
@@ -221,13 +263,15 @@
             //         success: function(response) {
             //             if (response.success) {
             //                 swal({
-            //                     title: "Success!",
+            //                     title: 'Success!',
             //                     text: response.message,
-            //                     type: "success",
-            //                     timer: 2000,
+            //                     type: 'success',
             //                     showConfirmButton: false
             //                 });
-            //                 window.location.reload();
+
+            //                 setTimeout(() => {
+            //                     window.history.back();
+            //                 }, 2000); // Setelah 5 detik
             //             }
             //             else {
             //                 swal({

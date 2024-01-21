@@ -48,21 +48,21 @@ class Transaksi extends Controller
 
     public function tambahTransaksi(Request $request) {
         // dd(Session::get("sewaAlat"));
-        $request->validate([
-            "tanggal" => "required",
-            "mulai" => "required",
-            "selesai" => "required"
-        ],[
-            "tanggal.required" => "tanggal sewa tidak boleh kosong!",
-            "mulai.required" => "jam mulai sewa tidak boleh kosong!",
-            "selesai.required" => "jam selesai sewa tidak boleh kosong!"
-        ]);
+        // $request->validate([
+        //     "tanggal" => "required",
+        //     "mulai" => "required",
+        //     "selesai" => "required"
+        // ],[
+        //     "tanggal.required" => "tanggal sewa tidak boleh kosong!",
+        //     "mulai.required" => "jam mulai sewa tidak boleh kosong!",
+        //     "selesai.required" => "jam selesai sewa tidak boleh kosong!"
+        // ]);
 
         $date_mulai = new DateTime($request->mulai);
         $date_selesai = new DateTime($request->selesai);
         
         if ($date_selesai <= $date_mulai) {
-            return redirect()->back()->with("error", "Jam sewa tidak sesuai!");
+            return response()->json(['success' => false, 'message' => 'Jam sewa tidak sesuai!']);
         }
 
         date_default_timezone_set("Asia/Jakarta");
@@ -76,11 +76,8 @@ class Transaksi extends Controller
         $deadline_booking->modify('-3 hours');
 
         if ($date_mulai_full <= $date_now || $date_selesai_full <= $date_now || $date_now >= $deadline_booking) {
-            return redirect()->back()->with("error", "Tanggal atau waktu booking tidak valid! Booking harus dilakukan minimal 3 jam sebelum waktu sewa.");
-        }
-
-        if ($date_selesai <= $date_mulai) {
-            return redirect()->back()->with("error", "Jam sewa tidak sesuai!");
+            // return redirect()->back()->with("error", "Tanggal atau waktu booking tidak valid! Booking harus dilakukan minimal 3 jam sebelum waktu sewa.");
+            return response()->json(['success' => false, 'message' => 'Tanggal atau waktu booking tidak valid! Booking harus dilakukan minimal 3 jam sebelum waktu sewa.']);
         }
 
         //kasi pengecekan apakah ada tgl dan jam sama yg sdh dibooking
@@ -116,7 +113,7 @@ class Transaksi extends Controller
 
             if ($conflict) {
                 // Ada konflik dengan booking yang ada
-                return back()->with('error', 'Maaf, slot ini sudah dibooking!');
+                return response()->json(['success' => false, 'message' => 'Maaf, slot ini sudah dibooking!']);
             }
         }
 
@@ -156,7 +153,7 @@ class Transaksi extends Controller
         }
 
         if ($cek == 0) {
-            return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
+            return response()->json(['success' => false, 'message' => 'Maaf, Tidak dapat menyewa ketika lapangan tutup!']);
         }
 
         $lapangan = DB::table('lapangan_olahraga')
@@ -249,7 +246,7 @@ class Transaksi extends Controller
         //cek saldo e cukup gaa
         $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
         if ($saldo < $total) {
-            return back()->with('error', 'Saldo anda tidak cukup! Silahkan top up saldo anda.');
+            return response()->json(['success' => false, 'message' => 'Saldo anda tidak cukup! Silahkan top up saldo anda.']);
         }
         //saldo dipotong sebesar total
         $saldo -= $total;
@@ -408,7 +405,7 @@ class Transaksi extends Controller
         $e = new notifikasiEmail();
         $e->sendEmail($dataTempat->email_tempat, $dataNotif);
 
-        return redirect("/customer/detailLapangan/$request->id_lapangan")->with("success","Berhasil booking lapangan olahraga!");
+        return response()->json(['success' => true, 'message' => 'Berhasil booking lapangan olahraga!']);
     }
     
     public function daftarTransaksiTempat(){
@@ -826,6 +823,43 @@ class Transaksi extends Controller
 
         if ($cek == 0) {
             return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
+        }
+
+        //kasi pengecekan apakah ada tgl dan jam sama yg sdh dibooking
+        $cek = DB::table('htrans')
+                ->select("htrans.jam_sewa", "htrans.durasi_sewa", "htrans.tanggal_sewa", "extend_htrans.jam_sewa as jam_ext","extend_htrans.durasi_extend")
+                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                ->whereDate("htrans.tanggal_sewa", $request->tanggal)
+                ->where("fk_id_lapangan","=",$request->id_lapangan)
+                ->where(function($query) {
+                    $query->where("htrans.status_trans", "=", "Diterima")
+                          ->orWhere("htrans.status_trans", "=", "Berlangsung");
+                })
+                ->get();
+                // dd($cek);
+
+        if (!$cek->isEmpty()) {
+            $conflict = false;
+            foreach ($cek as $value) {
+                $booking_jam_selesai = date('H:i', strtotime("+$value->durasi_sewa hour", strtotime($value->jam_sewa)));
+                $booking_jam_selesai_ext = date('H:i', strtotime("+$value->durasi_extend hour", strtotime($value->jam_ext)));
+                
+                if (($request->mulai >= $value->jam_sewa && $request->mulai < $booking_jam_selesai) || 
+                    ($request->selesai > $value->jam_sewa && $request->selesai <= $booking_jam_selesai) ||
+                    ($request->mulai <= $value->jam_sewa && $request->selesai >= $booking_jam_selesai) ||
+                    ($request->mulai >= $value->jam_ext && $request->mulai < $booking_jam_selesai_ext) || 
+                    ($request->selesai > $value->jam_ext && $request->selesai <= $booking_jam_selesai_ext) ||
+                    ($request->mulai <= $value->jam_ext && $request->selesai >= $booking_jam_selesai_ext)) {
+                    
+                    $conflict = true;
+                    break;
+                }
+            }
+
+            if ($conflict) {
+                // Ada konflik dengan booking yang ada
+                return back()->with('error', 'Maaf, slot ini sudah dibooking!');
+            }
         }
 
         $start_time = strtotime($request->mulai);
