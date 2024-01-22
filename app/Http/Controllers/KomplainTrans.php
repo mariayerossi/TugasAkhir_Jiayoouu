@@ -210,7 +210,8 @@ class KomplainTrans extends Controller
                 }
             }
             else {
-                return redirect()->back()->with("error", "Field nominal dan akun tidak boleh kosong!");
+                // return redirect()->back()->with("error", "Field nominal dan akun tidak boleh kosong!");
+                return response()->json(['success' => false, 'message' => "Field nominal dan akun tidak boleh kosong!"]);
             }
         };
 
@@ -701,7 +702,8 @@ class KomplainTrans extends Controller
                 }
             }
             else {
-                return redirect()->back()->with("error", "produk yang akan dihapus tidak boleh kosong!");
+                // return redirect()->back()->with("error", "produk yang akan dihapus tidak boleh kosong!");
+                return response()->json(['success' => false, 'message' => "Produk yang akan dihapus tidak boleh kosong!"]);
             }
         }
 
@@ -1109,7 +1111,8 @@ class KomplainTrans extends Controller
                 }
             }
             else {
-                return redirect()->back()->with("error", "akun yang akan dinonaktifkan tidak boleh kosong!");
+                // return redirect()->back()->with("error", "akun yang akan dinonaktifkan tidak boleh kosong!");
+                return response()->json(['success' => false, 'message' => "Akun yang akan dinonaktifkan tidak boleh kosong!"]);
             }
         }
 
@@ -1206,7 +1209,8 @@ class KomplainTrans extends Controller
         $e2 = new notifikasiEmail();
         $e2->sendEmail($tempat->email_tempat,$dataNotif2);
 
-        return redirect()->back()->with("success", "Berhasil menangani komplain!");
+        // return redirect()->back()->with("success", "Berhasil menangani komplain!");
+        return response()->json(['success' => true, 'message' => "Berhasil menerima komplain!"]);
     }
 
     public function tolakKomplain(Request $request) {
@@ -1330,7 +1334,7 @@ class KomplainTrans extends Controller
         $e = new notifikasiEmail();
         $e->sendEmail($user->email_user,$dataNotif);
 
-        return redirect()->back()->with("success", "Berhasil menolak komplain!");
+        return response()->json(['success' => true, 'message' => 'Berhasil menolak komplain!']);
     }
 
     public function daftarKomplain() {

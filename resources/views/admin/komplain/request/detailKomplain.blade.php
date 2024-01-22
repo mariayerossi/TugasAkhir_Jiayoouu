@@ -412,7 +412,7 @@
         {{-- tampilkan detail penanganan komplain --}}
         <div class="row mb-5 mt-4">
             <div class="col-md-6 col-sm-12 mb-3">
-                <h6>Penanganan: Komplain Ditolak oleh admin</h6>
+                <h6>Penanganan: Komplain Ditolak oleh admin dengan alasan {{$komplain->first()->alasan_komplain}}</h6>
             </div>
             
             <div class="col-md-6 col-sm-12 mb-3">

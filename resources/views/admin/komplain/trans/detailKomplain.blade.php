@@ -29,7 +29,6 @@
 }
 
 .square-image-container img {
-    <img style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $k->lampiran) }}" alt="">
     width: 100%;
     height: 100%;
 }
@@ -300,7 +299,7 @@
                     ->where("dtrans.fk_id_htrans","=",$komplain->first()->fk_id_htrans)
                     ->get();
         @endphp
-        <form action="/admin/komplain/trans/terimaKomplain" method="POST">
+        <form id="terimaForm" action="/admin/komplain/trans/terimaKomplain" method="POST">
             @csrf
             {{-- <div class="row mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
@@ -391,8 +390,8 @@
             <input type="hidden" name="id_htrans" value="{{$komplain->first()->fk_id_htrans}}">
             <input type="hidden" name="id_komplain" value="{{$komplain->first()->id_komplain_trans}}">
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-success me-3">Terima</button>
                 <button class="btn btn-danger" onclick="event.preventDefault(); confirmTolak();">Tolak</button>
+                <button id="terima" type="submit" class="btn btn-success ms-3">Terima</button>
             </div>
         </form>
     @elseif ($komplain->first()->status_komplain == "Diterima")
@@ -420,7 +419,7 @@
         {{-- tampilkan detail penanganan komplain --}}
         <div class="row mb-5 mt-4">
             <div class="col-md-6 col-sm-12 mb-3">
-                <h6>Penanganan: Komplain Ditolak oleh admin</h6>
+                <h6>Penanganan: Komplain Ditolak oleh admin dengan alasan {{$komplain->first()->alasan_komplain}}</h6>
             </div>
             
             <div class="col-md-6 col-sm-12 mb-3">
@@ -429,6 +428,50 @@
     @endif
 </div>
 <script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $("#terima").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#terimaForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/admin/komplain/trans/terimaKomplain",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+    });
     function showImage(imgPath) {
         document.getElementById('modalImage').src = imgPath;
         $('#imageModal').modal('show');
@@ -460,7 +503,41 @@
                         console.log(inputValue);
                         return false;
                     }
-                    window.location.href = "/admin/komplain/trans/tolakKomplain/{{$komplain->first()->id_komplain_trans}}/{{$komplain->first()->fk_id_htrans}}?alasan=" + encodeURIComponent(inputValue);
+                    // window.location.href = "/admin/komplain/trans/tolakKomplain/{{$komplain->first()->id_komplain_trans}}/{{$komplain->first()->fk_id_htrans}}?alasan=" + encodeURIComponent(inputValue);
+                    $.ajax({
+                        type: "GET",
+                        url: "/admin/komplain/trans/tolakKomplain/{{$komplain->first()->id_komplain_trans}}/{{$komplain->first()->fk_id_htrans}}",
+                        data: {
+                            alasan: inputValue
+                        },
+                        success: function(response) {
+                            // Handle success response
+                            // You can show a success message or perform additional actions
+                            if (response.success) {
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                window.location.reload();
+                            }
+                            else {
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            }
+                        },
+                        error: function(error) {
+                            // Handle error response
+                            console.error(error);
+                        }
+                    });
                 });
 
                 setTimeout(function() {
