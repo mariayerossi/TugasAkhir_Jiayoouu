@@ -184,8 +184,25 @@
               method: "POST",
               data: $(this).serialize(),
               success: function(response) {
-                  swal("Success!", "Berhasil mengirim rating!", "success");
-                  window.location.reload();
+                if (response.success) {
+                    swal({
+                        title: "Success!",
+                        text: response.message,
+                        type: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    window.location.reload();
+                }
+                else {
+                    swal({
+                        title: "Error!",
+                        text: response.message,
+                        type: "error",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
               },
               error: function(jqXHR, textStatus, errorThrown) {
                   swal("Error!", "Gagal mengirim rating!", "error");
