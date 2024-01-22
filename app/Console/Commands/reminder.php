@@ -70,6 +70,7 @@ class reminder extends Command
                 $sekarang = date('Y-m-d H:i:s');
 
                 $sekarang2 = date('Y-m-d H:i');
+                $sekarang3 = date('Y-m-d');
                 
                 //KODE KONFIRMASI DIANTAR
                 if ($value->status_permintaan == "Diterima" && $value->updated_at != null) {
@@ -222,6 +223,49 @@ class reminder extends Command
                     ];
                     $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
                 }
+                else if ($value->status_permintaan == "Menunggu" && $value->req_tanggal_mulai < $sekarang3) {
+                    //tanggal terakhir pemilik alat menerima / menolak permintaan adalah tanggal mulai permintaan, lebih dr itu status = DIBATALKAN
+                    $data2 = [
+                        "id" => $value->id_permintaan,
+                        "status" => "Dibatalkan"
+                    ];
+                    $per->updateStatus($data2);
+
+                    //kasih notif ke pemilik, req dibatalkan
+                    $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
+                    $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+
+                    $dataNotif = [
+                        "subject" => "😔Yah! Request Permintaan Dibatalkan!😔",
+                        "judul" => "Request Permintaan Dibatalkan!",
+                        "nama_user" => $dataPemilik->nama_pemilik,
+                        "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                        "button" => "Lihat Detail Permintaan",
+                        "isi" => "Sayang sekali! Request Permintaan dari:<br><br>
+                                <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                Telah otomatis dibatalkan karena batas akhir terima request ini sudah lewat! 😢"
+                    ];
+                    $e = new notifikasiEmail();
+                    $e->sendEmail($dataPemilik->email_pemilik, $dataNotif);
+
+                    //kasih notif ke tempat, req dibatalkan
+                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+
+                    $dataNotif2 = [
+                        "subject" => "😔Yah! Request Permintaan Dibatalkan!😔",
+                        "judul" => "Request Permintaan Dibatalkan!",
+                        "nama_user" => $dataTempat->nama_tempat,
+                        "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                        "button" => "Lihat Detail Permintaan",
+                        "isi" => "Sayang sekali! Request Permintaan dari:<br><br>
+                                <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                Telah otomatis dibatalkan karena pemilik alat tidak menerima request ini! 😢"
+                    ];
+                    $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
+                }
             }
         }
 
@@ -236,6 +280,7 @@ class reminder extends Command
                 date_default_timezone_set('Asia/Jakarta');
                 $sekarang = date('Y-m-d H:i:s');
                 $sekarang2 = date('Y-m-d H:i');
+                $sekarang3 = date('Y-m-d');
                 //KODE KONFIRMASI DIANTAR
                 if ($value->status_penawaran == "Diterima" && $value->updated_at != null) {
 
@@ -385,6 +430,48 @@ class reminder extends Command
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                 <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
                                 Sudah selesai. Tunggu pemilik alat olahraga mengambil alatnya ya! Terima kasih telah mempercayai Sportiva! 😊"
+                    ];
+                    $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
+                }
+                else if ($value->status_penawaran == "Menunggu" && $value->req_tanggal_mulai < $sekarang3) {
+                    $data2 = [
+                        "id" => $value->id_penawaran,
+                        "status" => "Dibatalkan"
+                    ];
+                    $per->updateStatus($data2);
+
+                    //kasih notif ke pemilik, req dibatalkan
+                    $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
+                    $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+
+                    $dataNotif = [
+                        "subject" => "😔Yah! Request Penawaran Dibatalkan!😔",
+                        "judul" => "Request Penawaran Dibatalkan!",
+                        "nama_user" => $dataPemilik->nama_pemilik,
+                        "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                        "button" => "Lihat Detail Penawaran",
+                        "isi" => "Sayang sekali! Request Penawaran dari:<br><br>
+                                <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                Telah otomatis dibatalkan karena batas akhir terima request ini sudah lewat! 😢"
+                    ];
+                    $e = new notifikasiEmail();
+                    $e->sendEmail($dataPemilik->email_pemilik, $dataNotif);
+
+                    //kasih notif ke tempat, req dibatalkan
+                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+
+                    $dataNotif2 = [
+                        "subject" => "😔Yah! Request Penawaran Dibatalkan!😔",
+                        "judul" => "Request Penawaran Dibatalkan!",
+                        "nama_user" => $dataTempat->nama_tempat,
+                        "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                        "button" => "Lihat Detail Penawaran",
+                        "isi" => "Sayang sekali! Request Penawaran dari:<br><br>
+                                <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                Telah otomatis dibatalkan karena pemilik alat tidak menerima request ini! 😢"
                     ];
                     $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
                 }
