@@ -18,15 +18,16 @@ class RequestPermintaan extends Controller
 {
     public function ajukanPermintaan(Request $request){
         // dd($request->all());
-        $request->validate([
-            "harga" => "required",
-            "durasi_pinjam" => "required",
-            "lapangan" => "required"
-        ],[
-            "harga.required" => "harga sewa tidak boleh kosong!",
-            "durasi_pinjam.required" => "durasi pinjam tidak boleh kosong!",
-            "lapangan.required" => "lapangan tidak boleh kosong!"
-        ]);
+        // $request->validate([
+        //     "harga" => "required",
+        //     "durasi_pinjam" => "required",
+        //     "lapangan" => "required"
+        // ],[
+        //     "harga.required" => "harga sewa tidak boleh kosong!",
+        //     "durasi_pinjam.required" => "durasi pinjam tidak boleh kosong!",
+        //     "lapangan.required" => "lapangan tidak boleh kosong!"
+        // ]);
+
         // benerin format durasinya
         $array1 = explode(" - ", $request->durasi_pinjam);
         $tgl_mulai = str_replace("/", "-", $array1[0]);
