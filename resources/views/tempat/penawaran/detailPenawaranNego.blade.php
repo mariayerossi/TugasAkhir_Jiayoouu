@@ -154,7 +154,7 @@
                             <!-- Nama Alat -->
                             <div class="col-8 d-flex flex-column justify-content-center">
                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
-                                <p class="card-text">komisi: Rp {{number_format($dataAlat->komisi_alat, 0, ',', '.')}}/jam</p>
+                                <p class="card-text">Komisi: Rp {{number_format($dataAlat->komisi_alat, 0, ',', '.')}}/jam</p>
                             </div>
                         </div>
                     </div>

@@ -165,6 +165,8 @@ class KomplainRequest extends Controller
         }
         $komp = new ModelsKomplainRequest();
         $id = $komp->insertKomplainReq($data);
+
+        
         
         //insert foto alatnya
         $destinasi = "/upload";
@@ -230,7 +232,7 @@ class KomplainRequest extends Controller
         $e = new notifikasiEmail();
         $e->sendEmail("admin@gmail.com",$dataNotif);
 
-        return redirect()->back()->with("success", "Berhasil Mengajukan Komplain!");
+        return response()->json(['success' => true, 'message' => "Berhasil mengajukan komplain!"]);
     }
 
     public function terimaKomplain(Request $request) {
@@ -530,7 +532,8 @@ class KomplainRequest extends Controller
                 }
             }
             else {
-                return redirect()->back()->with("error", "produk yang akan dihapus tidak boleh kosong!");
+                // return redirect()->back()->with("error", "produk yang akan dihapus tidak boleh kosong!");
+                return response()->json(['success' => false, 'message' => "Produk yang akan dihapus tidak boleh kosong!"]);
             }
         }
 
@@ -936,7 +939,8 @@ class KomplainRequest extends Controller
                 }
             }
             else {
-                return redirect()->back()->with("error", "akun yang akan dinonaktifkan tidak boleh kosong!");
+                // return redirect()->back()->with("error", "akun yang akan dinonaktifkan tidak boleh kosong!");
+                return response()->json(['success' => false, 'message' => "Akun yang dinonaktifkan tidak boleh kosong!"]);
             }
         }
 
@@ -1029,7 +1033,8 @@ class KomplainRequest extends Controller
         $e = new notifikasiEmail();
         $e->sendEmail($email, $dataNotif);
 
-        return redirect()->back()->with("success", "Berhasil menangani komplain!");
+        // return redirect()->back()->with("success", "Berhasil menangani komplain!");
+        return response()->json(['success' => true, 'message' => "Berhasil menerima komplain!"]);
     }
 
     public function tolakKomplain(Request $request) {
@@ -1046,6 +1051,7 @@ class KomplainRequest extends Controller
         ];
         $komp->updateAlasan($data2);
 
+
         //notif pemilik/tempat
         $komplain = DB::table('komplain_request')->where("id_komplain_req","=",$request->id)->get()->first();
 
@@ -1053,9 +1059,23 @@ class KomplainRequest extends Controller
         if ($komplain->fk_id_permintaan != null) {
             //jenis request permintaan
             $jenis = "Permintaan";
+
+            $data3 = [
+                "id" => $komplain->fk_id_permintaan,
+                "status" => "Diterima"
+            ];
+            $minta = new requestPermintaan();
+            $minta->updateStatus($data3);
         }
         else {
             $jenis = "Penawaran";
+
+            $data3 = [
+                "id" => $komplain->fk_id_penawaran,
+                "status" => "Diterima"
+            ];
+            $tawar = new requestPenawaran();
+            $tawar->updateStatus($data3);
         }
 
         $pengaju = "";
@@ -1106,6 +1126,6 @@ class KomplainRequest extends Controller
         $e = new notifikasiEmail();
         $e->sendEmail($email, $dataNotif);
 
-        return redirect()->back()->with("success", "Berhasil menolak komplain!");
+        return response()->json(['success' => true, 'message' => "Berhasil menolak komplain!"]);
     }
 }

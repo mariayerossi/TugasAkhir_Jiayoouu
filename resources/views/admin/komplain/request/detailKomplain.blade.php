@@ -175,8 +175,9 @@
                             </div>
                             
                             <!-- Nama Alat -->
-                            <div class="col-8 d-flex align-items-center">
+                            <div class="col-8 d-flex flex-column justify-content-center">
                                 <h5 class="card-title truncate-text">{{$dataAlat->nama_alat}}</h5>
+                                <p class="card-text">Komisi: Rp {{number_format($dataAlat->komisi_alat, 0, ',', '.')}}/jam</p>
                             </div>
                         </div>
                     </div>
@@ -200,8 +201,9 @@
                             </div>
                             
                             <!-- Nama Lapangan -->
-                            <div class="col-8 d-flex align-items-center">
+                            <div class="col-8 d-flex flex-column justify-content-center">
                                 <h5 class="card-title truncate-text">{{$dataLapangan->nama_lapangan}}</h5>
+                                <p class="card-text">Harga Sewa: Rp {{number_format($dataLapangan->harga_sewa_lapangan, 0, ',', '.')}}/jam</p>
                             </div>
                         </div>
                     </div>
@@ -308,7 +310,7 @@
 
     <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
     @if ($komplain->first()->status_komplain == "Menunggu")
-        <form action="/admin/komplain/request/terimaKomplain" method="POST">
+        <form id="terimaForm" action="/admin/komplain/request/terimaKomplain" method="POST">
             @csrf
             <div class="row mb-5 mt-5">
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
@@ -381,8 +383,8 @@
             @endif
             <input type="hidden" name="id_komplain" value="{{$komplain->first()->id_komplain_req}}">
             <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-success me-3">Terima</button>
                 <button class="btn btn-danger" onclick="event.preventDefault(); confirmTolak();">Tolak</button>
+                <button type="submit" class="btn btn-success ms-3" id="terima">Terima</button>
             </div>
         </form>
     @elseif ($komplain->first()->status_komplain == "Diterima")
@@ -450,7 +452,41 @@
                         console.log(inputValue);
                         return false;
                     }
-                    window.location.href = "/admin/komplain/request/tolakKomplain/{{$komplain->first()->id_komplain_req}}?alasan=" + encodeURIComponent(inputValue);
+                    // window.location.href = "/admin/komplain/request/tolakKomplain/{{$komplain->first()->id_komplain_req}}?alasan=" + encodeURIComponent(inputValue);
+                    $.ajax({
+                        type: "GET",
+                        url: "/admin/komplain/request/tolakKomplain/{{$komplain->first()->id_komplain_req}}",
+                        data: {
+                            alasan: inputValue
+                        },
+                        success: function(response) {
+                            // Handle success response
+                            // You can show a success message or perform additional actions
+                            if (response.success) {
+                                swal({
+                                    title: "Success!",
+                                    text: response.message,
+                                    type: "success",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                                window.location.reload();
+                            }
+                            else {
+                                swal({
+                                    title: "Error!",
+                                    text: response.message,
+                                    type: "error",
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            }
+                        },
+                        error: function(error) {
+                            // Handle error response
+                            console.error(error);
+                        }
+                    });
                 });
 
                 setTimeout(function() {
@@ -509,7 +545,48 @@
         input.value = value;
     }
     $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();   
+        $('[data-toggle="tooltip"]').tooltip();
+
+        $("#terima").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#terimaForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/admin/komplain/request/terimaKomplain",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
     });
 </script>
 @endsection
