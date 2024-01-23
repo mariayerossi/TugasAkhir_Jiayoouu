@@ -1131,6 +1131,22 @@ class KomplainRequest extends Controller
                                     "saldo" => $enkrip4
                                 ];
                                 $temp->updateSaldo($dataSaldo5);
+
+                                date_default_timezone_set("Asia/Jakarta");
+                                $skrg = date("Y-m-d H:i:s");
+
+                                //notif web ke pihak tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla4->nama_alat." Sudah Selesai",
+                                    "waktu" => $skrg,
+                                    "link" => "/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $value->fk_id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
                                 
                                 //kasih notif ke tempat, request selesai
                                 $dataNotif14= [
@@ -1241,6 +1257,22 @@ class KomplainRequest extends Controller
             else {
                 $url = "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$komplain->fk_id_penawaran;
             }
+
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pemilik alat
+            $dataNotifWeb = [
+                "keterangan" => "Komplain ".$jenis." Anda Telah Diterima",
+                "waktu" => $skrg,
+                "link" => $url,
+                "user" => null,
+                "pemilik" => $komplain->fk_id_pemilik,
+                "tempat" => null,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
         }
         else {
             //yang mengajukan tempat
@@ -1254,6 +1286,22 @@ class KomplainRequest extends Controller
             else {
                 $url = "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$komplain->fk_id_penawaran;
             }
+
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Komplain ".$jenis." Anda Telah Diterima",
+                "waktu" => $skrg,
+                "link" => $url,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $komplain->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
         }
 
         $tanggalAwal = $komplain->waktu_komplain;
@@ -1333,6 +1381,22 @@ class KomplainRequest extends Controller
             else {
                 $url = "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$komplain->fk_id_penawaran;
             }
+
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pemilik alat
+            $dataNotifWeb = [
+                "keterangan" => "Komplain ".$jenis." Anda Telah Ditolak",
+                "waktu" => $skrg,
+                "link" => $url,
+                "user" => null,
+                "pemilik" => $komplain->fk_id_pemilik,
+                "tempat" => null,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
         }
         else {
             //yang mengajukan tempat
@@ -1346,6 +1410,22 @@ class KomplainRequest extends Controller
             else {
                 $url = "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$komplain->fk_id_penawaran;
             }
+
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Komplain ".$jenis." Anda Telah Ditolak",
+                "waktu" => $skrg,
+                "link" => $url,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $komplain->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
         }
 
         $tanggalAwal = $komplain->waktu_komplain;
