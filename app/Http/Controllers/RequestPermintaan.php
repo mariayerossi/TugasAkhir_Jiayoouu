@@ -223,42 +223,42 @@ class RequestPermintaan extends Controller
         if ($dataAlat->status_alat == "Aktif") {
 
             if ($status == "Menunggu") {
-                // $data = [
-                //     "id" => $request->id_permintaan,
-                //     "status" => "Diterima"
-                // ];
-                // $per = new ModelsRequestPermintaan();
-                // $per->updateStatus($data);
+                $data = [
+                    "id" => $request->id_permintaan,
+                    "status" => "Diterima"
+                ];
+                $per = new ModelsRequestPermintaan();
+                $per->updateStatus($data);
 
-                // $data3 = [
-                //     "id" => $id_alat,
-                //     "status" => "Non Aktif"
-                // ];
-                // $alat = new alatOlahraga();
-                // $alat->updateStatus($data3);
+                $data3 = [
+                    "id" => $id_alat,
+                    "status" => "Non Aktif"
+                ];
+                $alat = new alatOlahraga();
+                $alat->updateStatus($data3);
 
-                // //batalkan permintaan lain yg terkait dgn alat ini
-                // $minta = DB::table('request_permintaan')->where("req_id_alat","=",$id_alat)->where("status_permintaan","=","Menunggu")->get();
-                // $tawar = DB::table('request_penawaran')->where("req_id_alat","=",$id_alat)->where("status_penawaran","=","Menunggu")->get();
-                // if (!$minta->isEmpty()) {
-                //     foreach ($minta as $key => $value) {
-                //         $data2 = [
-                //             "id" => $value->id_permintaan,
-                //             "status" => "Dibatalkan"
-                //         ];
-                //         $per->updateStatus($data2);
-                //     }
-                // }
-                // if (!$tawar->isEmpty()) {
-                //     foreach ($tawar as $key => $value) {
-                //         $data3 = [
-                //             "id" => $value->id_penawaran,
-                //             "status" => "Dibatalkan"
-                //         ];
-                //         $pen = new requestPenawaran();
-                //         $pen->updateStatus($data3);
-                //     }
-                // }
+                //batalkan permintaan lain yg terkait dgn alat ini
+                $minta = DB::table('request_permintaan')->where("req_id_alat","=",$id_alat)->where("status_permintaan","=","Menunggu")->get();
+                $tawar = DB::table('request_penawaran')->where("req_id_alat","=",$id_alat)->where("status_penawaran","=","Menunggu")->get();
+                if (!$minta->isEmpty()) {
+                    foreach ($minta as $key => $value) {
+                        $data2 = [
+                            "id" => $value->id_permintaan,
+                            "status" => "Dibatalkan"
+                        ];
+                        $per->updateStatus($data2);
+                    }
+                }
+                if (!$tawar->isEmpty()) {
+                    foreach ($tawar as $key => $value) {
+                        $data3 = [
+                            "id" => $value->id_penawaran,
+                            "status" => "Dibatalkan"
+                        ];
+                        $pen = new requestPenawaran();
+                        $pen->updateStatus($data3);
+                    }
+                }
 
                 $email_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->email_tempat;
                 $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
@@ -334,12 +334,12 @@ class RequestPermintaan extends Controller
         $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
 
         if ($status == "Menunggu") {
-            $data = [
-                "id" => $request->id_permintaan,
-                "status" => "Ditolak"
-            ];
-            $per = new ModelsRequestPermintaan();
-            $per->updateStatus($data);
+            // $data = [
+            //     "id" => $request->id_permintaan,
+            //     "status" => "Ditolak"
+            // ];
+            // $per = new ModelsRequestPermintaan();
+            // $per->updateStatus($data);
 
             $req = new ModelsRequestPermintaan();
             $id_tempat = $req->get_all_data_by_id($request->id_permintaan)->first()->fk_id_tempat;
@@ -349,13 +349,29 @@ class RequestPermintaan extends Controller
             $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$id_alat)->get()->first()->nama_alat;
             $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$id_alat)->get()->first()->komisi_alat;
 
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Permintaan Alat Olahraga ".$nama_alat." Ditolak Pemilik Alat",
+                "waktu" => $skrg,
+                "link" => "/tempat/permintaan/detailPermintaanNego/".$request->id_permintaan,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
             //notif email ke pihak tempat
             $dataNotif = [
                 "subject" => "😔Permintaan Alat Olahraga Ditolak!😔",
                 "judul" => "Permintaan Alat Olahraga Ditolak",
                 "nama_user" => $nama_tempat,
-                "url" => "https://sportiva.my.id/tempat/cariAlat",
-                "button" => "Lihat dan Temukan Alat Olahraga Menarik Lainnya",
+                "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$request->id_permintaan,
+                "button" => "Lihat Detail Permintaan",
                 "isi" => "Sayang sekali! Anda memiliki satu permintaan alat olahraga yang ditolak:<br><br>
                         <b>Nama Alat Olahraga: ".$nama_alat."</b><br>
                         <b>Komisi Pemilik Alat: Rp ".number_format($komisi_alat, 0, ',', '.')."</b><br><br>
@@ -402,11 +418,11 @@ class RequestPermintaan extends Controller
     }
 
     public function confirmKodeMulai(Request $request){
-        // $request->validate([
-        //     "isi" => "required"
-        // ],[
-        //     "required" => "kode konfirmasi tidak boleh kosong!"
-        // ]);
+        $request->validate([
+            "isi" => "required"
+        ],[
+            "required" => "kode konfirmasi tidak boleh kosong!"
+        ]);
 
         if ($request->isi == null || $request->isi == "") {
             return response()->json(['success' => false, 'message' => 'Input kode tidak boleh kosong!']);
@@ -425,6 +441,22 @@ class RequestPermintaan extends Controller
             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$permintaan->fk_id_pemilik)->get()->first();
             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->req_id_alat)->get()->first();
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();
+
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Permintaan Alat Olahraga ".$dataAlat->nama_alat." Telah Dikonfirmasi dan Mulai Disewakan",
+                "waktu" => $skrg,
+                "link" => "/tempat/permintaan/detailPermintaanNego/".$request->id,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $permintaan->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
 
             //notif tempat
             $dataNotif = [
@@ -496,13 +528,29 @@ class RequestPermintaan extends Controller
             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->req_id_alat)->get()->first();
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();
 
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Permintaan Alat Olahraga ".$dataAlat->nama_alat." Telah Dikonfirmasi Pengembaliannya",
+                "waktu" => $skrg,
+                "link" => "/tempat/permintaan/detailPermintaanNego/".$request->id,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $permintaan->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
             //notif tempat
             $dataNotif = [
                 "subject" => "🎉Pengambilan Alat Olahraga Telah Dikonfirmasi!🎉",
                 "judul" => "Pengambilan Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $tempat->nama_tempat,
-                "url" => "https://sportiva.my.id/tempat/cariAlat",
-                "button" => "Lihat dan Temukan Alat Olahraga Menarik Lainnya",
+                "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$request->id,
+                "button" => "Lihat Detail Permintaan",
                 "isi" => "Alat olahraga telah dikonfirmasi pengambilannya:<br><br>
                         <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga: Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
