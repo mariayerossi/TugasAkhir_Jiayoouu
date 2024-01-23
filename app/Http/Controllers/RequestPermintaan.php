@@ -334,12 +334,12 @@ class RequestPermintaan extends Controller
         $status = $req->get_all_data_by_id($request->id_permintaan)->first()->status_permintaan;
 
         if ($status == "Menunggu") {
-            // $data = [
-            //     "id" => $request->id_permintaan,
-            //     "status" => "Ditolak"
-            // ];
-            // $per = new ModelsRequestPermintaan();
-            // $per->updateStatus($data);
+            $data = [
+                "id" => $request->id_permintaan,
+                "status" => "Ditolak"
+            ];
+            $per = new ModelsRequestPermintaan();
+            $per->updateStatus($data);
 
             $req = new ModelsRequestPermintaan();
             $id_tempat = $req->get_all_data_by_id($request->id_permintaan)->first()->fk_id_tempat;

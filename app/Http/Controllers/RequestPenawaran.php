@@ -84,21 +84,38 @@ class RequestPenawaran extends Controller
             $pen = $req->get_all_data_by_id($request->id_penawaran)->first();
 
             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$pen->fk_id_pemilik)->get()->first();
+            $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$pen->fk_id_tempat)->get()->first();
             $alat = DB::table('alat_olahraga')->where("id_alat","=",$pen->req_id_alat)->get()->first();
 
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Penawaran Alat Olahraga ".$alat->nama_alat." Dibatalkan Pemilik Alat",
+                "waktu" => $skrg,
+                "link" => "/tempat/penawaran/detailPenawaranNego/".$request->id_penawaran,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $pen->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
             $dataNotif = [
-                "subject" => "🔔Penawaran Alat Olahraga Telah Dibatalkan Pihak Tempat Olahraga!🔔",
-                "judul" => "Penawaran Alat Olahraga Telah Dibatalkan Pihak Tempat Olahraga",
-                "nama_user" => $pemilik->nama_pemilik,
-                "url" => "https://sportiva.my.id/pemilik/cariLapangan",
-                "button" => "Lihat dan Temukan Lapangan Olahraga Menarik Lainnya",
+                "subject" => "🔔Penawaran Alat Olahraga Telah Dibatalkan Pemilik Alat Olahraga!🔔",
+                "judul" => "Penawaran Alat Olahraga Telah Dibatalkan Pemilik Alat Olahraga",
+                "nama_user" => $tempat->nama_tempat,
+                "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$request->id_penawaran,
+                "button" => "Lihat Detail Penawaran",
                 "isi" => "Penawaran alat olahraga:<br><br>
                         <b>Nama Alat Olahraga  : ".$alat->nama_alat."</b><br>
                         <b>Komisi Pemilik Alat : Rp ".number_format($alat->komisi_alat, 0, ',', '.')."</b><br><br>
                         Telah dibatalkan! Cari dan temukan lapangan olahraga lain!"
             ];
             $e = new notifikasiEmail();
-            $e->sendEmail($pemilik->email_pemilik,$dataNotif);
+            $e->sendEmail($tempat->email_tempat,$dataNotif);
 
             $data = [
                 "id" => $request->id_penawaran,
@@ -238,6 +255,22 @@ class RequestPenawaran extends Controller
 
                             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dataAlat->fk_id_pemilik)->get()->first();
 
+                            date_default_timezone_set("Asia/Jakarta");
+                            $skrg = date("Y-m-d H:i:s");
+
+                            //notif web ke pemilik alat
+                            $dataNotifWeb = [
+                                "keterangan" => "Penawaran Alat Olahraga ".$dataAlat->nama_alat." Telah Diterima Pihak Tempat Olahraga",
+                                "waktu" => $skrg,
+                                "link" => "/pemilik/penawaran/detailPenawaranNego/".$request->id_penawaran,
+                                "user" => null,
+                                "pemilik" => $dataAlat->fk_id_pemilik,
+                                "tempat" => null,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             $dataNotif = [
                                 "subject" => "🎉Penawaran Alat Olahraga Anda Telah Diterima!🎉",
                                 "judul" => "Penawaran Alat Olahraga Anda Telah Diterima",
@@ -292,12 +325,28 @@ class RequestPenawaran extends Controller
             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
 
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pemilik alat
+            $dataNotifWeb = [
+                "keterangan" => "Penawaran Alat Olahraga ".$dataAlat->nama_alat." Ditolak Pihak Tempat Olahraga",
+                "waktu" => $skrg,
+                "link" => "/pemilik/penawaran/detailPenawaranNego/".$request->id_penawaran,
+                "user" => null,
+                "pemilik" => $penawaran->fk_id_pemilik,
+                "tempat" => null,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
             $dataNotif = [
                 "subject" => "😔Penawaran Alat Olahraga Anda Telah Ditolak!😔",
                 "judul" => "Penawaran Alat Olahraga Anda Telah Ditolak",
                 "nama_user" => $pemilik->nama_pemilik,
-                "url" => "https://sportiva.my.id/pemilik/cariLapangan",
-                "button" => "Lihat dan Temukan Lapangan Olahraga Menarik Lainnya",
+                "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$request->id_penawaran,
+                "button" => "Lihat Detail Penawaran",
                 "isi" => "Sayang sekali! Anda memiliki satu penawaran alat olahraga yang ditolak:<br><br>
                         <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
@@ -449,16 +498,32 @@ class RequestPenawaran extends Controller
             $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$pemilik)->get()->first()->nama_pemilik;
             $email_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$pemilik)->get()->first()->email_pemilik;
 
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Penawaran Alat Olahraga ".$dataAlat->nama_alat." Telah Dikonfirmasi oleh Pemilik Alat",
+                "waktu" => $skrg,
+                "link" => "/tempat/penawaran/detailPenawaranNego/".$request->id_penawaran,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $dataReq->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
             $dataNotif = [
-                "subject" => "🎉Detail Penawaran Alat Olahraga Anda Telah Dikonfirmasi!🎉",
-                "judul" => "Detail Penawaran Alat Olahraga Anda Telah Dikonfirmasi",
+                "subject" => "🎉Detail Penawaran Alat Olahraga Telah Dikonfirmasi!🎉",
+                "judul" => "Detail Penawaran Alat Olahraga Telah Dikonfirmasi",
                 "nama_user" => $tempat->nama_tempat,
                 "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$request->id_penawaran,
                 "button" => "Lihat Detail Penawaran",
                 "isi" => "Anda memiliki satu penawaran alat olahraga yang detailnya telah dikonfirmasi pemilik:<br><br>
                         <b>Nama Alat Olahraga   : ".$dataAlat->nama_alat."</b><br>
                         <b>Komisi Alat Olahraga : Rp ".number_format($dataAlat->komisi_alat, 0, ',', '.')."</b><br><br>
-                        Tunggu pemilik alat olahraga mengantarkan alat olahraganya ke anda!"
+                        Tunggu pemilik alat olahraga mengantarkan alat olahraganya ke tempat anda!"
             ];
             $e = new notifikasiEmail();
             $e->sendEmail($tempat->email_tempat, $dataNotif);
@@ -541,6 +606,22 @@ class RequestPenawaran extends Controller
             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->fk_id_tempat)->get()->first();
 
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Penawaran Alat Olahraga ".$dataAlat->nama_alat." Telah Dikonfirmasi dan Mulai Disewakan",
+                "waktu" => $skrg,
+                "link" => "/tempat/penawaran/detailPenawaranNego/".$request->id,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $penawaran->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
             //notif tempat
             $dataNotif = [
                 "subject" => "🎉Penawaran Alat Olahraga Telah Dikonfirmasi!🎉",
@@ -602,6 +683,22 @@ class RequestPenawaran extends Controller
             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->fk_id_tempat)->get()->first();
+
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Penawaran Alat Olahraga ".$dataAlat->nama_alat." Telah Dikonfirmasi Pengembaliannya",
+                "waktu" => $skrg,
+                "link" => "/tempat/penawaran/detailPenawaranNego/".$request->id,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $penawaran->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
 
             //notif tempat
             $dataNotif = [

@@ -433,7 +433,8 @@ class reminder extends Command
                     ];
                     $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
                 }
-                else if ($value->status_penawaran == "Menunggu" && $value->req_tanggal_mulai < $sekarang3) {
+                else if ($value->status_pemilik == null && $value->req_tanggal_mulai < $sekarang3) {
+                    //kalau pemilik alat sampai melebihi waktu mulai pinjam masih tdk mengkonfirmasi maka status akan otomatis dibatalkan
                     $data2 = [
                         "id" => $value->id_penawaran,
                         "status" => "Dibatalkan"
@@ -454,7 +455,7 @@ class reminder extends Command
                         "isi" => "Sayang sekali! Request Penawaran dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                 <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
-                                Telah otomatis dibatalkan karena batas akhir terima request ini sudah lewat! 😢"
+                                Telah otomatis dibatalkan karena batas akhir konfirmasi request ini sudah lewat! 😢"
                     ];
                     $e = new notifikasiEmail();
                     $e->sendEmail($dataPemilik->email_pemilik, $dataNotif);
@@ -471,7 +472,7 @@ class reminder extends Command
                         "isi" => "Sayang sekali! Request Penawaran dari:<br><br>
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                 <b>Diantar ke Lapangan: ".$dataLapangan->nama_lapangan."</b><br><br>
-                                Telah otomatis dibatalkan karena pemilik alat tidak menerima request ini! 😢"
+                                Telah otomatis dibatalkan karena pemilik alat tidak mengkonfirmasi request ini! 😢"
                     ];
                     $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
                 }
