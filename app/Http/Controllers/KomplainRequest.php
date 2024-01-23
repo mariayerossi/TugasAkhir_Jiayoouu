@@ -58,7 +58,7 @@ class KomplainRequest extends Controller
         // ]);
         // dd($request->all());
 
-        //kok ga bisa
+        
         if ($request->jenis == null || $request->keterangan == null || $request->foto == null) {
             return response()->json(['success' => false, 'message' => "Silahkan isi data pengajuan komplain!"]);
         }
@@ -217,6 +217,19 @@ class KomplainRequest extends Controller
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
 
+        //notif web ke admin
+        $dataNotifWeb = [
+            "keterangan" => "Komplain ".$jenis." Baru dari ".$namaUser,
+            "waktu" => $tgl_komplain,
+            "link" => "/admin/komplain/request/detailKomplain/".$id,
+            "user" => null,
+            "pemilik" => null,
+            "tempat" => null,
+            "admin" => 1
+        ];
+        $notifWeb = new notifikasi();
+        $notifWeb->insertNotifikasi($dataNotifWeb);
+
         $dataNotif = [
             "subject" => "❗❗ Komplain ".$jenis." Baru ❗❗",
             "judul" => "Komplain ".$jenis." Baru dari ".$namaUser,
@@ -256,6 +269,23 @@ class KomplainRequest extends Controller
                 if ($array[1] == "alat") {
                     //kasih notif ke pemilik, alatnya dihapus
                     $alat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first();
+
+                    date_default_timezone_set("Asia/Jakarta");
+                    $skrg = date("Y-m-d H:i:s");
+
+                    //notif web ke pemilik alat
+                    $dataNotifWeb = [
+                        "keterangan" => "Alat Olahraga ".$alat->nama_alat." Telah Dihapus",
+                        "waktu" => $skrg,
+                        "link" => "/pemilik/daftarAlat",
+                        "user" => null,
+                        "pemilik" => $komplain->fk_id_pemilik,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
+
                     $dataNotif4 = [
                         "subject" => "😔Alat Olahraga ".$alat->nama_alat." Telah Dihapus!😔",
                         "judul" => "Alat Olahraga ".$alat->nama_alat." Telah Dihapus!",
@@ -292,6 +322,22 @@ class KomplainRequest extends Controller
                                 ];
                                 $perm = new requestPermintaan();
                                 $perm->updateStatus($data1);
+
+                                date_default_timezone_set("Asia/Jakarta");
+                                $skrg = date("Y-m-d H:i:s");
+
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Permintaan Alat Olahraga ".$dataAlat->nama_alat." Telah Dibatalkan",
+                                    "waktu" => $skrg,
+                                    "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => $value->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
 
                                 //kirim notif ke pemilik
                                 $dataNotif5 = [
@@ -351,6 +397,23 @@ class KomplainRequest extends Controller
                                 $temp = new pihakTempat();
                                 $temp->updateSaldo($dataSaldo3);
                             }
+
+                            date_default_timezone_set("Asia/Jakarta");
+                            $skrg = date("Y-m-d H:i:s");
+
+                            //notif web ke pemilik alat
+                            $dataNotifWeb = [
+                                "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                                "waktu" => $skrg,
+                                "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                "user" => null,
+                                "pemilik" => $value->fk_id_pemilik,
+                                "tempat" => null,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             //kasih notif ke pemilik, request e selesai
                             $dataNotif5 = [
                                 "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
@@ -380,13 +443,29 @@ class KomplainRequest extends Controller
                                 $penaw = new requestPenawaran();
                                 $penaw->updateStatus($data4);
 
+                                date_default_timezone_set("Asia/Jakarta");
+                                $skrg = date("Y-m-d H:i:s");
+
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Penawaran Alat Olahraga ".$dataAlat2->nama_alat." Telah Dibatalkan",
+                                    "waktu" => $skrg,
+                                    "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => $value->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+
                                 //kirim notif ke pemilik
                                 $dataNotif5 = [
                                     "subject" => "⚠️Request Alat Olahraga Dibatalkan!⚠️",
                                     "judul" => "Request Alat Olahraga Dibatalkan!",
                                     "nama_user" => $dataPemi2->nama_pemilik,
-                                    "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_penawaran,
-                                    "button" => "Lihat Detail Permintaan",
+                                    "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
                                     "isi" => "Masa sewa alat dari:<br><br>
                                             <b>Nama Alat Olahraga: ".$dataAlat2->nama_alat."</b><br>
                                             <b>Di Lapangan Olahraga: ".$dataLapangan2->nama_lapangan."</b><br><br>
@@ -438,6 +517,23 @@ class KomplainRequest extends Controller
                                 $temp = new pihakTempat();
                                 $temp->updateSaldo($dataSaldo3);
                             }
+
+                            date_default_timezone_set("Asia/Jakarta");
+                            $skrg = date("Y-m-d H:i:s");
+
+                            //notif web ke pemilik alat
+                            $dataNotifWeb = [
+                                "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat2->nama_alat." Sudah Selesai",
+                                "waktu" => $skrg,
+                                "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                "user" => null,
+                                "pemilik" => $value->fk_id_pemilik,
+                                "tempat" => null,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             //kasih notif ke pemilik, request e selesai
                             $dataNotif6 = [
                                 "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
@@ -489,6 +585,22 @@ class KomplainRequest extends Controller
                             $cust = new customer();
                             $cust->updateSaldo($dataSaldo);
 
+                            date_default_timezone_set("Asia/Jakarta");
+                            $skrg = date("Y-m-d H:i:s");
+
+                            //notif web ke customer
+                            $dataNotifWeb = [
+                                "keterangan" => "Booking Lapangan ".$dataLap->nama_lapangan." Telah Dibatalkan",
+                                "waktu" => $skrg,
+                                "link" => "/customer/daftarRiwayat",
+                                "user" => $value->fk_id_user,
+                                "pemilik" => null,
+                                "tempat" => null,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             //kasih notif ke customer, transaksi dibatalkan
                             $tanggalAwal3 = $value->tanggal_sewa;
                             $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
@@ -509,6 +621,22 @@ class KomplainRequest extends Controller
                             $e->sendEmail($dataCus->email_user, $dataNotif7);
                         }
                     }
+
+                    date_default_timezone_set("Asia/Jakarta");
+                    $skrg = date("Y-m-d H:i:s");
+
+                    //notif web ke pihak tempat
+                    $dataNotifWeb = [
+                        "keterangan" => "Lapangan ".$dataLap->nama_lapangan." Telah Dihapus",
+                        "waktu" => $skrg,
+                        "link" => "/tempat/lapangan/daftarLapangan",
+                        "user" => null,
+                        "pemilik" => null,
+                        "tempat" => $dataTemp->id_tempat,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
                     //kasih notif ke pihak tempat, lapangan e dihapus, request semua dibatalkan
                     $dataNotif8 = [
@@ -592,6 +720,22 @@ class KomplainRequest extends Controller
                                 $permin->updateStatus($data4);
                                 //ga ada penambahan dana tempat, wong dihapus akun e
 
+                                date_default_timezone_set("Asia/Jakarta");
+                                $skrg = date("Y-m-d H:i:s");
+
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataLap->nama_lapangan." Sudah Selesai",
+                                    "waktu" => $skrg,
+                                    "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => $value->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+
                                 //kasih notif ke pemilik alat
                                 $dataNotif9 = [
                                     "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
@@ -615,6 +759,22 @@ class KomplainRequest extends Controller
                                 ];
                                 $permin = new requestPermintaan();
                                 $permin->updateStatus($data4);
+
+                                date_default_timezone_set("Asia/Jakarta");
+                                $skrg = date("Y-m-d H:i:s");
+
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla->nama_alat." Sudah Selesai",
+                                    "waktu" => $skrg,
+                                    "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => $value->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
 
                                 //kasih notif ke pemilik alat
                                 $dataNotif9 = [
@@ -647,6 +807,22 @@ class KomplainRequest extends Controller
                                 $pena->updateStatus($data5);
                                 //ga ada penambahan dana tempat, wong dihapus akun e
 
+                                date_default_timezone_set("Asia/Jakarta");
+                                $skrg = date("Y-m-d H:i:s");
+
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla->nama_alat." Sudah Selesai",
+                                    "waktu" => $skrg,
+                                    "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => $value->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+
                                 //kasih notif ke pemilik alat
                                 $dataNotif10 = [
                                     "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
@@ -669,6 +845,22 @@ class KomplainRequest extends Controller
                                 ];
                                 $pena = new requestPenawaran();
                                 $pena->updateStatus($data5);
+
+                                date_default_timezone_set("Asia/Jakarta");
+                                $skrg = date("Y-m-d H:i:s");
+
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla->nama_alat." Sudah Selesai",
+                                    "waktu" => $skrg,
+                                    "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => $value->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
 
                                 //kasih notif ke pemilik alat
                                 $dataNotif10 = [
@@ -713,6 +905,22 @@ class KomplainRequest extends Controller
                                 ];
                                 $Cuzz = new customer();
                                 $Cuzz->updateSaldo($dataSaldo2);
+
+                                date_default_timezone_set("Asia/Jakarta");
+                                $skrg = date("Y-m-d H:i:s");
+
+                                //notif web ke customer
+                                $dataNotifWeb = [
+                                    "keterangan" => "Booking Lapangan ".$dataLapa3->nama_lapangan." Telah Dibatalkan",
+                                    "waktu" => $skrg,
+                                    "link" => "/customer/daftarRiwayat",
+                                    "user" => $value->fk_id_user,
+                                    "pemilik" => null,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
 
                                 //kasih notif ke cust
                                 $tanggalAwal4 = $value->tanggal_sewa;
@@ -799,8 +1007,25 @@ class KomplainRequest extends Controller
                                     $dtra = new dtrans();
                                     $dtra->softDelete($data8);
 
-                                    //kasih notif cust
                                     $dataAl = DB::table('alat_olahraga')->where("id_alat","=",$value2->fk_id_alat)->get()->first();
+
+                                    date_default_timezone_set("Asia/Jakarta");
+                                    $skrg = date("Y-m-d H:i:s");
+
+                                    //notif web ke customer
+                                    $dataNotifWeb = [
+                                        "keterangan" => "Alat Olahraga ".$dataAl->nama_alat." yang Anda Sewa Dibatalkan",
+                                        "waktu" => $skrg,
+                                        "link" => "/customer/daftarRiwayat",
+                                        "user" => $value2->fk_id_user,
+                                        "pemilik" => null,
+                                        "tempat" => null,
+                                        "admin" => null
+                                    ];
+                                    $notifWeb = new notifikasi();
+                                    $notifWeb->insertNotifikasi($dataNotifWeb);
+
+                                    //kasih notif email cust
                                     $dataNotif13= [
                                         "subject" => "😔Alat Olahraga yang Anda Sewa Dibatalkan!😔",
                                         "judul" => "Maaf! Alat Olahraga yang Anda Sewa Dibatalkan!",
@@ -840,6 +1065,22 @@ class KomplainRequest extends Controller
                                 ];
                                 $pena = new requestPenawaran();
                                 $pena->updateStatus($data9);
+
+                                date_default_timezone_set("Asia/Jakarta");
+                                $skrg = date("Y-m-d H:i:s");
+
+                                //notif web ke pihak tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Permintaan Alat Olahraga ".$dataAla4->nama_alat." Telah Dibatalkan",
+                                    "waktu" => $skrg,
+                                    "link" => "/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $value->fk_id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
 
                                 //kasih notif ke tempat, request dibatalkan
                                 $dataNotif14= [
