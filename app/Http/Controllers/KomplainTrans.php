@@ -10,6 +10,7 @@ use App\Models\htrans;
 use App\Models\kategori;
 use App\Models\komplainTrans as ModelsKomplainTrans;
 use App\Models\lapanganOlahraga;
+use App\Models\notifikasi;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use Illuminate\Http\Request;
@@ -104,6 +105,19 @@ class KomplainTrans extends Controller
         ];
         $trans = new htrans();
         $trans->updateStatus($data3);
+
+        //notif web ke customer
+        $dataNotifWeb = [
+            "keterangan" => "Komplain Transaksi Baru oleh ".Session::get("dataRole")->id_user,
+            "waktu" => $jam_skrg,
+            "link" => "/admin/komplain/trans/detailKomplain/".$id,
+            "user" => null,
+            "pemilik" => null,
+            "tempat" => null,
+            "admin" => 1
+        ];
+        $notifWeb = new notifikasi();
+        $notifWeb->insertNotifikasi($dataNotifWeb);
 
         //notif ke admin
         $tanggalAwal = $tgl_komplain;
@@ -278,11 +292,24 @@ class KomplainTrans extends Controller
                             ];
                             $temp->updateSaldo($dataSaldo3);
 
+                            //notif web ke pemilik
+                            $dataNotifWeb = [
+                                "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                                "waktu" => $tanggal,
+                                "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                "user" => null,
+                                "pemilik" => $dataAlat->fk_id_pemilik,
+                                "tempat" => null,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             //kirim notif ke pemilik, alat e dihapus dan request selesai
                             $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
                             $dataNotif2 = [
-                                "subject" => "⚠️Persewaan Alat Olahraga Anda Sudah Selesai!⚠️",
-                                "judul" => "Persewaan Alat Olahraga Anda Sudah Selesai!",
+                                "subject" => "⚠️Masa Sewa Alat Olahraga Anda Sudah Selesai!⚠️",
+                                "judul" => "Masa Sewa Alat Olahraga Anda Sudah Selesai!",
                                 "nama_user" => $dataPemilik->nama_pemilik,
                                 "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
                                 "button" => "Lihat Detail Permintaan",
@@ -294,10 +321,23 @@ class KomplainTrans extends Controller
                             $e2 = new notifikasiEmail();
                             $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
 
+                            //notif web ke pihak tempat
+                            $dataNotifWeb = [
+                                "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                                "waktu" => $tanggal,
+                                "link" => null,
+                                "user" => null,
+                                "pemilik" => null,
+                                "tempat" => $value->fk_id_tempat,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             //kirim notif ke tempat, request selesai
                             $dataNotif3 = [
-                                "subject" => "⚠️Persewaan Alat Olahraga Sudah Selesai!⚠️",
-                                "judul" => "Persewaan Alat Olahraga Sudah Selesai!",
+                                "subject" => "⚠️Masa Sewa Alat Olahraga Sudah Selesai!⚠️",
+                                "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
                                 "nama_user" => $dataTempat->nama_tempat,
                                 "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
                                 "button" => "Lihat Detail Permintaan",
@@ -355,13 +395,26 @@ class KomplainTrans extends Controller
                             ];
                             $temp->updateSaldo($dataSaldo3);
 
+                            //notif web ke pemilik
+                            $dataNotifWeb = [
+                                "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                                "waktu" => $tanggal,
+                                "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                "user" => null,
+                                "pemilik" => $dataAlat->fk_id_pemilik,
+                                "tempat" => null,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             //kirim notif ke pemilik, alat e dihapus dan request selesai
                             $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first();
                             $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
                             $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dataAlat->fk_id_pemilik)->get()->first();
                             $dataNotif2 = [
-                                "subject" => "⚠️Persewaan Alat Olahraga Anda Sudah Selesai!⚠️",
-                                "judul" => "Persewaan Alat Olahraga Anda Sudah Selesai!",
+                                "subject" => "⚠️Masa Sewa Alat Olahraga Anda Sudah Selesai!⚠️",
+                                "judul" => "Masa Sewa Alat Olahraga Anda Sudah Selesai!",
                                 "nama_user" => $dataPemilik->nama_pemilik,
                                 "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
                                 "button" => "Lihat Detail Penawaran",
@@ -373,10 +426,23 @@ class KomplainTrans extends Controller
                             $e2 = new notifikasiEmail();
                             $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
 
+                            //notif web ke pihak tempat
+                            $dataNotifWeb = [
+                                "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                                "waktu" => $tanggal,
+                                "link" => "/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                "user" => null,
+                                "pemilik" => null,
+                                "tempat" => $value->fk_id_tempat,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             //kirim notif ke tempat, request selesai
                             $dataNotif3 = [
-                                "subject" => "⚠️Persewaan Alat Olahraga Sudah Selesai!⚠️",
-                                "judul" => "Persewaan Alat Olahraga Sudah Selesai!",
+                                "subject" => "⚠️Masa Sewa Alat Olahraga Sudah Selesai!⚠️",
+                                "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
                                 "nama_user" => $dataTempat->nama_tempat,
                                 "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
                                 "button" => "Lihat Detail Penawaran",
@@ -423,6 +489,19 @@ class KomplainTrans extends Controller
                             $dtra = new dtrans();
                             $dtra->softDelete($data8);
 
+                            //notif web ke customer
+                            $dataNotifWeb = [
+                                "keterangan" => "Alat Olahraga ".$dataLapangan->nama_lapangan." Telah Diterima",
+                                "waktu" => $tanggal,
+                                "link" => "/customer/daftarRiwayat",
+                                "user" => $value2->fk_id_user,
+                                "pemilik" => null,
+                                "tempat" => null,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             //kasih notif cust
                             $dataAl = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first();
                             $dataNotif4 = [
@@ -440,6 +519,19 @@ class KomplainTrans extends Controller
                             $e3->sendEmail($dataCust2->email_user,$dataNotif4);
                         }
                     }
+
+                    //notif web ke pemilik
+                    $dataNotifWeb = [
+                        "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                        "waktu" => $tanggal,
+                        "link" => "/pemilik/daftarAlat",
+                        "user" => null,
+                        "pemilik" => $dataAlat->fk_id_pemilik,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
                     //kirim notif ke pemilik, alatnya dihapus
                     $dataNotif5 = [
@@ -463,164 +555,361 @@ class KomplainTrans extends Controller
                 }
                 else if ($array[1] == "lapangan") {
                     //buat status request jd selesai
-                    $per = DB::table('request_permintaan')->where("req_lapangan","=",$array[0])->where("status_permintaan","=","Disewakan")->get();
-                    $pen = DB::table('request_penawaran')->where("req_lapangan","=",$array[0])->where("status_penawaran","=","Disewakan")->get();
+                    $per = DB::table('request_permintaan')->where("req_lapangan","=",$array[0])->get();
+                    $pen = DB::table('request_penawaran')->where("req_lapangan","=",$array[0])->get();
+
                     if (!$per->isEmpty()) {
                         //kalau ada
                         foreach ($per as $key => $value) {
-                            $dataPer1 = [
-                                "id" => $value->id_permintaan,
-                                "status" => "Selesai"
-                            ];
-                            $permintaan = new requestPermintaan();
-                            $permintaan->updateStatus($dataPer1);
-
-                            //tambahkan seluruh komisi tempat ke saldo
-                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
-                            $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
-
-                            $transaksi = DB::table('dtrans')
-                                        ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
-                                        ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
-                                        ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
-                                        ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
-                                        ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
-                                        ->where("htrans.status_trans","=","Selesai")
-                                        ->where("dtrans.deleted_at","=",null)
-                                        ->get();
-                            $total = 0;
-                            if (!$transaksi->isEmpty()) {
-                                foreach ($transaksi as $key => $value2) {
-                                    if ($value2->total_ext != null) {
-                                        $total += $value2->total_komisi_tempat + $value2->total_ext;
-                                    }
-                                    else {
-                                        $total += $value2->total_komisi_tempat;
+                            if ($value->status_permintaan == "Disewakan") {
+                                $dataPer1 = [
+                                    "id" => $value->id_permintaan,
+                                    "status" => "Selesai"
+                                ];
+                                $permintaan = new requestPermintaan();
+                                $permintaan->updateStatus($dataPer1);
+    
+                                //tambahkan seluruh komisi tempat ke saldo
+                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+                                $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
+    
+                                $transaksi = DB::table('dtrans')
+                                            ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
+                                            ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                            ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                                            ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                            ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
+                                            ->where("htrans.status_trans","=","Selesai")
+                                            ->where("dtrans.deleted_at","=",null)
+                                            ->get();
+                                $total = 0;
+                                if (!$transaksi->isEmpty()) {
+                                    foreach ($transaksi as $key => $value2) {
+                                        if ($value2->total_ext != null) {
+                                            $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                        }
+                                        else {
+                                            $total += $value2->total_komisi_tempat;
+                                        }
                                     }
                                 }
+    
+                                $saldoTempat += $total;
+                                $enkrip = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+    
+                                $temp = new pihakTempat();
+                                $dataSaldo3 = [
+                                    "id" => $value->fk_id_tempat,
+                                    "saldo" => $enkrip
+                                ];
+                                $temp->updateSaldo($dataSaldo3);
+    
+                                //kirim notif ke pemilik, request selesai
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                                $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dataAlat->fk_id_pemilik)->get()->first();
+    
+                                //notif web ke pemilik
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                                    "waktu" => $tanggal,
+                                    "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => $dataAlat->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+    
+                                $dataNotif2 = [
+                                    "subject" => "⚠️Masa Sewa Alat Olahraga Anda Sudah Selesai!⚠️",
+                                    "judul" => "Masa Sewa Alat Olahraga Anda Sudah Selesai!",
+                                    "nama_user" => $dataPemilik->nama_pemilik,
+                                    "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "button" => "Lihat Detail Permintaan",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e2 = new notifikasiEmail();
+                                $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
+    
+                                //notif web ke pihak tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                                    "waktu" => $tanggal,
+                                    "link" => "/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $value->fk_id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+    
+                                //kirim notif ke tempat, request selesai
+                                $dataNotif3 = [
+                                    "subject" => "⚠️Masa Sewa Alat Olahraga Sudah Selesai!⚠️",
+                                    "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
+                                    "nama_user" => $dataTempat->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "button" => "Lihat Detail Permintaan",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Sudah selesai. Silahkan cari dan temukan alat olahraga lain untuk disewakan! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e3 = new notifikasiEmail();
+                                $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
                             }
+                            else if ($value->status_permintaan == "Menunggu" || $value->status_permintaan == "Diterima") {
+                                $dataPer1 = [
+                                    "id" => $value->id_permintaan,
+                                    "status" => "Dibatalkan"
+                                ];
+                                $permintaan = new requestPermintaan();
+                                $permintaan->updateStatus($dataPer1);
 
-                            $saldoTempat += $total;
-                            $enkrip = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+                                //kirim notif ke pemilik, request selesai
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                                $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dataAlat->fk_id_pemilik)->get()->first();
+    
+                                //notif web ke pemilik
+                                $dataNotifWeb = [
+                                    "keterangan" => "Request Permintaan Alat Olahraga ".$dataAlat->nama_alat." Dibatalkan Otomatis",
+                                    "waktu" => $tanggal,
+                                    "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => $dataAlat->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+    
+                                $dataNotif2 = [
+                                    "subject" => "⚠️Request Permintaan Alat Olahraga Telah Dibatalkan!⚠️",
+                                    "judul" => "Request Permintaan Alat Olahraga Telah Dibatalkan!",
+                                    "nama_user" => $dataPemilik->nama_pemilik,
+                                    "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "button" => "Lihat Detail Permintaan",
+                                    "isi" => "Request Permintaan alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Telah Dibatalkan otomatis! Yuk, cari lapangan olahraga lain untuk menyewakan alat olahragamu! 😊"
+                                ];
+                                $e2 = new notifikasiEmail();
+                                $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
 
-                            $temp = new pihakTempat();
-                            $dataSaldo3 = [
-                                "id" => $value->fk_id_tempat,
-                                "saldo" => $enkrip
-                            ];
-                            $temp->updateSaldo($dataSaldo3);
-
-                            //kirim notif ke pemilik, request selesai
-                            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
-                            $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
-                            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dataAlat->fk_id_pemilik)->get()->first();
-                            $dataNotif2 = [
-                                "subject" => "⚠️Persewaan Alat Olahraga Anda Sudah Selesai!⚠️",
-                                "judul" => "Persewaan Alat Olahraga Anda Sudah Selesai!",
-                                "nama_user" => $dataPemilik->nama_pemilik,
-                                "url" => "https://sportiva.my.id/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
-                                "button" => "Lihat Detail Permintaan",
-                                "isi" => "Masa sewa alat dari:<br><br>
-                                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
-                                        <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
-                                        Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
-                            ];
-                            $e2 = new notifikasiEmail();
-                            $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
-
-                            //kirim notif ke tempat, request selesai
-                            $dataNotif3 = [
-                                "subject" => "⚠️Persewaan Alat Olahraga Sudah Selesai!⚠️",
-                                "judul" => "Persewaan Alat Olahraga Sudah Selesai!",
-                                "nama_user" => $dataTempat->nama_tempat,
-                                "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
-                                "button" => "Lihat Detail Permintaan",
-                                "isi" => "Masa sewa alat dari:<br><br>
-                                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
-                                        <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
-                                        Sudah selesai. Silahkan cari dan temukan alat olahraga lain untuk disewakan! Terima kasih telah mempercayai Sportiva! 😊"
-                            ];
-                            $e3 = new notifikasiEmail();
-                            $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
+                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+    
+                                //notif web ke pihak tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Request Permintaan Alat Olahraga ".$dataAlat->nama_alat." Dibatalkan Otomatis",
+                                    "waktu" => $tanggal,
+                                    "link" => "/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $value->fk_id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+    
+                                //kirim notif ke tempat, request selesai
+                                $dataNotif3 = [
+                                    "subject" => "⚠️Request Permintaan Alat Olahraga Telah Dibatalkan!⚠️",
+                                    "judul" => "Request Permintaan Alat Olahraga Telah Dibatalkan!",
+                                    "nama_user" => $dataTempat->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "button" => "Lihat Detail Permintaan",
+                                    "isi" => "Request Permintaan alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Telah Dibatalkan otomatis! Yuk, cari alat olahraga lain untuk disewakan di lapangamu! 😊"
+                                ];
+                                $e3 = new notifikasiEmail();
+                                $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
+                            }
                         }
                     }
                     if (!$pen->isEmpty()) {
                         //kalau ada
                         foreach ($pen as $key => $value) {
-                            $dataPen1 = [
-                                "id" => $value->id_penawaran,
-                                "status" => "Selesai"
-                            ];
-                            $penawaran = new requestPenawaran();
-                            $penawaran->updateStatus($dataPen1);
-
-                            //tambahkan seluruh komisi tempat ke saldo
-                            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
-                            $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
-
-                            $transaksi = DB::table('dtrans')
-                                        ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
-                                        ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
-                                        ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
-                                        ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
-                                        ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
-                                        ->where("htrans.status_trans","=","Selesai")
-                                        ->where("dtrans.deleted_at","=",null)
-                                        ->get();
-                            $total = 0;
-                            if (!$transaksi->isEmpty()) {
-                                foreach ($transaksi as $key => $value2) {
-                                    if ($value2->total_ext != null) {
-                                        $total += $value2->total_komisi_tempat + $value2->total_ext;
-                                    }
-                                    else {
-                                        $total += $value2->total_komisi_tempat;
+                            if ($value->status_penawaran == "Disewakan") {
+                                $dataPen1 = [
+                                    "id" => $value->id_penawaran,
+                                    "status" => "Selesai"
+                                ];
+                                $penawaran = new requestPenawaran();
+                                $penawaran->updateStatus($dataPen1);
+    
+                                //tambahkan seluruh komisi tempat ke saldo
+                                $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+                                $saldoTempat = (int)$this->decodePrice($dataTempat->saldo_tempat, "mysecretkey");
+    
+                                $transaksi = DB::table('dtrans')
+                                            ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
+                                            ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                            ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                                            ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                            ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
+                                            ->where("htrans.status_trans","=","Selesai")
+                                            ->where("dtrans.deleted_at","=",null)
+                                            ->get();
+                                $total = 0;
+                                if (!$transaksi->isEmpty()) {
+                                    foreach ($transaksi as $key => $value2) {
+                                        if ($value2->total_ext != null) {
+                                            $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                        }
+                                        else {
+                                            $total += $value2->total_komisi_tempat;
+                                        }
                                     }
                                 }
+    
+                                $saldoTempat += $total;
+                                $enkrip = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+    
+                                $temp = new pihakTempat();
+                                $dataSaldo3 = [
+                                    "id" => $value->fk_id_tempat,
+                                    "saldo" => $enkrip
+                                ];
+                                $temp->updateSaldo($dataSaldo3);
+    
+                                //kirim notif ke pemilik, request selesai
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                                $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dataAlat->fk_id_pemilik)->get()->first();
+    
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                                    "waktu" => $tanggal,
+                                    "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => $dataAlat->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+    
+                                $dataNotif2 = [
+                                    "subject" => "⚠️Masa Sewa Alat Olahraga Anda Sudah Selesai!⚠️",
+                                    "judul" => "Masa Sewa Alat Olahraga Anda Sudah Selesai!",
+                                    "nama_user" => $dataPemilik->nama_pemilik,
+                                    "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e2 = new notifikasiEmail();
+                                $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
+    
+                                //notif web ke pihak tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                                    "waktu" => $tanggal,
+                                    "link" => "/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $dataTempat->id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+    
+                                //kirim notif ke tempat, request selesai
+                                $dataNotif3 = [
+                                    "subject" => "⚠️Masa Sewa Alat Olahraga Sudah Selesai!⚠️",
+                                    "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
+                                    "nama_user" => $dataTempat->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Sudah selesai. Silahkan cari dan temukan alat olahraga lain untuk disewakan! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e3 = new notifikasiEmail();
+                                $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
                             }
+                            else if ($value->status_penawaran == "Menunggu" || $value->status_penawaran == "Diterima") {
+                                $dataPen1 = [
+                                    "id" => $value->id_penawaran,
+                                    "status" => "Dibatalkan"
+                                ];
+                                $penawaran = new requestPenawaran();
+                                $penawaran->updateStatus($dataPen1);
 
-                            $saldoTempat += $total;
-                            $enkrip = $this->encodePrice((string)$saldoTempat, "mysecretkey");
-
-                            $temp = new pihakTempat();
-                            $dataSaldo3 = [
-                                "id" => $value->fk_id_tempat,
-                                "saldo" => $enkrip
-                            ];
-                            $temp->updateSaldo($dataSaldo3);
-
-                            //kirim notif ke pemilik, request selesai
-                            $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
-                            $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
-                            $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dataAlat->fk_id_pemilik)->get()->first();
-                            $dataNotif2 = [
-                                "subject" => "⚠️Persewaan Alat Olahraga Anda Sudah Selesai!⚠️",
-                                "judul" => "Persewaan Alat Olahraga Anda Sudah Selesai!",
-                                "nama_user" => $dataPemilik->nama_pemilik,
-                                "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
-                                "button" => "Lihat Detail Penawaran",
-                                "isi" => "Masa sewa alat dari:<br><br>
-                                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
-                                        <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
-                                        Sudah selesai. Silahkan ambil alat olahragamu dan sewakan ditempat lain! Terima kasih telah mempercayai Sportiva! 😊"
-                            ];
-                            $e2 = new notifikasiEmail();
-                            $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
-
-                            //kirim notif ke tempat, request selesai
-                            $dataNotif3 = [
-                                "subject" => "⚠️Persewaan Alat Olahraga Sudah Selesai!⚠️",
-                                "judul" => "Persewaan Alat Olahraga Sudah Selesai!",
-                                "nama_user" => $dataTempat->nama_tempat,
-                                "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
-                                "button" => "Lihat Detail Penawaran",
-                                "isi" => "Masa sewa alat dari:<br><br>
-                                        <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
-                                        <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
-                                        Sudah selesai. Silahkan cari dan temukan alat olahraga lain untuk disewakan! Terima kasih telah mempercayai Sportiva! 😊"
-                            ];
-                            $e3 = new notifikasiEmail();
-                            $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
+                                //kirim notif ke pemilik, request selesai
+                                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                                $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+                                $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$dataAlat->fk_id_pemilik)->get()->first();
+    
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Request Penawaran Alat Olahraga ".$dataAlat->nama_alat." Dibatalkan Otomatis",
+                                    "waktu" => $tanggal,
+                                    "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => $dataAlat->fk_id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+    
+                                $dataNotif2 = [
+                                    "subject" => "⚠️Request Penawaran Alat Olahraga Telah Dibatalkan!⚠️",
+                                    "judul" => "Request Penawaran Alat Olahraga Telah Dibatalkan!",
+                                    "nama_user" => $dataPemilik->nama_pemilik,
+                                    "url" => "https://sportiva.my.id/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Request Penawaran alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Telah Dibatalkan otomatis! Yuk, cari lapangan olahraga lain untuk menyewakan alat olahragamu! 😊"
+                                ];
+                                $e2 = new notifikasiEmail();
+                                $e2->sendEmail($dataPemilik->email_pemilik,$dataNotif2);
+    
+                                //notif web ke pihak tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Request Penawaran Alat Olahraga ".$dataAlat->nama_alat." Dibatalkan Otomatis",
+                                    "waktu" => $tanggal,
+                                    "link" => "/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $dataTempat->id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+    
+                                //kirim notif ke tempat, request selesai
+                                $dataNotif3 = [
+                                    "subject" => "⚠️Request Penawaran Alat Olahraga Telah Dibatalkan!⚠️",
+                                    "judul" => "Request Penawaran Alat Olahraga Telah Dibatalkan!",
+                                    "nama_user" => $dataTempat->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Request Penawaran alat dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
+                                            <b>Di Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br><br>
+                                            Telah dibatalkan otomatis! Yuk, cari alat olahraga lain untuk disewakan di lapangan olahragamu! 😊"
+                                ];
+                                $e3 = new notifikasiEmail();
+                                $e3->sendEmail($dataTempat->email_tempat,$dataNotif3);
+                            }
                         }
                     }
 
@@ -663,8 +952,22 @@ class KomplainTrans extends Controller
                             $tanggalAwal3 = $value->tanggal_sewa;
                             $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
                             $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
+
+                            //notif web ke customer
+                            $dataNotifWeb = [
+                                "keterangan" => "Boooking Lapangan Olahraga ".$dataLap->nama_lapangan." Telah Dibatalkan",
+                                "waktu" => $tanggal,
+                                "link" => "/customer/daftarRiwayat",
+                                "user" => $value->fk_id_user,
+                                "pemilik" => null,
+                                "tempat" => null,
+                                "admin" => null
+                            ];
+                            $notifWeb = new notifikasi();
+                            $notifWeb->insertNotifikasi($dataNotifWeb);
+
                             $dataNotif4 = [
-                                "subject" => "😔Booking Lapangan ".$dataLap->nama_lapangan." Telah Dibatalkan!😔",
+                                "subject" => "😔Booking Lapangan Olahraga ".$dataLap->nama_lapangan." Telah Dibatalkan!😔",
                                 "judul" => "Booking Lapangan ".$dataLap->nama_lapangan." Telah Dibatalkan!",
                                 "nama_user" => $dataCus->nama_user,
                                 "url" => "https://sportiva.my.id/customer/daftarRiwayat",
@@ -679,6 +982,19 @@ class KomplainTrans extends Controller
                             $e->sendEmail($dataCus->email_user, $dataNotif4);
                         }
                     }
+
+                    //notif web ke pihak tempat
+                    $dataNotifWeb = [
+                        "keterangan" => "Lapangan ".$dataLap->nama_lapangan." Telah Dihapus",
+                        "waktu" => $tanggal,
+                        "link" => "/tempat/lapangan/daftarLapangan",
+                        "user" => null,
+                        "pemilik" => null,
+                        "tempat" => $dataTemp->id_tempat,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
                     //kasih notif ke tempat, lapangannya dihapus, transaksi semua dibatalkan
                     $dataNotif5 = [
@@ -763,6 +1079,19 @@ class KomplainTrans extends Controller
                                 $permin->updateStatus($data40);
                                 //ga ada penambahan dana tempat, wong dihapus akun e
 
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla->nama_alat." Sudah Selesai",
+                                    "waktu" => $tanggal,
+                                    "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => $dataPem->id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+
                                 //kasih notif ke pemilik alat
                                 $dataNotif9 = [
                                     "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
@@ -786,6 +1115,19 @@ class KomplainTrans extends Controller
                                 ];
                                 $permin = new requestPermintaan();
                                 $permin->updateStatus($data40);
+
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla->nama_alat." Telah Dibatalkan",
+                                    "waktu" => $tanggal,
+                                    "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => $dataPem->id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
 
                                 //kasih notif ke pemilik alat
                                 $dataNotif9 = [
@@ -818,6 +1160,19 @@ class KomplainTrans extends Controller
                                 $pena->updateStatus($data5);
                                 //ga ada penambahan dana tempat, wong dihapus akun e
 
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla2->nama_alat." Sudah Selesai",
+                                    "waktu" => $tanggal,
+                                    "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => $dataPem2->id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+
                                 //kasih notif ke pemilik alat
                                 $dataNotif10 = [
                                     "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
@@ -840,6 +1195,19 @@ class KomplainTrans extends Controller
                                 ];
                                 $pena = new requestPenawaran();
                                 $pena->updateStatus($data5);
+
+                                //notif web ke pemilik alat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla2->nama_alat." Telah Dibatalkan",
+                                    "waktu" => $tanggal,
+                                    "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => $dataPem2->id_pemilik,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
 
                                 //kasih notif ke pemilik alat
                                 $dataNotif10 = [
@@ -889,9 +1257,23 @@ class KomplainTrans extends Controller
                                 $tanggalAwal4 = $value->tanggal_sewa;
                                 $tanggalObjek4 = DateTime::createFromFormat('Y-m-d', $tanggalAwal4);
                                 $tanggalBaru4 = $tanggalObjek4->format('d-m-Y');
+
+                                //notif web ke customer
+                                $dataNotifWeb = [
+                                    "keterangan" => "Booking Lapangan Olahraga ".$dataLapa3->nama_lapangan." Telah Dibatalkan",
+                                    "waktu" => $tanggal,
+                                    "link" => "/customer/daftarRiwayat",
+                                    "user" => $dataCust1->id_user,
+                                    "pemilik" => null,
+                                    "tempat" => null,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+
                                 $dataNotif11 = [
-                                    "subject" => "😔Booking Lapangan ".$dataLapa3->nama_lapangan." Telah Dibatalkan!😔",
-                                    "judul" => "Booking Lapangan ".$dataLapa3->nama_lapangan." Telah Dibatalkan!",
+                                    "subject" => "😔Booking Lapangan Olahraga ".$dataLapa3->nama_lapangan." Telah Dibatalkan!😔",
+                                    "judul" => "Booking Lapangan Olahraga ".$dataLapa3->nama_lapangan." Telah Dibatalkan!",
                                     "nama_user" => $dataCust1->nama_user,
                                     "url" => "https://sportiva.my.id/customer/daftarRiwayat",
                                     "button" => "Lihat Riwayat Transaksi",
@@ -972,6 +1354,20 @@ class KomplainTrans extends Controller
 
                                     //kasih notif cust
                                     $dataAl = DB::table('alat_olahraga')->where("id_alat","=",$value2->fk_id_alat)->get()->first();
+
+                                    //notif web ke customer
+                                    $dataNotifWeb = [
+                                        "keterangan" => "Alat Olahraga ".$dataAl->nama_alat." yang Anda Sewa Dibatalkan",
+                                        "waktu" => $tanggal,
+                                        "link" => "/customer/daftarRiwayat",
+                                        "user" => $dataCust2->id_user,
+                                        "pemilik" => null,
+                                        "tempat" => null,
+                                        "admin" => null
+                                    ];
+                                    $notifWeb = new notifikasi();
+                                    $notifWeb->insertNotifikasi($dataNotifWeb);
+
                                     $dataNotif13= [
                                         "subject" => "😔Alat Olahraga yang Anda Sewa Dibatalkan!😔",
                                         "judul" => "Maaf! Alat Olahraga yang Anda Sewa Dibatalkan!",
@@ -1010,8 +1406,21 @@ class KomplainTrans extends Controller
                                     "id" => $value->id_permintaan,
                                     "status" => "Dibatalkan"
                                 ];
-                                $pena = new requestPenawaran();
-                                $pena->updateStatus($data9);
+                                $perm = new requestPermintaan();
+                                $perm->updateStatus($data9);
+
+                                //notif web ke pihak tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Request Permintaan Alat Olahraga ".$dataAla4->nama_alat." Telah Dibatalkan",
+                                    "waktu" => $tanggal,
+                                    "link" => "/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $dataTemp3->id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
 
                                 //kasih notif ke tempat, request dibatalkan
                                 $dataNotif14= [
@@ -1023,7 +1432,7 @@ class KomplainTrans extends Controller
                                     "isi" => "Sayang sekali! Request Permintaan dari:<br><br>
                                             <b>Nama Alat Olahraga: ".$dataAla4->nama_alat."</b><br>
                                             <b>Diantar ke Lapangan: ".$dataLapa4->nama_lapangan."</b><br><br>
-                                            Telah dibatalkan! Cari dan temukan alat olarhaga lain di Sportiva! 😊"
+                                            Telah dibatalkan! Cari dan temukan alat olahraga lain di Sportiva! 😊"
                                 ];
                                 $e = new notifikasiEmail();
                                 $e->sendEmail($dataTemp3->email_tempat, $dataNotif14);
@@ -1062,6 +1471,19 @@ class KomplainTrans extends Controller
                                     "saldo" => $enkrip4
                                 ];
                                 $temp->updateSaldo($dataSaldo5);
+
+                                //notif web ke tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla4->nama_alat." Sudah Selesai",
+                                    "waktu" => $tanggal,
+                                    "link" => "/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $dataTemp3->id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
                                 
                                 //kasih notif ke tempat, request selesai
                                 $dataNotif14= [
@@ -1080,6 +1502,120 @@ class KomplainTrans extends Controller
 
                                 $data9 = [
                                     "id" => $value->id_permintaan,
+                                    "status" => "Selesai"
+                                ];
+                                $perm = new requestPermintaan();
+                                $perm->updateStatus($data9);
+                            }
+                        }
+                    }
+                    
+                    if (!$pen->isEmpty()) {
+                        foreach ($pen as $key => $value) {
+                            $dataTemp3 = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+                            $dataAla4 = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
+                            $dataLapa4 = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
+                            if ($value->status_penawaran == "Menunggu" || $value->status_penawaran == "Diterima") {
+                                $data9 = [
+                                    "id" => $value->id_penawaran,
+                                    "status" => "Dibatalkan"
+                                ];
+                                $pena = new requestPenawaran();
+                                $pena->updateStatus($data9);
+
+                                //notif web ke pihak tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Request Penawaran Alat Olahraga ".$dataAla4->nama_alat." Telah Dibatalkan",
+                                    "waktu" => $tanggal,
+                                    "link" => "/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $dataTemp3->id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+
+                                //kasih notif ke tempat, request dibatalkan
+                                $dataNotif14= [
+                                    "subject" => "⚠️Request Anda Telah Dibatalkan!⚠️",
+                                    "judul" => "Maaf! Request Anda Telah Dibatalkan!",
+                                    "nama_user" => $dataTemp3->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Sayang sekali! Request Penawaran dari:<br><br>
+                                            <b>Nama Alat Olahraga: ".$dataAla4->nama_alat."</b><br>
+                                            <b>Diantar ke Lapangan: ".$dataLapa4->nama_lapangan."</b><br><br>
+                                            Telah dibatalkan! Cari dan temukan alat olahraga lain di Sportiva! 😊"
+                                ];
+                                $e = new notifikasiEmail();
+                                $e->sendEmail($dataTemp3->email_tempat, $dataNotif14);
+                            }
+                            else if ($value->status_penawaran == "Disewakan") {
+                                //tambahkan saldo tempat
+                                $saldoTempat1 = (int)$this->decodePrice($dataTemp3->saldo_tempat, "mysecretkey");
+
+                                $transaksi = DB::table('dtrans')
+                                            ->select("dtrans.total_komisi_tempat", "extend_dtrans.total_komisi_tempat as total_ext")
+                                            ->join("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
+                                            ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                                            ->where("dtrans.fk_id_alat","=",$value->req_id_alat)
+                                            ->where("htrans.fk_id_tempat","=",$value->fk_id_tempat)
+                                            ->where("htrans.status_trans","=","Selesai")
+                                            ->where("dtrans.deleted_at","=",null)
+                                            ->get();
+                                $total = 0;
+                                if (!$transaksi->isEmpty()) {
+                                    foreach ($transaksi as $key => $value2) {
+                                        if ($value2->total_ext != null) {
+                                            $total += $value2->total_komisi_tempat + $value2->total_ext;
+                                        }
+                                        else {
+                                            $total += $value2->total_komisi_tempat;
+                                        }
+                                    }
+                                }
+
+                                $saldoTempat1 += $total;
+                                $enkrip4 = $this->encodePrice((string)$saldoTempat1, "mysecretkey");
+                                
+                                $temp = new pihakTempat();
+                                $dataSaldo5 = [
+                                    "id" => $value->fk_id_tempat,
+                                    "saldo" => $enkrip4
+                                ];
+                                $temp->updateSaldo($dataSaldo5);
+
+                                //notif web ke tempat
+                                $dataNotifWeb = [
+                                    "keterangan" => "Masa Sewa Alat Olahraga ".$dataAla4->nama_alat." Sudah Selesai",
+                                    "waktu" => $tanggal,
+                                    "link" => "/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "user" => null,
+                                    "pemilik" => null,
+                                    "tempat" => $dataTemp3->id_tempat,
+                                    "admin" => null
+                                ];
+                                $notifWeb = new notifikasi();
+                                $notifWeb->insertNotifikasi($dataNotifWeb);
+                                
+                                //kasih notif ke tempat, request selesai
+                                $dataNotif14= [
+                                    "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
+                                    "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
+                                    "nama_user" => $dataTemp3->nama_tempat,
+                                    "url" => "https://sportiva.my.id/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                                    "button" => "Lihat Detail Penawaran",
+                                    "isi" => "Masa sewa alat dari:<br><br>
+                                    <b>Nama Alat Olahraga: ".$dataAla4->nama_alat."</b><br>
+                                    <b>Di Lapangan Olahraga: ".$dataLapa4->nama_lapangan."</b><br><br>
+                                    Sudah selesai. Tunggu pemilik alat olahraga mengambil alatnya ya! Terima kasih telah mempercayai Sportiva! 😊"
+                                ];
+                                $e = new notifikasiEmail();
+                                $e->sendEmail($dataTemp3->email_tempat, $dataNotif14);
+
+                                $data9 = [
+                                    "id" => $value->id_penawaran,
                                     "status" => "Selesai"
                                 ];
                                 $pena = new requestPenawaran();
@@ -1167,6 +1703,22 @@ class KomplainTrans extends Controller
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
 
+        date_default_timezone_set("Asia/Jakarta");
+        $skrg = date("Y-m-d H:i:s");
+
+        //notif web ke customer
+        $dataNotifWeb = [
+            "keterangan" => "Komplain Transaksi Booking Anda Telah Diterima Admin",
+            "waktu" => $skrg,
+            "link" => "/customer/daftarKomplain",
+            "user" => $user->id_user,
+            "pemilik" => null,
+            "tempat" => null,
+            "admin" => null
+        ];
+        $notifWeb = new notifikasi();
+        $notifWeb->insertNotifikasi($dataNotifWeb);
+
         $dataNotif = [
             "subject" => "🎉Komplain Transaksi Anda Telah Diterima!🎉",
             "judul" => "Komplain Transaksi Anda Telah Diterima!",
@@ -1193,6 +1745,19 @@ class KomplainTrans extends Controller
                 $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
             }
         }
+
+        //notif web ke pihak tempat
+        $dataNotifWeb = [
+            "keterangan" => "Komplain Transaksi dari Customer Telah Diterima Admin",
+            "waktu" => $skrg,
+            "link" => "/tempat/transaksi/detailTransaksi/".$request->id_htrans,
+            "user" => null,
+            "pemilik" => null,
+            "tempat" => $tempat->id_tempat,
+            "admin" => null
+        ];
+        $notifWeb = new notifikasi();
+        $notifWeb->insertNotifikasi($dataNotifWeb);
 
         $dataNotif2 = [
             "subject" => "⚠️Komplain dari Customer Telah Diterima Admin!⚠️",
