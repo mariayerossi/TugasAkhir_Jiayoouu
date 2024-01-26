@@ -77,7 +77,7 @@ class KerusakanAlat extends Controller
                         ->get()
                         ->first();
 
-                date_default_timezone_set("Asia/Jakarta");                
+                date_default_timezone_set("Asia/Jakarta");   
 
                 //hapus dtrans yang berhubungan dengan alat ini
                 $dataDtrans2 = DB::table('dtrans')
@@ -113,6 +113,21 @@ class KerusakanAlat extends Controller
                         ];
                         $dtrans = new dtrans();
                         $dtrans->softDelete($data3);
+
+                        $skrg = date("Y-m-d H:i:s");
+
+                        //notif web ke customer
+                        $dataNotifWeb = [
+                            "keterangan" => "Pembatalan Alat Olahraga ".$value->nama_alat." yang Dipesan",
+                            "waktu" => $skrg,
+                            "link" => "/customer/daftarRiwayat",
+                            "user" => $value->id_user,
+                            "pemilik" => null,
+                            "tempat" => null,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
 
                         //kasih notif ke cust
                         $dataNotifUser = [
@@ -313,6 +328,21 @@ class KerusakanAlat extends Controller
                     }
 
                     $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dtrans->fk_id_alat)->get()->first();
+
+                    $skrg = date("Y-m-d H:i:s");
+
+                    //notif web ke pemilik alat
+                    $dataNotifWeb = [
+                        "keterangan" => "Pemberitahuan Kerusakan Alat Olahraga ".$dataAlat->nama_alat,
+                        "waktu" => $skrg,
+                        "link" => "/pemilik/lihatDetail/".$dataAlat->id_alat,
+                        "user" => null,
+                        "pemilik" => $pemilik->id_pemilik,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
                     $dataNotif = [
                         "subject" => "😢Pemberitahuan Kerusakan Alat Olahraga😢",

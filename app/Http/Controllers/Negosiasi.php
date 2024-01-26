@@ -62,6 +62,19 @@ class Negosiasi extends Controller
             $alat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->req_id_alat)->get()->first();
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$permintaan->fk_id_tempat)->get()->first();
 
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Negosiasi Permintaan Baru",
+                "waktu" => $waktu,
+                "link" => "/tempat/permintaan/detailPermintaanNego/".$request->permintaan,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $permintaan->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
             $dataNotif = [
                 "subject" => "✨Negosiasi Permintaan Baru!✨",
                 "judul" => "Negosiasi Permintaan Baru Dari ".$user,
@@ -88,6 +101,19 @@ class Negosiasi extends Controller
             $permintaan = DB::table('request_permintaan')->where("id_permintaan","=",$request->permintaan)->get()->first();
             $alat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->req_id_alat)->get()->first();
             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$permintaan->fk_id_pemilik)->get()->first();
+
+            //notif web ke pemilik alat
+            $dataNotifWeb = [
+                "keterangan" => "Negosiasi Permintaan Baru",
+                "waktu" => $waktu,
+                "link" => "/pemilik/permintaan/detailPermintaanNego/".$request->permintaan,
+                "user" => null,
+                "pemilik" => $permintaan->fk_id_pemilik,
+                "tempat" => null,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
 
             $dataNotif = [
                 "subject" => "✨Negosiasi Permintaan Baru!✨",
@@ -162,6 +188,19 @@ class Negosiasi extends Controller
             $alat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
             $tempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->fk_id_tempat)->get()->first();
 
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Negosiasi Penawaran Baru",
+                "waktu" => $waktu,
+                "link" => "/tempat/penawaran/detailPenawaranNego/".$request->penawaran,
+                "user" => null,
+                "pemilik" => $penawaran->fk_id_tempat,
+                "tempat" => null,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
             $dataNotif = [
                 "subject" => "✨Negosiasi Penawaran Baru!✨",
                 "judul" => "Negosiasi Penawaran Baru Dari ".$user,
@@ -188,6 +227,19 @@ class Negosiasi extends Controller
             $penawaran = DB::table('request_penawaran')->where("id_penawaran","=",$request->penawaran)->get()->first();
             $alat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->req_id_alat)->get()->first();
             $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->fk_id_pemilik)->get()->first();
+
+            //notif web ke pemilik alat
+            $dataNotifWeb = [
+                "keterangan" => "Negosiasi Penawaran Baru",
+                "waktu" => $waktu,
+                "link" => "/pemilik/penawaran/detailPenawaranNego/".$request->penawaran,
+                "user" => null,
+                "pemilik" => $penawaran->fk_id_pemilik,
+                "tempat" => null,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
 
             $dataNotif = [
                 "subject" => "✨Negosiasi Penawaran Baru!✨",
