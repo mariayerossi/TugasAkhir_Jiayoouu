@@ -1884,6 +1884,22 @@ class KomplainTrans extends Controller
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
 
+        date_default_timezone_set("Asia/Jakarta");
+        $skrg = date("Y-m-d H:i:s");
+
+        //notif web ke customer
+        $dataNotifWeb = [
+            "keterangan" => "Komplain Transaksi Anda Telah Ditolak",
+            "waktu" => $skrg,
+            "link" => "/customer/daftarKomplain",
+            "user" => $user->id_user,
+            "pemilik" => null,
+            "tempat" => null,
+            "admin" => null
+        ];
+        $notifWeb = new notifikasi();
+        $notifWeb->insertNotifikasi($dataNotifWeb);
+
         $dataNotif = [
             "subject" => "😔Komplain Transaksi Anda Telah Ditolak!😔",
             "judul" => "Komplain Transaksi Anda Telah Ditolak!",
