@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\notifikasi;
 use App\Models\ratingAlat;
 use App\Models\ratingLapangan;
 use Illuminate\Http\Request;
@@ -101,9 +102,11 @@ class Rating extends Controller
         $alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first();
 
         $nama_pemilik = "";
+        $email_pemilik = "";
         $url = "";
         if ($alat->fk_id_pemilik != null) {
-            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$alat->fk_id_pemilik)->get()->first()->$nama_pemilik;
+            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$alat->fk_id_pemilik)->get()->first()->nama_pemilik;
+            $email_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$alat->fk_id_pemilik)->get()->first()->email_pemilik;
             $url = "/pemilik/lihatDetail/".$alat->id_alat;
 
             date_default_timezone_set("Asia/Jakarta");
@@ -124,6 +127,7 @@ class Rating extends Controller
         }
         else if ($alat->fk_id_tempat != null) {
             $nama_pemilik = DB::table('pihak_tempat')->where("id_tempat","=",$alat->fk_id_tempat)->get()->first()->nama_tempat;
+            $email_pemilik = DB::table('pihak_tempat')->where("id_tempat","=",$alat->fk_id_tempat)->get()->first()->email_tempat;
             $url = "/tempat/alat/lihatDetail/".$alat->id_alat;
 
             date_default_timezone_set("Asia/Jakarta");
@@ -158,13 +162,13 @@ class Rating extends Controller
             "url" => $url,
             "button" => "Lihat Detail Alat",
             "isi" => "Yeay! Anda mendapatkan rating dan review dari:<br><br>
-                    <b>Nama Alat Olahraga: ".$lapangan->nama_lapangan."</b><br>
+                    <b>Nama Alat Olahraga: ".$alat->nama_alat."</b><br>
                     <b>Rating: ".$request->rating."/5⭐</b><br>
                     <b>Review: ".$isi."</b><br><br>
                     Ingat untuk datang tepat waktu dan nikmati sesi olahraga Anda! 😊"
         ];
         $e = new notifikasiEmail();
-        $e->sendEmail($tempat->email_tempat, $dataNotif);
+        $e->sendEmail($email_pemilik, $dataNotif);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Menambah Rating!']);
     }
