@@ -20,6 +20,7 @@ class ratingAlat extends Model
         $rate = new ratingAlat();
         $rate->rating = $data["rating"];
         $rate->review = $data["review"];
+        $rate->hide = $data["hide"];
         $rate->fk_id_user = $data["id_user"];
         $rate->fk_id_alat = $data["id_alat"];
         $rate->fk_id_dtrans = $data["id_dtrans"];

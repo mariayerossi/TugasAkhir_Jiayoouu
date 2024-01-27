@@ -18,6 +18,8 @@ class Rating extends Controller
         //     "required" => "Rating tidak boleh kosong!"
         // ]);
 
+        // dd($request->all());
+
         if ($request->rating == null || $request->rating == "") {
             return response()->json(['success' => false, 'message' => 'Rating tidak boleh kosong!']);
         }
@@ -25,6 +27,7 @@ class Rating extends Controller
         $data = [
             "rating" => $request->rating,
             "review" => $request->review,
+            "hide" => $request->status,
             "id_user" => Session::get("dataRole")->id_user,
             "id_lapangan" => $request->id_lapangan,
             "id_htrans" => $request->id_htrans
@@ -91,6 +94,7 @@ class Rating extends Controller
         $data = [
             "rating" => $request->rating,
             "review" => $request->review,
+            "hide" => $request->status,
             "id_user" => Session::get("dataRole")->id_user,
             "id_alat" => $request->id_alat,
             "id_dtrans" => $request->id_dtrans

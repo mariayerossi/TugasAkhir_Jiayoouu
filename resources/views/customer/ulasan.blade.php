@@ -78,8 +78,12 @@
                             <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
                           </div>
                           <div class="form-group mt-3">
-                            <label for="comment">Review (opsional):</label>
-                            <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
+                            <label for="hide" class="me-3">Sembunyikan Nama</label>
+                            <svg id="toggleSwitch" data-id="lap-{{$lap->id_lapangan}}" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16" style="color: #007466" onclick="hideFunction(this)">
+                              <path d="M11 4a4 4 0 0 1 0 8H8a5 5 0 0 0 2-4 5 5 0 0 0-2-4zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8M0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5"/>
+                            </svg>
+                            <span id="toggleLabel" data-id="lap-{{$lap->id_lapangan}}" class="ml-2 ms-2">Non Aktif</span>
+                            <input type="hidden" data-id="lap-{{$lap->id_lapangan}}" id="statusInput" name="status" value="Tidak">
                           </div>
                           <input type="hidden" name="id_lapangan" value="{{$lap->id_lapangan}}">
                           <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
@@ -138,6 +142,14 @@
                                 <label for="comment">Review (opsional):</label>
                                 <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
                               </div>
+                              <div class="form-group mt-3">
+                                <label for="hide" class="me-3">Sembunyikan Nama</label>
+                                <svg id="toggleSwitch" data-id="al-{{$item->fk_id_alat}}" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16" style="color: #007466" onclick="hideFunction(this)">
+                                  <path d="M11 4a4 4 0 0 1 0 8H8a5 5 0 0 0 2-4 5 5 0 0 0-2-4zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8M0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5"/>
+                                </svg>
+                                <span id="toggleLabel" data-id="al-{{$item->fk_id_alat}}" class="ml-2 ms-2">Non Aktif</span>
+                                <input type="hidden" data-id="al-{{$item->fk_id_alat}}" id="statusInput" name="status" value="Tidak">
+                              </div>
                               <input type="hidden" name="id_alat" value="{{$item->fk_id_alat}}">
                               <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
                               <div class="d-flex justify-content-end">
@@ -167,6 +179,45 @@
       </div>
 </div>
 <script>
+  function hideFunction(button){
+    let id = button.getAttribute('data-id');
+    console.log(id);
+
+    var label = document.querySelector(`#toggleLabel[data-id="${id}"]`);
+    var svgElement = document.querySelector(`#toggleSwitch[data-id="${id}"]`);
+    var statusInput = document.querySelector(`#statusInput[data-id="${id}"]`);
+    if (label.textContent === "Aktif") {
+        label.textContent = "Non Aktif";
+        svgElement.setAttribute("class", "bi bi-toggle-off");
+        svgElement.innerHTML = "<path d='M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z'/>";
+        statusInput.value = "Tidak";
+    } else {
+        label.textContent = "Aktif";
+        svgElement.setAttribute("class", "bi bi-toggle-on");
+        svgElement.innerHTML = "<path d='M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z'/>";
+        statusInput.value = "Ya";
+    }
+  }
+  // document.getElementById('toggleSwitch').addEventListener('click', function(button) {
+  //       // Mengganti SVG menjadi toggle off
+
+  //       let id = button.getAttribute('data-id');
+  //       console.log();
+
+  //       var label = document.querySelector(`#toggleLabel[data-id="${id}"]`);
+  //       var svgElement = document.querySelector(`#toggleSwitch[data-id="${id}"]`);
+  //       if (label.textContent === "Aktif") {
+  //           label.textContent = "Non Aktif";
+  //           svgElement.setAttribute("class", "bi bi-toggle-off");
+  //           svgElement.innerHTML = "<path d='M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z'/>";
+  //           statusInput.value = "Tidak";
+  //       } else {
+  //           label.textContent = "Aktif";
+  //           svgElement.setAttribute("class", "bi bi-toggle-on");
+  //           svgElement.innerHTML = "<path d='M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z'/>";
+  //           statusInput.value = "Ya";
+  //       }
+  //   });
   document.addEventListener('DOMContentLoaded', function() {
       const stars = document.querySelectorAll('.star');
       const ratingValueInput = document.getElementById('ratingValue');

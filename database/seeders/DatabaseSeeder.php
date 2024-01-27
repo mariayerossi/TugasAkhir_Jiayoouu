@@ -653,6 +653,7 @@ class DatabaseSeeder extends Seeder
         DB::table('rating_alat')->insert([
             'rating' => 4,
             'review' => "bola basketnya lumayan bagus, cuman agak kempes",
+            'hide' => "Tidak",
             'fk_id_user' => 1,
             'fk_id_alat' => 1,
             'fk_id_dtrans' => 3,
@@ -662,6 +663,7 @@ class DatabaseSeeder extends Seeder
         DB::table('rating_lapangan')->insert([
             'rating' => 5,
             'review' => "lapangannya bagus, bersih, nyaman dibuat main",
+            'hide' => "Tidak",
             'fk_id_user' => 1,
             'fk_id_lapangan' => 1,
             'fk_id_htrans' => 2,

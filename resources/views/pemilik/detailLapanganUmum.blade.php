@@ -341,7 +341,7 @@
                     <!-- Example of a review -->
                     @php
                         $rating = DB::table('rating_lapangan')
-                                ->select("user.nama_user", "rating_lapangan.review", "rating_lapangan.rating","rating_lapangan.created_at")
+                                ->select("user.nama_user", "rating_lapangan.hide", "rating_lapangan.review", "rating_lapangan.rating","rating_lapangan.created_at")
                                 ->join("user", "rating_lapangan.fk_id_user","=","user.id_user")
                                 ->where("fk_id_lapangan","=",$lapangan->first()->id_lapangan)
                                 ->orderBy("rating_lapangan.created_at","desc")
@@ -351,7 +351,11 @@
                         @foreach ($rating as $item)
                             <div class="card mb-3">
                                 <div class="card-body">
-                                    <h5>{{$item->nama_user}}</h5>
+                                    @if ($item->hide == "Tidak")
+                                        <h5>{{$item->nama_user}}</h5>
+                                    @else
+                                        <h5>Anonymous</h5>
+                                    @endif
                                     @php
                                         $tanggalAwal1 = $item->created_at;
                                         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);

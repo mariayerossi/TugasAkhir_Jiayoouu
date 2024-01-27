@@ -20,6 +20,7 @@ class ratingLapangan extends Model
         $rate = new ratingLapangan();
         $rate->rating = $data["rating"];
         $rate->review = $data["review"];
+        $rate->hide = $data["hide"];
         $rate->fk_id_user = $data["id_user"];
         $rate->fk_id_lapangan = $data["id_lapangan"];
         $rate->fk_id_htrans = $data["id_htrans"];
