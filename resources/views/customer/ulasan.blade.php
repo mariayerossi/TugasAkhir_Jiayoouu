@@ -77,6 +77,10 @@
                             <label for="comment">Review (opsional):</label>
                             <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
                           </div>
+                          <div class="form-group mt-3">
+                            <label for="comment">Review (opsional):</label>
+                            <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
+                          </div>
                           <input type="hidden" name="id_lapangan" value="{{$lap->id_lapangan}}">
                           <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                           <div class="d-flex justify-content-end">
