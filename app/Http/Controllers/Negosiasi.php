@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\negosiasi as ModelsNegosiasi;
+use App\Models\notifikasi;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

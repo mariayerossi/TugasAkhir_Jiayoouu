@@ -7,6 +7,7 @@ use App\Models\customer;
 use App\Models\dtrans;
 use App\Models\htrans;
 use App\Models\kerusakanAlat as ModelsKerusakanAlat;
+use App\Models\notifikasi;
 use App\Models\requestPenawaran;
 use App\Models\requestPermintaan;
 use App\Models\sewaSendiri;

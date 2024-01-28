@@ -9,6 +9,7 @@ use App\Models\filesKomplainReq;
 use App\Models\htrans;
 use App\Models\komplainRequest as ModelsKomplainRequest;
 use App\Models\lapanganOlahraga;
+use App\Models\notifikasi;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use App\Models\requestPenawaran;

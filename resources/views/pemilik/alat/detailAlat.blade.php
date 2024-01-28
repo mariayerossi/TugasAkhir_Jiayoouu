@@ -173,7 +173,7 @@
                     <h4>Ulasan Alat Olahraga</h4>
                     @php
                         $rating = DB::table('rating_alat')
-                                ->select("user.nama_user", "rating_alat.review", "rating_alat.rating","rating_alat.created_at")
+                                ->select("user.nama_user", "rating_alat.hide", "rating_alat.review", "rating_alat.rating","rating_alat.created_at")
                                 ->join("user", "rating_alat.fk_id_user","=","user.id_user")
                                 ->where("fk_id_alat","=",$alat->first()->id_alat)
                                 ->orderBy("rating_alat.created_at","desc")
@@ -183,7 +183,11 @@
                         @foreach ($rating as $item)
                             <div class="card mb-3">
                                 <div class="card-body">
-                                    <h5>{{$item->nama_user}}</h5>
+                                    @if ($item->hide == "Tidak")
+                                        <h5>{{$item->nama_user}}</h5>
+                                    @else
+                                        <h5>Anonymous</h5>
+                                    @endif
                                     @php
                                         $tanggalAwal1 = $item->created_at;
                                         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);

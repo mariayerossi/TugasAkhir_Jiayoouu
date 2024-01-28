@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\customer;
 use App\Models\kategori;
 use App\Models\lapanganOlahraga;
+use App\Models\notifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\notifikasiEmail;
@@ -122,6 +123,18 @@ class Saldo extends Controller
         $tanggalAwal = $tanggal;
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $tanggalBaru = $tanggalObjek->format('d-m-Y H:i:s');
+
+        $dataNotifWeb = [
+            "keterangan" => "Top Up Sebesar Rp ".number_format($request->jumlah, 0, ',', '.')." Berhasil!",
+            "waktu" => $tanggal,
+            "link" => "/customer/beranda",
+            "user" => Session::get("dataRole")->id_user,
+            "pemilik" => null,
+            "tempat" => null,
+            "admin" => null
+        ];
+        $notifWeb = new notifikasi();
+        $notifWeb->insertNotifikasi($dataNotifWeb);
 
         $dataNotif = [
             "subject" => "🎉Top Up Sebesar Rp ".number_format($request->jumlah, 0, ',', '.')." Berhasil!🎉",
