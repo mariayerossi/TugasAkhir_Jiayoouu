@@ -1204,17 +1204,22 @@ class KomplainRequest extends Controller
 
         $penanganan .= "Pembatalan Request";
 
-        $data2 = [
-            "id" => $request->id_request,
-            "status" => "Dibatalkan"
-        ];
-
         //pembatalan request otomatis
-        if ($request->fk_id_permintaan != null) {
+        if ($request->id_permintaan != null) {
+            $data2 = [
+                "id" => $request->id_permintaan,
+                "status" => "Dibatalkan"
+            ];
+            // dd($data2);
             $per = new requestPermintaan();
             $per->updateStatus($data2);
         }
-        else if ($request->fk_id_penawaran != null) {
+        else if ($request->id_penawaran != null) {
+            $data2 = [
+                "id" => $request->id_penawaran,
+                "status" => "Dibatalkan"
+            ];
+            // dd($data2);
             $pen = new requestPenawaran();
             $pen->updateStatus($data2);
         }
