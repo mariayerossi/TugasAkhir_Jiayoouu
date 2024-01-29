@@ -90,6 +90,19 @@ class reminder extends Command
                         $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
                         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
+                        //notif web ke pemilik alat
+                        $dataNotifWeb = [
+                            "keterangan" => "Transaksi Booking ".$dataLapangan->nama_lapangan." Telah Diterima",
+                            "waktu" => $skrg,
+                            "link" => "/customer/daftarRiwayat",
+                            "user" => $dataHtrans->fk_id_user,
+                            "pemilik" => null,
+                            "tempat" => null,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
+
                         $dataNotif = [
                             "subject" => "⚠️Ingat! Besok Batas Akhir Pengantaran Alat Olahraga⚠️",
                             "judul" => "Besok Batas Akhir Pengantaran Alat Olahraga!",
