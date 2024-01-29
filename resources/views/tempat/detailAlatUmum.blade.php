@@ -269,7 +269,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 col-12 mt-2">
-                        <h6>Harga Sewa <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik alat dan tempat olahraga)"></i></h6>
+                        <h6>Harga Sewa <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa per jam yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik alat dan tempat olahraga)"></i></h6>
                     </div>
                     <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
                         <div class="input-group mb-2">

@@ -393,7 +393,7 @@ class Transaksi extends Controller
 
         //notif web ke pihak tempat
         $dataNotifWeb = [
-            "keterangan" => "Transaksi Baru Lapangan Olahraga ".$dataLapangan->nama_lapangan,
+            "keterangan" => "Transaksi Baru ".$dataLapangan->nama_lapangan,
             "waktu" => $skrg,
             "link" => "/tempat/transaksi/detailTransaksi/".$id,
             "user" => null,
@@ -1050,7 +1050,7 @@ class Transaksi extends Controller
 
         //notif web ke customer
         $dataNotifWeb = [
-            "keterangan" => "Transaksi Booking Lapangan Olahraga ".$dataLapangan->nama_lapangan." Telah Diterima",
+            "keterangan" => "Transaksi Booking ".$dataLapangan->nama_lapangan." Telah Diterima",
             "waktu" => $skrg,
             "link" => "/customer/daftarRiwayat",
             "user" => $dataHtrans->fk_id_user,
@@ -1122,7 +1122,7 @@ class Transaksi extends Controller
 
         //notif web ke customer
         $dataNotifWeb = [
-            "keterangan" => "Transaksi Booking Lapangan Olahraga ".$dataLapangan->nama_lapangan." Telah Ditolak",
+            "keterangan" => "Transaksi Booking ".$dataLapangan->nama_lapangan." Telah Ditolak",
             "waktu" => $skrg,
             "link" => "/customer/daftarRiwayat",
             "user" => $dataHtrans->fk_id_user,
@@ -1236,7 +1236,7 @@ class Transaksi extends Controller
 
         //notif web ke pihak tempat
         $dataNotifWeb = [
-            "keterangan" => "Transaksi Booking Lapangan Olahraga ".$trans->nama_lapangan." Dibatalkan Customer",
+            "keterangan" => "Transaksi Booking ".$trans->nama_lapangan." Dibatalkan Customer",
             "waktu" => $skrg,
             "link" => "/tempat/transaksi/detailTransaksi/".$request->id_htrans,
             "user" => null,
@@ -1351,7 +1351,7 @@ class Transaksi extends Controller
 
         //notif web ke pihak tempat
         $dataNotifWeb = [
-            "keterangan" => "Transaksi Booking Lapangan Olahraga ".$trans->nama_lapangan." Dibatalkan Pihak Tempat Olahraga",
+            "keterangan" => "Transaksi Booking ".$trans->nama_lapangan." Dibatalkan Pihak Tempat Olahraga",
             "waktu" => $skrg,
             "link" => "/customer/daftarRiwayat",
             "user" => $trans->fk_id_user,
@@ -1746,7 +1746,7 @@ class Transaksi extends Controller
 
         //notif web ke pihak tempat
         $dataNotifWeb = [
-            "keterangan" => "Extend Waktu Baru Lapangan Olahraga ".$dataLapangan->nama_lapangan,
+            "keterangan" => "Extend Waktu Baru ".$dataLapangan->nama_lapangan,
             "waktu" => $skrg,
             "link" => "/tempat/transaksi/detailTransaksi/".$request->id_htrans,
             "user" => null,
@@ -1856,7 +1856,7 @@ class Transaksi extends Controller
 
         //notif web ke customer
         $dataNotifWeb = [
-            "keterangan" => "Extend Waktu Lapangan Olahraga ".$dataLapangan->nama_lapangan." Telah Diterima",
+            "keterangan" => "Extend Waktu ".$dataLapangan->nama_lapangan." Telah Diterima",
             "waktu" => $skrg,
             "link" => "/customer/daftarRiwayat",
             "user" => $dataHtrans->fk_id_user,
@@ -1930,7 +1930,7 @@ class Transaksi extends Controller
 
         //notif web ke customer
         $dataNotifWeb = [
-            "keterangan" => "Extend Waktu Lapangan Olahraga ".$dataLapangan->nama_lapangan." Ditolak",
+            "keterangan" => "Extend Waktu ".$dataLapangan->nama_lapangan." Ditolak",
             "waktu" => $skrg,
             "link" => "/customer/daftarRiwayat",
             "user" => $dataHtrans->fk_id_user,
@@ -2016,7 +2016,7 @@ class Transaksi extends Controller
 
             //notif web ke customer
             $dataNotifWeb = [
-                "keterangan" => "Transaksi Booking Lapangan Olahraga ".$dataLapangan->nama_lapangan." Diubah Pihak Tempat Olahraga",
+                "keterangan" => "Transaksi Booking ".$dataLapangan->nama_lapangan." Diubah Pihak Tempat Olahraga",
                 "waktu" => $skrg,
                 "link" => "/customer/daftarRiwayat",
                 "user" => $dataHtrans->fk_id_user,
@@ -2162,7 +2162,7 @@ class Transaksi extends Controller
 
         //notif web ke customer
         $dataNotifWeb = [
-            "keterangan" => "Transaksi Booking Lapangan Olahraga ".$dataLapangan->nama_lapangan." Telah Selesai",
+            "keterangan" => "Transaksi Booking ".$dataLapangan->nama_lapangan." Telah Selesai",
             "waktu" => $skrg,
             "link" => "/customer/daftarRiwayat",
             "user" => $dataHtrans->fk_id_user,

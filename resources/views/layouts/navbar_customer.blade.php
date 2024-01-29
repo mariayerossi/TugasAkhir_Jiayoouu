@@ -286,7 +286,7 @@ Sportiva
                         @php
                             $jumlah = DB::table('notifikasi')->where("fk_id_user","=",Session::get("dataRole")->id_user)->where("status_notifikasi","=","Tidak")->count();    
                         @endphp
-                        <span class="notification-count">{{$jumlah}}</span>
+                        <span class="notification-count" style="cursor: pointer;">{{$jumlah}}</span>
                     </div>
                     <div class="notif-dropdown-content ">
                         <h6 class="text-center m-3">Notifikasi</h6>

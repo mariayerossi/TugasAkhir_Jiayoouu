@@ -955,7 +955,7 @@ class KomplainTrans extends Controller
 
                             //notif web ke customer
                             $dataNotifWeb = [
-                                "keterangan" => "Boooking Lapangan Olahraga ".$dataLap->nama_lapangan." Telah Dibatalkan",
+                                "keterangan" => "Boooking ".$dataLap->nama_lapangan." Telah Dibatalkan",
                                 "waktu" => $tanggal,
                                 "link" => "/customer/daftarRiwayat",
                                 "user" => $value->fk_id_user,
@@ -985,7 +985,7 @@ class KomplainTrans extends Controller
 
                     //notif web ke pihak tempat
                     $dataNotifWeb = [
-                        "keterangan" => "Lapangan ".$dataLap->nama_lapangan." Telah Dihapus",
+                        "keterangan" => $dataLap->nama_lapangan." Telah Dihapus",
                         "waktu" => $tanggal,
                         "link" => "/tempat/lapangan/daftarLapangan",
                         "user" => null,
@@ -1260,7 +1260,7 @@ class KomplainTrans extends Controller
 
                                 //notif web ke customer
                                 $dataNotifWeb = [
-                                    "keterangan" => "Booking Lapangan Olahraga ".$dataLapa3->nama_lapangan." Telah Dibatalkan",
+                                    "keterangan" => "Booking ".$dataLapa3->nama_lapangan." Telah Dibatalkan",
                                     "waktu" => $tanggal,
                                     "link" => "/customer/daftarRiwayat",
                                     "user" => $dataCust1->id_user,
