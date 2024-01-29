@@ -14,6 +14,7 @@ use App\Models\pihakTempat;
 use Carbon\Carbon;
 use App\Models\notifikasiEmail;
 use App\Models\pemilikAlat;
+use DateInterval;
 use DateTime;
 use DateTimeZone;
 use Illuminate\Http\Request;
@@ -404,6 +405,16 @@ class Transaksi extends Controller
         $notifWeb = new notifikasi();
         $notifWeb->insertNotifikasi($dataNotifWeb);
 
+        $tanggal2 = $request->tanggal." ".$request->mulai;
+        $sewa2 = new DateTime($tanggal2);
+        $sewa2->sub(new DateInterval('PT2H')); // mengurangkan 2 jam
+        $sew2 = $sewa2->format('Y-m-d H:i:s');
+
+        $tanggalAwal3 = $sew2;
+        $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
+        $carbonDate3 = \Carbon\Carbon::parse($tanggalObjek3)->locale('id');
+        $tanggalBaru3 = $carbonDate3->isoFormat('D MMMM YYYY HH:mm');
+
         $dataNotif = [
             "subject" => "🔔Transaksi Persewaan Baru Menunggu Konfirmasi Anda!🔔",
             "judul" => "Transaksi Persewaan Baru Menunggu Konfirmasi Anda!",
@@ -414,7 +425,7 @@ class Transaksi extends Controller
                     <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
                     <b>Total Transaksi: Rp ".number_format($total, 0, ',', '.')."</b><br><br>
-                    Harap segera konfirmasi transaksi untuk memastikan kelancaran prosesnya!"
+                    Harap segera terima transaksi ini sampai ".$tanggalBaru3."! Jika melebihi waktu status akan otomatis dibatalkan!"
         ];
         $e = new notifikasiEmail();
         $e->sendEmail($dataTempat->email_tempat, $dataNotif);
@@ -1544,9 +1555,9 @@ class Transaksi extends Controller
 
         $jam_sewa = $htrans->jam_sewa;
         $durasi_sewa = $htrans->durasi_sewa;
-        $booking_jam_selesai1 = date('H:i', strtotime("+$durasi_sewa hour", strtotime($jam_sewa)));
+        $booking_jam_selesai1 = date('H:i', strtotime("+$durasi_sewa hour", strtotime($jam_sewa)));//jam selesai htrans
 
-        $booking_jam_selesai2 = date('H:i', strtotime("+$request->durasi hour", strtotime($booking_jam_selesai1)));
+        $booking_jam_selesai2 = date('H:i', strtotime("+$request->durasi hour", strtotime($booking_jam_selesai1)));//jam selesai extend
 
         $cek = DB::table('htrans')
                 ->select("htrans.tanggal_sewa", "htrans.jam_sewa", "htrans.durasi_sewa","extend_htrans.jam_sewa as jam_extend","extend_htrans.durasi_extend as durasi_extend")
@@ -1768,7 +1779,7 @@ class Transaksi extends Controller
                     ".$dtransStr."<br>
                     <b>Durasi Extend: ".$request->durasi." jam</b><br>
                     <b>Total Transaksi: Rp ".number_format($request->total, 0, ',', '.')."</b><br><br>
-                    Harap segera konfirmasi untuk memastikan kelancaran prosesnya!"
+                    Harap segera terima extend ini sampai ".$booking_jam_selesai2. "! Jika melebihi waktu status akan otomatis dibatalkan!"
         ];
         $e = new notifikasiEmail();
         $e->sendEmail($dataTempat->email_tempat, $dataNotif);

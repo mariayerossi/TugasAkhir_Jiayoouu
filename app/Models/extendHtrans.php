@@ -32,6 +32,10 @@ class extendHtrans extends Model
         return $extend->id_extend_htrans;
     }
 
+    public function get_all_data(){
+        return extendHtrans::where('deleted_at',"=",null)->get();
+    }
+
     public function updateStatus($data){
         $extend = extendHtrans::find($data["id"]);
         $extend->status_extend = $data["status"];

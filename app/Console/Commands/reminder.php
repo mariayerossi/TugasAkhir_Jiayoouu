@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\Transaksi;
 use App\Models\customer;
+use App\Models\extendHtrans;
 use App\Models\htrans;
 use App\Models\requestPermintaan;
 use DateInterval;
@@ -585,8 +586,8 @@ class reminder extends Command
                     $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
                     $tanggalBaru3 = $tanggalObjek3->format('d-m-Y');
                     $dataNotif3 = [
-                        "subject" => "😔Booking Lapangan ".$dataLapangan->nama_lapangan." Telah Dibatalkan!😔",
-                        "judul" => "Yah! Booking Lapangan ".$dataLapangan->nama_lapangan." Telah Dibatalkan",
+                        "subject" => "😔Booking ".$dataLapangan->nama_lapangan." Telah Dibatalkan!😔",
+                        "judul" => "Yah! Booking ".$dataLapangan->nama_lapangan." Telah Dibatalkan",
                         "nama_user" => $cust->get_all_data_by_id($value->fk_id_user)->first()->nama_user,
                         "url" => "https://sportiva.my.id/customer/daftarRiwayat",
                         "button" => "Lihat Riwayat Transaksi",
@@ -760,6 +761,92 @@ class reminder extends Command
                         $e = new notifikasiEmail();
                         $e->sendEmail($cust->email_user, $dataNotif);
                     }
+                }
+            }
+        }
+
+        //-----------------------------------------------------------------------------------------------
+
+        //extend waktu
+        $ext = new extendHtrans();
+        $dataExtend = $ext->get_all_data();
+
+        if (!$dataExtend->isEmpty()) {
+            foreach ($dataExtend as $key => $value) {
+                date_default_timezone_set('Asia/Jakarta');
+                $sekarang = date('Y-m-d H:i');
+
+                $jam_sewa = $value->jam_sewa;
+                $dateTime = new DateTime($jam_sewa);
+                $format_jam = $dateTime->format("H:i");
+
+                $jam_sewa = $value->tanggal_extend. " " .$format_jam;
+
+                //jika pihak tempat blm menerima sampai waktu extend lewat, status extend dibatalkan :)
+                if ($value->status_extend == "Menunggu" && $jam_sewa == $sekarang) {
+                    $data1 = [
+                        "id" => $value->id_extend_htrans,
+                        "status" => "Dibatalkan"
+                    ];
+                    $ext->updateStatus($data1);
+
+                    //pengembalian dana
+                    $dataHtrans = DB::table('htrans')->where("id_htrans","=",$value->fk_id_htrans)->first();
+                    $dataCust = DB::table('user')->where("id_user","=",$dataHtrans->fk_id_user)->first();
+                    $saldo = (int)$this->decodePrice($dataCust->saldo_user, "mysecretkey");
+
+                    $saldo += $value->total;
+
+                    //enkripsi kembali saldo
+                    $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+                    //update db user
+                    $dataSaldo = [
+                        "id" => $dataHtrans->fk_id_user,
+                        "saldo" => $enkrip
+                    ];
+                    $cust = new customer();
+                    $cust->updateSaldo($dataSaldo);
+
+                    //yg dapat menyelesaikan transaksi hanya pihak tempat, tujuannya untuk bisa menyetak nota.
+                    //klo pihak tempat lupa ya salahe wkwk
+
+                    $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->first();
+                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$dataHtrans->fk_id_tempat)->first();
+
+
+
+                    //kasih notif ke pihak tempat
+                    $dataNotif = [
+                        "subject" => "😔Extend Waktu ".$dataLapangan->nama_lapangan." Otomatis Dibatalkan!😔",
+                        "judul" => "Extend Waktu ".$dataLapangan->nama_lapangan." Otomatis Dibatalkan!",
+                        "nama_user" => $dataTempat->nama_tempat,
+                        "url" => "https://sportiva.my.id/tempat/transaksi/detailTransaksi/".$value->fk_id_htrans,
+                        "button" => "Lihat Transaksi",
+                        "isi" => "Yah! Extend Waktu dari:<br><br>
+                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                <b>Durasi Extend: ".$format_jam." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_extend)->format('H:i')." WIB</b><br>
+                                <b>Total Extend: Rp ".number_format($value->total, 0, ',', '.')."</b><br><br>
+                                Telah otomatis dibatalkan karena batas akhir menerima extend sudah lewat! 😊"
+                    ];
+                    $e = new notifikasiEmail();
+                    $e->sendEmail($dataTempat->email_tempat, $dataNotif);
+
+                    //kasih notif ke customer
+                    $dataNotif2 = [
+                        "subject" => "😔Extend Waktu ".$dataLapangan->nama_lapangan." yang Anda Ajukan Otomatis Dibatalkan!😔",
+                        "judul" => "Extend Waktu ".$dataLapangan->nama_lapangan." Otomatis Dibatalkan!",
+                        "nama_user" => $dataCust->nama_user,
+                        "url" => "https://sportiva.my.id/customer/daftarRiwayat",
+                        "button" => "Lihat Transaksi",
+                        "isi" => "Yah! Extend Waktu yang Anda ajukan:<br><br>
+                                <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                                <b>Durasi Extend: ".$format_jam." WIB - ".\Carbon\Carbon::parse($value->jam_sewa)->addHours($value->durasi_extend)->format('H:i')." WIB</b><br>
+                                <b>Total Extend: Rp ".number_format($value->total, 0, ',', '.')."</b><br><br>
+                                Telah otomatis dibatalkan karena pihak tempat olahraga telah melewati batas akhir menerima extend! Tetapi jangan khawatir, dana sudah dikembalikan ke saldo wallet anda! 😊"
+                    ];
+                    $e2 = new notifikasiEmail();
+                    $e2->sendEmail($dataTempat->email_tempat, $dataNotif2);
                 }
             }
         }
