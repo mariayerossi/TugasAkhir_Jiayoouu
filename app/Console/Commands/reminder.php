@@ -6,6 +6,7 @@ use App\Http\Controllers\Transaksi;
 use App\Models\customer;
 use App\Models\extendHtrans;
 use App\Models\htrans;
+use App\Models\notifikasi;
 use App\Models\requestPermintaan;
 use DateInterval;
 use DateTime;
@@ -92,11 +93,11 @@ class reminder extends Command
 
                         //notif web ke pemilik alat
                         $dataNotifWeb = [
-                            "keterangan" => "Transaksi Booking ".$dataLapangan->nama_lapangan." Telah Diterima",
-                            "waktu" => $skrg,
-                            "link" => "/customer/daftarRiwayat",
-                            "user" => $dataHtrans->fk_id_user,
-                            "pemilik" => null,
+                            "keterangan" => "Besok Batas Akhir Pengantaran Alat Olahraga".$dataAlat->nama_alat,
+                            "waktu" => $sekarang,
+                            "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                            "user" => null,
+                            "pemilik" => $value->fk_id_pemilik,
                             "tempat" => null,
                             "admin" => null
                         ];
@@ -130,6 +131,19 @@ class reminder extends Command
                         $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
                         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
+                        //notif web ke pemilik alat
+                        $dataNotifWeb = [
+                            "keterangan" => "Request Permintaan Alat Olahraga ".$dataAlat->nama_alat." Otomatis Dibatalkan",
+                            "waktu" => $sekarang,
+                            "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                            "user" => null,
+                            "pemilik" => $value->fk_id_pemilik,
+                            "tempat" => null,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
+
                         $dataNotif = [
                             "subject" => "😔Yah! Request Permintaan Dibatalkan!😔",
                             "judul" => "Request Permintaan Dibatalkan!",
@@ -146,6 +160,19 @@ class reminder extends Command
 
                         //kasih notif ke tempat, req dibatalkan
                         $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+
+                        //notif web ke pihak tempat
+                        $dataNotifWeb = [
+                            "keterangan" => "Request Permintaan Alat Olahraga ".$dataAlat->nama_alat." Otomatis Dibatalkan",
+                            "waktu" => $sekarang,
+                            "link" => "/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                            "user" => null,
+                            "pemilik" => null,
+                            "tempat" => $value->fk_id_tempat,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
 
                         $dataNotif2 = [
                             "subject" => "😔Yah! Request Permintaan Dibatalkan!😔",
@@ -209,6 +236,19 @@ class reminder extends Command
                     $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
                     $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
+                    //notif web ke pemilik alat
+                    $dataNotifWeb = [
+                        "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                        "waktu" => $sekarang,
+                        "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                        "user" => null,
+                        "pemilik" => $value->fk_id_pemilik,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
+
                     $dataNotif = [
                         "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
                         "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
@@ -222,6 +262,19 @@ class reminder extends Command
                     ];
                     $e = new notifikasiEmail();
                     $e->sendEmail($dataPemilik->email_pemilik, $dataNotif);
+
+                    //notif web ke pihak tempat
+                    $dataNotifWeb = [
+                        "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                        "waktu" => $sekarang,
+                        "link" => "/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                        "user" => null,
+                        "pemilik" => null,
+                        "tempat" => $dataTempat->id_tempat,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
                     //kasih notif ke tempat
                     $dataNotif2 = [
@@ -250,6 +303,19 @@ class reminder extends Command
                     $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
                     $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
+                    //notif web ke pemilik alat
+                    $dataNotifWeb = [
+                        "keterangan" => "Request Permintaan Alat Olahraga ".$dataAlat->nama_alat." Otomatis Dibatalkan",
+                        "waktu" => $sekarang,
+                        "link" => "/pemilik/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                        "user" => null,
+                        "pemilik" => $value->fk_id_pemilik,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
+
                     $dataNotif = [
                         "subject" => "😔Yah! Request Permintaan Dibatalkan!😔",
                         "judul" => "Request Permintaan Dibatalkan!",
@@ -266,6 +332,19 @@ class reminder extends Command
 
                     //kasih notif ke tempat, req dibatalkan
                     $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+
+                    //notif web ke pihak tempat
+                    $dataNotifWeb = [
+                        "keterangan" => "Request Permintaan Alat Olahraga ".$dataAlat->nama_alat." Otomatis Dibatalkan",
+                        "waktu" => $sekarang,
+                        "link" => "/tempat/permintaan/detailPermintaanNego/".$value->id_permintaan,
+                        "user" => null,
+                        "pemilik" => null,
+                        "tempat" => $value->fk_id_tempat,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
                     $dataNotif2 = [
                         "subject" => "😔Yah! Request Permintaan Dibatalkan!😔",
@@ -312,6 +391,19 @@ class reminder extends Command
                         $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
                         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
+                        //notif web ke pemilik alat
+                        $dataNotifWeb = [
+                            "keterangan" => "Besok Batas Akhir Pengantaran Alat Olahraga ".$dataAlat->nama_alat,
+                            "waktu" => $sekarang,
+                            "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                            "user" => null,
+                            "pemilik" => $value->fk_id_pemilik,
+                            "tempat" => null,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
+
                         $dataNotif = [
                             "subject" => "⚠️Ingat! Besok Batas Akhir Pengantaran Alat Olahraga!⚠️",
                             "judul" => "Besok Batas Akhir Pengantaran Alat Olahraga!",
@@ -339,6 +431,19 @@ class reminder extends Command
                         $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
                         $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
+                        //notif web ke pemilik alat
+                        $dataNotifWeb = [
+                            "keterangan" => "Request Penawaran Alat Olahraga ".$dataAlat->nama_alat." Otomatis Dibatalkan",
+                            "waktu" => $sekarang,
+                            "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                            "user" => null,
+                            "pemilik" => $value->fk_id_pemilik,
+                            "tempat" => null,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
+
                         $dataNotif = [
                             "subject" => "😔Yah! Request Penawaran Dibatalkan!😔",
                             "judul" => "Request Penawaran Dibatalkan!",
@@ -355,6 +460,19 @@ class reminder extends Command
 
                         //kasih notif ke tempat, req dibatalkan
                         $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+
+                        //notif web ke pemilik alat
+                        $dataNotifWeb = [
+                            "keterangan" => "Request Penawaran Alat Olahraga ".$dataAlat->nama_alat." Otomatis Dibatalkan",
+                            "waktu" => $sekarang,
+                            "link" => "/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                            "user" => null,
+                            "pemilik" => null,
+                            "tempat" => $value->fk_id_tempat,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
 
                         $dataNotif2 = [
                             "subject" => "😔Yah! Request Penawaran Dibatalkan!😔",
@@ -418,6 +536,19 @@ class reminder extends Command
                     $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
                     $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
+                    //notif web ke pemilik alat
+                    $dataNotifWeb = [
+                        "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                        "waktu" => $sekarang,
+                        "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                        "user" => null,
+                        "pemilik" => $value->fk_id_pemilik,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
+
                     $dataNotif = [
                         "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
                         "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
@@ -432,8 +563,20 @@ class reminder extends Command
                     $e = new notifikasiEmail();
                     $e->sendEmail($dataPemilik->email_pemilik, $dataNotif);
 
-                    //kasih notif ke tempat
+                    //notif web ke pihak tempat
+                    $dataNotifWeb = [
+                        "keterangan" => "Masa Sewa Alat Olahraga ".$dataAlat->nama_alat." Sudah Selesai",
+                        "waktu" => $sekarang,
+                        "link" => "/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                        "user" => null,
+                        "pemilik" => null,
+                        "tempat" => $dataTempat->id_tempat,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
+                    //kasih notif ke tempat
                     $dataNotif2 = [
                         "subject" => "⏳Masa Sewa Alat Olahraga Sudah Selesai!⏳",
                         "judul" => "Masa Sewa Alat Olahraga Sudah Selesai!",
@@ -460,6 +603,19 @@ class reminder extends Command
                     $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$value->fk_id_pemilik)->get()->first();
                     $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->req_lapangan)->get()->first();
 
+                    //notif web ke pemilik alat
+                    $dataNotifWeb = [
+                        "keterangan" => "Request Penawaran Alat Olahraga ".$dataAlat->nama_alat." Otomatis Dibatalkan",
+                        "waktu" => $sekarang,
+                        "link" => "/pemilik/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                        "user" => null,
+                        "pemilik" => $value->fk_id_pemilik,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
+
                     $dataNotif = [
                         "subject" => "😔Yah! Request Penawaran Dibatalkan!😔",
                         "judul" => "Request Penawaran Dibatalkan!",
@@ -476,6 +632,19 @@ class reminder extends Command
 
                     //kasih notif ke tempat, req dibatalkan
                     $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+
+                    //notif web ke pihak tempat
+                    $dataNotifWeb = [
+                        "keterangan" => "Request Penawaran Alat Olahraga ".$dataAlat->nama_alat." Otomatis Dibatalkan",
+                        "waktu" => $sekarang,
+                        "link" => "/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
+                        "user" => null,
+                        "pemilik" => $value->fk_id_tempat,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
                     $dataNotif2 = [
                         "subject" => "😔Yah! Request Penawaran Dibatalkan!😔",
@@ -521,6 +690,19 @@ class reminder extends Command
                         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
                         $tanggalBaru2 = $tanggalObjek2->format('d-m-Y');
 
+                        //notif web ke customer
+                        $dataNotifWeb = [
+                            "keterangan" => "Jangan Lupa! Besok Hari Sewa ".$dataLapangan->nama_lapangan,
+                            "waktu" => $sekarang,
+                            "link" => "/customer/daftarRiwayat",
+                            "user" => $value->fk_id_user,
+                            "pemilik" => null,
+                            "tempat" => null,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
+
                         $dataNotif = [
                             "subject" => "🔔Ingat! Besok Hari Sewa Lapangan Olahraga🔔",
                             "judul" => "Jangan Lupa datang besok ya!",
@@ -539,6 +721,19 @@ class reminder extends Command
                     else if ($value->status_trans == "Menunggu") {
                         //kasih reminder ke pihak tempat klo hrs segera diterima
                         $dataTemp = DB::table('pihak_tempat')->where("id_tempat","=",$value->fk_id_tempat)->get()->first();
+
+                        //notif web ke pihak tempat
+                        $dataNotifWeb = [
+                            "keterangan" => "Jangan Lupa Terima Transaksi ".$dataLapangan->nama_lapangan,
+                            "waktu" => $sekarang,
+                            "link" => "/tempat/transaksi/detailTransaksi/".$value->id_htrans,
+                            "user" => null,
+                            "pemilik" => null,
+                            "tempat" => $value->fk_id_tempat,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
 
                         $tanggalAwal2 = $value->tanggal_sewa;
                         $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
@@ -594,6 +789,19 @@ class reminder extends Command
                     $trans = new htrans();
                     $trans->updateStatus($data);
 
+                    //notif web ke customer
+                    $dataNotifWeb = [
+                        "keterangan" => "Booking ".$dataLapangan->nama_lapangan." Telah Dibatalkan",
+                        "waktu" => $sekarang,
+                        "link" => "/customer/daftarRiwayat",
+                        "user" => $value->fk_id_user,
+                        "pemilik" => null,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
+
                     //kasih notif pembatalan transaksi ke customer
                     $tanggalAwal3 = $value->tanggal_sewa;
                     $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
@@ -626,6 +834,19 @@ class reminder extends Command
                     if ($sew3 == $sekarang) {
                         //kasih reminder ke cust
                         $dataCust = DB::table('user')->where("id_user","=",$value->fk_id_user)->get()->first();
+
+                        //notif web ke customer
+                        $dataNotifWeb = [
+                            "keterangan" => "Anda Terlambat Datang ke ".$dataLapangan->nama_lapangan,
+                            "waktu" => $sekarang,
+                            "link" => "/customer/daftarRiwayat",
+                            "user" => $value->fk_id_user,
+                            "pemilik" => null,
+                            "tempat" => null,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
 
                         $tanggalAwal3 = $value->tanggal_sewa;
                         $tanggalObjek3 = DateTime::createFromFormat('Y-m-d', $tanggalAwal3);
@@ -758,6 +979,19 @@ class reminder extends Command
                                 $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
                             }
                         }
+
+                        //notif web ke customer
+                        $dataNotifWeb = [
+                            "keterangan" => "Transaksi Booking ".$dataLapangan->nama_lapangan." Anda Telah Selesai",
+                            "waktu" => $sekarang,
+                            "link" => "/customer/daftarRiwayat",
+                            "user" => $dataHtrans->fk_id_user,
+                            "pemilik" => null,
+                            "tempat" => null,
+                            "admin" => null
+                        ];
+                        $notifWeb = new notifikasi();
+                        $notifWeb->insertNotifikasi($dataNotifWeb);
                         
                         $dataNotif = [
                             "subject" => "🎉Transaksi Anda Telah Selesai!🎉",
@@ -827,7 +1061,18 @@ class reminder extends Command
                     $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataHtrans->fk_id_lapangan)->first();
                     $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$dataHtrans->fk_id_tempat)->first();
 
-
+                    //notif web ke pihak tempat
+                    $dataNotifWeb = [
+                        "keterangan" => "Extend Waktu ".$dataLapangan->nama_lapangan." Otomatis Dibatalkan",
+                        "waktu" => $sekarang,
+                        "link" => "/tempat/transaksi/detailTransaksi/".$value->fk_id_htrans,
+                        "user" => null,
+                        "pemilik" => null,
+                        "tempat" => $dataHtrans->fk_id_tempat,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
                     //kasih notif ke pihak tempat
                     $dataNotif = [
@@ -844,6 +1089,19 @@ class reminder extends Command
                     ];
                     $e = new notifikasiEmail();
                     $e->sendEmail($dataTempat->email_tempat, $dataNotif);
+
+                    //notif web ke customer
+                    $dataNotifWeb = [
+                        "keterangan" => "Extend Waktu ".$dataLapangan->nama_lapangan." yang Anda Ajukan Otomatis Dibatalkan",
+                        "waktu" => $sekarang,
+                        "link" => "/customer/daftarRiwayat",
+                        "user" => $dataHtrans->fk_id_user,
+                        "pemilik" => null,
+                        "tempat" => null,
+                        "admin" => null
+                    ];
+                    $notifWeb = new notifikasi();
+                    $notifWeb->insertNotifikasi($dataNotifWeb);
 
                     //kasih notif ke customer
                     $dataNotif2 = [
