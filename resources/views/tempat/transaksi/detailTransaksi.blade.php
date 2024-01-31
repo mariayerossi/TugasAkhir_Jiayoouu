@@ -243,18 +243,26 @@
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <div class="alert alert-warning" role="alert">
-                                            <i class="bi bi-exclamation-circle"></i>Perhatikan! Jika Alat Olahraga rusak karena kesengajaan customer, customer diharuskan membayar ganti rugi sebesar yang telah ditentukan oleh pemilik alat olahraga (dapat dilihat di menu "Daftar Alat yang Rusak"). Ganti rugi ini nantinya diberikan kepada pemilik alat olahraga ketika pemilik mengambil alat miliknya.
+                                            <i class="bi bi-exclamation-circle"></i>Perhatikan! Jika Alat Olahraga rusak karena kesengajaan customer, customer diharuskan membayar ganti rugi sebesar yang telah ditentukan oleh pemilik alat olahraga. Ganti rugi ini nantinya diberikan kepada pemilik alat olahraga ketika pemilik mengambil alat miliknya.
                                         </div>
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-md-4 col-12 mt-2">
+                                            <h6>Ganti rugi yang harus dibayar customer: </h6>
+                                        </div>
+                                        <div class="col-md-8 col-12 mt-2">
+                                            <h6>Rp {{number_format($dataAlat->ganti_rugi_alat, 0, ',', '.')}}</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4 col-12 mt-2">
                                             <h6>Apakah ada unsur kesengajaan dalam kerusakan alat olahraga?</h6>
                                         </div>
                                         <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                                            <input type="radio" class="btn-check" name="unsur" id="danger-outlined{{$item->id_dtrans}}" autocomplete="off" value="Ya, Disengaja">
+                                            <input type="radio" class="btn-check" name="unsur" id="danger-outlined{{$item->id_dtrans}}" autocomplete="off" value="Ya">
                                             <label class="btn btn-outline-danger" for="danger-outlined{{$item->id_dtrans}}"><i class="bi bi-box2 me-2"></i>Ya, Disengaja</label>
             
-                                            <input type="radio" class="btn-check" name="unsur" id="primary-outlined{{$item->id_dtrans}}" autocomplete="off" value="Tidak Disengaja">
+                                            <input type="radio" class="btn-check" name="unsur" id="primary-outlined{{$item->id_dtrans}}" autocomplete="off" value="Tidak">
                                             <label class="btn btn-outline-primary" for="primary-outlined{{$item->id_dtrans}}"><i class="bi bi-justify-left me-2"></i></i>Tidak Disengaja</label>
                                         </div>
                                     </div>
@@ -315,15 +323,28 @@
                                     <div class="d-flex justify-content-center">
                                         <h5><b>Form Ajukan Kerusakan</b></h5>
                                     </div>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="alert alert-warning" role="alert">
+                                            <i class="bi bi-exclamation-circle"></i>Perhatikan! Jika Alat Olahraga rusak karena kesengajaan customer, customer diharuskan membayar ganti rugi sebesar yang telah ditentukan oleh pemilik alat olahraga. Ganti rugi ini nantinya diberikan kepada pemilik alat olahraga ketika pemilik mengambil alat miliknya.
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-md-4 col-12 mt-2">
+                                            <h6>Ganti rugi yang harus dibayar customer: </h6>
+                                        </div>
+                                        <div class="col-md-8 col-12 mt-2">
+                                            <h6>Rp {{number_format($dataAlat->ganti_rugi_alat, 0, ',', '.')}}</h6>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-4 col-12 mt-2">
                                             <h6>Apakah ada unsur kesengajaan dalam kerusakan alat olahraga?</h6>
                                         </div>
                                         <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
-                                            <input type="radio" class="btn-check" name="unsur" id="danger-outlined{{$item->id_dtrans}}" autocomplete="off" value="Ya, Disengaja">
+                                            <input type="radio" class="btn-check" name="unsur" id="danger-outlined{{$item->id_dtrans}}" autocomplete="off" value="Ya">
                                             <label class="btn btn-outline-danger" for="danger-outlined{{$item->id_dtrans}}"><i class="bi bi-box2 me-2"></i>Ya, Disengaja</label>
             
-                                            <input type="radio" class="btn-check" name="unsur" id="primary-outlined{{$item->id_dtrans}}" autocomplete="off" value="Tidak Disengaja">
+                                            <input type="radio" class="btn-check" name="unsur" id="primary-outlined{{$item->id_dtrans}}" autocomplete="off" value="Tidak">
                                             <label class="btn btn-outline-primary" for="primary-outlined{{$item->id_dtrans}}"><i class="bi bi-justify-left me-2"></i></i>Tidak Disengaja</label>
                                         </div>
                                     </div>
@@ -422,17 +443,31 @@
         </div>
     {{-- ---------------------------------------------------------------------------------------------- --}}
     @elseif ($htrans->first()->status_trans == "Berlangsung")
-        @php
-            $extend = DB::table('extend_htrans')
-                    ->where("fk_id_htrans","=",$htrans->first()->id_htrans)
-                    ->get();
-        @endphp
         @if (!$extend->isEmpty())
             <div id="extend">
                 <hr style="height: 3px;
                 border: none;
                 background-color: black;">
             <h3 class="text-center mb-5 mt-5">Permintaan Perpanjangan Waktu Sewa</h3>
+
+            <div class="d-flex justify-content-end mt-4 me-3">
+                @if ($extend->first()->status_extend == "Menunggu")
+                    <h6><b>Status: </b><b style="color:rgb(239, 203, 0)">{{$extend->first()->status_extend}}</b></h6>
+                @elseif($extend->first()->status_extend == "Diterima")
+                    <h6><b>Status: </b><b style="color:rgb(0, 145, 0)">{{$extend->first()->status_extend}}</b></h6>
+                @elseif($extend->first()->status_extend == "Ditolak")
+                    <h6><b>Status: </b><b style="color:red">{{$extend->first()->status_extend}}</b></h6>
+                @elseif($extend->first()->status_extend == "Dibatalkan")
+                    <h6><b>Status: </b><b style="color:red">{{$extend->first()->status_extend}}</b></h6>
+                @elseif($extend->first()->status_extend == "Dikomplain")
+                    <h6><b>Status: </b><b style="color:red">{{$extend->first()->status_extend}}</b></h6>
+                @elseif($extend->first()->status_extend == "Berlangsung")
+                    <h6><b>Status: </b><b style="color:rgb(255, 145, 0)">{{$extend->first()->status_extend}}</b></h6>
+                @elseif($extend->first()->status_extend == "Selesai")
+                    <h6><b>Status: </b><b style="color:blue">{{$extend->first()->status_extend}}</b></h6>
+                @endif
+            </div>
+
             @php
                 $tanggalAwal4 = $extend->first()->tanggal_extend;
                 $tanggalObjek4 = DateTime::createFromFormat('Y-m-d', $tanggalAwal4);

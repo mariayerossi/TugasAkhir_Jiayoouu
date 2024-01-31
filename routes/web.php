@@ -28,6 +28,7 @@ use App\Models\htrans as ModelsHtrans;
 use App\Models\dtrans as ModelsDtrans;
 use App\Models\slotWaktu as ModelsSlotWaktu;
 use App\Models\customer;
+use App\Models\extendHtrans;
 use App\Models\filesAlatOlahraga;
 use App\Models\filesLapanganOlahraga;
 use App\Models\kategori;
@@ -741,6 +742,8 @@ Route::prefix("/tempat")->group(function(){
             $param["htrans"] = $htrans->get_all_data_by_id($id);
             $dtrans = new ModelsDtrans();
             $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
+            $ext = new extendHtrans();
+            $param["extend"] = $ext->get_all_data_by_id_htrans($id);
             return view("tempat.transaksi.detailTransaksi")->with($param);
         })->middleware([CekTempat::class]);
         Route::post("/terimaTransaksi", [Transaksi::class, "terimaTransaksi"]);

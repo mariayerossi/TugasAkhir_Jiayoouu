@@ -54,7 +54,7 @@ class KerusakanAlat extends Controller
         // return response()->json(['success' => false, 'message' => $foto]);
         $id_dtrans = $request->id_dtrans;
         // dd($foto);
-        if ($unsur == null || $unsur == "undefined") {
+        if ($unsur == null || $unsur == "") {
             return response()->json(['success' => false, 'message' => "Unsur Kesengajaan tidak valid!"]);
         }
         else {

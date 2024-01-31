@@ -145,10 +145,12 @@
                                                 <td><span style="color:rgb(0, 145, 0)">{{$extend->first()->status_extend}}</span></td>
                                             @elseif ($extend->first()->status_extend == "Ditolak")
                                                 <td><span style="color:red">{{$extend->first()->status_extend}}</span></td>
+                                            @elseif ($extend->first()->status_extend == "Dibatalkan")
+                                                <td><span style="color:red">{{$extend->first()->status_extend}}</span></td>
                                             @endif
                                         @else
-                                            <td>Tidak ada 
-                                                
+                                            <td> 
+                                                Tidak ada Extend
                                             </td>
                                         @endif
                                         <td><a href="/tempat/transaksi/detailTransaksi/{{$item->id_htrans}}" class="btn btn-outline-success">Lihat Detail</a></td>
