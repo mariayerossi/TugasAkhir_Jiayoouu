@@ -328,14 +328,14 @@ Route::prefix("/pemilik")->group(function(){
     //     return view("pemilik.alat.daftarAlat")->with($param);
     // })->middleware([CekPemilik::class]);
     Route::get("/daftarAlat", [AlatOlahraga::class, "daftarAlatPemilik"])->middleware([CekPemilik::class]);
-    Route::get("/lihatDetail/{id}", function ($id) {//melihat detail alat olahraga miliknya
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data_by_id($id);
-        $files = new filesAlatOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        return view("pemilik.alat.detailAlat")->with($param);
-        // echo $id;
-    })->middleware([CekPemilik::class]);
+    // Route::get("/lihatDetail/{id}", function ($id) {//melihat detail alat olahraga miliknya
+    //     $alat = new ModelsAlatOlahraga();
+    //     $param["alat"] = $alat->get_all_data_by_id($id);
+    //     $files = new filesAlatOlahraga();
+    //     $param["files"] = $files->get_all_data($id);
+    //     return view("pemilik.alat.detailAlat")->with($param);
+    // })->middleware([CekPemilik::class]);
+    Route::get("/lihatDetail/{id}", [AlatOlahraga::class, "detailAlatPemilik"])->middleware([CekPemilik::class]);
     Route::get("/detailAlatUmum/{id}", function ($id) {//melihat detail alat olahraga milik orang lain
         $alat = new ModelsAlatOlahraga();
         $param["alat"] = $alat->get_all_data_by_id($id);

@@ -26,4 +26,20 @@ class ratingAlat extends Model
         $rate->fk_id_dtrans = $data["id_dtrans"];
         $rate->save();
     }
+
+    public function get_data_by_id_alat($id) {
+        return ratingAlat::select("user.nama_user", "rating_alat.hide", "rating_alat.review", "rating_alat.rating","rating_alat.created_at")
+        ->join("user", "rating_alat.fk_id_user","=","user.id_user")
+        ->where("fk_id_alat","=",$id)
+        ->orderBy("rating_alat.created_at","desc")
+        ->get();
+    }
+
+    public function get_avg_data($id){
+        return ratingAlat::where('deleted_at',"=",null)->where('fk_id_alat',"=",$id)->avg('rating');
+    }
+
+    public function get_data_count($id){
+        return ratingAlat::where('deleted_at',"=",null)->where('fk_id_alat',"=",$id)->count();
+    }
 }

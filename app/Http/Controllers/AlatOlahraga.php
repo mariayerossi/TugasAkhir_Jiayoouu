@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
 use App\Models\filesAlatOlahraga;
 use App\Models\kategori;
+use App\Models\ratingAlat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -390,5 +391,25 @@ class AlatOlahraga extends Controller
 
         $param["alat"] = $data;
         return view("tempat.cariAlat")->with($param);
+    }
+
+    public function detailAlatPemilik($id) {
+        $alat = new ModelsAlatOlahraga();
+        $param["alat"] = $alat->get_all_data_by_id($id);
+
+        $files = new filesAlatOlahraga();
+        $param["files"] = $files->get_all_data($id);
+
+        $rating = new ratingAlat();
+        $avg = $rating->get_avg_data($id);
+
+        $avg = round($avg, 1);
+        $param["averageRating"] = $avg;
+
+        $param["totalReviews"] = $rating->get_data_count($id);
+
+        $param["rating"] = $rating->get_data_by_id_alat($id);
+
+        return view("pemilik.alat.detailAlat")->with($param);
     }
 }
