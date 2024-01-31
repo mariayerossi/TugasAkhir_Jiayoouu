@@ -321,13 +321,7 @@ Route::prefix("/pemilik")->group(function(){
     Route::post("/tambahAlat", [AlatOlahraga::class, "tambahAlat"]);
     Route::get("/daftarAlat", [AlatOlahraga::class, "daftarAlatPemilik"])->middleware([CekPemilik::class]);
     Route::get("/lihatDetail/{id}", [AlatOlahraga::class, "detailAlatPemilik"])->middleware([CekPemilik::class]);
-    Route::get("/detailAlatUmum/{id}", function ($id) {//melihat detail alat olahraga milik orang lain
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data_by_id($id);
-        $files = new filesAlatOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        return view("pemilik.detailAlatUmum")->with($param);
-    })->middleware([CekPemilik::class]);
+    Route::get("/detailAlatUmum/{id}", [AlatOlahraga::class, "detailAlatUmumPemilik"])->middleware([CekPemilik::class]);
     Route::get("/editAlat/{id}", function ($id) {
         $kat = new kategori();
         $param["kategori"] = $kat->get_all_data();
@@ -339,15 +333,6 @@ Route::prefix("/pemilik")->group(function(){
         // echo $id;
     })->middleware([CekPemilik::class]);
     Route::post("/editAlat", [AlatOlahraga::class, "editAlat"]);
-    // Route::get("/cariLapangan", function () {
-    //     $kat = new kategori();
-    //     $param["kategori"] = $kat->get_all_data();
-    //     $lapa = new ModelsLapanganOlahraga();
-    //     $param["lapangan"] = $lapa->get_all_data2();
-    //     $files = new filesLapanganOlahraga();
-    //     $param["files"] = $files;
-    //     return view("pemilik.cariLapangan")->with($param);
-    // })->middleware([CekPemilik::class]);
     Route::get("/cariLapangan", [LapanganOlahraga::class, "cariLapangan"])->middleware([CekPemilik::class]);
     Route::get("/searchLapangan", [LapanganOlahraga::class, "sedafarchLapangan"]);
     Route::get("/detailLapanganUmum/{id}", function ($id) {//melihat detail lapangan olahraga milik org lain
