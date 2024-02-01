@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\alatOlahraga;
 use App\Models\filesLapanganOlahraga;
 use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
+use App\Models\pihakTempat;
+use App\Models\ratingLapangan;
+use App\Models\requestPenawaran;
+use App\Models\requestPermintaan;
+use App\Models\sewaSendiri;
 use App\Models\slotWaktu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -496,5 +502,40 @@ class LapanganOlahraga extends Controller
         $param["lapangan"] = $data;
         
         return view("admin.produk.cariLapangan")->with($param);
+    }
+
+    public function detailLapanganUmumPemilik($id) {
+        $lapa = new ModelsLapanganOlahraga();
+        $param["lapangan"] = $lapa->get_all_data_by_id($id);
+        $files = new filesLapanganOlahraga();
+        $param["files"] = $files->get_all_data($id);
+        $role = Session::get("dataRole")->id_pemilik;
+        $alat = new alatOlahraga();
+        $param["alat"] = $alat->get_all_data_status($role);
+        $slot = new slotWaktu();
+        $param["slot"] = $slot->get_all_data_by_lapangan($id);
+
+        $per = new requestPermintaan();
+        $param["permintaan"] = $per->get_all_data_by_lapangan($id);
+        $pen = new requestPenawaran();
+        $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
+        $sewa = new sewaSendiri();
+        $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
+
+        $rating = new ratingLapangan();
+        $avg = $rating->get_avg_data($id);
+        $param["averageRating"] = round($avg, 1);
+        $param["totalReviews"] = $rating->get_data_count($id);
+        $param["rating"] = $rating->get_data_by_id_lapangan($id);
+
+        $tempat = new pihakTempat();
+        $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
+        $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
+
+        $kategori = new kategori();
+        $id_kategori = $lapa->get_all_data_by_id($id)->first()->fk_id_kategori;
+        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+
+        return view("pemilik.detailLapanganUmum")->with($param);
     }
 }

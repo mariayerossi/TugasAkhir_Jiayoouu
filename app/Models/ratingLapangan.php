@@ -26,4 +26,20 @@ class ratingLapangan extends Model
         $rate->fk_id_htrans = $data["id_htrans"];
         $rate->save();
     }
+
+    public function get_data_by_id_lapangan($id) {
+        return ratingLapangan::select("user.nama_user", "rating_lapangan.hide", "rating_lapangan.review", "rating_lapangan.rating","rating_lapangan.created_at")
+        ->join("user", "rating_lapangan.fk_id_user","=","user.id_user")
+        ->where("fk_id_lapangan","=",$id)
+        ->orderBy("rating_lapangan.created_at","desc")
+        ->get();
+    }
+
+    public function get_avg_data($id){
+        return ratingLapangan::where('deleted_at',"=",null)->where('fk_id_lapangan',"=",$id)->avg('rating');
+    }
+
+    public function get_data_count($id){
+        return ratingLapangan::where('deleted_at',"=",null)->where('fk_id_lapangan',"=",$id)->count();
+    }
 }

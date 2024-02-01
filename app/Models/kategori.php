@@ -29,6 +29,10 @@ class kategori extends Model
         return kategori::where('deleted_at',"=",null)->get();
     }
 
+    public function get_all_data_by_id($id){
+        return kategori::where('deleted_at',"=",null)->where("id_kategori","=",$id)->get();
+    }
+
     public function deleteKategori($data)
     {
         $kat = kategori::find($data["id"]);
