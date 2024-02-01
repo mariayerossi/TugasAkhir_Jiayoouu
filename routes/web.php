@@ -358,12 +358,6 @@ Route::prefix("/pemilik")->group(function(){
 
     //Bagian transaksi
     Route::prefix("/disewakan")->group(function(){
-        // Route::get("/daftarDisewakan", function () {
-        //     $role = Session::get("dataRole")->id_pemilik;
-        //     $trans = new ModelsDtrans();
-        //     $param["disewakan"] = $trans->get_all_data_by_pemilik($role);
-        //     return view("pemilik.alat.daftarDisewakan")->with($param);
-        // })->middleware([CekPemilik::class]);
         Route::get("/daftarDisewakan", [AlatOlahraga::class, "daftarDisewakan"])->middleware([CekPemilik::class]);
     });
 
@@ -405,38 +399,10 @@ Route::prefix("/pemilik")->group(function(){
 // HALAMAN PIHAK TEMPAT
 // -------------------------------
 Route::prefix("/tempat")->group(function(){
-    // Route::get("/beranda", function () {
-    //     $role = Session::get("dataRole")->id_tempat;
-    //     $trans = new ModelsHtrans();
-    //     $param["jumlahTransaksi"] = $trans->count_all_data_tempat($role);
-    //     $minta = new ModelsRequestPermintaan();
-    //     $param["jumlahPermintaan"] = $minta->count_all_data_tempat($role);
-    //     $tawar = new ModelsRequestPenawaran();
-    //     $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($role);
-    //     return view("tempat.beranda")->with($param);
-    // })->middleware([CekTempat::class]);
     Route::get("/beranda", [Laporan::class, "berandaTempat"])->middleware([CekTempat::class]);
-    // Route::get("/cariAlat", function () {
-    //     $kat = new kategori();
-    //     $param["kategori"] = $kat->get_all_data();
-    //     $alat = new ModelsAlatOlahraga();
-    //     $param["alat"] = $alat->get_all_data2();
-    //     $files = new filesAlatOlahraga();
-    //     $param["files"] = $files;
-    //     return view("tempat.cariAlat")->with($param);
-    // })->middleware([CekTempat::class]);
     Route::get("/cariAlat", [AlatOlahraga::class, "cariAlat"])->middleware([CekTempat::class]);
     Route::get("/searchAlat", [AlatOlahraga::class, "searchAlat"]);
-    Route::get("/detailAlatUmum/{id}", function ($id) {//melihat detail alat olahraga milik org lain
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data_by_id($id);
-        $files = new filesAlatOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        $role = Session::get("dataRole")->id_tempat;
-        $lapa = new ModelsLapanganOlahraga();
-        $param["lapangan"] = $lapa->get_all_data_status($role);
-        return view("tempat.detailAlatUmum")->with($param);
-    })->middleware([CekTempat::class]);
+    Route::get("/detailAlatUmum/{id}", [AlatOlahraga::class, "detailAlatUmumTempat"])->middleware([CekTempat::class]);
     Route::post("/requestPermintaanAlat", [RequestPermintaan::class, "ajukanPermintaan"]);
 
     //Bagian lapangan olahraga

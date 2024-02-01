@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\alatOlahraga as ModelsAlatOlahraga;
 use App\Models\filesAlatOlahraga;
 use App\Models\kategori;
+use App\Models\lapanganOlahraga;
+use App\Models\pemilikAlat;
 use App\Models\ratingAlat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -402,7 +404,6 @@ class AlatOlahraga extends Controller
 
         $rating = new ratingAlat();
         $avg = $rating->get_avg_data($id);
-
         $avg = round($avg, 1);
         $param["averageRating"] = $avg;
 
@@ -422,7 +423,6 @@ class AlatOlahraga extends Controller
 
         $rating = new ratingAlat();
         $avg = $rating->get_avg_data($id);
-
         $avg = round($avg, 1);
         $param["averageRating"] = $avg;
 
@@ -441,5 +441,26 @@ class AlatOlahraga extends Controller
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
         return view("pemilik.alat.editAlat")->with($param);
+    }
+
+    public function detailAlatUmumTempat($id) {
+        $alat = new ModelsAlatOlahraga();
+        $param["alat"] = $alat->get_all_data_by_id($id);
+        $files = new filesAlatOlahraga();
+        $param["files"] = $files->get_all_data($id);
+        $role = Session::get("dataRole")->id_tempat;
+        $lapa = new lapanganOlahraga();
+        $param["lapangan"] = $lapa->get_all_data_status($role);
+
+        $rating = new ratingAlat();
+        $avg = $rating->get_avg_data($id);
+        $avg = round($avg, 1);
+        $param["averageRating"] = $avg;
+
+        $param["totalReviews"] = $rating->get_data_count($id);
+
+        $pemilik = new pemilikAlat();
+        
+        return view("tempat.detailAlatUmum")->with($param);
     }
 }
