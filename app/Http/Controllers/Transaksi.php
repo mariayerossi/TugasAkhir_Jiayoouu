@@ -2236,9 +2236,6 @@ class Transaksi extends Controller
         $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
         $ext = new extendHtrans();
         $param["extend"] = $ext->get_all_data_by_id_htrans($id);
-        $ext_d = new extendDtrans();
-        $id_extend = $ext->get_all_data_by_id_htrans($id)->first()->id_extend_htrans;
-        $param["extendDtrans"] = $ext_d->get_all_data_by_id_extend_htrans($id_extend);
 
         $user = new customer();
         $id_user = $htrans->get_all_data_by_id($id)->first()->fk_id_user;
