@@ -94,11 +94,6 @@
     </div>
     <h3 class="text-center">Permohonan Permintaan Alat</h3>
     @php
-        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$permintaan->first()->req_id_alat)->get()->first();
-        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-        $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$permintaan->first()->fk_id_pemilik)->get()->first();
-        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$permintaan->first()->req_lapangan)->get()->first();
-        $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
 
         $tanggalAwal3 = $permintaan->first()->tanggal_minta;
         $tanggalObjek3 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal3);
@@ -265,55 +260,6 @@
                 <button type="submit" class="btn btn-danger">Batalkan</button>
             </form>
         </div>
-        {{-- <hr>
-        <div class="nego" id="negoDiv">
-            <!-- Detail Negosiasi -->
-            <h3>Negosiasi</h3>
-            <div class="row justify-content-center">
-                <div class="col-12 p-4">
-                    <!-- Form Balasan -->
-                    <form action="/tempat/permintaan/negosiasi/tambahNego" method="post">
-                        @csrf
-                        <input type="hidden" name="permintaan" value="{{$permintaan->first()->id_permintaan}}">
-                        <textarea class="form-control mb-3" name="isi" rows="4" placeholder="Tulis pesan Anda di sini..."></textarea>
-                        <button type="submit" class="btn btn-primary w-100 mb-5">Kirim</button>
-                    </form>
-
-                    <div class="history">
-                        @if (!$nego->isEmpty())
-                            @foreach ($nego as $item)
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-start">
-                                            @if ($item->fk_id_pemilik != null)
-                                                @php
-                                                    $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik", "=", $item->fk_id_pemilik)->get()->first();
-                                                @endphp
-                                                <h5><strong>{{$dataPemilik->nama_pemilik}}</strong></h5>
-                                            @elseif ($item->fk_id_tempat != null)
-                                                @php
-                                                    $dataTempat = DB::table('pihak_tempat')->where("id_tempat", "=", $item->fk_id_tempat)->get()->first();
-                                                @endphp
-                                                <h5><strong>{{$dataTempat->nama_pemilik_tempat}}</strong></h5>
-                                            @endif
-                                        </div>
-                                        @php
-                                            $tanggalAwal = $item->waktu_negosiasi;
-                                            $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
-                                            $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
-                                            $tanggalBaru = $carbonDate->isoFormat('D MMMM YYYY HH:mm:ss');
-                                        @endphp
-                                        <p>{{$tanggalBaru}}</p>
-                                        <p class="mt-2">{{$item->isi_negosiasi}}</p>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
-                    </div>
-                    
-                </div>
-            </div>
-        </div> --}}
     @endif
 
     @if ($permintaan->first()->status_permintaan == "Selesai" && $permintaan->first()->status_alat == null)

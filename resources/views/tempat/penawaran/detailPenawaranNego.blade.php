@@ -94,13 +94,6 @@
     </div>
     <h3 class="text-center">Pengajuan Penawaran Alat</h3>
     @php
-        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$penawaran->first()->req_id_alat)->get()->first();
-        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-        $dataPemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$penawaran->first()->fk_id_pemilik)->get()->first();
-        $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$penawaran->first()->fk_id_tempat)->get()->first();
-        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$penawaran->first()->req_lapangan)->get()->first();
-        $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
-
         $tanggalAwal1 = $penawaran->first()->tanggal_tawar;
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');

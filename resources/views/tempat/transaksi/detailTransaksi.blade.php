@@ -108,10 +108,6 @@
         @endif
     </div>
     @php
-        $dataUser = DB::table('user')->where("id_user","=",$htrans->first()->fk_id_user)->get()->first();
-        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->first()->fk_id_lapangan)->get()->first();
-        $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
-
         $tanggalAwal = $htrans->first()->tanggal_trans;
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
@@ -385,12 +381,6 @@
         </div>
     @endif
 
-    @php
-        $extend = DB::table('extend_htrans')
-                ->where("fk_id_htrans","=",$htrans->first()->id_htrans)
-                ->get();
-    @endphp
-
     @if ($htrans->first()->status_trans == "Menunggu")
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
             <form id="tolakTransaksiForm" action="" method="post">
@@ -633,11 +623,6 @@
             </div>
         @endif
     @elseif ($htrans->first()->status_trans == "Selesai")
-    @php
-            $extend = DB::table('extend_htrans')
-                    ->where("fk_id_htrans","=",$htrans->first()->id_htrans)
-                    ->get();
-        @endphp
         @if (!$extend->isEmpty())
             <div id="extend">
                 <hr style="height: 3px;
@@ -685,13 +670,6 @@
             <div class="d-flex justify-content-end mt-3 me-3">
                 <h5><b>Subtotal: Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</b></h5>
             </div>
-
-            @php
-                $extendDtrans = DB::table('extend_dtrans')
-                        ->where("fk_id_extend_htrans","=",$extend->first()->id_extend_htrans)
-                        ->get();
-            @endphp
-
             <div class="row mt-5">
                 <div class="col-md-6 col-sm-12">
                     <h5>Alat Olahraga yang Disewa</h5>

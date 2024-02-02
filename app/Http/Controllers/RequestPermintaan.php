@@ -13,6 +13,7 @@ use App\Models\requestPermintaan as ModelsRequestPermintaan;
 use DateInterval;
 use DateTime;
 use App\Models\notifikasiEmail;
+use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use App\Models\requestPenawaran;
 use Illuminate\Http\Request;
@@ -842,6 +843,37 @@ class RequestPermintaan extends Controller
 
         $file_lapangan = new filesLapanganOlahraga();
         $param["dataFileLapangan"] = $file_lapangan->get_all_data($id_lapangan)->first();
+
         return view("pemilik.permintaan.detailPermintaanNego")->with($param);
+    }
+
+    public function detailPermintaanTempat($id) {
+        $role = Session::get("dataRole")->id_tempat;
+        $req = new ModelsRequestPermintaan();
+        $param["permintaan"] = $req->get_all_data_by_id($id);
+        $nego = new negosiasi();
+        $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
+        $komplain = new komplainRequest();
+        $param["komplain"] = $komplain->get_all_data_by_id_req_tempat_permintaan($id, $role);
+
+        $alat = new alatOlahraga();
+        $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;
+        $param["dataAlat"] = $alat->get_all_data_by_id($id_alat)->first();
+
+        $file_alat = new filesAlatOlahraga();
+        $param["dataFileAlat"] = $file_alat->get_all_data($id_alat)->first();
+
+        $pemilik = new pemilikAlat();
+        $id_pemilik = $req->get_all_data_by_id($id)->first()->fk_id_pemilik;
+        $param["dataPemilik"] = $pemilik->get_all_data_by_id($id_pemilik)->first();
+
+        $lapangan = new lapanganOlahraga();
+        $id_lapangan = $req->get_all_data_by_id($id)->first()->req_lapangan;
+        $param["dataLapangan"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+
+        $file_lapangan = new filesLapanganOlahraga();
+        $param["dataFileLapangan"] = $file_lapangan->get_all_data($id_lapangan)->first();
+
+        return view("tempat.permintaan.detailPermintaanNego")->with($param);
     }
 }

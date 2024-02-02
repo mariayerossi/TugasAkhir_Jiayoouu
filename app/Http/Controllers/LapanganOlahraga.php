@@ -538,4 +538,42 @@ class LapanganOlahraga extends Controller
 
         return view("pemilik.detailLapanganUmum")->with($param);
     }
+
+    public function detailLapanganTempat($id) {
+        $lap = new ModelsLapanganOlahraga();
+        $param["lapangan"] = $lap->get_all_data_by_id($id);
+        $files = new filesLapanganOlahraga();
+        $param["files"] = $files->get_all_data($id);
+        $alat = new alatOlahraga();
+        $param["alat"] = $alat->get_all_data3(Session::get("dataRole")->id_tempat);
+        $slot = new slotWaktu();
+        $param["slot"] = $slot->get_all_data_by_lapangan($id);
+
+        $per = new requestPermintaan();
+        $param["permintaan"] = $per->get_all_data_by_lapangan($id);
+        $pen = new requestPenawaran();
+        $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
+
+        $sewa = new sewaSendiri();
+        $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
+
+        $rating = new ratingLapangan();
+        $avg = $rating->get_avg_data($id);
+        $param["averageRating"] = round($avg, 1);
+        $param["totalReviews"] = $rating->get_data_count($id);
+        $param["rating"] = $rating->get_data_by_id_lapangan($id);
+        return view("tempat.lapangan.detailLapangan")->with($param);
+    }
+
+    public function editLapanganTempat($id) {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        $lap = new ModelsLapanganOlahraga();
+        $param["lapangan"] = $lap->get_all_data_by_id($id);
+        $files = new filesLapanganOlahraga();
+        $param["files"] = $files->get_all_data($id);
+        $slot = new slotWaktu();
+        $param["slot"] = $slot->get_all_data_by_lapangan($id);
+        return view("tempat.lapangan.editLapangan")->with($param);
+    }
 }

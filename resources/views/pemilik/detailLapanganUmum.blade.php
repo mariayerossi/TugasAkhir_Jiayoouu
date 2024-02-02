@@ -428,7 +428,6 @@
                         closeOnCancel: true
                     }, function(isConfirm) {
                         if (isConfirm) {
-                            // form.submit();
                             let formData = new FormData(form);
 
                             $.ajax({

@@ -42,6 +42,10 @@ class pemilikAlat extends Model
         return pemilikAlat::where('deleted_at',"=",null)->where("email_verified_at","!=",null)->get();
     }
 
+    public function get_all_data_by_id($id){
+        return pemilikAlat::where('deleted_at',"=",null)->where("id_pemilik","=",$id)->get();
+    }
+
     public function softDelete($data){
         $pemi = pemilikAlat::find($data["id"]);
         $pemi->deleted_at = $data["tanggal"];

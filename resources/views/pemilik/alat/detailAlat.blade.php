@@ -110,9 +110,6 @@
                 </button>
             </div>
             <p class="text-muted mt-4 d-none d-md-block">
-                @php
-                    $kat = DB::table('kategori')->where("id_kategori","=",$alat->first()->fk_id_kategori)->get()->first()->nama_kategori;
-                @endphp
                 Kategori : {{$kat}} <br>
                 Berat : {{$alat->first()->berat_alat}} gram <br>
                 @php
@@ -137,9 +134,6 @@
             <a href="/pemilik/editAlat/{{$alat->first()->id_alat}}" class="btn btn-primary mt-3">Ubah Detail Alat</a>
             <!-- Additional details section -->
             <p class="text-muted mt-5 d-lg-none">
-                @php
-                    $kat = DB::table('kategori')->where("id_kategori","=",$alat->first()->fk_id_kategori)->get()->first()->nama_kategori;
-                @endphp
                 Kategori : {{$kat}} <br>
                 Berat : {{$alat->first()->berat_alat}} gram <br>
                 @php

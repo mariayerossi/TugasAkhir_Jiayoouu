@@ -27,4 +27,8 @@ class extendDtrans extends Model
         $extend->pendapatan_website_alat = $data["pendapatan"];
         $extend->save();
     }
+
+    public function get_all_data_by_id_extend_htrans($id){
+        return extendDtrans::where('deleted_at',"=",null)->where("fk_id_extend_htrans","=",$id)->get();
+    }
 }
