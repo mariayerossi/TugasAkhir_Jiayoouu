@@ -48,11 +48,6 @@
     @endphp
     <h6>{{$tanggal_hasil}}, Pukul {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->format('H:i') }} - {{ \Carbon\Carbon::parse($htrans->first()->jam_sewa)->addHours($htrans->first()->durasi_sewa)->format('H:i') }}</h6>
     <div class="accordion mt-3" id="accordionExample">
-        @php
-            $lap = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->first()->fk_id_lapangan)->get()->first();
-            $fileLap = DB::table('files_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->get()->first();
-            $ratingLap = DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$htrans->first()->id_htrans)->get()->first();
-        @endphp
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
             <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">

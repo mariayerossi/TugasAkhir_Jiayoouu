@@ -576,4 +576,72 @@ class LapanganOlahraga extends Controller
         $param["slot"] = $slot->get_all_data_by_lapangan($id);
         return view("tempat.lapangan.editLapangan")->with($param);
     }
+
+    public function detailLapanganCustomer($id) {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        $kot = new ModelsLapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
+        $lapa = new ModelsLapanganOlahraga();
+        $param["lapangan"] = $lapa->get_all_data_by_id($id);
+        $files = new filesLapanganOlahraga();
+        $param["files"] = $files->get_all_data($id);
+        $slot = new slotWaktu();
+        $param["slot"] = $slot->get_all_data_by_lapangan($id);
+
+        $per = new requestPermintaan();
+        $param["permintaan"] = $per->get_all_data_by_lapangan($id);
+        $pen = new requestPenawaran();
+        $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
+        $sewa = new sewaSendiri();
+        $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
+
+        $tempat = new pihakTempat();
+        $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
+        $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
+
+        $rating = new ratingLapangan();
+        $avg = $rating->get_avg_data($id);
+        $param["averageRating"] = round($avg, 1);
+        $param["totalReviews"] = $rating->get_data_count($id);
+        $param["rating"] = $rating->get_data_by_id_lapangan($id);
+
+        $kategori = new kategori();
+        $id_kategori = $lapa->get_all_data_by_id($id)->first()->fk_id_kategori;
+        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+
+        $param["dataJadwal"] = DB::table('htrans')
+                            ->select("htrans.tanggal_sewa","htrans.status_trans","htrans.jam_sewa","htrans.durasi_sewa","extend_htrans.durasi_extend", "extend_htrans.status_extend")
+                            ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                            ->where("htrans.fk_id_lapangan","=",$id)
+                            ->where(function($query) {
+                                $query->where("htrans.status_trans", "=", "Diterima")
+                                    ->orWhere("htrans.status_trans", "=", "Berlangsung");
+                            })
+                            ->get();
+
+        return view("customer.detailLapangan")->with($param);
+    }
+
+    public function detailLapanganUmumAdmin($id) {
+        $lapa = new ModelsLapanganOlahraga();
+        $param["lapangan"] = $lapa->get_all_data_by_id($id);
+        $files = new filesLapanganOlahraga();
+        $param["files"] = $files->get_all_data($id);
+        $slot = new slotWaktu();
+        $param["slot"] = $slot->get_all_data_by_lapangan($id);
+
+        $per = new requestPermintaan();
+        $param["permintaan"] = $per->get_all_data_by_lapangan($id);
+        $pen = new requestPenawaran();
+        $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
+        $sewa = new sewaSendiri();
+        $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
+
+        $tempat = new pihakTempat();
+        $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
+        $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
+        
+        return view("admin.produk.detailLapanganUmum")->with($param);
+    }
 }

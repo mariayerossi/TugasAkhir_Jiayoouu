@@ -508,9 +508,7 @@ class AlatOlahraga extends Controller
         $avg = $rating->get_avg_data($id);
         $avg = round($avg, 1);
         $param["averageRating"] = $avg;
-
         $param["totalReviews"] = $rating->get_data_count($id);
-
         $param["rating"] = $rating->get_data_by_id_alat($id);
 
         return view("tempat.alat.detailAlat")->with($param);
@@ -524,5 +522,99 @@ class AlatOlahraga extends Controller
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
         return view("tempat.alat.editAlat")->with($param);
+    }
+
+    public function detailAlatCustomer($id) {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        $kot = new lapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
+        $alat = new ModelsAlatOlahraga();
+        $param["alat"] = $alat->get_all_data_by_id($id);
+        $files = new filesAlatOlahraga();
+        $param["files"] = $files->get_all_data($id);
+
+        $kategori = new kategori();
+        $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
+        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+
+        $rating = new ratingAlat();
+        $avg = $rating->get_avg_data($id);
+        $avg = round($avg, 1);
+        $param["averageRating"] = $avg;
+        $param["totalReviews"] = $rating->get_data_count($id);
+        $param["rating"] = $rating->get_data_by_id_alat($id);
+
+        $harga_sewa = 0;
+        $cekPermintaan = DB::table('request_permintaan')->where("req_id_alat","=",$id)->where("status_permintaan","=","Disewakan")->get()->first();
+        if ($cekPermintaan != null) {
+            $harga_sewa = $cekPermintaan->req_harga_sewa;
+        }
+        else {
+            $cekPenawaran = DB::table('request_penawaran')->where("req_id_alat","=",$id)->where("status_penawaran","=","Disewakan")->get()->first();
+            if ($cekPenawaran != null) {
+                $harga_sewa = $cekPenawaran->req_harga_sewa;
+            }
+            else {
+                $harga_sewa = $alat->first()->komisi_alat; 
+            }
+        }
+        $param["harga_sewa"] = $harga_sewa;
+
+        return view("customer.detailAlat")->with($param);
+    }
+
+    public function detailAlatUmumAdmin($id) {
+        $alat = new ModelsAlatOlahraga();
+        $param["alat"] = $alat->get_all_data_by_id($id);
+        $files = new filesAlatOlahraga();
+        $param["files"] = $files->get_all_data($id);
+
+        $kategori = new kategori();
+        $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
+        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+
+        $rating = new ratingAlat();
+        $avg = $rating->get_avg_data($id);
+        $avg = round($avg, 1);
+        $param["averageRating"] = $avg;
+        $param["totalReviews"] = $rating->get_data_count($id);
+        $param["rating"] = $rating->get_data_by_id_alat($id);
+
+        $pemilik = "";
+        if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
+            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$alat->get_all_data_by_id($id)->first()->fk_id_pemilik)->first()->nama_pemilik;
+        }
+        else {
+            $pemilik = DB::table('pihak_tempat')->where("id_tempat","=",$alat->get_all_data_by_id($id)->first()->fk_id_tempat)->first()->nama_tempat;
+        }
+        $param["pemilik"] = $pemilik;
+
+        $harga_sewa = 0;
+        $cekPermintaan = DB::table('request_permintaan')->where("req_id_alat","=",$id)->where("status_permintaan","=","Disewakan")->get()->first();
+        if ($cekPermintaan != null) {
+            $harga_sewa = $cekPermintaan->req_harga_sewa;
+        }
+        else {
+            $cekPenawaran = DB::table('request_penawaran')->where("req_id_alat","=",$id)->where("status_penawaran","=","Disewakan")->get()->first();
+            if ($cekPenawaran != null) {
+                $harga_sewa = $cekPenawaran->req_harga_sewa;
+            }
+            else {
+                $cekSewa = DB::table('sewa_sendiri')->where("req_id_alat","=",$id)->get()->first();
+                if ($cekSewa != null) {
+                    $harga_sewa = $alat->get_all_data_by_id($id)->first()->komisi_alat;
+                }
+            }
+        }
+        $param["harga_sewa"] = $harga_sewa;
+
+        $keterangan = "";
+        if ($harga_sewa == 0) {
+            $keterangan = "(Belum Disewakan)";
+        }
+        $param["keterangan"] = $keterangan;
+
+        return view("admin.produk.detailAlatUmum")->with($param);
     }
 }

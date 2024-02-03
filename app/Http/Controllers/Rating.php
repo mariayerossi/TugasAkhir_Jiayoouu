@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\dtrans;
+use App\Models\filesLapanganOlahraga;
+use App\Models\htrans;
+use App\Models\kategori;
+use App\Models\lapanganOlahraga;
 use App\Models\notifikasi;
 use App\Models\ratingAlat;
 use App\Models\ratingLapangan;
@@ -175,5 +180,27 @@ class Rating extends Controller
         $e->sendEmail($email_pemilik, $dataNotif);
 
         return response()->json(['success' => true, 'message' => 'Berhasil Menambah Rating!']);
+    }
+
+    public function detailRatingCustomer($id) {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        $kot = new lapanganOlahraga();
+        $param["kota"] = $kot->get_kota();
+        $htrans = new htrans();
+        $param["htrans"] = $htrans->get_all_data_by_id($id);
+        $dtrans = new dtrans();
+        $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
+
+        $lapangan = new lapanganOlahraga();
+        $id_lapangan = $htrans->get_all_data_by_id($id)->first()->fk_id_lapangan;
+        $param["lap"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+
+        $file_lapangan = new filesLapanganOlahraga();
+        $param["fileLap"] = $file_lapangan->get_all_data($id_lapangan)->first();
+
+        $param["ratingLap"] = $ratingLap = DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$htrans->first()->id_htrans)->get()->first();
+        
+        return view("customer.ulasan")->with($param);
     }
 }

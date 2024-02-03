@@ -110,15 +110,6 @@ Route::get("/logout", [LoginRegister::class, "logout"]);
 // HALAMAN ADMIN
 // -------------------------------
 Route::prefix("/admin")->group(function(){
-    // Route::get("/beranda", function () {
-    //     $req = new ModelsKomplainRequest();
-    //     $param["jumlahKomplainReq"] = $req->count_all_data_admin();
-    //     $komtrans = new ModelsKomplainTrans();
-    //     $param["jumlahKomplainTrans"] = $komtrans->count_all_data_admin();
-    //     $trans = new ModelsHtrans();
-    //     $param["jumlahTransaksi"] = $trans->count_all_data_admin();
-    //     return view("admin.beranda")->with($param);
-    // })->middleware([CekAdmin::class]);
     Route::get("/beranda", [Laporan::class, "berandaAdmin"])->middleware([CekAdmin::class]);
     Route::get("/registrasi_tempat", function () {
         $reg = new registerTempat();
@@ -156,55 +147,16 @@ Route::prefix("/admin")->group(function(){
 
     //Bagian Alat Olahraga
     Route::prefix("/alat")->group(function(){
-        // Route::get("/cariAlat", function () {
-        //     $kat = new kategori();
-        //     $param["kategori"] = $kat->get_all_data();
-        //     $alat = new ModelsAlatOlahraga();
-        //     $param["alat"] = $alat->get_all_data_for_admin();
-        //     $files = new filesAlatOlahraga();
-        //     $param["files"] = $files;
-        //     return view("admin.produk.cariAlat")->with($param);
-        // })->middleware([CekAdmin::class]);
         Route::get("/cariAlat", [AlatOlahraga::class, "cariAlatAdmin"])->middleware([CekAdmin::class]);
-        Route::get("/detailAlatUmum/{id}", function ($id) {//melihat detail alat olahraga milik org lain
-            $alat = new ModelsAlatOlahraga();
-            $param["alat"] = $alat->get_all_data_by_id($id);
-            $files = new filesAlatOlahraga();
-            $param["files"] = $files->get_all_data($id);
-            return view("admin.produk.detailAlatUmum")->with($param);
-        })->middleware([CekAdmin::class]);
+        Route::get("/detailAlatUmum/{id}", [AlatOlahraga::class, "detailAlatUmumAdmin"])->middleware([CekAdmin::class]);
         Route::get("/searchAlat", [AlatOlahraga::class, "searchAlat"]);
     });
 
     //Bagian Lapangan Olahraga
     Route::prefix("/lapangan")->group(function(){
-        // Route::get("/cariLapangan", function () {
-        //     $kat = new kategori();
-        //     $param["kategori"] = $kat->get_all_data();
-        //     $lapa = new ModelsLapanganOlahraga();
-        //     $param["lapangan"] = $lapa->get_all_data_for_admin();
-        //     $files = new filesLapanganOlahraga();
-        //     $param["files"] = $files;
-        //     return view("admin.produk.cariLapangan")->with($param);
-        // })->middleware([CekAdmin::class]);
         Route::get("/cariLapangan", [LapanganOlahraga::class, "cariLapanganAdmin"])->middleware([CekAdmin::class]);
         Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapangan"]);
-        Route::get("/detailLapanganUmum/{id}", function ($id) {//melihat detail lapangan olahraga milik org lain
-            $lapa = new ModelsLapanganOlahraga();
-            $param["lapangan"] = $lapa->get_all_data_by_id($id);
-            $files = new filesLapanganOlahraga();
-            $param["files"] = $files->get_all_data($id);
-            $slot = new ModelsSlotWaktu();
-            $param["slot"] = $slot->get_all_data_by_lapangan($id);
-
-            $per = new ModelsRequestPermintaan();
-            $param["permintaan"] = $per->get_all_data_by_lapangan($id);
-            $pen = new ModelsRequestPenawaran();
-            $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
-            $sewa = new ModelsSewaSendiri();
-            $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
-            return view("admin.produk.detailLapanganUmum")->with($param);
-        })->middleware([CekAdmin::class]);
+        Route::get("/detailLapanganUmum/{id}", [LapanganOlahraga::class, "detailLapanganUmumAdmin"])->middleware([CekAdmin::class]);
     });
 
     Route::prefix("/transaksi")->group(function(){
@@ -486,13 +438,7 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/konfirmasiDipakai", [Transaksi::class, "konfirmasiDipakai"]);
         Route::get("/cetakNota", [Transaksi::class, "cetakNota"])->middleware([CekTempat::class]);
 
-        Route::get("/tampilanEditTransaksi/{id}", function ($id) {
-            $htrans = new ModelsHtrans();
-            $param["htrans"] = $htrans->get_all_data_by_id($id);
-            $dtrans = new ModelsDtrans();
-            $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
-            return view("tempat.transaksi.editTrans")->with($param);
-        })->middleware([CekTempat::class]);
+        Route::get("/tampilanEditTransaksi/{id}", [Transaksi::class, "editTransaksiTempat"])->middleware([CekTempat::class]);
         
         Route::post("/hapusAlat", [Transaksi::class, "hapusAlat"]);
         Route::post("/batalTrans", [Transaksi::class, "batalTrans"]);
@@ -566,38 +512,9 @@ Route::prefix("/customer")->group(function(){
         $param["cust"] = $cust->get_all_data_by_id(Session::get("dataRole")->id_user);
         return view("customer.profile")->with($param);
     });
-    Route::get("/detailLapangan/{id}", function ($id) {
-        $kat = new kategori();
-        $param["kategori"] = $kat->get_all_data();
-        $kot = new ModelsLapanganOlahraga();
-        $param["kota"] = $kot->get_kota();
-        $lapa = new ModelsLapanganOlahraga();
-        $param["lapangan"] = $lapa->get_all_data_by_id($id);
-        $files = new filesLapanganOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        $slot = new ModelsSlotWaktu();
-        $param["slot"] = $slot->get_all_data_by_lapangan($id);
-
-        $per = new ModelsRequestPermintaan();
-        $param["permintaan"] = $per->get_all_data_by_lapangan($id);
-        $pen = new ModelsRequestPenawaran();
-        $param["penawaran"] = $pen->get_all_data_by_lapangan($id);
-        $sewa = new ModelsSewaSendiri();
-        $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
-        return view("customer.detailLapangan")->with($param);
-    })->middleware([CekCustomer::class]);
+    Route::get("/detailLapangan/{id}", [LapanganOlahraga::class, "detailLapanganCustomer"])->middleware([CekCustomer::class]);
     Route::get("/searchLapangan", [LapanganOlahraga::class, "searchLapanganCustomer"]);
-    Route::get("/detailAlat/{id}", function ($id) {//melihat detail alat olahraga milik org lain
-        $kat = new kategori();
-        $param["kategori"] = $kat->get_all_data();
-        $kot = new ModelsLapanganOlahraga();
-        $param["kota"] = $kot->get_kota();
-        $alat = new ModelsAlatOlahraga();
-        $param["alat"] = $alat->get_all_data_by_id($id);
-        $files = new filesAlatOlahraga();
-        $param["files"] = $files->get_all_data($id);
-        return view("customer.detailAlat")->with($param);
-    })->middleware([CekCustomer::class]);
+    Route::get("/detailAlat/{id}", [AlatOlahraga::class, "detailAlatCustomer"])->middleware([CekCustomer::class]);
 
     //bagian transaksi
     Route::prefix("/transaksi")->group(function(){
@@ -636,25 +553,12 @@ Route::prefix("/customer")->group(function(){
     });
 
     Route::prefix("/rating")->group(function(){
-        Route::get("/detailRating/{id}", function ($id) {
-            $kat = new kategori();
-            $param["kategori"] = $kat->get_all_data();
-
-            $kot = new ModelsLapanganOlahraga();
-            $param["kota"] = $kot->get_kota();
-
-            $htrans = new ModelsHtrans();
-            $param["htrans"] = $htrans->get_all_data_by_id($id);
-
-            $dtrans = new ModelsDtrans();
-            $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
-            return view("customer.ulasan")->with($param);
-        })->middleware([CekCustomer::class]);
+        Route::get("/detailRating/{id}", [Rating::class, "detailRatingCustomer"])->middleware([CekCustomer::class]);
 
         Route::prefix("/lapangan")->group(function(){
             Route::post("/tambahRating", [Rating::class, "tambahRatingLapangan"]);
         });
-        
+
         Route::prefix("/alat")->group(function(){
             Route::post("/tambahRating", [Rating::class, "tambahRatingAlat"]);
         });

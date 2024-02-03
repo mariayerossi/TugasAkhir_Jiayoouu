@@ -2250,4 +2250,24 @@ class Transaksi extends Controller
         
         return view("tempat.transaksi.detailTransaksi")->with($param);
     }
+
+    public function editTransaksiTempat($id) {
+        $htrans = new htrans();
+        $param["htrans"] = $htrans->get_all_data_by_id($id);
+        $dtrans = new dtrans();
+        $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
+
+        $user = new customer();
+        $id_user = $htrans->get_all_data_by_id($id)->first()->fk_id_user;
+        $param["dataUser"] = $user->get_all_data_by_id($id_user)->first();
+
+        $lapangan = new lapanganOlahraga();
+        $id_lapangan = $htrans->get_all_data_by_id($id)->first()->fk_id_lapangan;
+        $param["dataLapangan"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+
+        $file_lapangan = new filesLapanganOlahraga();
+        $param["dataFileLapangan"] = $file_lapangan->get_all_data($id_lapangan)->first();
+
+        return view("tempat.transaksi.editTrans")->with($param);
+    }
 }
