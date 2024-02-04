@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use DateInterval;
+use DateTime;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -27,11 +30,35 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('user')->insert([
+            'nama_user' => "Zhao Lusi",
+            'email_user' => 'lusi@gmail.com',
+            'telepon_user' => "085436876789",
+            'password_user' => password_hash('1234567890', PASSWORD_BCRYPT),
+            'saldo_user' => "XElDVVNCVQ==",//1 jt
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
         DB::table('pemilik_alat')->insert([
             'nama_pemilik' => "Andika Pratama",
             'email_pemilik' => 'andika@gmail.com',
             'telepon_pemilik' => "086768686774",
             'ktp_pemilik' => "ktp_pemilik1.jpg",
+            'password_pemilik' => password_hash('1234567890', PASSWORD_BCRYPT),
+            'saldo_pemilik' => "VUlDVVNC",//800.000
+            'norek_pemilik' => null,
+            'nama_rek_pemilik' => null,
+            'nama_bank_pemilik' => null,
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('pemilik_alat')->insert([
+            'nama_pemilik' => "Budi Santoso",
+            'email_pemilik' => 'budi@gmail.com',
+            'telepon_pemilik' => "084552673167",
+            'ktp_pemilik' => "ktp_pemilik2.jpeg",
             'password_pemilik' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_pemilik' => "VUlDVVNC",//800.000
             'norek_pemilik' => null,
@@ -63,6 +90,23 @@ class DatabaseSeeder extends Seeder
             'alamat_tempat' => "ngagel jaya, Surabaya",
             'ktp_tempat' => "ktp_tempat1.jpg",
             'npwp_tempat' => "npwp_tempat1.jpg",
+            'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
+            'saldo_tempat' => "VUlDVVNC",//800.000
+            'norek_tempat' => null,
+            'nama_rek_tempat' => null,
+            'nama_bank_tempat' => null,
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('pihak_tempat')->insert([
+            'nama_tempat' => "Daniel Sport",
+            'nama_pemilik_tempat' => "Daniel Santosa",
+            'email_tempat' => 'daniel@gmail.com',
+            'telepon_tempat' => "086565721091",
+            'alamat_tempat' => "darmo indah utara, Surabaya",
+            'ktp_tempat' => "ktp_tempat2.jpeg",
+            'npwp_tempat' => "npwp_tempat2.jpg",
             'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_tempat' => "VUlDVVNC",//800.000
             'norek_tempat' => null,
@@ -207,7 +251,7 @@ class DatabaseSeeder extends Seeder
             'ganti_rugi_alat' => 100000,
             'kota_alat' => "Bandung",
             'status_alat' => "Aktif",
-            'fk_id_pemilik' => 1,
+            'fk_id_pemilik' => 2,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -215,6 +259,29 @@ class DatabaseSeeder extends Seeder
         DB::table('files_alat')->insert([
             'nama_file_alat' => "raket_tenis1.jpg",
             'fk_id_alat' => 4,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Basket Proteam Rubber Royale Edition",
+            'fk_id_kategori' => 1,
+            'deskripsi_alat' => "Bola Basket Proteam Rubber Royale Edition (DBL Licensed)
+
+            Proteam Royale Orange Bola Basket adalah bola basket yang terbuat dari bahan Rubber berkualitas sehingga cocok untuk digunakan saat latihan maupun pertandingan. Bola basket ini memiliki bahan lembut dan empuk sehingga menghasilkan performa yang bagus. Memenuhi standar FIBA dengan desain menggunakan 8 panel & terbuat dari bahan material PU membuat bola terasa lembut dan kuat saat digunakan.",
+            'berat_alat' => "300",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 20000,
+            'ganti_rugi_alat' => 100000,
+            'kota_alat' => "Surabaya",
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_basket5.jpeg",
+            'fk_id_alat' => 5,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -245,6 +312,62 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 1
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 1
+        ]);
+
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Basket Mario 2",
             'fk_id_kategori' => 1,
@@ -270,6 +393,62 @@ class DatabaseSeeder extends Seeder
             'nama_file_lapangan' => "lapangan_basket2.jpg",
             'fk_id_lapangan' => 2,
             'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 2
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 2
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 2
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 2
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 2
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 2
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 2
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 2
         ]);
 
         DB::table('lapangan_olahraga')->insert([
@@ -299,6 +478,62 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 3
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 3
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 3
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 3
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 3
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 3
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 3
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 3
+        ]);
+
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Futsal City Arena",
             'fk_id_kategori' => 2,
@@ -324,6 +559,62 @@ class DatabaseSeeder extends Seeder
             'nama_file_lapangan' => "lapangan_futsal1.jpg",
             'fk_id_lapangan' => 4,
             'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 4
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 4
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 4
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 4
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 4
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 4
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 4
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 4
         ]);
 
         DB::table('lapangan_olahraga')->insert([
@@ -353,6 +644,62 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 5
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 5
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 5
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 5
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 5
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 5
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 5
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 5
+        ]);
+
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Futsalindo Center",
             'fk_id_kategori' => 2,
@@ -370,7 +717,7 @@ class DatabaseSeeder extends Seeder
             'luas_lapangan' => "28x15",
             'harga_sewa_lapangan' => 200000,
             'status_lapangan' => "Aktif",
-            'pemilik_lapangan' => 1,
+            'pemilik_lapangan' => 2,
             'created_at' => date("Y-m-d H:i:s")
         ]);
 
@@ -378,6 +725,62 @@ class DatabaseSeeder extends Seeder
             'nama_file_lapangan' => "lapangan_futsal3.jpg",
             'fk_id_lapangan' => 6,
             'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 6
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 6
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 6
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 6
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 6
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 6
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 6
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 6
         ]);
 
         DB::table('lapangan_olahraga')->insert([
@@ -397,7 +800,7 @@ class DatabaseSeeder extends Seeder
             'luas_lapangan' => "28x15",
             'harga_sewa_lapangan' => 200000,
             'status_lapangan' => "Aktif",
-            'pemilik_lapangan' => 1,
+            'pemilik_lapangan' => 2,
             'created_at' => date("Y-m-d H:i:s")
         ]);
 
@@ -405,6 +808,62 @@ class DatabaseSeeder extends Seeder
             'nama_file_lapangan' => "lapangan_basket4.jpg",
             'fk_id_lapangan' => 7,
             'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 7
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 7
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 7
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 7
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 7
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 7
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 7
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 7
         ]);
 
         DB::table('lapangan_olahraga')->insert([
@@ -424,7 +883,7 @@ class DatabaseSeeder extends Seeder
             'luas_lapangan' => "28x15",
             'harga_sewa_lapangan' => 200000,
             'status_lapangan' => "Aktif",
-            'pemilik_lapangan' => 1,
+            'pemilik_lapangan' => 2,
             'created_at' => date("Y-m-d H:i:s")
         ]);
 
@@ -438,28 +897,56 @@ class DatabaseSeeder extends Seeder
             'hari' => "Senin",
             'jam_buka' => '08:00',
             'jam_tutup' => '12:00',
-            'fk_id_lapangan' => 1
+            'fk_id_lapangan' => 8
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
             'jam_tutup' => '20:00',
-            'fk_id_lapangan' => 1
+            'fk_id_lapangan' => 8
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
             'jam_tutup' => '20:00',
-            'fk_id_lapangan' => 1
+            'fk_id_lapangan' => 8
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
             'jam_tutup' => '20:00',
-            'fk_id_lapangan' => 1
+            'fk_id_lapangan' => 8
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 8
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 8
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 8
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 8
         ]);
 
         DB::table('alat_olahraga')->insert([
@@ -500,11 +987,18 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //--------------------------------------------------------------------
+        $tanggal = date("Y-m-d");
+
+        $updated_at2 = new DateTime($tanggal);
+        $updated_at2->add(new DateInterval('P7D'));
+        $tanggal2 = $updated_at2->format('Y-m-d');
+
         DB::table('request_permintaan')->insert([
             'req_harga_sewa' => 50000,
             'req_lapangan' => 1,
-            'req_tanggal_mulai' => "2023-9-13",
-            'req_tanggal_selesai' => "2023-10-13",
+            'req_tanggal_mulai' => $tanggal,
+            'req_tanggal_selesai' => $tanggal2,
             'req_id_alat' => 1,
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
@@ -523,6 +1017,8 @@ class DatabaseSeeder extends Seeder
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        
 
         DB::table('request_penawaran')->insert([
             'req_harga_sewa' => 40000,
