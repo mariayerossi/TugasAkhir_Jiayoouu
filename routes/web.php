@@ -160,19 +160,8 @@ Route::prefix("/admin")->group(function(){
     });
 
     Route::prefix("/transaksi")->group(function(){
-        Route::get("/daftarTransaksi", function () {
-            $trans = new ModelsHtrans();
-            $param["trans"] = $trans->get_all_data_by_admin();
-            return view("admin.transaksi.daftarTransaksi")->with($param);
-        })->middleware([CekAdmin::class]);
         Route::get("/daftarTransaksi", [Transaksi::class, "daftarTransaksiAdmin"])->middleware([CekAdmin::class]);
-        Route::get("/detailTransaksi/{id}", function ($id) {
-            $htrans = new ModelsHtrans();
-            $param["htrans"] = $htrans->get_all_data_by_id($id);
-            $dtrans = new ModelsDtrans();
-            $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
-            return view("admin.transaksi.detailTransaksi")->with($param);
-        })->middleware([CekAdmin::class]);
+        Route::get("/detailTransaksi/{id}", [Transaksi::class, "detailTransaksiAdmin"])->middleware([CekAdmin::class]);
         Route::get("/daftarKerusakan", [KerusakanAlat::class, "daftarKerusakan"]);
     });
 
@@ -185,13 +174,7 @@ Route::prefix("/admin")->group(function(){
                 $param["ditolak"] = $komp->get_all_data_by_admin_ditolak();
                 return view("admin.komplain.request.daftarKomplain")->with($param);
             })->middleware([CekAdmin::class]);
-            Route::get("/detailKomplain/{id}", function ($id) {
-                $komp = new ModelsKomplainRequest();
-                $param["komplain"] = $komp->get_all_data_by_id($id);
-                $files = new ModelsFilesKomplainReq();
-                $param["files"] = $files->get_all_data($id);
-                return view("admin.komplain.request.detailKomplain")->with($param);
-            })->middleware([CekAdmin::class]);
+            Route::get("/detailKomplain/{id}", [KomplainRequest::class, "detailKomplain"])->middleware([CekAdmin::class]);
             Route::post("/terimaKomplain", [KomplainRequest::class, "terimaKomplain"]);
             Route::get("/tolakKomplain/{id}", [KomplainRequest::class, "tolakKomplain"]);
         });
@@ -204,13 +187,7 @@ Route::prefix("/admin")->group(function(){
                 $param["ditolak"] = $komp->get_all_data_by_admin_ditolak();
                 return view("admin.komplain.trans.daftarKomplain")->with($param);
             })->middleware([CekAdmin::class]);
-            Route::get("/detailKomplain/{id}", function ($id) {
-                $komp = new ModelsKomplainTrans();
-                $param["komplain"] = $komp->get_all_data_by_id($id);
-                $files = new ModelsFilesKomplainTrans();
-                $param["files"] = $files->get_all_data($id);
-                return view("admin.komplain.trans.detailKomplain")->with($param);
-            })->middleware([CekAdmin::class]);
+            Route::get("/detailKomplain/{id}", [KomplainTrans::class, "detailKomplain"])->middleware([CekAdmin::class]);
             Route::post("/terimaKomplain", [KomplainTrans::class, "terimaKomplain"]);
             Route::get("/tolakKomplain/{id}/{id2}", [KomplainTrans::class, "tolakKomplain"]);
         });

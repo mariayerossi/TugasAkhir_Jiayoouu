@@ -499,12 +499,6 @@
                 <h5><b>Subtotal: Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</b></h5>
             </div>
 
-            @php
-                $extendDtrans = DB::table('extend_dtrans')
-                        ->where("fk_id_extend_htrans","=",$extend->first()->id_extend_htrans)
-                        ->get();
-            @endphp
-
             <div class="row mt-5">
                 <div class="">
                     <h5>Alat Olahraga yang Disewa</h5>

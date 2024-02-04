@@ -57,35 +57,6 @@
         <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
     </div>
     <h3 class="text-center mb-4">Detail Komplain Request</h3>
-    @php
-        if ($komplain->first()->fk_id_permintaan != null) {
-            $dataRequest = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first();
-            $id_request = $dataRequest->id_permintaan;
-            $tanggal_req = $dataRequest->tanggal_minta;
-            $status = $dataRequest->status_permintaan;
-
-            $id_tempat = $dataRequest->fk_id_tempat;
-            $id_pemilik = $dataRequest->fk_id_pemilik;
-            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-        }
-        else if ($komplain->first()->fk_id_penawaran != null) {
-            $dataRequest = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first();
-            $id_request = $dataRequest->id_penawaran;
-            $tanggal_req = $dataRequest->tanggal_tawar;
-            $status = $dataRequest->status_penawaran;
-
-            $id_tempat = $dataRequest->fk_id_tempat;
-            $id_pemilik = $dataRequest->fk_id_pemilik;
-            $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-        }
-        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataRequest->req_id_alat)->get()->first();
-        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
-
-        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataRequest->req_lapangan)->get()->first();
-        $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataRequest->req_lapangan)->get()->first();
-    @endphp
 
     <div class="d-flex justify-content-end me-3">
         @if ($komplain->first()->fk_id_permintaan != null)
@@ -104,13 +75,6 @@
         @endif
     </div>
     @php
-        if ($komplain->first()->fk_id_pemilik != null) {
-            $namaUser = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->first()->fk_id_pemilik)->get()->first()->nama_pemilik;
-        }
-        else {
-            $namaUser = DB::table('pihak_tempat')->where("id_tempat","=",$komplain->first()->fk_id_tempat)->get()->first()->nama_tempat;
-        }
-
         $tanggalAwal1 = $komplain->first()->waktu_komplain;
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
@@ -339,22 +303,6 @@
                 <div class="col-md-1 col-sm-2 d-flex align-items-center">
                     <input type="checkbox" name="pengembalianCheckbox2" id="pengembalianCheckbox2" onchange="toggleInput2()">
                 </div>
-                @php
-                    if ($komplain->first()->fk_id_permintaan == "Permintaan") {
-                        $id_tempat = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_tempat;
-                        $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->first()->fk_id_permintaan)->get()->first()->fk_id_pemilik;
-
-                        $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-                        $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-                    }
-                    else if ($komplain->first()->fk_id_penawaran == "Penawaran") {
-                        $id_tempat = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_tempat;
-                        $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->first()->fk_id_penawaran)->get()->first()->fk_id_pemilik;
-
-                        $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$id_tempat)->get()->first()->nama_tempat;
-                        $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
-                    }
-                @endphp
                 @if (strpos($komplain->first()->jenis_komplain, 'Alat') !== false)
                     <div class="col-md-11 col-sm-10 mt-2" id="pengembalianLabel2">
                         <h6>Penonaktifkan Akun Pemilik Alat Olahraga {{$nama_pemilik}}</h6>

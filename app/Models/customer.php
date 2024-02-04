@@ -34,7 +34,7 @@ class customer extends Model
     }
 
     public function get_all_data_by_id($id){
-        return customer::where('deleted_at',"=",null)->where('id_user',"=", $id)->get();
+        return customer::where('id_user',"=", $id)->get();
     }
 
     public function get_all_data(){

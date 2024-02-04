@@ -2237,6 +2237,10 @@ class Transaksi extends Controller
         $ext = new extendHtrans();
         $param["extend"] = $ext->get_all_data_by_id_htrans($id);
 
+        $ext_d = new extendDtrans();
+        $id_extend = $ext->get_all_data_by_id_htrans($id)->first()->id_extend_htrans;
+        $param["extendDtrans"] = $ext_d->get_all_data_by_id_extend_htrans($id_extend);
+
         $user = new customer();
         $id_user = $htrans->get_all_data_by_id($id)->first()->fk_id_user;
         $param["dataUser"] = $user->get_all_data_by_id($id_user)->first();
@@ -2269,5 +2273,31 @@ class Transaksi extends Controller
         $param["dataFileLapangan"] = $file_lapangan->get_all_data($id_lapangan)->first();
 
         return view("tempat.transaksi.editTrans")->with($param);
+    }
+
+    public function detailTransaksiAdmin($id) {
+        $htrans = new htrans();
+        $param["htrans"] = $htrans->get_all_data_by_id($id);
+        $dtrans = new dtrans();
+        $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
+        $ext = new extendHtrans();
+        $param["extend"] = $ext->get_all_data_by_id_htrans($id);
+
+        $ext_d = new extendDtrans();
+        $id_extend = $ext->get_all_data_by_id_htrans($id)->first()->id_extend_htrans;
+        $param["extendDtrans"] = $ext_d->get_all_data_by_id_extend_htrans($id_extend);
+
+        $user = new customer();
+        $id_user = $htrans->get_all_data_by_id($id)->first()->fk_id_user;
+        $param["dataUser"] = $user->get_all_data_by_id($id_user)->first();
+
+        $lapangan = new lapanganOlahraga();
+        $id_lapangan = $htrans->get_all_data_by_id($id)->first()->fk_id_lapangan;
+        $param["dataLapangan"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+
+        $file_lapangan = new filesLapanganOlahraga();
+        $param["dataFileLapangan"] = $file_lapangan->get_all_data($id_lapangan)->first();
+        
+        return view("admin.transaksi.detailTransaksi")->with($param);
     }
 }

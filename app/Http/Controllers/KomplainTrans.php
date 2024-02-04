@@ -1940,4 +1940,61 @@ class KomplainTrans extends Controller
         $param["komplain"] = $komplain;
         return view("customer.daftarKomplain")->with($param);
     }
+
+    public function detailKomplain($id) {
+        $komp = new ModelsKomplainTrans();
+        $param["komplain"] = $komp->get_all_data_by_id($id);
+        $files = new filesKomplainTrans();
+        $param["files"] = $files->get_all_data($id);
+
+        $dataHtrans = DB::table('htrans')
+                    ->select("htrans.id_htrans", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.id_lapangan", "lapangan_olahraga.nama_lapangan", "lapangan_olahraga.harga_sewa_lapangan", "lapangan_olahraga.deleted_at", "htrans.kode_trans", "pihak_tempat.id_tempat","pihak_tempat.nama_tempat","pihak_tempat.email_tempat","pihak_tempat.telepon_tempat","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa","htrans.status_trans", "htrans.subtotal_lapangan","htrans.subtotal_alat","htrans.total_trans")
+                    ->where("id_htrans","=",$komp->get_all_data_by_id($id)->first()->fk_id_htrans)
+                    ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
+                    ->join("pihak_tempat","lapangan_olahraga.pemilik_lapangan","=","pihak_tempat.id_tempat")
+                    ->joinSub(function($query) {
+                        $query->select("fk_id_lapangan", "nama_file_lapangan")
+                            ->from('files_lapangan')
+                            ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
+                    }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
+                    ->get()
+                    ->first();
+
+        $namaUser = DB::table('user')->where("id_user","=",$komp->get_all_data_by_id($id)->first()->fk_id_user)->get()->first()->nama_user;
+
+        $param["dataHtrans"] = $dataHtrans;
+        $param["namaUser"] = $namaUser;
+
+        $dataDtrans = DB::table('dtrans')
+                        ->where("dtrans.fk_id_htrans","=",$dataHtrans->id_htrans)
+                        ->get();
+        $param["dataDtrans"] = $dataDtrans;
+
+        $tempat = DB::table('pihak_tempat')
+                ->join("htrans","pihak_tempat.id_tempat","=","htrans.fk_id_tempat")
+                ->where("htrans.id_htrans","=",$komp->get_all_data_by_id($id)->first()->fk_id_htrans)
+                ->get()
+                ->first();
+        $pemilik = DB::table('pemilik_alat')
+                ->join("dtrans","pemilik_alat.id_pemilik","=","dtrans.fk_id_pemilik")
+                ->where("dtrans.fk_id_htrans","=",$komp->get_all_data_by_id($id)->first()->fk_id_htrans)
+                ->get();
+        
+        $lapangan = DB::table('lapangan_olahraga')
+                ->join("htrans","lapangan_olahraga.id_lapangan","=","htrans.fk_id_lapangan")
+                ->where("htrans.id_htrans","=",$komp->get_all_data_by_id($id)->first()->fk_id_htrans)
+                ->get()
+                ->first();
+        $alat = DB::table('alat_olahraga')
+                ->join("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
+                ->where("dtrans.fk_id_htrans","=",$komp->get_all_data_by_id($id)->first()->fk_id_htrans)
+                ->get();
+        
+        $param["tempat"] = $tempat;
+        $param["pemilik"] = $pemilik;
+        $param["lapangan"] = $lapangan;
+        $param["alat"] = $alat;
+
+        return view("admin.komplain.trans.detailKomplain")->with($param);
+    }
 }

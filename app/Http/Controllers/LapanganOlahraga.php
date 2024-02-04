@@ -641,6 +641,12 @@ class LapanganOlahraga extends Controller
         $tempat = new pihakTempat();
         $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
         $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
+
+        $rating = new ratingLapangan();
+        $avg = $rating->get_avg_data($id);
+        $param["averageRating"] = round($avg, 1);
+        $param["totalReviews"] = $rating->get_data_count($id);
+        $param["rating"] = $rating->get_data_by_id_lapangan($id);
         
         return view("admin.produk.detailLapanganUmum")->with($param);
     }

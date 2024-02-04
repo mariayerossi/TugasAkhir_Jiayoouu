@@ -1455,4 +1455,66 @@ class KomplainRequest extends Controller
 
         return response()->json(['success' => true, 'message' => "Berhasil menolak komplain!"]);
     }
+
+    public function detailKomplain($id) {
+        $komp = new ModelsKomplainRequest();
+        $param["komplain"] = $komp->get_all_data_by_id($id);
+        $files = new filesKomplainReq();
+        $param["files"] = $files->get_all_data($id);
+
+        if ($komp->get_all_data_by_id($id)->first()->fk_id_permintaan != null) {
+            $minta = new requestPermintaan();
+            $dataRequest = $minta->get_all_data_by_id($komp->get_all_data_by_id($id)->first()->fk_id_permintaan)->first();
+            $id_request = $dataRequest->id_permintaan;
+            $tanggal_req = $dataRequest->tanggal_minta;
+            $status = $dataRequest->status_permintaan;
+
+            $id_tempat = $dataRequest->fk_id_tempat;
+            $id_pemilik = $dataRequest->fk_id_pemilik;
+            $tempat = new pihakTempat();
+            $nama_tempat = $tempat->get_all_data_by_id($id_tempat)->first()->nama_tempat;
+            $pemilik = new pemilikAlat();
+            $nama_pemilik = $pemilik->get_all_data_by_id($id_pemilik)->first()->nama_pemilik;
+        }
+        else if ($komp->get_all_data_by_id($id)->first()->fk_id_penawaran != null) {
+            $tawar = new requestPenawaran();
+            $dataRequest = $tawar->get_all_data_by_id($komp->get_all_data_by_id($id)->first()->fk_id_penawaran)->first();
+            $id_request = $dataRequest->id_penawaran;
+            $tanggal_req = $dataRequest->tanggal_tawar;
+            $status = $dataRequest->status_penawaran;
+
+            $id_tempat = $dataRequest->fk_id_tempat;
+            $id_pemilik = $dataRequest->fk_id_pemilik;
+            $tempat = new pihakTempat();
+            $nama_tempat = $tempat->get_all_data_by_id($id_tempat)->first()->nama_tempat;
+            $nama_pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first()->nama_pemilik;
+        }
+        $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$dataRequest->req_id_alat)->get()->first();
+        $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+
+        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$dataRequest->req_lapangan)->get()->first();
+        $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataRequest->req_lapangan)->get()->first();
+
+        $param["tanggal_req"] = $tanggal_req;
+        $param["status"] = $status;
+        $param["dataAlat"] = $dataAlat;
+        $param["dataFileAlat"] = $dataFileAlat;
+        $param["dataLapangan"] = $dataLapangan;
+        $param["dataFileLapangan"] = $dataFileLapangan;
+        $param["dataRequest"] = $dataRequest;
+        $param["nama_tempat"] = $nama_tempat;
+        $param["id_tempat"] = $id_tempat;
+        $param["nama_pemilik"] = $nama_pemilik;
+        $param["id_pemilik"] = $id_pemilik;
+
+        if ($komp->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
+            $namaUser = DB::table('pemilik_alat')->where("id_pemilik","=",$komp->get_all_data_by_id($id)->first()->fk_id_pemilik)->get()->first()->nama_pemilik;
+        }
+        else {
+            $namaUser = DB::table('pihak_tempat')->where("id_tempat","=",$komp->get_all_data_by_id($id)->first()->fk_id_tempat)->get()->first()->nama_tempat;
+        }
+        $param["namaUser"] = $namaUser;
+
+        return view("admin.komplain.request.detailKomplain")->with($param);
+    }
 }

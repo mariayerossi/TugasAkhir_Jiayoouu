@@ -60,10 +60,6 @@
         @endif
     </div>
     @php
-        $dataUser = DB::table('user')->where("id_user","=",$htrans->first()->fk_id_user)->get()->first();
-        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->first()->fk_id_lapangan)->get()->first();
-        $dataFileLapangan = DB::table('files_lapangan')->where("fk_id_lapangan","=",$dataLapangan->id_lapangan)->get()->first();
-
         $tanggalAwal = $htrans->first()->tanggal_trans;
         $tanggalObjek = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal);
         $carbonDate = \Carbon\Carbon::parse($tanggalObjek)->locale('id');
@@ -164,12 +160,7 @@
     <div class="d-flex justify-content-end mt-5 me-3 mb-5">
         <h4><b>Total: Rp {{number_format($htrans->first()->total_trans, 0, ',', '.')}}</b></h4>
     </div>
-
-    @php
-        $extend = DB::table('extend_htrans')
-                ->where("fk_id_htrans","=",$htrans->first()->id_htrans)
-                ->get();
-    @endphp
+    
     @if (!$extend->isEmpty())
     <div id="extend">
         <hr style="height: 3px;
@@ -217,12 +208,6 @@
     <div class="d-flex justify-content-end mt-3 me-3">
         <h5><b>Subtotal: Rp {{number_format($extend->first()->subtotal_lapangan, 0, ',', '.')}}</b></h5>
     </div>
-
-    @php
-        $extendDtrans = DB::table('extend_dtrans')
-                ->where("fk_id_extend_htrans","=",$extend->first()->id_extend_htrans)
-                ->get();
-    @endphp
 
     <div class="row mt-5">
         <div class="col-md-6 col-sm-12">

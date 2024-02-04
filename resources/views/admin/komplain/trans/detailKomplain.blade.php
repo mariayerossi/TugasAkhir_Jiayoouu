@@ -57,21 +57,6 @@
     </div>
     <h3 class="text-center mb-4">Detail Komplain Transaksi</h3>
     @php
-        $dataHtrans = DB::table('htrans')
-                    ->select("htrans.id_htrans", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.id_lapangan", "lapangan_olahraga.nama_lapangan", "lapangan_olahraga.harga_sewa_lapangan", "lapangan_olahraga.deleted_at", "htrans.kode_trans", "pihak_tempat.id_tempat","pihak_tempat.nama_tempat","pihak_tempat.email_tempat","pihak_tempat.telepon_tempat","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa","htrans.status_trans", "htrans.subtotal_lapangan","htrans.subtotal_alat","htrans.total_trans")
-                    ->where("id_htrans","=",$komplain->first()->fk_id_htrans)
-                    ->join("lapangan_olahraga", "htrans.fk_id_lapangan", "=", "lapangan_olahraga.id_lapangan")
-                    ->join("pihak_tempat","lapangan_olahraga.pemilik_lapangan","=","pihak_tempat.id_tempat")
-                    ->joinSub(function($query) {
-                        $query->select("fk_id_lapangan", "nama_file_lapangan")
-                            ->from('files_lapangan')
-                            ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
-                    }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
-                    ->get()
-                    ->first();
-
-        $namaUser = DB::table('user')->where("id_user","=",$komplain->first()->fk_id_user)->get()->first()->nama_user;
-
         $tanggalAwal1 = $komplain->first()->waktu_komplain;
         $tanggalObjek1 = DateTime::createFromFormat('Y-m-d H:i:s', $tanggalAwal1);
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
@@ -163,11 +148,6 @@
     </div>
 
     <div class="row mt-4">
-        @php
-            $dataDtrans = DB::table('dtrans')
-                        ->where("dtrans.fk_id_htrans","=",$dataHtrans->id_htrans)
-                        ->get();
-        @endphp
         @if (!$dataDtrans->isEmpty())
             @foreach ($dataDtrans as $item)
                 @php
@@ -278,27 +258,6 @@
     {{-- blm mari --}}
     <h5 class="mb-5 mt-5">Penanganan Komplain</h5>
     @if ($komplain->first()->status_komplain == "Menunggu")
-        @php
-            $tempat = DB::table('pihak_tempat')
-                    ->join("htrans","pihak_tempat.id_tempat","=","htrans.fk_id_tempat")
-                    ->where("htrans.id_htrans","=",$komplain->first()->fk_id_htrans)
-                    ->get()
-                    ->first();
-            $pemilik = DB::table('pemilik_alat')
-                    ->join("dtrans","pemilik_alat.id_pemilik","=","dtrans.fk_id_pemilik")
-                    ->where("dtrans.fk_id_htrans","=",$komplain->first()->fk_id_htrans)
-                    ->get();
-            
-            $lapangan = DB::table('lapangan_olahraga')
-                    ->join("htrans","lapangan_olahraga.id_lapangan","=","htrans.fk_id_lapangan")
-                    ->where("htrans.id_htrans","=",$komplain->first()->fk_id_htrans)
-                    ->get()
-                    ->first();
-            $alat = DB::table('alat_olahraga')
-                    ->join("dtrans","alat_olahraga.id_alat","=","dtrans.fk_id_alat")
-                    ->where("dtrans.fk_id_htrans","=",$komplain->first()->fk_id_htrans)
-                    ->get();
-        @endphp
         <form id="terimaForm" action="/admin/komplain/trans/terimaKomplain" method="POST">
             @csrf
             {{-- <div class="row mt-5">
