@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         date_default_timezone_set("Asia/Jakarta");
+
+        //User
         DB::table('user')->insert([
             'nama_user' => "Maria Yerossi",
             'email_user' => 'maria@gmail.com',
@@ -40,6 +42,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //Pemilik Alat
         DB::table('pemilik_alat')->insert([
             'nama_pemilik' => "Andika Pratama",
             'email_pemilik' => 'andika@gmail.com',
@@ -68,6 +71,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //Register Tempat
         DB::table('register_tempat')->insert([
             'nama_tempat_reg' => "Herry Sport",
             'nama_pemilik_tempat_reg' => "Herry Tanoe",
@@ -82,6 +86,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //Pihak Tempat
         DB::table('pihak_tempat')->insert([
             'nama_tempat' => "Mario Sport",
             'nama_pemilik_tempat' => "Mario Wijaya",
@@ -116,6 +121,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
         
+        //Kategori
         DB::table('kategori')->insert([
             "nama_kategori" => "Basket",
             'created_at' => date("Y-m-d H:i:s"),
@@ -136,6 +142,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //Alat Olahraga
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Molten",
             'fk_id_kategori' => 1,
@@ -251,7 +258,7 @@ class DatabaseSeeder extends Seeder
             'ganti_rugi_alat' => 100000,
             'kota_alat' => "Bandung",
             'status_alat' => "Aktif",
-            'fk_id_pemilik' => 2,
+            'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -271,7 +278,7 @@ class DatabaseSeeder extends Seeder
             'berat_alat' => "300",
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 20000,
-            'ganti_rugi_alat' => 100000,
+            'ganti_rugi_alat' => 150000,
             'kota_alat' => "Surabaya",
             'status_alat' => "Aktif",
             'fk_id_pemilik' => 2,
@@ -285,6 +292,57 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Raket Tenis Wilson Ultra Power 105",
+            'fk_id_kategori' => 4,
+            'deskripsi_alat' => 'Wilson Ultra Power 105 menekankan pada kekuatan ringan untuk pemain tenis menengah. Dengan ukuran kepala 105 inci persegi, raket ini cocok dengan kategori "midplus", yang dirancang untuk memberikan keseimbangan kekuatan dan kontrol. Untuk beberapa kekuatan tambahan dan pengampunan, itu dilengkapi dengan sweet spot yang diperbesar untuk, membantu pemain untuk memukul tembakan yang lebih konsisten. Bingkai juga sedikit lebih panjang dari raket dewasa standar, memberikan jangkauan yang lebih luas dan cakupan pengadilan yang lebih mudah. Pada 9,8 ons digantung, itu adalah raket paling ringan dari jalur rekreasi Ultra. Wilson Ultra Power 105 menggabungkan kekuatan dan kemampuan manuver untuk membuat setiap stroke terasa lebih mudah.',
+            'berat_alat' => "300",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 10000,
+            'ganti_rugi_alat' => 120000,
+            'kota_alat' => "Semarang",
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "raket_tenis2.jpeg",
+            'fk_id_alat' => 6,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Voli Mikasa FIV3",
+            'fk_id_kategori' => 4,
+            'deskripsi_alat' => "Spesifikasi Produk :
+                ✅Bola Voli/Volly Press Pabrikan Kwalitas Import
+                ✅Bahan PU Lembut dan Empuk saat dipakai.
+                ✅Ukuran Size 5.
+                ✅Berat Bola saat digunakan berkisar 260-280gram.
+                ✅Keliling lingkaran bola 65-66cm.
+                ✅Diameter bola 20,7 - 21 cm.
+                ✅Dilengkapi jaring dan adapter pentil.
+                ✅Direkomendasikan untuk latihan usia remaja dan dewasa.",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 17000,
+            'ganti_rugi_alat' => 130000,
+            'kota_alat' => "Bandung",
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_voli1.jpg",
+            'fk_id_alat' => 7,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //Lapangan Olahraga
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Basket Mario 1",
             'fk_id_kategori' => 1,
@@ -1018,7 +1076,19 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        
+        DB::table('request_permintaan')->insert([
+            'req_harga_sewa' => 30000,
+            'req_lapangan' => 1,
+            'req_tanggal_mulai' => $tanggal,
+            'req_tanggal_selesai' => $tanggal2,
+            'req_id_alat' => 2,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 1,
+            'tanggal_minta' => date("Y-m-d H:i:s"),
+            'status_permintaan' => "Diterima",
+            'kode_mulai' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
 
         DB::table('request_penawaran')->insert([
             'req_harga_sewa' => 40000,
@@ -1048,7 +1118,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('sewa_sendiri')->insert([
             'req_lapangan' => 1,
-            'req_id_alat' => 5,
+            'req_id_alat' => 8,
             'fk_id_tempat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
