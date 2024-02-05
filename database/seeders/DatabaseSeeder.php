@@ -142,6 +142,11 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('kategori')->insert([
+            "nama_kategori" => "Badminton",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
         //Alat olahraga
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Molten",
@@ -204,8 +209,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_alat')->insert([
-            'nama_file_alat' => "bola_basket6.jpeg",
-            'fk_id_alat' => 1,
+            'nama_file_alat' => "bola_basket6.jpg",
+            'fk_id_alat' => 2,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -235,7 +240,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal5.jpg",
-            'fk_id_alat' => 2,
+            'fk_id_alat' => 3,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -265,7 +270,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_voli2.jpg",
-            'fk_id_alat' => 3,
+            'fk_id_alat' => 4,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -295,7 +300,65 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "raket_tenis1.jpg",
-            'fk_id_alat' => 4,
+            'fk_id_alat' => 5,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Tenis  Frasser 812",
+            'fk_id_kategori' => 4,
+            'deskripsi_alat' => "Spesifikasi Produk :
+                ✅Bola Voli/Volly Press Pabrikan Kwalitas Import
+                ✅Bahan PU Lembut dan Empuk saat dipakai.
+                ✅Ukuran Size 5.
+                ✅Berat Bola saat digunakan berkisar 260-280gram.
+                ✅Keliling lingkaran bola 65-66cm.
+                ✅Diameter bola 20,7 - 21 cm.
+                ✅Dilengkapi jaring dan adapter pentil.
+                ✅Direkomendasikan untuk latihan usia remaja dan dewasa.",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 20000,
+            'ganti_rugi_alat' => 150000,
+            'kota_alat' => "Bandung",
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_tenis1.jpg",
+            'fk_id_alat' => 6,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Raket Badminton Warna Warni",
+            'fk_id_kategori' => 5,
+            'deskripsi_alat' => "Spesifikasi Produk :
+                ✅Bola Voli/Volly Press Pabrikan Kwalitas Import
+                ✅Bahan PU Lembut dan Empuk saat dipakai.
+                ✅Ukuran Size 5.
+                ✅Berat Bola saat digunakan berkisar 260-280gram.
+                ✅Keliling lingkaran bola 65-66cm.
+                ✅Diameter bola 20,7 - 21 cm.
+                ✅Dilengkapi jaring dan adapter pentil.
+                ✅Direkomendasikan untuk latihan usia remaja dan dewasa.",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 20000,
+            'ganti_rugi_alat' => 150000,
+            'kota_alat' => "Surabaya",
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "raket_badminton1.jpg",
+            'fk_id_alat' => 7,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -317,8 +380,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_alat')->insert([
-            'nama_file_alat' => "bola_basket5.jpeg",
-            'fk_id_alat' => 5,
+            'nama_file_alat' => "bola_basket5.jpg",
+            'fk_id_alat' => 8,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -338,8 +401,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_alat')->insert([
-            'nama_file_alat' => "raket_tenis2.jpeg",
-            'fk_id_alat' => 6,
+            'nama_file_alat' => "raket_tenis2.jpg",
+            'fk_id_alat' => 9,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -368,7 +431,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_voli1.jpg",
-            'fk_id_alat' => 8,
+            'fk_id_alat' => 10,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1065,13 +1128,13 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal1.jpg",
-            'fk_id_alat' => 9,
+            'fk_id_alat' => 11,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal2.jpg",
-            'fk_id_alat' => 5,
+            'fk_id_alat' => 11,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1198,12 +1261,39 @@ class DatabaseSeeder extends Seeder
         //request penawaran
         DB::table('request_penawaran')->insert([
             'req_harga_sewa' => 50000,
-            'req_lapangan' => 3,
+            'req_lapangan' => 1,
             'req_tanggal_mulai' => $tanggal,
             'req_tanggal_selesai' => $tanggal2,
             'req_id_alat' => 6,
             'fk_id_tempat' => 1,
-            'fk_id_pemilik' => 2,
+            'fk_id_pemilik' => 1,
+            'tanggal_tawar' => date("Y-m-d H:i:s"),
+            'status_penawaran' => "Menunggu",
+            'status_tempat' => null,
+            'status_pemilik' => null,
+            'kode_mulai' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //Negosiasi penawaran
+        DB::table('negosiasi')->insert([
+            'isi_negosiasi' => "hai!",
+            'waktu_negosiasi' => date("Y-m-d H:i:s"),
+            'fk_id_permintaan' => null,
+            'fk_id_penawaran' => 1,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('request_penawaran')->insert([
+            'req_harga_sewa' => 50000,
+            'req_lapangan' => 3,
+            'req_tanggal_mulai' => $tanggal,
+            'req_tanggal_selesai' => $tanggal2,
+            'req_id_alat' => 7,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 1,
             'tanggal_tawar' => date("Y-m-d H:i:s"),
             'status_penawaran' => "Menunggu",
             'status_tempat' => null,
@@ -1217,9 +1307,25 @@ class DatabaseSeeder extends Seeder
             'isi_negosiasi' => "hai! saya mau menawarkan alat olahraga, monggo mungkin tertarik untuk menyewakannya",
             'waktu_negosiasi' => date("Y-m-d H:i:s"),
             'fk_id_permintaan' => null,
-            'fk_id_penawaran' => 1,
+            'fk_id_penawaran' => 2,
             'fk_id_pemilik' => 2,
             'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('request_penawaran')->insert([
+            'req_harga_sewa' => 50000,
+            'req_lapangan' => 3,
+            'req_tanggal_mulai' => $tanggal,
+            'req_tanggal_selesai' => $tanggal2,
+            'req_id_alat' => 8,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 2,
+            'tanggal_tawar' => date("Y-m-d H:i:s"),
+            'status_penawaran' => "Menunggu",
+            'status_tempat' => null,
+            'status_pemilik' => null,
+            'kode_mulai' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1228,7 +1334,7 @@ class DatabaseSeeder extends Seeder
             'req_lapangan' => 4,
             'req_tanggal_mulai' => $tanggal,
             'req_tanggal_selesai' => $tanggal2,
-            'req_id_alat' => 7,
+            'req_id_alat' => 9,
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 2,
             'tanggal_tawar' => date("Y-m-d H:i:s"),
@@ -1244,7 +1350,7 @@ class DatabaseSeeder extends Seeder
             'req_lapangan' => 4,
             'req_tanggal_mulai' => $tanggal,
             'req_tanggal_selesai' => $tanggal2,
-            'req_id_alat' => 8,
+            'req_id_alat' => 10,
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 2,
             'tanggal_tawar' => date("Y-m-d H:i:s"),
@@ -1260,7 +1366,7 @@ class DatabaseSeeder extends Seeder
             'jenis_komplain' => "Lapangan tidak sesuai",
             'keterangan_komplain' => "Lapangan olahraga sebenarnya sudah tidak layak digunakan",
             'fk_id_permintaan' => null,
-            'fk_id_penawaran' => 3,
+            'fk_id_penawaran' => 5,
             'waktu_komplain' => date("Y-m-d H:i:s"),
             'status_komplain' => "Menunggu",
             'penanganan_komplain' => null,
@@ -1273,7 +1379,7 @@ class DatabaseSeeder extends Seeder
         //Sewa sendiri
         DB::table('sewa_sendiri')->insert([
             'req_lapangan' => 1,
-            'req_id_alat' => 9,
+            'req_id_alat' => 11,
             'fk_id_tempat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);

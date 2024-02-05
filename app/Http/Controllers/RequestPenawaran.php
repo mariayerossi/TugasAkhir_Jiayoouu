@@ -161,7 +161,7 @@ class RequestPenawaran extends Controller
             "subject" => "🔔Penawaran Alat Olahraga Diajukan Kembali!🔔",
             "judul" => "Penawaran Alat Olahraga Diajukan Kembali",
             "nama_user" => $nama_tempat,
-            "url" => "https://sportiva.my.id/tempat/permintaan/daftarPermintaan",
+            "url" => "https://sportiva.my.id/tempat/penawaran/daftarPenawaran",
             "button" => "Lihat dan Terima Penawaran",
             "isi" => "Anda memiliki satu penawaran alat olahraga yang diajukan kembali oleh pemilik:<br><br>
                     <b>Nama Alat Olahraga  : ".$nama_alat."</b><br>
@@ -841,6 +841,7 @@ class RequestPenawaran extends Controller
                 ->where("request_penawaran.status_penawaran","=","Dibatalkan")
                 ->orderBy("request_penawaran.tanggal_tawar", "desc")
                 ->get();
+        // dd($dibatalkan);
         $param["dibatalkan"] = $dibatalkan;
 
         //dikomplain

@@ -780,6 +780,7 @@ class RequestPermintaan extends Controller
                 ->where("request_permintaan.status_permintaan","=","Selesai")
                 ->orderBy("request_permintaan.tanggal_minta", "desc")
                 ->get();
+        // dd($selesai);
         $param["selesai"] = $selesai;
 
         //dibatalkan
