@@ -509,6 +509,7 @@ class LapanganOlahraga extends Controller
         $param["lapangan"] = $lapa->get_all_data_by_id($id);
         $files = new filesLapanganOlahraga();
         $param["files"] = $files->get_all_data($id);
+        // dd($files->get_all_data($id)->first()->nama_file_alat);
         $role = Session::get("dataRole")->id_pemilik;
         $alat = new alatOlahraga();
         $param["alat"] = $alat->get_all_data_status($role);

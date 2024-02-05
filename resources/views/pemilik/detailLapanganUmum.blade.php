@@ -214,6 +214,7 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                // dd($dataFileAlat->nama_file_alat);
 
                                 $isi = "";
                                 if ($dataAlat->fk_id_pemilik == Session::get("dataRole")->id_pemilik) {
@@ -284,6 +285,7 @@
                             @php
                                 $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$item->req_id_alat)->get()->first();
                                 $dataFileAlat = DB::table('files_alat')->where("fk_id_alat","=",$dataAlat->id_alat)->get()->first();
+                                // dd($dataFileAlat);
 
                                 $isi = "";
                                 if ($dataAlat->fk_id_pemilik == Session::get("dataRole")->id_pemilik) {

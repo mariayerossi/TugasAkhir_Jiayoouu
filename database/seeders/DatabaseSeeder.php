@@ -142,7 +142,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        //Alat Olahraga
+        //Alat olahraga
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Molten",
             'fk_id_kategori' => 1,
@@ -175,6 +175,36 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_basket2.jpg",
+            'fk_id_alat' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Basket Spalding",
+            'fk_id_kategori' => 1,
+            'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
+            Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
+            *Bola Original Selalu ada Logo PERBASI & IBL
+            
+            INFO PRODUK :
+            COVER MATERIAL : RUBBER (Karet)
+            CONSTRUCTION : Molded
+            SIZE : 6 ( B6G2010 )
+            BLADDER : Butyl
+            REMARK : FIBA APPROVED ( REKOMENDASI BUAT OUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            'berat_alat' => "20.5",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 20000,
+            'ganti_rugi_alat' => 100000,
+            'kota_alat' => "Jakarta",
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_basket6.jpeg",
             'fk_id_alat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -295,7 +325,7 @@ class DatabaseSeeder extends Seeder
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Raket Tenis Wilson Ultra Power 105",
             'fk_id_kategori' => 4,
-            'deskripsi_alat' => 'Wilson Ultra Power 105 menekankan pada kekuatan ringan untuk pemain tenis menengah. Dengan ukuran kepala 105 inci persegi, raket ini cocok dengan kategori "midplus", yang dirancang untuk memberikan keseimbangan kekuatan dan kontrol. Untuk beberapa kekuatan tambahan dan pengampunan, itu dilengkapi dengan sweet spot yang diperbesar untuk, membantu pemain untuk memukul tembakan yang lebih konsisten. Bingkai juga sedikit lebih panjang dari raket dewasa standar, memberikan jangkauan yang lebih luas dan cakupan pengadilan yang lebih mudah. Pada 9,8 ons digantung, itu adalah raket paling ringan dari jalur rekreasi Ultra. Wilson Ultra Power 105 menggabungkan kekuatan dan kemampuan manuver untuk membuat setiap stroke terasa lebih mudah.',
+            'deskripsi_alat' => 'Wilson Ultra Power 105 menekankan pada kekuatan ringan untuk pemain tenis menengah. Dengan ukuran kepala 105 inci persegi, raket ini cocok dengan kategori "midplus", yang dirancang untuk memberikan keseimbangan kekuatan dan kontrol. Untuk beberapa kekuatan tambahan dan pengampunan, itu dilengkapi dengan sweet spot yang diperbesar untuk, membantu pemain untuk memukul tembakan yang lebih konsisten.',
             'berat_alat' => "300",
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 10000,
@@ -338,7 +368,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_voli1.jpg",
-            'fk_id_alat' => 7,
+            'fk_id_alat' => 8,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1035,7 +1065,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal1.jpg",
-            'fk_id_alat' => 5,
+            'fk_id_alat' => 9,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1048,10 +1078,21 @@ class DatabaseSeeder extends Seeder
         //--------------------------------------------------------------------
         $tanggal = date("Y-m-d");
 
+        //minggu depan
         $updated_at2 = new DateTime($tanggal);
         $updated_at2->add(new DateInterval('P7D'));
         $tanggal2 = $updated_at2->format('Y-m-d');
 
+        //minggu lalu
+        $updated_at3 = new DateTime($tanggal);
+        $updated_at3->sub(new DateInterval('P7D'));
+        $tanggal3 = $updated_at3->format('Y-m-d');
+
+        $format_tgl = date("Ymd");
+
+        $waktu = date("H:i:s");
+
+        //Request permintaan
         DB::table('request_permintaan')->insert([
             'req_harga_sewa' => 50000,
             'req_lapangan' => 1,
@@ -1061,15 +1102,30 @@ class DatabaseSeeder extends Seeder
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
             'tanggal_minta' => date("Y-m-d H:i:s"),
+            'status_permintaan' => "Disewakan",
+            'kode_mulai' => "REQMM".$format_tgl."1",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('request_permintaan')->insert([
+            'req_harga_sewa' => 50000,
+            'req_lapangan' => 1,
+            'req_tanggal_mulai' => $tanggal,
+            'req_tanggal_selesai' => $tanggal2,
+            'req_id_alat' => 2,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 1,
+            'tanggal_minta' => date("Y-m-d H:i:s"),
             'status_permintaan' => "Menunggu",
             'kode_mulai' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //Negosiasi permintaan
         DB::table('negosiasi')->insert([
             'isi_negosiasi' => "halo kak! untuk harga sewa tidak bisa dipertimbangkan lagi?",
             'waktu_negosiasi' => date("Y-m-d H:i:s"),
-            'fk_id_permintaan' => 1,
+            'fk_id_permintaan' => 2,
             'fk_id_penawaran' => null,
             'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
@@ -1077,11 +1133,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('request_permintaan')->insert([
-            'req_harga_sewa' => 30000,
+            'req_harga_sewa' => 20000,
             'req_lapangan' => 1,
             'req_tanggal_mulai' => $tanggal,
             'req_tanggal_selesai' => $tanggal2,
-            'req_id_alat' => 2,
+            'req_id_alat' => 3,
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
             'tanggal_minta' => date("Y-m-d H:i:s"),
@@ -1090,14 +1146,64 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        DB::table('request_penawaran')->insert([
-            'req_harga_sewa' => 40000,
-            'req_lapangan' => 1,
-            'req_tanggal_mulai' => "2023-09-13",
-            'req_tanggal_selesai' => "2023-11-13",
-            'req_id_alat' => 1,
+        DB::table('request_permintaan')->insert([
+            'req_harga_sewa' => 30000,
+            'req_lapangan' => 2,
+            'req_tanggal_mulai' => $tanggal3,
+            'req_tanggal_selesai' => $tanggal,
+            'req_id_alat' => 4,
             'fk_id_tempat' => 1,
             'fk_id_pemilik' => 1,
+            'tanggal_minta' => date("Y-m-d H:i:s"),
+            'status_permintaan' => "Selesai",
+            'kode_mulai' => "REQMM".$format_tgl."3",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('request_permintaan')->insert([
+            'req_harga_sewa' => 40000,
+            'req_lapangan' => 3,
+            'req_tanggal_mulai' => $tanggal,
+            'req_tanggal_selesai' => $tanggal2,
+            'req_id_alat' => 5,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 1,
+            'tanggal_minta' => date("Y-m-d H:i:s"),
+            'status_permintaan' => "Dikomplain",
+            'kode_mulai' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //Komplain request permintaan
+        DB::table('komplain_request')->insert([
+            'jenis_komplain' => "Alat tidak sesuai",
+            'keterangan_komplain' => "alat olahraga yang dikirim dan yang dijelaskan di detail beda jauh",
+            'fk_id_permintaan' => 4,
+            'fk_id_penawaran' => null,
+            'waktu_komplain' => date("Y-m-d H:i:s"),
+            'status_komplain' => "Menunggu",
+            'penanganan_komplain' => null,
+            'alasan_komplain' => null,
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_komplain_req')->insert([
+            'nama_file_komplain' => "bola_jelek.jpg",
+            'fk_id_komplain_req' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //request penawaran
+        DB::table('request_penawaran')->insert([
+            'req_harga_sewa' => 50000,
+            'req_lapangan' => 3,
+            'req_tanggal_mulai' => $tanggal,
+            'req_tanggal_selesai' => $tanggal2,
+            'req_id_alat' => 6,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 2,
             'tanggal_tawar' => date("Y-m-d H:i:s"),
             'status_penawaran' => "Menunggu",
             'status_tempat' => null,
@@ -1106,37 +1212,87 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //Negosiasi penawaran
         DB::table('negosiasi')->insert([
             'isi_negosiasi' => "hai! saya mau menawarkan alat olahraga, monggo mungkin tertarik untuk menyewakannya",
             'waktu_negosiasi' => date("Y-m-d H:i:s"),
             'fk_id_permintaan' => null,
             'fk_id_penawaran' => 1,
-            'fk_id_pemilik' => 1,
+            'fk_id_pemilik' => 2,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('request_penawaran')->insert([
+            'req_harga_sewa' => 20000,
+            'req_lapangan' => 4,
+            'req_tanggal_mulai' => $tanggal,
+            'req_tanggal_selesai' => $tanggal2,
+            'req_id_alat' => 7,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 2,
+            'tanggal_tawar' => date("Y-m-d H:i:s"),
+            'status_penawaran' => "Diterima",
+            'status_tempat' => "Setuju",
+            'status_pemilik' => "Setuju",
+            'kode_mulai' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('request_penawaran')->insert([
+            'req_harga_sewa' => 20000,
+            'req_lapangan' => 4,
+            'req_tanggal_mulai' => $tanggal,
+            'req_tanggal_selesai' => $tanggal2,
+            'req_id_alat' => 8,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 2,
+            'tanggal_tawar' => date("Y-m-d H:i:s"),
+            'status_penawaran' => "Dikomplain",
+            'status_tempat' => "Setuju",
+            'status_pemilik' => "Setuju",
+            'kode_mulai' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //Komplain request penawaran
+        DB::table('komplain_request')->insert([
+            'jenis_komplain' => "Lapangan tidak sesuai",
+            'keterangan_komplain' => "Lapangan olahraga sebenarnya sudah tidak layak digunakan",
+            'fk_id_permintaan' => null,
+            'fk_id_penawaran' => 3,
+            'waktu_komplain' => date("Y-m-d H:i:s"),
+            'status_komplain' => "Menunggu",
+            'penanganan_komplain' => null,
+            'alasan_komplain' => null,
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //Sewa sendiri
         DB::table('sewa_sendiri')->insert([
             'req_lapangan' => 1,
-            'req_id_alat' => 8,
+            'req_id_alat' => 9,
             'fk_id_tempat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //Transaksi
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0001",
             'fk_id_lapangan' => 1,
             'subtotal_lapangan' => 200000,
             'subtotal_alat' => 150000,
             'tanggal_trans' => date("Y-m-d H:i:s"),
-            'tanggal_sewa'=> '2023-09-20',
-            'jam_sewa' => '16:00',
+            'tanggal_sewa'=> $tanggal,
+            'jam_sewa' => $waktu,
             'durasi_sewa' => 2,
             'total_trans' => 350000,
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
             'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Berlangsung",
+            'status_trans' => "Diterima",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1166,76 +1322,6 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        // DB::table('komplain_request')->insert([
-        //     'jenis_komplain' => "Alat tidak sesuai",
-        //     'keterangan_komplain' => "alat olahraga yang dikirim dan yang dijelaskan di detail beda jauh",
-        //     'fk_id_permintaan' => null,
-        //     'fk_id_penawaran' => 1,
-        //     'waktu_komplain' => date("Y-m-d H:i:s"),
-        //     'status_komplain' => "Menunggu",
-        //     'penanganan_komplain' => null,
-        //     'alasan_komplain' => null,
-        //     'fk_id_pemilik' => null,
-        //     'fk_id_tempat' => 1,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
-
-        // DB::table('files_komplain_req')->insert([
-        //     'nama_file_komplain' => "bola_jelek.jpg",
-        //     'fk_id_komplain_req' => 1,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
-
-        DB::table('htrans')->insert([
-            'kode_trans' => "H".date("dmy")."0002",
-            'fk_id_lapangan' => 1,
-            'subtotal_lapangan' => 200000,
-            'subtotal_alat' => 150000,
-            'tanggal_trans' => date("Y-m-d H:i:s"),
-            'tanggal_sewa'=> '2023-10-20',
-            'jam_sewa' => '16:00',
-            'durasi_sewa' => 2,
-            'total_trans' => 350000,
-            'fk_id_user' => 1,
-            'fk_id_tempat' => 1,
-            'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Diterima",
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        DB::table('dtrans')->insert([
-            'fk_id_htrans' => 2,
-            'fk_id_alat' => 1,
-            'harga_sewa_alat' => 50000,
-            'subtotal_alat' => 100000,
-            'total_komisi_pemilik' => 40000,
-            'total_komisi_tempat' => 60000,
-            'fk_id_pemilik' => 1,
-            'fk_id_tempat' => null,
-            'pendapatan_website_alat' => 4400,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        DB::table('rating_alat')->insert([
-            'rating' => 4,
-            'review' => "bola basketnya lumayan bagus, cuman agak kempes",
-            'hide' => "Tidak",
-            'fk_id_user' => 1,
-            'fk_id_alat' => 1,
-            'fk_id_dtrans' => 3,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        DB::table('rating_lapangan')->insert([
-            'rating' => 5,
-            'review' => "lapangannya bagus, bersih, nyaman dibuat main",
-            'hide' => "Tidak",
-            'fk_id_user' => 1,
-            'fk_id_lapangan' => 1,
-            'fk_id_htrans' => 2,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
         // DB::table('komplain_trans')->insert([
         //     'jenis_komplain' => "Alat tidak sesuai",
         //     'keterangan_komplain' => "alat olahraga bedaa",
@@ -1254,16 +1340,66 @@ class DatabaseSeeder extends Seeder
         //     'created_at' => date("Y-m-d H:i:s"),
         // ]);
 
-        DB::table('notifikasi')->insert([
-            'keterangan_notifikasi' => "Permintaan alat olahraga Bola Basket Molten",
-            'waktu_notifikasi' => date("Y-m-d H:i:s"),
-            'link_notifikasi' => "/pemilik/permintaan/detailPermintaanNego/1",
-            'fk_id_user' => null,
-            'fk_id_pemilik' => 1,
-            'fk_id_tempat' => null,
-            'admin' => null,
-            'status_notifikasi' => "Tidak",
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0002",
+            'fk_id_lapangan' => 1,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 150000,
+            'tanggal_trans' => date("Y-m-d H:i:s"),
+            'tanggal_sewa'=> $tanggal,
+            'jam_sewa' => $waktu,
+            'durasi_sewa' => 2,
+            'total_trans' => 350000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
+            'status_trans' => "Berlangsung",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 2,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'pendapatan_website_alat' => 4400,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        // DB::table('rating_alat')->insert([
+        //     'rating' => 4,
+        //     'review' => "bola basketnya lumayan bagus, cuman agak kempes",
+        //     'hide' => "Tidak",
+        //     'fk_id_user' => 1,
+        //     'fk_id_alat' => 1,
+        //     'fk_id_dtrans' => 3,
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // ]);
+
+        // DB::table('rating_lapangan')->insert([
+        //     'rating' => 5,
+        //     'review' => "lapangannya bagus, bersih, nyaman dibuat main",
+        //     'hide' => "Tidak",
+        //     'fk_id_user' => 1,
+        //     'fk_id_lapangan' => 1,
+        //     'fk_id_htrans' => 2,
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // ]);
+
+        // DB::table('notifikasi')->insert([
+        //     'keterangan_notifikasi' => "Permintaan alat olahraga Bola Basket Molten",
+        //     'waktu_notifikasi' => date("Y-m-d H:i:s"),
+        //     'link_notifikasi' => "/pemilik/permintaan/detailPermintaanNego/1",
+        //     'fk_id_user' => null,
+        //     'fk_id_pemilik' => 1,
+        //     'fk_id_tempat' => null,
+        //     'admin' => null,
+        //     'status_notifikasi' => "Tidak",
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // ]);
     }
 }
