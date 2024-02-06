@@ -529,13 +529,15 @@ class LapanganOlahraga extends Controller
         $param["totalReviews"] = $rating->get_data_count($id);
         $param["rating"] = $rating->get_data_by_id_lapangan($id);
 
-        $tempat = new pihakTempat();
-        $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
-        $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
+        if (!$lapa->get_all_data_by_id($id)->isEmpty()) {
+            $tempat = new pihakTempat();
+            $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
+            $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
 
-        $kategori = new kategori();
-        $id_kategori = $lapa->get_all_data_by_id($id)->first()->fk_id_kategori;
-        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+            $kategori = new kategori();
+            $id_kategori = $lapa->get_all_data_by_id($id)->first()->fk_id_kategori;
+            $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        }
 
         return view("pemilik.detailLapanganUmum")->with($param);
     }
@@ -597,19 +599,20 @@ class LapanganOlahraga extends Controller
         $sewa = new sewaSendiri();
         $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
 
-        $tempat = new pihakTempat();
-        $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
-        $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
-
         $rating = new ratingLapangan();
         $avg = $rating->get_avg_data($id);
         $param["averageRating"] = round($avg, 1);
         $param["totalReviews"] = $rating->get_data_count($id);
         $param["rating"] = $rating->get_data_by_id_lapangan($id);
 
-        $kategori = new kategori();
-        $id_kategori = $lapa->get_all_data_by_id($id)->first()->fk_id_kategori;
-        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        if (!$lapa->get_all_data_by_id($id)->isEmpty()) {
+            $tempat = new pihakTempat();
+            $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
+            $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
+            $kategori = new kategori();
+            $id_kategori = $lapa->get_all_data_by_id($id)->first()->fk_id_kategori;
+            $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        }
 
         $param["dataJadwal"] = DB::table('htrans')
                             ->select("htrans.tanggal_sewa","htrans.status_trans","htrans.jam_sewa","htrans.durasi_sewa","extend_htrans.durasi_extend", "extend_htrans.status_extend")
@@ -639,9 +642,11 @@ class LapanganOlahraga extends Controller
         $sewa = new sewaSendiri();
         $param["sewa"] = $sewa->get_all_data_by_lapangan($id);
 
-        $tempat = new pihakTempat();
-        $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
-        $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
+        if (!$lapa->get_all_data_by_id($id)->isEmpty()) {
+            $tempat = new pihakTempat();
+            $id_tempat = $lapa->get_all_data_by_id($id)->first()->pemilik_lapangan;
+            $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
+        }
 
         $rating = new ratingLapangan();
         $avg = $rating->get_avg_data($id);

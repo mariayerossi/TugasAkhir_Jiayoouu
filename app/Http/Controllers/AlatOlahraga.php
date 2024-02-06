@@ -439,18 +439,20 @@ class AlatOlahraga extends Controller
         $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
         $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
 
-        $pemi = "";
-        if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
-            $pemilik = new pemilikAlat();
-            $id_pemilik = $alat->get_all_data_by_id($id)->first()->fk_id_pemilik;
-            $pemi = $pemilik->get_all_data_by_id($id_pemilik)->first()->nama_pemilik;
+        if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            $pemi = "";
+            if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
+                $pemilik = new pemilikAlat();
+                $id_pemilik = $alat->get_all_data_by_id($id)->first()->fk_id_pemilik;
+                $pemi = $pemilik->get_all_data_by_id($id_pemilik)->first()->nama_pemilik;
+            }
+            else if ($alat->get_all_data_by_id($id)->first()->fk_id_tempat != null) {
+                $tempat = new pihakTempat();
+                $id_tempat = $alat->get_all_data_by_id($id)->first()->fk_id_tempat;
+                $pemi = $tempat->get_all_data_by_id($id_tempat)->first()->nama_tempat;
+            }
+            $param["pemilik"] = $pemi;
         }
-        else if ($alat->get_all_data_by_id($id)->first()->fk_id_tempat != null) {
-            $tempat = new pihakTempat();
-            $id_tempat = $alat->get_all_data_by_id($id)->first()->fk_id_tempat;
-            $pemi = $tempat->get_all_data_by_id($id_tempat)->first()->nama_tempat;
-        }
-        $param["pemilik"] = $pemi;
 
         return view("pemilik.detailAlatUmum")->with($param);
     }
@@ -484,12 +486,15 @@ class AlatOlahraga extends Controller
         $param["rating"] = $rating->get_data_by_id_alat($id);
 
         $pemilik = new pemilikAlat();
-        $id_pemilik = $alat->get_all_data_by_id($id)->first()->fk_id_pemilik;
-        $param["pemilik"] = $pemilik->get_all_data_by_id($id_pemilik)->first()->nama_pemilik;
+        if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            $id_pemilik = $alat->get_all_data_by_id($id)->first()->fk_id_pemilik;
+            $param["pemilik"] = $pemilik->get_all_data_by_id($id_pemilik)->first()->nama_pemilik;
 
-        $kategori = new kategori();
-        $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
-        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+            $kategori = new kategori();
+            $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
+            $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        }
+        
         
         return view("tempat.detailAlatUmum")->with($param);
     }
