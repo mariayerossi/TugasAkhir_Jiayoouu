@@ -64,6 +64,7 @@
             <div class="input-group-prepend">
                 <select class="form-select" name="kategori" style="border-radius: 0px">
                     <option value="" disabled selected>Kategori</option> 
+                    <option value="">Semua</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
                         <option value="{{$item->id_kategori}}">{{$item->nama_kategori}}</option>

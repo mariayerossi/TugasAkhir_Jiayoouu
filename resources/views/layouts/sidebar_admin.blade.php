@@ -258,7 +258,7 @@ Sportiva
                     <!-- Add other sports or categories here -->
                 </div>
             </div>
-            <a href="/logout"><i class="bi bi-power me-2"></i>Logout</a>
+            {{-- <a href="/logout"><i class="bi bi-power me-2"></i>Logout</a> --}}
         </div>
     </div>
 
@@ -315,6 +315,12 @@ Sportiva
                         <a href="/notifikasi/admin/lihatNotifikasi" class="text-center">Lihat Semua Notifikasi</a>
                     </div>
                 </div>
+                <a href="/logout" title="Logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-power" viewBox="0 0 16 16">
+                        <path d="M7.5 1v7h1V1z"/>
+                        <path d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"/>
+                      </svg>
+                </a>
             </div>
         </nav>
         {{-- <button class="float-back-button mt-3" onclick="goBack()"><i class="bi bi-arrow-90deg-left"></i></button> --}}

@@ -347,6 +347,9 @@
                                         timer: 2000,
                                         showConfirmButton: false
                                     });
+                                    setTimeout(() => {
+                                        window.location.href = "/tempat/permintaan/daftarPermintaan";
+                                    }, 2000); // Setelah 5 detik
                                 } else {
                                     // swal("Error!", response.message, "error");
                                     swal({

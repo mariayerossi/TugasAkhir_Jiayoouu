@@ -26,10 +26,9 @@
 }
 </style>
 <div class="container mt-5">
-    <div class="row mb-3">
-        <div class="col-12">
-            <h3 class="text-center mb-5">Daftar Permintaan Alat</h3>
-        </div>
+    <h3 class="text-center mb-2">Daftar Permintaan Alat</h3>
+    <div class="d-flex justify-content-end mb-4">
+        <a href="/tempat/cariAlat" class="btn btn-primary">Cari Alat Olahraga</a>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">

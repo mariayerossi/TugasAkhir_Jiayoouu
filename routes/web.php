@@ -244,7 +244,7 @@ Route::prefix("/pemilik")->group(function(){
     Route::get("/editAlat/{id}", [AlatOlahraga::class, "editAlatPemilik"])->middleware([CekPemilik::class]);
     Route::post("/editAlat", [AlatOlahraga::class, "editAlat"]);
     Route::get("/cariLapangan", [LapanganOlahraga::class, "cariLapangan"])->middleware([CekPemilik::class]);
-    Route::get("/searchLapangan", [LapanganOlahraga::class, "sedafarchLapangan"]);
+    Route::get("/searchLapangan", [LapanganOlahraga::class, "seachLapangan"]);
     Route::get("/detailLapanganUmum/{id}", [LapanganOlahraga::class, "detailLapanganUmumPemilik"])->middleware([CekPemilik::class]);
     Route::post('editHargaKomisi',[AlatOlahraga::class, "editHargaKomisi"]);
 

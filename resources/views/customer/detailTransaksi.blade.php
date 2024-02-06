@@ -212,7 +212,8 @@
                         });
 
                         setTimeout(() => {
-                            window.history.back();
+                            // window.history.back();
+                            window.location.href = "/customer/daftarRiwayat"
                         }, 2000); // Setelah 5 detik
                     }
                     else {

@@ -1660,6 +1660,27 @@ class Laporan extends Controller
             $monthlyIncomeData[] = $income;
         }
 
+        $currentYear = date('Y');
+        $yearlyIncome = [
+            $currentYear - 4 => 0,
+            $currentYear - 3 => 0,
+            $currentYear - 2 => 0,
+            $currentYear - 1 => 0,
+            $currentYear => 0
+        ];
+
+        // Menghitung pendapatan tahunan
+        foreach ($coba as $data) {
+            $year = date('Y', strtotime($data->tanggal_trans));
+            if (isset($yearlyIncome[$year])) {
+                $yearlyIncome[$year] += ($data->pendapatan_lapangan + $data->pendapatan_alat) + ($data->lapangan_ext + $data->alat_ext);
+            }
+        }
+
+        // Mengkonversi $yearlyIncome ke array biasa
+        $yearlyIncomeData = array_values($yearlyIncome);
+        $param["yearlyIncome"] = $yearlyIncomeData;
+
         $param["trans"] = $coba;
         $param["tanggal_mulai"] = $startDate;
         $param["tanggal_selesai"] = $endDate;
@@ -2056,7 +2077,7 @@ class Laporan extends Controller
         $minta = new requestPermintaan();
         $param["jumlahPermintaan"] = $minta->count_all_data_tempat($role);
         $tawar = new requestPenawaran();
-        $param["jumlahPenawaran"] = $tawar->count_all_data_pemilik($role);
+        $param["jumlahPenawaran"] = $tawar->count_all_data_tempat($role);
 
         $coba = DB::table('htrans')
             ->select(

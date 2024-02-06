@@ -772,6 +772,7 @@ class Transaksi extends Controller
                         ->whereRaw('id_file_lapangan = (select min(id_file_lapangan) from files_lapangan as f2 where f2.fk_id_lapangan = files_lapangan.fk_id_lapangan)');
                 }, 'files_lapangan', 'lapangan_olahraga.id_lapangan', '=', 'files_lapangan.fk_id_lapangan')
                 ->where("htrans.fk_id_user", "=", Session::get("dataRole")->id_user)
+                // ->where("htrans.status_trans", "!=", "Selesai")
                 ->orderBy("htrans.id_htrans", "desc")
                 ->get();
 
@@ -1188,46 +1189,48 @@ class Transaksi extends Controller
             }
         }
 
-        //pengembalian dana
-        $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+        //ndak jd dipotong 5% soal e lek trans ws diterima, ga isa dibatalno
 
-        //pemotongan denda 5%
-        $denda = 0.05;
-        $total_denda = $trans->total_trans * $denda;
-        // dd((int)$total_denda);
+        // //pengembalian dana
+        // $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
 
-        $saldo += $trans->total_trans - (int)$total_denda;
+        // //pemotongan denda 5%
+        // $denda = 0.05;
+        // $total_denda = $trans->total_trans * $denda;
+        // // dd((int)$total_denda);
 
-        //enkripsi kembali saldo
-        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+        // $saldo += $trans->total_trans - (int)$total_denda;
 
-        //update db user
-        $dataSaldo = [
-            "id" => Session::get("dataRole")->id_user,
-            "saldo" => $enkrip
-        ];
-        $cust = new customer();
-        $cust->updateSaldo($dataSaldo);
+        // //enkripsi kembali saldo
+        // $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
 
-        //update session role
-        $user = new customer();
-        $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
-        Session::forget("dataRole");
-        Session::put("dataRole", $isiUser->first());
+        // //update db user
+        // $dataSaldo = [
+        //     "id" => Session::get("dataRole")->id_user,
+        //     "saldo" => $enkrip
+        // ];
+        // $cust = new customer();
+        // $cust->updateSaldo($dataSaldo);
 
-        //total_denda masuk ke saldo pihak tempat
-        $saldoTempatAwal = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->saldo_tempat;
-        $saldoTempat = (int)$this->decodePrice($saldoTempatAwal, "mysecretkey");
+        // //update session role
+        // $user = new customer();
+        // $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
+        // Session::forget("dataRole");
+        // Session::put("dataRole", $isiUser->first());
 
-        $saldoTempat += $total_denda;
-        $saldoAkhir = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+        // //total_denda masuk ke saldo pihak tempat
+        // $saldoTempatAwal = DB::table('pihak_tempat')->where("id_tempat","=",$trans->fk_id_tempat)->get()->first()->saldo_tempat;
+        // $saldoTempat = (int)$this->decodePrice($saldoTempatAwal, "mysecretkey");
 
-        $dataSaldoTempat = [
-            "id" => $trans->fk_id_tempat,
-            "saldo" => $saldoAkhir
-        ];
-        $temp = new pihakTempat();
-        $temp->updateSaldo($dataSaldoTempat);
+        // $saldoTempat += $total_denda;
+        // $saldoAkhir = $this->encodePrice((string)$saldoTempat, "mysecretkey");
+
+        // $dataSaldoTempat = [
+        //     "id" => $trans->fk_id_tempat,
+        //     "saldo" => $saldoAkhir
+        // ];
+        // $temp = new pihakTempat();
+        // $temp->updateSaldo($dataSaldoTempat);
 
 
         //kasih notif ke pihak tempat
@@ -1273,7 +1276,7 @@ class Transaksi extends Controller
                     <b>Nama Lapangan Olahraga: ".$trans->nama_lapangan."</b><br>
                     ".$dtransStr."<br>
                     <b>Tanggal Transaksi: ".$tanggalBaru." ".$trans->jam_sewa."</b><br><br>
-                    Jangan khawatir! Dana Kompensasi telah kami tambahkan ke saldo wallet Anda! 😊"
+                    Terima Kasih telah menggunakan Sportiva! 😊"
         ];
         $e = new notifikasiEmail();
         $e->sendEmail($emailTempat, $dataNotif);

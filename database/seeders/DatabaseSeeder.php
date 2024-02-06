@@ -1151,6 +1151,11 @@ class DatabaseSeeder extends Seeder
         $updated_at3->sub(new DateInterval('P7D'));
         $tanggal3 = $updated_at3->format('Y-m-d');
 
+        //bulan lalu
+        $updated_at4 = new DateTime($tanggal);
+        $updated_at4->sub(new DateInterval('P30D'));
+        $tanggal4 = $updated_at4->format('Y-m-d');
+
         $format_tgl = date("Ymd");
 
         $waktu = date("H:i:s");
@@ -1473,6 +1478,92 @@ class DatabaseSeeder extends Seeder
             'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
             'pendapatan_website_alat' => 4400,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0003",
+            'fk_id_lapangan' => 1,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 150000,
+            'tanggal_trans' => date("Y-m-d H:i:s"),
+            'tanggal_sewa'=> $tanggal,
+            'jam_sewa' => "06:00",
+            'durasi_sewa' => 2,
+            'total_trans' => 350000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
+            'status_trans' => "Selesai",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 3,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'pendapatan_website_alat' => 4400,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 3,
+            'fk_id_alat' => 5,
+            'harga_sewa_alat' => 25000,
+            'subtotal_alat' => 50000,
+            'total_komisi_pemilik' => null,
+            'total_komisi_tempat' => 50000,
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_alat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0004",
+            'fk_id_lapangan' => 1,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 150000,
+            'tanggal_trans' => $tanggal4,
+            'tanggal_sewa'=> $tanggal4,
+            'jam_sewa' => "06:00",
+            'durasi_sewa' => 2,
+            'total_trans' => 350000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
+            'status_trans' => "Selesai",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 4,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'pendapatan_website_alat' => 4400,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 4,
+            'fk_id_alat' => 5,
+            'harga_sewa_alat' => 25000,
+            'subtotal_alat' => 50000,
+            'total_komisi_pemilik' => null,
+            'total_komisi_tempat' => 50000,
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_alat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 

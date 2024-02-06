@@ -8,7 +8,7 @@
             <a href="/pemilik/daftarAlat">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Total Alat</h5>
+                        <h5 class="card-title">Total Alat Olahraga</h5>
                         <p class="display-5">{{$jumlahAlat}}</p>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
             <a href="/pemilik/permintaan/daftarPermintaan">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Total Permintaan Alat</h5>
+                        <h5 class="card-title">Total Permintaan Baru</h5>
                         <p class="display-5">{{$jumlahPermintaan}}</p>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
             <a href="/pemilik/penawaran/daftarPenawaran">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Total Penawaran Alat</h5>
+                        <h5 class="card-title">Total Penawaran Baru</h5>
                         <p class="display-5">{{$jumlahPenawaran}}</p>
                     </div>
                 </div>

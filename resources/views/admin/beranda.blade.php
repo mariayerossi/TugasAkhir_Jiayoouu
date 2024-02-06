@@ -8,7 +8,7 @@
             <a href="/admin/komplain/request/daftarKomplain">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Total Komplain Request</h5>
+                        <h5 class="card-title">Komplain Request Baru</h5>
                         <p class="display-5">{{$jumlahKomplainReq}}</p>
                     </div>
                 </div>
@@ -18,7 +18,7 @@
             <a href="/admin/komplain/trans/daftarKomplain">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Total Komplain Transaksi</h5>
+                        <h5 class="card-title">Komplain Transaksi Baru</h5>
                         <p class="display-5">{{$jumlahKomplainTrans}}</p>
                     </div>
                 </div>

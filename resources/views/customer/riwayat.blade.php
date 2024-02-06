@@ -228,7 +228,7 @@
                                     <a href="/customer/rating/detailRating/{{$item->id_htrans}}" class="btn btn-success">Berikan Ulasan <i class="bi bi-star"></i></a>
                                 @endif
 
-                                @if ($item->status_trans == "Menunggu" || $item->status_trans == "Diterima")
+                                @if ($item->status_trans == "Menunggu")
                                     <form id="batalTransaksiForm" action="/customer/transaksi/batalBooking" method="post">
                                         @csrf
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
@@ -342,8 +342,7 @@
             event.preventDefault(); // Mencegah perilaku default form
 
             swal({
-                title: "Apakah anda yakin?",
-                text: "Pembatalan booking akan dikenakan kompensasi sebesar 5% dari total transaksi.",
+                title: "Apakah anda yakin membatalkan transaksi ini?",
                 type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",

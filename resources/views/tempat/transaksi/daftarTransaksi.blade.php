@@ -26,10 +26,9 @@
 }
 </style>
 <div class="container mt-5">
-    <div class="row mb-3">
-        <div class="col-12">
-            <h3 class="text-center mb-5">Daftar Transaksi</h3>
-        </div>
+    <h3 class="text-center mb-3">Daftar Transaksi</h3>
+    <div class="d-flex justify-content-end mb-4">
+        <a href="" class="btn btn-primary">Jadwal Sewa Hari Ini</a>
     </div>
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">

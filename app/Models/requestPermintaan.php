@@ -93,11 +93,11 @@ class requestPermintaan extends Model
     }
 
     public function count_all_data_pemilik($role){
-        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$role)->where("status_permintaan","!=","Dibatalkan")->where("status_permintaan","!=","Ditolak")->count();
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$role)->where("status_permintaan","=","Menunggu")->count();
     }
 
     public function count_all_data_tempat($role){
-        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat","=",$role)->count();
+        return requestPermintaan::where('deleted_at',"=",null)->where("fk_id_tempat","=",$role)->where("status_permintaan","=","Menunggu")->count();
     }
 
     public function get_all_data() {

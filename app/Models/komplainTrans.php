@@ -46,7 +46,7 @@ class komplainTrans extends Model
     }
 
     public function count_all_data_admin() {
-        return komplainTrans::where('deleted_at',"=",null)->count();
+        return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Menunggu")->count();
     }
 
     public function updateStatus($data)
