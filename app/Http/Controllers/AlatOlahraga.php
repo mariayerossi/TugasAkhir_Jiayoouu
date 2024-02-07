@@ -20,7 +20,6 @@ class AlatOlahraga extends Controller
         $request->validate([
             "alat" => 'required|min:5|max:255',
             "kategori" => 'required',
-            "kota" => 'required',
             "foto" => 'required|max:5120',
             "deskripsi" => 'required|max:500',
             "berat" => 'required|numeric|min:1',
@@ -56,7 +55,6 @@ class AlatOlahraga extends Controller
             $data = [
                 "nama"=>ucwords($request->alat),
                 "kategori"=>$request->kategori,
-                "kota"=>$request->kota,
                 "deskripsi"=>$request->deskripsi,
                 "berat"=>$request->berat,
                 "ukuran"=>$ukuran,
@@ -73,7 +71,6 @@ class AlatOlahraga extends Controller
             $data = [
                 "nama"=>ucwords($request->alat),
                 "kategori"=>$request->kategori,
-                "kota"=>$request->kota,
                 "deskripsi"=>$request->deskripsi,
                 "berat"=>$request->berat,
                 "ukuran"=>$ukuran,
@@ -108,7 +105,6 @@ class AlatOlahraga extends Controller
         $request->validate([
             "alat" => 'required|max:255',
             "kategori" => 'required',
-            "kota"=>'required',
             "deskripsi" => 'required|max:500',
             "berat" => 'required|numeric|min:1',
             "panjang" => 'required|numeric|min:1',
@@ -154,7 +150,6 @@ class AlatOlahraga extends Controller
                 "id" => $request->id,
                 "nama" => $request->alat,
                 "kategori" => $request->kategori,
-                "kota"=>$request->kota,
                 "deskripsi" => $request->deskripsi,
                 "berat" => $request->berat,
                 "ukuran" => $ukuran,
@@ -172,7 +167,6 @@ class AlatOlahraga extends Controller
                 "id" => $request->id,
                 "nama" => $request->alat,
                 "kategori" => $request->kategori,
-                "kota"=>$request->kota,
                 "deskripsi" => $request->deskripsi,
                 "berat" => $request->berat,
                 "ukuran" => $ukuran,
@@ -220,29 +214,29 @@ class AlatOlahraga extends Controller
     public function searchAlat(Request $request)
     {
         if (Session::get("role") == "admin") {
-            $query = DB::table('alat_olahraga')->where('deleted_at',"=",null);
+            $query = DB::table('alat_olahraga')->join("pemilik_alat","alat_olahraga.fk_id_pemilik","=","pemilik_alat.id_pemilik")->where('alat_olahraga.deleted_at',"=",null);
         }
         else {
-            $query = DB::table('alat_olahraga')->where('deleted_at',"=",null)->where("fk_id_pemilik","!=",null)->where("status_alat","=","Aktif");
+            $query = DB::table('alat_olahraga')->join("pemilik_alat","alat_olahraga.fk_id_pemilik","=","pemilik_alat.id_pemilik")->where('alat_olahraga.deleted_at',"=",null)->where("alat_olahraga.fk_id_pemilik","!=",null)->where("alat_olahraga.status_alat","=","Aktif");
         }
         // dd($query->get());
         // $search = $request->input("cari");
         // dd($search);
     
         if ($request->filled('kategori')) {
-            $query->where('fk_id_kategori', $request->kategori);
+            $query->where('alat_olahraga.fk_id_kategori', $request->kategori);
         }
 
         if ($request->filled('kota')) {
-            $query->where('kota_alat', $request->kota);
+            $query->where('pemilik_alat.kota_pemilik', $request->kota);
         }
 
         if ($request->filled('cari')) {
-            $query->where('nama_alat', 'like', '%' . $request->cari . '%');
+            $query->where('alat_olahraga.nama_alat', 'like', '%' . $request->cari . '%');
         }
         
         $hasil = $query
-                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.kota_alat")
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","pemilik_alat.kota_pemilik")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -358,7 +352,8 @@ class AlatOlahraga extends Controller
         $param["kota"] = $kot->get_kota();
 
         $data = DB::table('alat_olahraga')
-                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.kota_alat")
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","pemilik_alat.kota_pemilik")
+                ->join("pemilik_alat","alat_olahraga.fk_id_pemilik","=","pemilik_alat.id_pemilik")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -380,7 +375,8 @@ class AlatOlahraga extends Controller
         $param["kota"] = $kot->get_kota();
 
         $data = DB::table('alat_olahraga')
-                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","alat_olahraga.kota_alat")
+                ->select("alat_olahraga.id_alat","alat_olahraga.nama_alat", "files_alat.nama_file_alat", "alat_olahraga.komisi_alat","pemilik_alat.kota_pemilik")
+                ->join("pemilik_alat","alat_olahraga.fk_id_pemilik","=","pemilik_alat.id_pemilik")
                 ->joinSub(function($query) {
                     $query->select("fk_id_alat", "nama_file_alat")
                         ->from('files_alat')
@@ -399,6 +395,7 @@ class AlatOlahraga extends Controller
     public function detailAlatPemilik($id) {
         $alat = new ModelsAlatOlahraga();
         $param["alat"] = $alat->get_all_data_by_id($id);
+        $param["kota"] = $alat->get_kota_pemilik_by_id($id);
 
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
@@ -422,6 +419,13 @@ class AlatOlahraga extends Controller
     public function detailAlatUmumPemilik($id) {
         $alat = new ModelsAlatOlahraga();
         $param["alat"] = $alat->get_all_data_by_id($id);
+        
+        if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
+            $param["kota"] = $alat->get_kota_pemilik_by_id($id);
+        }
+        else {
+            $param["kota"] = $alat->get_kota_tempat_by_id($id);
+        }
 
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
@@ -476,6 +480,13 @@ class AlatOlahraga extends Controller
         $lapa = new lapanganOlahraga();
         $param["lapangan"] = $lapa->get_all_data_status($role);
 
+        if ($alat->get_all_data_by_id($id)->first()->fk_id_tempat != null) {
+            $param["kota"] = $alat->get_kota_tempat_by_id($id);
+        }
+        else {
+            $param["kota"] = $alat->get_kota_pemilik_by_id($id);
+        }
+
         $rating = new ratingAlat();
         $avg = $rating->get_avg_data($id);
         $avg = round($avg, 1);
@@ -504,6 +515,7 @@ class AlatOlahraga extends Controller
         $param["alat"] = $alat->get_all_data_by_id($id);
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
+        $param["kota"] = $alat->get_kota_tempat_by_id($id);
 
         $kategori = new kategori();
         $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
@@ -574,6 +586,13 @@ class AlatOlahraga extends Controller
         $param["alat"] = $alat->get_all_data_by_id($id);
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
+
+        if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
+            $param["kota"] = $alat->get_kota_pemilik_by_id($id);
+        }
+        else {
+            $param["kota"] = $alat->get_kota_tempat_by_id($id);
+        }
 
         $kategori = new kategori();
         $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;

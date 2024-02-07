@@ -44,7 +44,7 @@
                 </select>
             </div>
         </div>
-        <div class="row mt-5">
+        {{-- <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
                 <h6>Letak Kota <i class="bi bi-info-circle" data-toggle="tooltip" title="Masukkan kota Anda untuk menemukan tempat olahraga terdekat. Pastikan informasi akurat untuk hasil yang tepat."></i></h6>
             </div>
@@ -53,7 +53,7 @@
                 <ul class="list-group" id="suggestion-list"></ul>
                 <input type="hidden" id="selected-kota">
             </div>
-        </div>
+        </div> --}}
         <div class="row mt-5">
             <div class="col-md-3 col-12 mt-2">
                 <h6>Foto Alat Olahraga</h6>

@@ -26,6 +26,7 @@ class pemilikAlat extends Model
         $pemilik->nama_pemilik = $data["nama"];
         $pemilik->email_pemilik = $data["email"];
         $pemilik->telepon_pemilik = $data["telepon"];
+        $pemilik->kota_pemilik = $data["kota"];
         $pemilik->ktp_pemilik = $data["ktp"];
         $pemilik->password_pemilik = $data["password"];
         $pemilik->saldo_pemilik = $data["saldo"];

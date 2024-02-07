@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('ukuran_alat');
             $table->integer('komisi_alat');
             $table->integer('ganti_rugi_alat');
-            $table->string('kota_alat');
             $table->string('status_alat');
             $table->unsignedInteger('fk_id_pemilik')->nullable();
             $table->unsignedInteger('fk_id_tempat')->nullable();

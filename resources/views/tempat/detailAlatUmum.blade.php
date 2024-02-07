@@ -126,7 +126,7 @@
                     <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                     </svg> {{ $averageRating }} rating ({{ $totalReviews }})
                 </p>
-                <p><i class="bi bi-geo-alt"></i>{{$pemilik}}, Kota {{$alat->first()->kota_alat}}</p>
+                <p><i class="bi bi-geo-alt"></i>{{$pemilik}}, Kota {{$kota}}</p>
                 <h5>Komisi Pemilik Alat:</h5>
                 <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
             </div>
@@ -151,7 +151,7 @@
                     <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
                     </svg> {{ $averageRating }} rating ({{ $totalReviews }})
                 </p>
-                <p><i class="bi bi-geo-alt"></i>{{$pemilik}}, Kota {{$alat->first()->kota_alat}}</p>
+                <p><i class="bi bi-geo-alt"></i>{{$pemilik}}, Kota {{$kota}}</p>
                 <h5>Komisi Pemilik Alat:</h5>
                 <h3>Rp {{ number_format($alat->first()->komisi_alat, 0, ',', '.') }} /jam</h3>
             </div>
@@ -277,7 +277,7 @@
                 <input type="hidden" name="id_alat" value="{{$alat->first()->id_alat}}">
                 <input type="hidden" name="id_pemilik" value="{{$alat->first()->fk_id_pemilik}}">
                 <input type="hidden" name="id_tempat" value="{{Session::get("dataRole")->id_tempat}}">
-                <input type="hidden" name="kota_alat" value="{{$alat->first()->kota_alat}}">
+                <input type="hidden" name="kota_alat" value="{{$kota}}">
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-success">Request Alat</button>
                 </div>

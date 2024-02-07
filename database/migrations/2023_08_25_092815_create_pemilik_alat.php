@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama_pemilik',255);
             $table->string('email_pemilik',255);
             $table->string('telepon_pemilik',15);
+            $table->string('kota_pemilik',15);
             $table->string('ktp_pemilik',255);
             $table->string('password_pemilik',255);
             $table->string('saldo_pemilik',255);

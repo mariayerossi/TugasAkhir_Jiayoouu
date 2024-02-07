@@ -28,6 +28,7 @@ class pihakTempat extends Model
         $tempat->email_tempat = $data["email"];
         $tempat->telepon_tempat = $data["telepon"];
         $tempat->alamat_tempat = $data["alamat"];
+        $tempat->kota_tempat = $data["kota"];
         $tempat->ktp_tempat = $data["ktp"];
         $tempat->npwp_tempat = $data["npwp"];
         $tempat->password_tempat = $data["password"];

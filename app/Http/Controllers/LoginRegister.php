@@ -124,6 +124,7 @@ class LoginRegister extends Controller
             "nama" => 'required|min:5|regex:/^[^0-9]*$/',
             "email" => 'required|email',
             "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
+            "kota" => 'required',
             "ktp" => 'required|max:5120',
             "password" => 'required|min:8|max:32|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).+$/',
             "konfirmasi" => 'required|min:8|max:32|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).+$/'
@@ -181,6 +182,7 @@ class LoginRegister extends Controller
                     "nama"=>ucwords($request->nama),
                     "email"=>$request->email,
                     "telepon"=>$request->telepon,
+                    "kota" => $request->kota,
                     "ktp" =>$ktp,
                     "password" => $hash_password,
                     "saldo" => $enkripsiSaldo
@@ -228,6 +230,7 @@ class LoginRegister extends Controller
             "email" => 'required|email',
             "telepon" => 'required|regex:/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3,4}[-\s\.]?[0-9]{4,6}$/',
             "alamat" => 'required|min:10',
+            "kota" => 'required',
             "ktp" => 'required|max:5120',
             "npwp" => 'required|max:5120',
             "password" => 'required|min:8|max:32|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).+$/',
@@ -300,6 +303,7 @@ class LoginRegister extends Controller
                     "email" => $request->email,
                     "telepon" => $request->telepon,
                     "alamat" => $request->alamat,
+                    "kota" => $request->kota,
                     "ktp" => $ktp,
                     "npwp" => $npwp,
                     "password" => $hash_password,

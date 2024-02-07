@@ -108,6 +108,16 @@ Sportiva
               </div>
             </div>
 
+            <div class="form-outline mb-4">
+              <label class="form-label" for="form3Example1">Kota Domisili</label>
+              <input type="text" class="form-control @error('kota') is-invalid @enderror" id="search-kota" name="kota" placeholder="Ketik nama kota..." value="{{old('kota')}}">
+              <ul class="list-group" id="suggestion-list"></ul>
+              <input type="hidden" id="selected-kota">
+              @error('kota')
+                <div class="alert alert-danger">{{ $message }}</div>
+              @enderror
+            </div>
+
             <!-- 2 column grid layout with text inputs for the first and last names -->
             <div class="row">
               <div class="col-md-6 mb-4">
@@ -161,6 +171,31 @@ Sportiva
       </div>
     </div>
   </div>
+  <script>
+    const kota = ['Jakarta', 'Surabaya', 'Semarang', 'Bandung', 'Medan', 'Makassar', 'Tangerang', 'Solo', 'Sidoarjo', 'Depok', 'Malang', 'Bogor', 'Yogyakarta', 'Gresik', 'Bekasi'];
+    const inputEl = document.getElementById('search-kota');
+    const suggestionList = document.getElementById('suggestion-list');
+    const selectedKotaInput = document.getElementById('selected-kota');
+
+    inputEl.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        suggestionList.innerHTML = ''; // Bersihkan list sebelumnya
+
+        if (query) {
+            kota.filter(item => item.toLowerCase().includes(query)).forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item';
+                listItem.textContent = item;
+                listItem.addEventListener('click', () => {
+                    inputEl.value = item;
+                    selectedKotaInput.value = item;
+                    suggestionList.innerHTML = ''; // Sembunyikan opsi setelah diklik
+                });
+                suggestionList.appendChild(listItem);
+            });
+        }
+    });
+  </script>
 </section>
 
 <!-- Vendor JS Files -->

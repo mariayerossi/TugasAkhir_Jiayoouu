@@ -56,7 +56,7 @@
                     <option value="">Semua</option> 
                     @if (!$kota->isEmpty())
                         @foreach ($kota as $item)
-                        <option value="{{$item->kota_alat}}">{{$item->kota_alat}}</option>
+                        <option value="{{$item->kota_pemilik}}">{{$item->kota_pemilik}}</option>
                         @endforeach
                     @endif
                 </select>
@@ -97,7 +97,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{$item->nama_alat}}</h5>
                                 <h5 class="card-text"><b>Rp {{ number_format($item->komisi_alat, 0, ',', '.') }}</b></h5>
-                                <p class="card-text"><i class="bi bi-geo-alt"></i> Kota {{$item->kota_alat}}</p>
+                                <p class="card-text"><i class="bi bi-geo-alt"></i> Kota {{$item->kota_pemilik}}</p>
                                 @php
                                     $averageRating = DB::table('rating_alat')
                                                 ->where('fk_id_alat', $item->id_alat)

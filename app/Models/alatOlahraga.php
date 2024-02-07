@@ -20,13 +20,11 @@ class alatOlahraga extends Model
         $alat = new alatOlahraga();
         $alat->nama_alat = $data["nama"];
         $alat->fk_id_kategori = $data["kategori"];
-        $alat->kota_alat = $data["kota"];
         $alat->deskripsi_alat = $data["deskripsi"];
         $alat->berat_alat = $data["berat"];
         $alat->ukuran_alat = $data["ukuran"];
         $alat->komisi_alat = $data["komisi"];
         $alat->ganti_rugi_alat = $data["ganti"];
-        $alat->kota_alat = $data["kota"];
         $alat->status_alat = $data["status"];
         $alat->fk_id_pemilik = $data["pemilik"];
         $alat->fk_id_tempat = $data["tempat"];
@@ -54,6 +52,22 @@ class alatOlahraga extends Model
     public function get_all_data_by_id($id){
         return alatOlahraga::where('deleted_at',"=",null)->where("id_alat","=",$id)->get();
     }
+    
+    public function get_kota_pemilik_by_id($id){
+        return alatOlahraga::where('alat_olahraga.deleted_at',"=",null)
+        ->select("pemilik_alat.kota_pemilik")
+        ->join("pemilik_alat","alat_olahraga.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+        ->where("alat_olahraga.id_alat","=",$id)
+        ->first()->kota_pemilik;
+    }
+
+    public function get_kota_tempat_by_id($id){
+        return alatOlahraga::where('alat_olahraga.deleted_at',"=",null)
+        ->select("pihak_tempat.kota_tempat")
+        ->join("pihak_tempat","alat_olahraga.fk_id_tempat","=","pihak_tempat.id_tempat")
+        ->where("alat_olahraga.id_alat","=",$id)
+        ->first()->kota_tempat;
+    }
 
     public function count_all_data($id){
         return alatOlahraga::where('deleted_at',"=",null)->where("fk_id_pemilik","=",$id)->count();
@@ -68,20 +82,22 @@ class alatOlahraga extends Model
     }
 
     public function get_kota(){
-        return alatOlahraga::where('deleted_at',"=",null)->distinct()->get("kota_alat");
+        return alatOlahraga::where('alat_olahraga.deleted_at',"=",null)
+        ->select("pemilik_alat.kota_pemilik")
+        ->join("pemilik_alat","alat_olahraga.fk_id_pemilik","=","pemilik_alat.id_pemilik")
+        ->distinct()
+        ->get();
     }
 
     public function updateAlat($data){
         $alat = alatOlahraga::find($data["id"]);
         $alat->nama_alat = $data["nama"];
         $alat->fk_id_kategori = $data["kategori"];
-        $alat->kota_alat = $data["kota"];
         $alat->deskripsi_alat = $data["deskripsi"];
         $alat->berat_alat = $data["berat"];
         $alat->ukuran_alat = $data["ukuran"];
         $alat->komisi_alat = $data["komisi"];
         $alat->ganti_rugi_alat = $data["ganti"];
-        $alat->kota_alat = $data["kota"];
         $alat->status_alat = $data["status"];
         $alat->fk_id_pemilik = $data["pemilik"];
         $alat->fk_id_tempat = $data["tempat"];
