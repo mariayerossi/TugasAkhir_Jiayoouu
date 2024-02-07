@@ -1395,15 +1395,15 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 1,
             'subtotal_lapangan' => 200000,
             'subtotal_alat' => 150000,
-            'tanggal_trans' => date("Y-m-d H:i:s"),
-            'tanggal_sewa'=> $tanggal,
-            'jam_sewa' => $waktu,
+            'tanggal_trans' => $tanggal4,
+            'tanggal_sewa'=> $tanggal4,
+            'jam_sewa' => "06:00",
             'durasi_sewa' => 2,
             'total_trans' => 350000,
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
             'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Diterima",
+            'status_trans' => "Selesai",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1433,24 +1433,6 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        // DB::table('komplain_trans')->insert([
-        //     'jenis_komplain' => "Alat tidak sesuai",
-        //     'keterangan_komplain' => "alat olahraga bedaa",
-        //     'fk_id_htrans' => 1,
-        //     'waktu_komplain' => date("Y-m-d H:i:s"),
-        //     'status_komplain' => "Menunggu",
-        //     'penanganan_komplain' => null,
-        //     'alasan_komplain' => null,
-        //     'fk_id_user' => 1,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
-
-        // DB::table('files_komplain_trans')->insert([
-        //     'nama_file_komplain' => "bola_jelek.jpg",
-        //     'fk_id_komplain_trans' => 1,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
-
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0002",
             'fk_id_lapangan' => 1,
@@ -1458,13 +1440,13 @@ class DatabaseSeeder extends Seeder
             'subtotal_alat' => 150000,
             'tanggal_trans' => date("Y-m-d H:i:s"),
             'tanggal_sewa'=> $tanggal,
-            'jam_sewa' => $waktu,
+            'jam_sewa' => "06:00",
             'durasi_sewa' => 2,
             'total_trans' => 350000,
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
             'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Berlangsung",
+            'status_trans' => "Selesai",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1481,20 +1463,33 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 2,
+            'fk_id_alat' => 5,
+            'harga_sewa_alat' => 25000,
+            'subtotal_alat' => 50000,
+            'total_komisi_pemilik' => null,
+            'total_komisi_tempat' => 50000,
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_alat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0003",
-            'fk_id_lapangan' => 1,
+            'fk_id_lapangan' => 2,
             'subtotal_lapangan' => 200000,
             'subtotal_alat' => 150000,
             'tanggal_trans' => date("Y-m-d H:i:s"),
             'tanggal_sewa'=> $tanggal,
-            'jam_sewa' => "06:00",
+            'jam_sewa' => $waktu,
             'durasi_sewa' => 2,
             'total_trans' => 350000,
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
             'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Selesai",
+            'status_trans' => "Diterima",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1523,21 +1518,39 @@ class DatabaseSeeder extends Seeder
             'pendapatan_website_alat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
+
+        // DB::table('komplain_trans')->insert([
+        //     'jenis_komplain' => "Alat tidak sesuai",
+        //     'keterangan_komplain' => "alat olahraga bedaa",
+        //     'fk_id_htrans' => 3,
+        //     'waktu_komplain' => date("Y-m-d H:i:s"),
+        //     'status_komplain' => "Menunggu",
+        //     'penanganan_komplain' => null,
+        //     'alasan_komplain' => null,
+        //     'fk_id_user' => 1,
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // ]);
+
+        // DB::table('files_komplain_trans')->insert([
+        //     'nama_file_komplain' => "bola_jelek.jpg",
+        //     'fk_id_komplain_trans' => 1,
+        //     'created_at' => date("Y-m-d H:i:s"),
+        // ]);
 
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0004",
             'fk_id_lapangan' => 1,
             'subtotal_lapangan' => 200000,
             'subtotal_alat' => 150000,
-            'tanggal_trans' => $tanggal4,
-            'tanggal_sewa'=> $tanggal4,
-            'jam_sewa' => "06:00",
+            'tanggal_trans' => date("Y-m-d H:i:s"),
+            'tanggal_sewa'=> $tanggal,
+            'jam_sewa' => $waktu,
             'durasi_sewa' => 2,
             'total_trans' => 350000,
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
             'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Selesai",
+            'status_trans' => "Berlangsung",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1551,19 +1564,6 @@ class DatabaseSeeder extends Seeder
             'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
             'pendapatan_website_alat' => 4400,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        DB::table('dtrans')->insert([
-            'fk_id_htrans' => 4,
-            'fk_id_alat' => 5,
-            'harga_sewa_alat' => 25000,
-            'subtotal_alat' => 50000,
-            'total_komisi_pemilik' => null,
-            'total_komisi_tempat' => 50000,
-            'fk_id_pemilik' => null,
-            'fk_id_tempat' => 1,
-            'pendapatan_website_alat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 

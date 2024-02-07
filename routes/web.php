@@ -419,6 +419,9 @@ Route::prefix("/tempat")->group(function(){
         
         Route::post("/hapusAlat", [Transaksi::class, "hapusAlat"]);
         Route::post("/batalTrans", [Transaksi::class, "batalTrans"]);
+
+        Route::get("/lihatJadwal", [Transaksi::class, "lihatJadwal"]);
+        Route::get("/fiturJadwal", [Transaksi::class, "fiturJadwal"]);
     });
 
     //bagian extend

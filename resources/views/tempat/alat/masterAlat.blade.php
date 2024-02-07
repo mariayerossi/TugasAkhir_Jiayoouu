@@ -34,7 +34,7 @@
                 <h6>Kategori Alat Olahraga</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <select class="form-control" name="kategori">
+                <select class="form-select" name="kategori">
                     <option value="" disabled selected>Masukkan Kategori Alat Olahraga</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)

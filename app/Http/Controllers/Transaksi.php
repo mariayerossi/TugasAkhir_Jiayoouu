@@ -2303,4 +2303,76 @@ class Transaksi extends Controller
         
         return view("admin.transaksi.detailTransaksi")->with($param);
     }
+
+    public function lihatJadwal() {
+        $id_tempat = Session::get("dataRole")->id_tempat;
+
+        date_default_timezone_set("Asia/Jakarta");
+        $tgl = date("Y-m-d");
+
+        $lapangan = DB::table('lapangan_olahraga')
+                    ->select('nama_lapangan','id_lapangan')
+                    ->join("htrans","lapangan_olahraga.id_lapangan","=","htrans.fk_id_lapangan")
+                    ->distinct()
+                    ->get();
+        // dd($lapangan);
+        $param["lapangan"] = $lapangan;
+
+        $id_pertama = $lapangan->first()->id_lapangan;
+        $param["fitur"] = $id_pertama;
+
+        $trans = DB::table('htrans')
+                ->select("htrans.id_htrans","htrans.jam_sewa","htrans.durasi_sewa","user.nama_user","htrans.status_trans")
+                ->join("user","htrans.fk_id_user","=","user.id_user")
+                ->where("htrans.fk_id_tempat","=",$id_tempat)
+                ->where("htrans.tanggal_sewa","=",$tgl)
+                ->where("htrans.fk_id_lapangan","=",$id_pertama)
+                ->where(function($query) {
+                    $query->where("htrans.status_trans", "=", "Diterima")
+                          ->orWhere("htrans.status_trans", "=", "Berlangsung")
+                          ->orWhere("htrans.status_trans", "=", "Selesai");
+                })
+                ->orderBy("htrans.jam_sewa","ASC")
+                ->get();
+        // dd($trans);
+        $param["trans"] = $trans;
+
+        return view("tempat.transaksi.jadwalSewa")->with($param);
+    }
+
+    public function fiturJadwal(Request $request) {
+        $id_tempat = Session::get("dataRole")->id_tempat;
+
+        date_default_timezone_set("Asia/Jakarta");
+        $tgl = date("Y-m-d");
+
+        $lapangan = DB::table('lapangan_olahraga')
+                    ->select('nama_lapangan','id_lapangan')
+                    ->join("htrans","lapangan_olahraga.id_lapangan","=","htrans.fk_id_lapangan")
+                    ->distinct()
+                    ->get();
+        // dd($lapangan);
+        $param["lapangan"] = $lapangan;
+
+        $id_pertama = $request->lapangan;
+        $param["fitur"] = $id_pertama;
+
+        $trans = DB::table('htrans')
+                ->select("htrans.id_htrans","htrans.jam_sewa","htrans.durasi_sewa","user.nama_user","htrans.status_trans")
+                ->join("user","htrans.fk_id_user","=","user.id_user")
+                ->where("htrans.fk_id_tempat","=",$id_tempat)
+                ->where("htrans.tanggal_sewa","=",$tgl)
+                ->where("htrans.fk_id_lapangan","=",$id_pertama)
+                ->where(function($query) {
+                    $query->where("htrans.status_trans", "=", "Diterima")
+                          ->orWhere("htrans.status_trans", "=", "Berlangsung")
+                          ->orWhere("htrans.status_trans", "=", "Selesai");
+                })
+                ->orderBy("htrans.jam_sewa","ASC")
+                ->get();
+        // dd($trans);
+        $param["trans"] = $trans;
+
+        return view("tempat.transaksi.jadwalSewa")->with($param);
+    }
 }

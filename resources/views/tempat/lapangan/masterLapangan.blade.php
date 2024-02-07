@@ -28,7 +28,7 @@
                 <h6>Kategori Lapangan</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <select class="form-control" name="kategori">
+                <select class="form-select" name="kategori">
                     <option value="" disabled selected>Masukkan Kategori Lapangan Olahraga</option>
                     @if (!$kategori->isEmpty())
                         @foreach ($kategori as $item)
@@ -43,7 +43,7 @@
                 <h6>Tipe Lapangan</h6>
             </div>
             <div class="col-md-8 col-12 mt-2 mt-md-0">
-                <select class="form-control" name="tipe">
+                <select class="form-select" name="tipe">
                     <option value="" disabled selected>Masukkan Tipe Lapangan Olahraga</option>
                     <option value="Outdoor" {{ old('tipe') == 'Outdoor' ? 'selected' : '' }}>Outdoor</option>
                     <option value="Indoor" {{ old('tipe') == 'Indoor' ? 'selected' : '' }}>Indoor</option>
