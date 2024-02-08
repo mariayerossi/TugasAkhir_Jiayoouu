@@ -380,7 +380,7 @@
                                     <option value="" disabled selected>Pilih Alat Olahraga</option>
                                     @if (!$alat->isEmpty())
                                         @foreach ($alat as $item)
-                                        <option value="{{$item->id_alat}}-{{$item->kota_alat}}" {{ old('alat') == $item->id_alat ."-". $item->kota_alat ? 'selected' : '' }}>{{$item->nama_alat}} - {{$item->kota_alat}}</option>
+                                        <option value="{{$item->id_alat}}" {{ old('alat') == $item->id_alat ? 'selected' : '' }}>{{$item->nama_alat}}</option>
                                         @endforeach
                                     @endif
                                 </select>
@@ -412,98 +412,42 @@
             let selectedOption = alatSelect.options[alatSelect.selectedIndex].value;
             e.preventDefault();
             if (selectedOption !== "") {
-                let kotaAlat = selectedOption.split('-')[1];
-                console.log(kotaLapanganInput.value);
+                let formData = new FormData(form);
 
-                if (kotaLapanganInput.value !== kotaAlat) {
-                    // e.preventDefault();
-
-                    swal({
-                        title: "Apakah anda yakin?",
-                        text: "Alat olahraga anda berasal dari kota yang berbeda dengan kota tempat lapangan",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Lanjutkan",
-                        cancelButtonText: "Batalkan",
-                        closeOnConfirm: false,
-                        closeOnCancel: true
-                    }, function(isConfirm) {
-                        if (isConfirm) {
-                            let formData = new FormData(form);
-
-                            $.ajax({
-                                type: "POST",
-                                url: "/pemilik/penawaran/requestPenawaranAlat",
-                                data: formData,
-                                processData: false,
-                                contentType: false,
-                                success: function(response) {
-                                    if (response.success) {
-                                        swal({
-                                            title: "Success!",
-                                            text: response.message,
-                                            type: "success",
-                                            timer: 2000,
-                                            showConfirmButton: false
-                                        });
-                                        setTimeout(() => {
-                                            window.location.href = "/pemilik/penawaran/daftarPenawaran";
-                                        }, 2000); // Setelah 5 detik
-                                    } else {
-                                        // swal("Error!", response.message, "error");
-                                        swal({
-                                            title: "Error!",
-                                            text: response.message,
-                                            type: "error",
-                                            timer: 2000,
-                                            showConfirmButton: false
-                                        });
-                                    }
-                                    // window.location.reload();
-                                },
-                                error: function(jqXHR, textStatus, errorThrown) {
-                                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
-                                }
+                $.ajax({
+                    type: "POST",
+                    url: "/pemilik/penawaran/requestPenawaranAlat",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            swal({
+                                title: "Success!",
+                                text: response.message,
+                                type: "success",
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                            setTimeout(() => {
+                            window.location.href = "/pemilik/penawaran/daftarPenawarand";
+                        }, 2000); // Setelah 5 detik
+                        } else {
+                            // swal("Error!", response.message, "error");
+                            swal({
+                                title: "Error!",
+                                text: response.message,
+                                type: "error",
+                                timer: 2000,
+                                showConfirmButton: false
                             });
                         }
-                    });
-                }
-                else {
-                    let formData = new FormData(form);
-
-                    $.ajax({
-                        type: "POST",
-                        url: "/pemilik/penawaran/requestPenawaranAlat",
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(response) {
-                            if (response.success) {
-                                swal({
-                                    title: "Success!",
-                                    text: response.message,
-                                    type: "success",
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-                            } else {
-                                // swal("Error!", response.message, "error");
-                                swal({
-                                    title: "Error!",
-                                    text: response.message,
-                                    type: "error",
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-                            }
-                            // window.location.reload();
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
-                        }
-                    });
-                }
+                        // window.location.reload();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                    }
+                });
             }
             else {
                 swal({

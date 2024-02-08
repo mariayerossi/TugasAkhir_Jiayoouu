@@ -29,14 +29,12 @@ class RequestPenawaran extends Controller
             "required" => "alat olahraga tidak boleh kosong!"
         ]);
 
-        $array = explode("-", $request->alat);
-
         date_default_timezone_set("Asia/Jakarta");
         $tgl_tawar = date("Y-m-d H:i:s");
 
         $data = [
             "lapangan" => $request->id_lapangan,
-            "id_alat" => $array[0],
+            "id_alat" => $request->alat,
             "id_tempat" => $request->id_tempat,
             "id_pemilik" => $request->id_pemilik,
             "tgl_tawar" => $tgl_tawar,
@@ -45,7 +43,7 @@ class RequestPenawaran extends Controller
         $req = new ModelsRequestPenawaran();
         $id = $req->insertPenawaran($data);
 
-        $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first()->nama_alat;
+        $nama_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->alat)->get()->first()->nama_alat;
 
         $dataNotifWeb = [
             "keterangan" => "Penawaran Baru Alat Olahraga ".$nama_alat,
@@ -62,7 +60,7 @@ class RequestPenawaran extends Controller
         //kasih notif ke pihak tempat klo ada penawaran alat baru
         $email_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_tempat)->get()->first()->email_tempat;
         $nama_tempat = DB::table('pihak_tempat')->where("id_tempat","=",$request->id_tempat)->get()->first()->nama_tempat;
-        $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$array[0])->get()->first()->komisi_alat;
+        $komisi_alat = DB::table('alat_olahraga')->where("id_alat","=",$request->alat)->get()->first()->komisi_alat;
         // dd($email_tempat);
         $dataNotif = [
             "subject" => "✨Penawaran Alat Olahraga Baru!✨",
@@ -988,7 +986,7 @@ class RequestPenawaran extends Controller
         $nego = new negosiasi();
         $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
         $komplain = new komplainRequest();
-        $param["komplain"] = $komplain->get_all_data_by_id_req_pemilik_penawaran($id, $role);
+        $param["komplain"] = $komplain->get_all_data_by_id_penawaran($id, $role);
 
         $alat = new alatOlahraga();
         $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;
@@ -1018,7 +1016,7 @@ class RequestPenawaran extends Controller
         $nego = new negosiasi();
         $param["nego"] = $nego->get_all_data_by_id_penawaran($id);
         $komplain = new komplainRequest();
-        $param["komplain"] = $komplain->get_all_data_by_id_req_tempat_penawaran($id, $role);
+        $param["komplain"] = $komplain->get_all_data_by_id_penawaran($id, $role);
 
         $alat = new alatOlahraga();
         $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;

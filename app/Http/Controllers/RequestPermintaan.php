@@ -819,13 +819,13 @@ class RequestPermintaan extends Controller
     }
 
     public function detailPermintaanPemilik($id) {
-        $role = Session::get("dataRole")->id_pemilik;
         $req = new ModelsRequestPermintaan();
         $param["permintaan"] = $req->get_all_data_by_id($id);
         $nego = new negosiasi();
         $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
         $komplain = new komplainRequest();
-        $param["komplain"] = $komplain->get_all_data_by_id_req_pemilik_permintaan($id, $role);
+        $param["komplain"] = $komplain->get_all_data_by_id_permintaan($id);
+        // dd($komplain->get_all_data_by_id_permintaan($id));
 
         $alat = new alatOlahraga();
         $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;
@@ -849,13 +849,12 @@ class RequestPermintaan extends Controller
     }
 
     public function detailPermintaanTempat($id) {
-        $role = Session::get("dataRole")->id_tempat;
         $req = new ModelsRequestPermintaan();
         $param["permintaan"] = $req->get_all_data_by_id($id);
         $nego = new negosiasi();
         $param["nego"] = $nego->get_all_data_by_id_permintaan($id);
         $komplain = new komplainRequest();
-        $param["komplain"] = $komplain->get_all_data_by_id_req_tempat_permintaan($id, $role);
+        $param["komplain"] = $komplain->get_all_data_by_id_permintaan($id);
 
         $alat = new alatOlahraga();
         $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;

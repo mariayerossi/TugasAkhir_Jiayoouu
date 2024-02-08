@@ -1239,7 +1239,7 @@ class DatabaseSeeder extends Seeder
         DB::table('komplain_request')->insert([
             'jenis_komplain' => "Alat tidak sesuai",
             'keterangan_komplain' => "alat olahraga yang dikirim dan yang dijelaskan di detail beda jauh",
-            'fk_id_permintaan' => 4,
+            'fk_id_permintaan' => 5,
             'fk_id_penawaran' => null,
             'waktu_komplain' => date("Y-m-d H:i:s"),
             'status_komplain' => "Menunggu",

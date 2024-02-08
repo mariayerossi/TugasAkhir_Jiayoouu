@@ -31,6 +31,14 @@ class komplainRequest extends Model
         return $komp->id_komplain_req;
     }
 
+    public function get_all_data_by_id_permintaan($id){
+        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_permintaan","=",$id)->get();
+    }
+
+    public function get_all_data_by_id_penawaran($id){
+        return komplainRequest::where('deleted_at',"=",null)->where("fk_id_penawaran","=",$id)->get();
+    }
+
     public function get_all_data_by_id_req_tempat_permintaan($id, $role){
         return komplainRequest::where('deleted_at',"=",null)->where("fk_id_permintaan","=",$id)->where("fk_id_tempat","=",$role)->get();
     }

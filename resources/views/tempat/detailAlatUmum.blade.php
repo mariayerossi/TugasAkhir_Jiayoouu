@@ -314,101 +314,42 @@
         let selectedOption = lapangan.options[lapangan.selectedIndex].value;
         e.preventDefault();
         if (selectedOption !== "" && harga.value !== "") {
-            let kotaLapangan = selectedOption.split('-')[1];
+            let formData = new FormData(form);
 
-            if (kotaAlatInput.value !== kotaLapangan) {
-
-                swal({
-                    title: "Apakah anda yakin?",
-                    text: "Alat olahraga ini berasal dari kota yang berbeda dengan kota tempat lapangan anda",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: "Lanjutkan",
-                    cancelButtonText: "Batalkan",
-                    closeOnConfirm: false,
-                    closeOnCancel: true
-                }, function(isConfirm) {
-                    if (isConfirm) {
-                        let formData = new FormData(form);
-
-                        $.ajax({
-                            type: "POST",
-                            url: "/tempat/permintaan/requestPermintaanAlat",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function(response) {
-                                if (response.success) {
-                                    swal({
-                                        title: "Success!",
-                                        text: response.message,
-                                        type: "success",
-                                        timer: 2000,
-                                        showConfirmButton: false
-                                    });
-                                    setTimeout(() => {
-                                        window.location.href = "/tempat/permintaan/daftarPermintaan";
-                                    }, 2000); // Setelah 5 detik
-                                } else {
-                                    // swal("Error!", response.message, "error");
-                                    swal({
-                                        title: "Error!",
-                                        text: response.message,
-                                        type: "error",
-                                        timer: 2000,
-                                        showConfirmButton: false
-                                    });
-                                }
-                                // window.location.reload();
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
-                            }
+            $.ajax({
+                type: "POST",
+                url: "/tempat/permintaan/requestPermintaanAlat",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
                         });
-                    }
-                });
-            }
-            else {
-                let formData = new FormData(form);
-
-                $.ajax({
-                    type: "POST",
-                    url: "/tempat/permintaan/requestPermintaanAlat",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        if (response.success) {
-                            swal({
-                                title: "Success!",
-                                text: response.message,
-                                type: "success",
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        } else {
-                            swal({
-                                title: "Error!",
-                                text: response.message,
-                                type: "error",
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        }
-                        // window.location.reload();
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
+                        setTimeout(() => {
+                            window.location.href = "/tempat/permintaan/daftarPermintaan";
+                        }, 2000); // Setelah 5 detik
+                    } else {
+                        // swal("Error!", response.message, "error");
                         swal({
                             title: "Error!",
-                            text: 'Ada masalah saat mengirim data. Silahkan coba lagi.',
+                            text: response.message,
                             type: "error",
                             timer: 2000,
                             showConfirmButton: false
                         });
                     }
-                });
-            }
+                    // window.location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
         }
         else {
             swal({
