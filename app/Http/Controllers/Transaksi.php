@@ -9,6 +9,7 @@ use App\Models\extendHtrans;
 use App\Models\filesLapanganOlahraga;
 use App\Models\htrans;
 use App\Models\kategori;
+use App\Models\komplainTrans;
 use App\Models\lapanganOlahraga;
 use App\Models\notifikasi;
 use App\Models\pihakTempat;
@@ -2239,6 +2240,8 @@ class Transaksi extends Controller
         $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
         $ext = new extendHtrans();
         $param["extend"] = $ext->get_all_data_by_id_htrans($id);
+        $komplain = new komplainTrans();
+        $param["komplain"] = $komplain->get_all_data_by_id_htrans($id);
 
         // $ext_d = new extendDtrans();
         // $id_extend = $ext->get_all_data_by_id_htrans($id)->first()->id_extend_htrans;

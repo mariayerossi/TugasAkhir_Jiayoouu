@@ -41,6 +41,10 @@ class komplainTrans extends Model
         return komplainTrans::where('deleted_at',"=",null)->where("status_komplain","=","Ditolak")->orderBy("waktu_komplain","desc")->get();
     }
 
+    public function get_all_data_by_id_htrans($id){
+        return komplainTrans::where('deleted_at',"=",null)->where("fk_id_htrans","=",$id)->get();
+    }
+
     public function get_all_data_by_id($id){
         return komplainTrans::where('deleted_at',"=",null)->where("id_komplain_trans","=",$id)->get();
     }
