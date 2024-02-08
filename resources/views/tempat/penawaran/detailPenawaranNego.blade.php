@@ -179,14 +179,14 @@
             </a>
         </div>
     </div>
-    @if ($penawaran->first()->status_penawaran == "Menunggu")
+    @if ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
     <form id="terimaForm" action="/tempat/penawaran/terimaPenawaran" method="post">
         @csrf
     @endif
         <div class="row mb-3 mt-3">
             <div class="col-md-6 col-sm-12 mb-3">
                 <h6>Permintaan Harga Sewa: <i class="bi bi-info-circle" data-toggle="tooltip" title="Biaya sewa per jam yang harus dibayar pelanggan saat menyewa alat (*sudah termasuk komisi pemilik dan pihak pengelola tempat). Negosiasikan harga dengan pihak pengelola tempat olahraga apabila merasa tidak puas dengan harga sewa"></i></h6>
-                @if ($penawaran->first()->req_harga_sewa != null)
+                @if ($penawaran->first()->req_harga_sewa != null && $penawaran->first()->status_penawaran != "Menunggu")
                     <p>Rp {{number_format($penawaran->first()->req_harga_sewa, 0, ',', '.')}}/jam</p>
                 @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == null)
                     <div class="input-group">
@@ -202,13 +202,31 @@
                             <button type="submit" class="btn btn-primary">Edit Harga</button>
                         </div> --}}
                     </div>
+                @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == "Setuju")
+                    <form id="editHargaForm" action="/tempat/penawaran/editHargaSewa" method="post">
+                        @csrf
+                        <div class="input-group">
+                            <input type="hidden" name="komisi" value="{{$dataAlat->komisi_alat}}">
+                            <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                            <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
+                            {{-- <input type="text" class="form-control" min="0" name="harga_sewa" oninput="formatNumber(this)" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}"> --}}
+                            <!-- Input yang terlihat oleh pengguna -->
+                            <input type="text" class="form-control" placeholder="Masukkan Harga Sewa" oninput="formatNumber(this)" value="{{number_format(old('harga_sewa') ?? $penawaran->first()->req_harga_sewa, 0, ',', '.')}}">
+
+                            <!-- Input tersembunyi untuk kirim ke server -->
+                            <input type="hidden" name="harga_sewa" id="actual" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary" id="editHarga">Edit Harga</button>
+                            </div>
+                        </div>
+                    </form>
                 @endif
             </div>
 
             <div class="col-md-6 col-sm-12 mb-3">
             </div>
 
-            @if ($penawaran->first()->req_tanggal_mulai != null && $penawaran->first()->req_tanggal_selesai != null)
+            @if ($penawaran->first()->req_tanggal_mulai != null && $penawaran->first()->req_tanggal_selesai != null && $penawaran->first()->status_penawaran != "Menunggu")
                 <div class="row mb-3 mt-3">
                     <div class="col-md-6 col-sm-12 mb-3">
                         <h6>Tanggal Mulai Dipinjam:</h6>
@@ -238,6 +256,41 @@
                         <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
                         <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
                         <input type="text" class="form-control" name="durasi_pinjam" value="{{old('durasi_pinjam')}}" />
+                    </div>
+                </div>
+            @elseif ($penawaran->first()->status_penawaran == "Menunggu" && $penawaran->first()->status_pemilik == null && $penawaran->first()->status_tempat == "Setuju")
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        <h6>Tanggal Mulai Dipinjam:</h6>
+                        <form id="editMulaiForm" action="/tempat/penawaran/editTanggalMulai" method="post">
+                            @csrf
+                            <div class="input-group">
+                                <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                                <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
+                                {{-- <input type="text" class="form-control" min="0" name="harga_sewa" oninput="formatNumber(this)" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}"> --}}
+                                <!-- Input yang terlihat oleh pengguna -->
+                                <input type="date" class="form-control" name="tanggal_mulai" id="" value="{{$penawaran->first()->req_tanggal_mulai}}">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary" id="editMulai">Edit Tanggal</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        <h6>Tanggal Selesai Dipinjam:</h6>
+                        <form id="editSelesaiForm" action="/tempat/penawaran/editSelesaiMulai" method="post">
+                            @csrf
+                            <div class="input-group">
+                                <input type="hidden" name="id_penawaran" value="{{$penawaran->first()->id_penawaran}}">
+                                <input type="hidden" name="status_penawaran" value="{{$penawaran->first()->status_penawaran}}">
+                                {{-- <input type="text" class="form-control" min="0" name="harga_sewa" oninput="formatNumber(this)" value="{{old('harga_sewa') ?? $penawaran->first()->req_harga_sewa}}"> --}}
+                                <!-- Input yang terlihat oleh pengguna -->
+                                <input type="date" class="form-control" name="tanggal_selesai" id="" value="{{$penawaran->first()->req_tanggal_selesai}}">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary" id="editSelesai">Edit Tanggal</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             @endif
@@ -757,6 +810,135 @@
 
             $.ajax({
                 url: "/tempat/komplain/tambahKomplain",
+                type: "POST",
+                data: formData,
+                processData: false,  // Important: Don't process the data
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#editHarga").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = new FormData($("#editHargaForm")[0]);
+
+            $.ajax({
+                url: "/tempat/penawaran/editHargaSewa",
+                type: "POST",
+                data: formData,
+                processData: false,  // Important: Don't process the data
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#editMulai").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = new FormData($("#editMulaiForm")[0]);
+
+            $.ajax({
+                url: "/tempat/penawaran/editTanggalMulai",
+                type: "POST",
+                data: formData,
+                processData: false,  // Important: Don't process the data
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+
+        $("#editSelesai").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = new FormData($("#editSelesaiForm")[0]);
+
+            $.ajax({
+                url: "/tempat/penawaran/editTanggalSelesai",
                 type: "POST",
                 data: formData,
                 processData: false,  // Important: Don't process the data

@@ -367,13 +367,15 @@ class RequestPenawaran extends Controller
     }
     
     public function editHargaSewa(Request $request) {
-        $request->validate([
-            "harga_sewa" => "required"
-        ],[
-            "required" => "harga sewa tidak boleh kosong!"
-        ]);
+        if ($request->harga_sewa == "" || $request->harga_sewa == null) {
+            return response()->json(['success' => false, 'message' => "Harga Sewa Alat Olahraga Tidak Boleh Kosong!"]);
+        }
 
         if ($request->status_penawaran == "Menunggu") {
+            if ((int)$request->harga_sewa <= (int)$request->komisi) {
+                return response()->json(['success' => false, 'message' => "Harga Sewa Alat Olahraga harus termasuk komisi pemilik!"]);
+            }
+
             $data = [
                 "id" => $request->id_penawaran,
                 "harga" => $request->harga_sewa
@@ -382,18 +384,18 @@ class RequestPenawaran extends Controller
             $pen->updateHargaSewa($data);
         }
         else {
-            return redirect()->back()->with("error", "Gagal mengedit harga sewa! Status penawaran telah $request->status_penawaran");
+            return response()->json(['success' => false, 'message' => 'Gagal mengedit harga sewa! Status penawaran telah $request->status_penawaran']);
+            // return redirect()->back()->with("error", "Gagal mengedit harga sewa! Status penawaran telah $request->status_penawaran");
         }
 
-        return redirect()->back()->with("success", "Berhasil mengedit harga sewa!");
+        return response()->json(['success' => true, 'message' => 'Berhasil mengedit harga sewa!']);
+        // return redirect()->back()->with("success", "Berhasil mengedit harga sewa!");
     }
 
     public function editTanggalMulai(Request $request) {
-        $request->validate([
-            "tanggal_mulai" => "required"
-        ],[
-            "required" => "tanggal mulai peminjaman tidak boleh kosong!"
-        ]);
+        if ($request->tanggal_mulai == "" || $request->tanggal_mulai == null) {
+            return response()->json(['success' => false, 'message' => "Tanggal Mulai Sewa Tidak Boleh Kosong!"]);
+        }
 
         date_default_timezone_set("Asia/Jakarta");
         $tgl_minta = date("Y-m-d H:i:s");
@@ -408,28 +410,38 @@ class RequestPenawaran extends Controller
                 $pen->updateTanggalMulai($data);
             }
             else {
-                return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
+                return response()->json(['success' => false, 'message' => 'Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!']);
             }
         }
         else {
-            return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran");
+            return response()->json(['success' => false, 'message' => "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran"]);
+            // return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Status penawaran telah $request->status_penawaran");
         }
 
-        return redirect()->back()->with("success", "Berhasil mengedit tanggal mulai sewa!");
+        return response()->json(['success' => true, 'message' => 'Berhasil mengedit tanggal mulai sewa!']);
     }
 
     public function editTanggalSelesai(Request $request) {
-        $request->validate([
-            "tanggal_selesai" => "required"
-        ],[
-            "required" => "tanggal mulai peminjaman tidak boleh kosong!"
-        ]);
+        if ($request->tanggal_selesai == "" || $request->tanggal_selesai == null) {
+            return response()->json(['success' => false, 'message' => "Tanggal Selesai Sewa Tidak Boleh Kosong!"]);
+        }
 
         date_default_timezone_set("Asia/Jakarta");
         $tgl_minta = date("Y-m-d H:i:s");
 
+        $pen = new ModelsRequestPenawaran();
+        $tanggal_mulai = $pen->get_all_data_by_id($request->id_penawaran)->first()->req_tanggal_mulai;
+
         if ($request->status_penawaran == "Menunggu") {
             if (new DateTime($request->tanggal_selesai) > new DateTime($tgl_minta)) {
+                if ($tanggal_mulai == null) {
+                    return response()->json(['success' => false, 'message' => "Tanggal Mulai Sewa Tidak Boleh Kosong!"]);
+                }
+
+                if (new DateTime($request->tanggal_selesai) <= new DateTime($tanggal_mulai)) {
+                    return response()->json(['success' => false, 'message' => "Tanggal Selesai Sewa Tidak Valid!"]);
+                }
+
                 $data = [
                     "id" => $request->id_penawaran,
                     "tanggal" => $request->tanggal_selesai
@@ -438,14 +450,14 @@ class RequestPenawaran extends Controller
                 $pen->updateTanggalSelesai($data);
             }
             else {
-                return redirect()->back()->with("error", "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid!");
+                return response()->json(['success' => false, 'message' => "Gagal mengedit tanggal mulai sewa! Tanggal mulai sewa tidak valid"]);
             }
         }
         else {
-            return redirect()->back()->with("error", "Gagal mengedit tanggal selesai sewa! Status penawaran telah $request->status_penawaran");
+            return response()->json(['success' => false, 'message' => "Gagal mengedit tanggal selesai sewa! Status penawaran telah $request->status_penawaran"]);
         }
 
-        return redirect()->back()->with("success", "Berhasil mengedit tanggal selesai sewa!");
+        return response()->json(['success' => true, 'message' => "Berhasil mengedit tanggal selesai sewa!"]);
     }
 
     public function konfirmasiPenawaran(Request $request){

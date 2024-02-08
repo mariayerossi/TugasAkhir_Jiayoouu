@@ -255,7 +255,7 @@ display: block;
                             <button type="submit" id="konfirmasi" class="btn btn-success w-100">Konfirmasi</button>
                         @else
                             <span style="font-size: 14px">Konfirmasi detail penawaran setelah pihak pengelola tempat menerima penawaran</span>
-                            <button type="submit" disabled class="btn btn-success w-100">Konfirmasi</button>
+                            <button type="submit" disabled class="btn btn-success w-100">Belum dikonfirmasi</button>
                         @endif
                     </form>
                     <hr>
