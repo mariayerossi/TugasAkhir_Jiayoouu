@@ -15,7 +15,7 @@ return new class extends Migration
             $table->integerIncrements("id_rating_alat");
             $table->integer("rating");//1 - 5
             $table->string("review", 500)->nullable();//opsional
-            $table->string("hide");//Ya / Tidak
+            $table->string("hide", 10);//Ya / Tidak
             $table->unsignedInteger("fk_id_user");
             $table->unsignedInteger("fk_id_alat");
             $table->unsignedInteger("fk_id_dtrans");

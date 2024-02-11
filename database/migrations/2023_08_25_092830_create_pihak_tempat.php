@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email_tempat',255);
             $table->string('telepon_tempat',15);
             $table->string('alamat_tempat',255);
-            $table->string('kota_tempat',255);
+            $table->string('kota_tempat',15);
             $table->string('ktp_tempat',255);
             $table->string('npwp_tempat',255);
             $table->string('password_tempat',255);
