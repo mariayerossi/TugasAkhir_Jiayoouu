@@ -1251,7 +1251,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_komplain_req')->insert([
-            'nama_file_komplain' => "bola_jelek.jpg",
+            'nama_file_komplain' => "raket_rusak.jpg",
             'fk_id_komplain_req' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
