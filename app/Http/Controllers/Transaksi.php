@@ -2316,13 +2316,26 @@ class Transaksi extends Controller
         $lapangan = DB::table('lapangan_olahraga')
                     ->select('nama_lapangan','id_lapangan')
                     ->join("htrans","lapangan_olahraga.id_lapangan","=","htrans.fk_id_lapangan")
+                    ->where("htrans.fk_id_tempat","=",$id_tempat)
+                    ->where("htrans.tanggal_sewa","=",$tgl)
+                    ->where(function($query) {
+                        $query->where("htrans.status_trans", "=", "Diterima")
+                              ->orWhere("htrans.status_trans", "=", "Berlangsung")
+                              ->orWhere("htrans.status_trans", "=", "Selesai");
+                    })
                     ->distinct()
                     ->get();
         // dd($lapangan);
         $param["lapangan"] = $lapangan;
 
-        $id_pertama = $lapangan->first()->id_lapangan;
-        $param["fitur"] = $id_pertama;
+        if ($lapangan->first() != null) {
+            $id_pertama = $lapangan->first()->id_lapangan;
+            $param["fitur"] = $id_pertama;
+        }
+        else {
+            $id_pertama = 0;
+            $param["fitur"] = $id_pertama;
+        }
 
         $trans = DB::table('htrans')
                 ->select("htrans.id_htrans","htrans.jam_sewa","htrans.durasi_sewa","user.nama_user","htrans.status_trans")
@@ -2352,13 +2365,26 @@ class Transaksi extends Controller
         $lapangan = DB::table('lapangan_olahraga')
                     ->select('nama_lapangan','id_lapangan')
                     ->join("htrans","lapangan_olahraga.id_lapangan","=","htrans.fk_id_lapangan")
+                    ->where("htrans.fk_id_tempat","=",$id_tempat)
+                    ->where("htrans.tanggal_sewa","=",$tgl)
+                    ->where(function($query) {
+                        $query->where("htrans.status_trans", "=", "Diterima")
+                              ->orWhere("htrans.status_trans", "=", "Berlangsung")
+                              ->orWhere("htrans.status_trans", "=", "Selesai");
+                    })
                     ->distinct()
                     ->get();
         // dd($lapangan);
         $param["lapangan"] = $lapangan;
 
-        $id_pertama = $request->lapangan;
-        $param["fitur"] = $id_pertama;
+        if ($lapangan->first() != null) {
+            $id_pertama = $request->lapangan;
+            $param["fitur"] = $id_pertama;
+        }
+        else {
+            $id_pertama = 0;
+            $param["fitur"] = $id_pertama;
+        }
 
         $trans = DB::table('htrans')
                 ->select("htrans.id_htrans","htrans.jam_sewa","htrans.durasi_sewa","user.nama_user","htrans.status_trans")

@@ -17,6 +17,8 @@
                             @foreach ($lapangan as $item)
                             <option value="{{$item->id_lapangan}}" {{$fitur == $item->id_lapangan ? 'selected' : '' }}>{{$item->nama_lapangan}}</option>
                             @endforeach
+                        @else
+                            <option value="" disabled selected>Tidak Ada Transaksi Lapangan</option>
                         @endif
                     </select>
                 </div>
