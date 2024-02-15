@@ -346,7 +346,11 @@ Sportiva
                         </h6>
                         <hr>
                         {{-- <a href="/editprofile">Profile</a> --}}
-                        <a href=""><i class="bi bi-cash-coin me-2"></i>Tarik Saldo</a>
+                        @if (Session::get("dataRole")->norek_tempat == null)
+                            <a href="/tempat/saldo/noRek"><i class="bi bi-cash-coin me-2"></i>Tarik Saldo</a>
+                        @else
+                            <a href="/tempat/saldo/tarikSaldo"><i class="bi bi-cash-coin me-2"></i>Tarik Saldo</a>
+                        @endif
                         <a href="/logout"><i class="bi bi-power me-2"></i>Logout</a>
                     </div>
                 </div>

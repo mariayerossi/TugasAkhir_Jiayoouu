@@ -60,17 +60,17 @@
                 <div class="row mt-3">
                   <div class="col-12">
                       <h4>Beri Ulasan</h4>
-                      <form action="/customer/rating/lapangan/tambahRating" method="post" id="ratingForm">
+                      <form action="/customer/rating/lapangan/tambahRating" method="post" id="ratingForm_field">
                           @csrf
                           <div class="rating-container">
                               @for($i=1; $i<=5; $i++)
-                                  <i class="bi bi-star star" data-rate="{{ $i }}"></i>
+                                  <i class="bi bi-star star" data-rate="{{ $i }}" data-field-type="field" data-id="lap-{{$lap->id_lapangan}}"></i>
                               @endfor
-                              <input type="hidden" name="rating" id="ratingValue">
+                              <input type="hidden" name="rating" id="lap-{{$lap->id_lapangan}}" data-id="lap-{{$lap->id_lapangan}}">
                           </div>
                           <div class="form-group mt-3">
                             <label for="comment">Review (opsional):</label>
-                            <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
+                            <textarea class="form-control" name="review" id="reviewValue" data-id="lap-{{$lap->id_lapangan}}" rows="3"></textarea>
                           </div>
                           <div class="form-group mt-3">
                             <label for="hide" class="me-3">Sembunyikan Nama</label>
@@ -125,17 +125,17 @@
                     <div class="row mt-3">
                       <div class="col-12">
                           <h4>Beri Ulasan</h4>
-                          <form action="/customer/rating/alat/tambahRating" method="post" id="ratingForm">
+                          <form action="/customer/rating/alat/tambahRating" method="post" id="ratingForm_equipment_{{$item->fk_id_alat}}" class="ratingForm_equipment">
                               @csrf
                               <div class="rating-container">
                                   @for($i=1; $i<=5; $i++)
-                                      <i class="bi bi-star star" data-rate="{{ $i }}"></i>
+                                      <i class="bi bi-star star" data-rate="{{ $i }}" data-field-type="equipment" data-id="al-{{$item->fk_id_alat}}"></i>
                                   @endfor
-                                  <input type="hidden" name="rating" id="ratingValue">
+                                  <input type="hidden" name="rating" id="al-{{$item->fk_id_alat}}" data-id="al-{{$item->fk_id_alat}}">
                               </div>
                               <div class="form-group mt-3">
                                 <label for="comment">Review (opsional):</label>
-                                <textarea class="form-control" name="review" id="comment" rows="3"></textarea>
+                                <textarea class="form-control" name="review" id="reviewValue" data-id="al-{{$item->fk_id_alat}}" rows="3"></textarea>
                               </div>
                               <div class="form-group mt-3">
                                 <label for="hide" class="me-3">Sembunyikan Nama</label>
@@ -148,7 +148,7 @@
                               <input type="hidden" name="id_alat" value="{{$item->fk_id_alat}}">
                               <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
                               <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-success mt-2">Kirim</button>
+                                <button type="button" class="btn btn-success mt-2 btn_submit" data-id="ratingForm_equipment_{{$item->fk_id_alat}}">Kirim</button>
                               </div>
                           </form>
                       </div>
@@ -213,20 +213,96 @@
   //           statusInput.value = "Ya";
   //       }
   //   });
-  document.addEventListener('DOMContentLoaded', function() {
-      const stars = document.querySelectorAll('.star');
-      const ratingValueInput = document.getElementById('ratingValue');
-      const ratingForm = document.getElementById('ratingForm');
-
-      stars.forEach(star => {
-          star.addEventListener('click', function() {
-              let ratingValue = this.getAttribute('data-rate');
-              fillStars(ratingValue);
-              ratingValueInput.value = ratingValue;
+  $(document).on("click",".btn_submit",function(){
+  var form = $(this).attr("data-id");
+          $.ajax({
+              url: $('#'+form).attr("action"),
+              method: "POST",
+              data: $('#'+form).serialize(),
+              success: function(response) {
+                // alert("halo");
+                if (response.success) {
+                    swal({
+                        title: "Success!",
+                        text: response.message,
+                        type: "success",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    window.location.reload();
+                }
+                else {
+                    swal({
+                        title: "Error!",
+                        text: response.message,
+                        type: "error",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+              },
+              error: function(jqXHR, textStatus, errorThrown) {
+                  swal("Error!", "Gagal mengirim rating!", "error");
+              }
           });
-      });
+});
 
-      ratingForm.addEventListener('submit', function(e) {
+  document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star');
+    const ratingForms = document.querySelectorAll('.rating-form');
+
+    stars.forEach(star => {
+    star.addEventListener('click', function() {
+        let ratingValue = this.getAttribute('data-rate');
+        let fieldType = this.getAttribute('data-field-type'); // Get the field type
+        let id = this.getAttribute('data-id'); // Get the id
+        let ratingForm = document.querySelector(`#ratingForm_${fieldType}[data-id="${id}"]`); // Select the appropriate form with matching id
+        fillStars(ratingValue, fieldType, id); // Pass id to the fillStars function
+        // ratingForm.querySelector(`#ratingValue[data-id="${id}"]`).value = ratingValue;
+        console.log(id);
+        $('#'+id).val(ratingValue);
+    });
+});
+
+
+    // document.querySelector(`.btn_submit`).addEventListener('click', function(e) {
+    //       // e.preventDefault(); // Menghentikan aksi default form submit
+
+    //       var form = $(this).attr("data-id");
+    //       $.ajax({
+    //           url: $('#'+form).attr("action"),
+    //           method: "POST",
+    //           data: $('#'+form).serialize(),
+    //           success: function(response) {
+    //             alert("halo");
+    //             if (response.success) {
+    //                 swal({
+    //                     title: "Success!",
+    //                     text: response.message,
+    //                     type: "success",
+    //                     timer: 2000,
+    //                     showConfirmButton: false
+    //                 });
+    //                 window.location.reload();
+    //             }
+    //             else {
+    //                 swal({
+    //                     title: "Error!",
+    //                     text: response.message,
+    //                     type: "error",
+    //                     timer: 2000,
+    //                     showConfirmButton: false
+    //                 });
+    //             }
+    //           },
+    //           error: function(jqXHR, textStatus, errorThrown) {
+    //               swal("Error!", "Gagal mengirim rating!", "error");
+    //           }
+    //       });
+    //       // return false;
+    //   });
+
+      document.querySelector(`#ratingForm_field`).addEventListener('submit', function(e) {
           e.preventDefault(); // Menghentikan aksi default form submit
 
           $.ajax({
@@ -260,17 +336,21 @@
           });
       });
 
-      function fillStars(value) {
-          stars.forEach((star, index) => {
-              if (index < value) {
-                  star.classList.remove('bi-star');
-                  star.classList.add('bi-star-fill');
-              } else {
-                  star.classList.remove('bi-star-fill');
-                  star.classList.add('bi-star');
-              }
-          });
-      }
+      function fillStars(value, fieldType, id) {
+        stars.forEach(star => {
+            let starFieldType = star.getAttribute('data-field-type');
+            let starDataId = star.getAttribute('data-id');
+            if (starFieldType === fieldType && starDataId === id) { // Check if the field type matches
+                if (star.getAttribute('data-rate') <= value) {
+                    star.classList.add('bi-star-fill');
+                    star.classList.remove('bi-star');
+                } else {
+                    star.classList.remove('bi-star-fill');
+                    star.classList.add('bi-star');
+                }
+            }
+        });
+    }
   });
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

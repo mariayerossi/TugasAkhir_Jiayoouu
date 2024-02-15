@@ -64,4 +64,12 @@ class pemilikAlat extends Model
         $pemi->email_verified_at = $data["tanggal"];
         $pemi->save();
     }
+
+    public function insertRekening($data){
+        $pemi = pemilikAlat::find($data["id"]);
+        $pemi->norek_pemilik = $data["noRek"];
+        $pemi->nama_rek_pemilik = $data["namaRek"];
+        $pemi->nama_bank_pemilik = $data["bank"];
+        $pemi->save();
+    }
 }

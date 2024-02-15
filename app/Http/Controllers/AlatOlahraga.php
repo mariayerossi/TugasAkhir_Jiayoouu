@@ -337,6 +337,11 @@ class AlatOlahraga extends Controller
                 }, 'files_alat', 'alat_olahraga.id_alat', '=', 'files_alat.fk_id_alat')
                 ->rightJoin("htrans", "dtrans.fk_id_htrans","=","htrans.id_htrans")
                 ->where("dtrans.fk_id_pemilik","=",$role)
+                ->where(function($query) {
+                    $query->where("htrans.status_trans", "=", "Diterima")
+                        ->orWhere("htrans.status_trans", "=", "Berlangsung")
+                        ->orWhere("htrans.status_trans", "=", "Selesai");
+                })
                 ->get();
         // dd($data);
 

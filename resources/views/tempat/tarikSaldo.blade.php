@@ -1,4 +1,4 @@
-@extends('layouts.sidebarNavbar_pemilik')
+@extends('layouts.sidebarNavbar_tempat')
 
 @section('content')
 <style>
@@ -35,9 +35,9 @@
                         <p class="lead fw-normal mb-0 me-3">Tarik Dana</p>
                     </div>
 
-                    <h6 class="fw-bold">Nama Bank: {{Session::get("dataRole")->nama_bank_pemilik}}</h6>
-                    <h6 class="fw-bold">Nomer Rekening: {{Session::get("dataRole")->norek_pemilik}}</h6>
-                    <h6 class="fw-bold">Nama Rekening: {{Session::get("dataRole")->nama_rek_pemilik}}</h6>
+                    <h6 class="fw-bold">Nama Bank: {{Session::get("dataRole")->nama_bank_tempat}}</h6>
+                    <h6 class="fw-bold">Nomer Rekening: {{Session::get("dataRole")->norek_tempat}}</h6>
+                    <h6 class="fw-bold">Nama Rekening: {{Session::get("dataRole")->nama_rek_tempat}}</h6>
 
                     <!-- Amount input -->
                     <div class="form-outline mb-4 mt-3">

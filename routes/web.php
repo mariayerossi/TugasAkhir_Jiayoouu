@@ -225,6 +225,14 @@ Route::prefix("/admin")->group(function(){
             Route::get("/CetakPDF", [Laporan::class, "tempatAdminCetakPDF"]);
         });
     });
+
+    //Bagian Saldo
+    Route::prefix("/saldo")->group(function(){
+        Route::get("/tarikSaldo", function () {
+            return view("admin.tarikSaldo");
+        })->middleware([CekAdmin::class]);
+        Route::post("/tarikDana", [Saldo::class, "tarikSaldo"]);
+    });
 });
 
 // -------------------------------
@@ -315,6 +323,12 @@ Route::prefix("/pemilik")->group(function(){
     });
 
     Route::prefix("/saldo")->group(function(){
+        Route::get("/noRek", function () {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            return view("pemilik.nomerRekening")->with($param);
+        })->middleware([CekPemilik::class]);
+        Route::post("/tambahDetail", [Saldo::class, "tambahDetailPemilik"]);
         Route::get("/tarikSaldo", function () {
             $kat = new kategori();
             $param["kategori"] = $kat->get_all_data();
@@ -473,6 +487,22 @@ Route::prefix("/tempat")->group(function(){
             Route::get("/laporanLapangan", [Laporan::class, "laporanLapangan"])->middleware([CekTempat::class]);
             Route::get('/CetakPDF', [Laporan::class, "lapanganCetakPDF"]);
         });
+    });
+
+    //Bagian Saldo
+    Route::prefix("/saldo")->group(function(){
+        Route::get("/noRek", function () {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            return view("tempat.nomerRekening")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::post("/tambahDetail", [Saldo::class, "tambahDetailTempat"]);
+        Route::get("/tarikSaldo", function () {
+            $kat = new kategori();
+            $param["kategori"] = $kat->get_all_data();
+            return view("tempat.tarikSaldo")->with($param);
+        })->middleware([CekTempat::class]);
+        Route::post("/tarikDana", [Saldo::class, "tarikSaldo"]);
     });
 });
 

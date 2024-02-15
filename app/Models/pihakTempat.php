@@ -59,4 +59,12 @@ class pihakTempat extends Model
         $temp->saldo_tempat = $data["saldo"];
         $temp->save();
     }
+
+    public function insertRekening($data){
+        $temp = pihakTempat::find($data["id"]);
+        $temp->norek_tempat = $data["noRek"];
+        $temp->nama_rek_tempat = $data["namaRek"];
+        $temp->nama_bank_tempat = $data["bank"];
+        $temp->save();
+    }
 }

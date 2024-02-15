@@ -9,6 +9,8 @@ use App\Models\notifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\notifikasiEmail;
+use App\Models\pemilikAlat;
+use App\Models\pihakTempat;
 use DateTime;
 
 class Saldo extends Controller
@@ -154,6 +156,66 @@ class Saldo extends Controller
             'success' => true,
             'message' => 'Saldo berhasil diperbarui!'
         ]);
+    }
+
+    public function tambahDetailPemilik(Request $request) {
+        if ($request->bank == "" || $request->noRek == "" || $request->namaRek == "") {
+            return response()->json(['success' => false, 'message' => "Input Detail Tidak Boleh Kosong!"]);
+        }
+
+        if ($request->noRek < 1 || strlen($request->noRek) < 10) {
+            return response()->json(['success' => false, 'message' => "Nomer Rekening Tidak Valid!"]);
+        }
+
+        if (Session::get("dataRole")->norek_pemilik != null) {
+            return response()->json(['success' => false, 'message' => "Nomer Rekening Telah Ditambahkan!"]);
+        }
+
+        $data = [
+            "id" => Session::get("dataRole")->id_pemilik,
+            "noRek" => $request->noRek,
+            "namaRek" => $request->namaRek,
+            "bank" => $request->bank
+        ];
+        $pemi = new pemilikAlat();
+        $pemi->insertRekening($data);
+
+        //update session
+        $dataRole = $pemi->get_all_data_by_id(Session::get("dataRole")->id_pemilik);
+        Session::forget("dataRole");
+        Session::put("dataRole", $dataRole->first());
+
+        return response()->json(['success' => true, 'message' => "Berhasil Menambah Detail!"]);
+    }
+
+    public function tambahDetailTempat(Request $request) {
+        if ($request->bank == "" || $request->noRek == "" || $request->namaRek == "") {
+            return response()->json(['success' => false, 'message' => "Input Detail Tidak Boleh Kosong!"]);
+        }
+
+        if ($request->noRek < 1 || strlen($request->noRek) < 10) {
+            return response()->json(['success' => false, 'message' => "Nomer Rekening Tidak Valid!"]);
+        }
+
+        if (Session::get("dataRole")->norek_tempat != null) {
+            return response()->json(['success' => false, 'message' => "Nomer Rekening Telah Ditambahkan!"]);
+        }
+
+        $data = [
+            "id" => Session::get("dataRole")->id_tempat,
+            "noRek" => $request->noRek,
+            "namaRek" => $request->namaRek,
+            "bank" => $request->bank
+        ];
+        $temp = new pihakTempat();
+        $temp->insertRekening($data);
+
+        //update session
+        $dataRole = $temp->get_all_data_by_id(Session::get("dataRole")->id_tempat);
+        Session::forget("dataRole");
+        Session::put("dataRole", $dataRole->first());
+
+        return response()->json(['success' => true, 'message' => "Berhasil Menambah Detail!"]);
     }
 
     public function tarikSaldo(Request $request) {

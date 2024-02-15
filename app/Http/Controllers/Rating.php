@@ -199,7 +199,11 @@ class Rating extends Controller
         $file_lapangan = new filesLapanganOlahraga();
         $param["fileLap"] = $file_lapangan->get_all_data($id_lapangan)->first();
 
-        $param["ratingLap"] = $ratingLap = DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$htrans->first()->id_htrans)->get()->first();
+        $id_user = Session::get("dataRole")->first()->id_user;
+
+        $param["ratingLap"] = DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$id)->where("fk_id_user","=",$id_user)->get()->first();
+        // dd(DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$id)->get()->first());
+        // dd($htrans->first()->id_htrans);
         
         return view("customer.ulasan")->with($param);
     }

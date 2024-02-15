@@ -307,7 +307,7 @@
 
                                                     @if (Session::has("sewaAlat"))
                                                         @foreach (Session::get("sewaAlat") as $item)
-                                                            @if ($item["alat"] == $dataAlat->id_alat)
+                                                            @if ($item["alat"] == $dataAlat->id_alat && $item["user"] == Session::get("dataRole")->id_user)
                                                                 @php $disableButton = true @endphp
                                                                 @break
                                                             @endif

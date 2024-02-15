@@ -315,12 +315,45 @@ Sportiva
                         <a href="/notifikasi/admin/lihatNotifikasi" class="text-center">Lihat Semua Notifikasi</a>
                     </div>
                 </div>
-                <a href="/logout" title="Logout">
+                <div class="profile-dropdown">
+                    <img src="{{ asset('assets/img/user_icon4.png')}}" alt="Profile" class="profile-image">
+                    <div class="dropdown-content">
+                        <h6 class="m-3">Admin</h6>
+                        @php
+                            $trans = DB::table('htrans')
+                                    ->select(
+                                        "htrans.pendapatan_website_lapangan as pendapatan_lapangan",
+                                        DB::raw('SUM(dtrans.pendapatan_website_alat) as pendapatan_alat'),
+                                        "extend_htrans.pendapatan_website_lapangan as lapangan_ext",
+                                        DB::raw('SUM(extend_dtrans.pendapatan_website_alat) as alat_ext')
+                                    )
+                                    ->leftJoin("dtrans","htrans.id_htrans","=","dtrans.fk_id_htrans")
+                                    ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                                    ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
+                                    ->where("htrans.status_trans","=","Selesai")
+                                    ->groupBy(
+                                        "htrans.pendapatan_website_lapangan",
+                                        "extend_htrans.pendapatan_website_lapangan"
+                                    )
+                                    ->get();
+                            $saldo = $trans->sum("pendapatan_lapangan") + $trans->sum("pendapatan_alat") + $trans->sum("lapangan_ext") + $trans->sum("alat_ext");
+                        @endphp
+                        <h6 class="m-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+                                <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z"/>
+                              </svg>: Rp {{ number_format($saldo, 0, ',', '.') }}
+                        </h6>
+                        <hr>
+                        <a href="/admin/saldo/tarikSaldo"><i class="bi bi-cash-coin me-2"></i>Tarik Saldo</a>
+                        <a href="/logout"><i class="bi bi-power me-2"></i>Logout</a>
+                    </div>
+                </div>
+                {{-- <a href="/logout" title="Logout">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-power" viewBox="0 0 16 16">
                         <path d="M7.5 1v7h1V1z"/>
                         <path d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812"/>
                       </svg>
-                </a>
+                </a> --}}
             </div>
         </nav>
         {{-- <button class="float-back-button mt-3" onclick="goBack()"><i class="bi bi-arrow-90deg-left"></i></button> --}}
@@ -407,6 +440,23 @@ Sportiva
                 document.querySelectorAll('.notif-dropdown-content.active').forEach((activeContent) => {
                     activeContent.classList.remove('active');
                 });
+            }
+            if (!event.target.closest('.profile-dropdown')) {
+                document.querySelectorAll('.dropdown-content.active').forEach((activeContent) => {
+                    activeContent.classList.remove('active');
+                });
+            }
+        });
+        document.querySelector('.profile-dropdown').addEventListener('click', function() {
+            let content = this.querySelector('.dropdown-content');
+            if (content.classList.contains('active')) {
+                content.classList.remove('active');
+            } else {
+                // Tutup semua dropdown lain yang aktif
+                document.querySelectorAll('.dropdown-content.active').forEach((activeContent) => {
+                    activeContent.classList.remove('active');
+                });
+                content.classList.add('active');
             }
         });
         $(document).ready(function () {
