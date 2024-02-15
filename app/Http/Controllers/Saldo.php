@@ -12,6 +12,8 @@ use App\Models\notifikasiEmail;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use DateTime;
+use Illuminate\Support\Facades\Http;
+use Midtrans\Transaction;
 
 class Saldo extends Controller
 {
@@ -219,6 +221,43 @@ class Saldo extends Controller
     }
 
     public function tarikSaldo(Request $request) {
-        
+        $request->validate([
+            "jumlah" => "required"
+        ],[
+            "required" => "Nominal top up tidak boleh kosong!"
+        ]);
+        // Set your Merchant Server Key
+        \Midtrans\Config::$serverKey = config("midtrans.server_key");
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        \Midtrans\Config::$isProduction = false;
+        // Set sanitization on (default)
+        \Midtrans\Config::$isSanitized = true;
+        // Set 3DS transaction for credit card to true
+        \Midtrans\Config::$is3ds = true;
+
+        $params = array(
+            'payouts' => array(
+                "beneficiary_name"=> Session::get("dataRole")->nama_rek_pemilik,
+                "beneficiary_account"=> Session::get("dataRole")->norek_pemilik,
+                "beneficiary_bank"=> Session::get("dataRole")->nama_bank_pemilik,
+                "beneficiary_email"=> "beneficiary@example.com",
+                "amount"=> (int)$request->jumlah,
+                "notes"=> "Payout"
+            ),
+        );
+        // $response = Http::withHeaders([
+        //     'Content-Type' => 'application/json',
+        //     'Authorization' => 'Basic ' . base64_encode(env('MIDTRANS_SERVER_KEY') . ':')
+        // ])->post('https://api.sandbox.midtrans.com/payouts', [
+        //     'bank_account' => "1111222233333",
+        //     'amount' => (int)$request->jumlah,
+        //     'beneficiary_name' => "Mandiri Simulator A",
+        //     'bank' => "Bank Mandiri",
+        //     'email' => 'john.doe@example.com'
+        // ]);
+        // dd($response);
+        // \Midtrans\Pay
+        $response = Transaction::payout($params);
+        return response()->json(['result' => $response->json()]);
     }
 }
