@@ -244,7 +244,7 @@ class KomplainRequest extends Controller
                     Mohon segera masuk dan tangani komplain ini untuk meningkatkan kepuasan pengguna!"
         ];
         $e = new notifikasiEmail();
-        $e->sendEmail("admin@gmail.com",$dataNotif);
+        $e->sendEmail("booking.sportiva@gmail.com",$dataNotif);
 
         return response()->json(['success' => true, 'message' => "Berhasil mengajukan komplain!"]);
     }

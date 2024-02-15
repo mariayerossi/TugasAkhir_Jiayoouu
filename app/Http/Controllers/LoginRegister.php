@@ -355,7 +355,7 @@ class LoginRegister extends Controller
             "min" => ":attribute tidak valid!"
         ]);
 
-        if ($request->email == "admin@gmail.com" && $request->password == "asdfghjkl") {
+        if ($request->email == "booking.sportiva@gmail.com" && $request->password == "asdfghjkl") {
             //masuk role admin
             Session::put("role","admin");
             return redirect('/admin/beranda');

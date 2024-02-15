@@ -332,6 +332,7 @@ Sportiva
                                     ->leftJoin("extend_dtrans","dtrans.id_dtrans","=","extend_dtrans.fk_id_dtrans")
                                     ->where("htrans.status_trans","=","Selesai")
                                     ->groupBy(
+                                        "htrans.kode_trans",
                                         "htrans.pendapatan_website_lapangan",
                                         "extend_htrans.pendapatan_website_lapangan"
                                     )
