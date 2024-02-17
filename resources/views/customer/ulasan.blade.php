@@ -125,7 +125,7 @@
                     <div class="row mt-3">
                       <div class="col-12">
                           <h4>Beri Ulasan</h4>
-                          <form action="" method="post" id="ratingForm_equipment_{{$item->fk_id_alat}}" class="ratingForm_equipment">
+                          <form action="/customer/rating/alat/tambahRating" method="post" id="ratingForm_equipment_{{$item->fk_id_alat}}" class="ratingForm_equipment">
                               @csrf
                               <div class="rating-container">
                                   @for($i=1; $i<=5; $i++)
@@ -202,7 +202,7 @@
               method: "POST",
               data: $('#'+form).serialize(),
               success: function(response) {
-                alert("halo");
+                // alert("halo");
                 if (response.success) {
                     swal({
                         title: "Success!",
@@ -248,7 +248,7 @@
 
       document.querySelector(`#ratingForm_field`).addEventListener('submit', function(e) {
           e.preventDefault(); // Menghentikan aksi default form submit
-
+          // alert("halo");
           $.ajax({
               url: "/customer/rating/lapangan/tambahRating",
               method: "POST",

@@ -8,6 +8,7 @@ use App\Models\htrans;
 use App\Models\kategori;
 use App\Models\lapanganOlahraga;
 use App\Models\notifikasi;
+use App\Models\notifikasiEmail;
 use App\Models\ratingAlat;
 use App\Models\ratingLapangan;
 use Illuminate\Http\Request;
@@ -105,7 +106,7 @@ class Rating extends Controller
             "id_dtrans" => $request->id_dtrans
         ];
         $rate = new ratingAlat();
-        // $rate->insertRating($data);
+        $rate->insertRating($data);
 
         //kasih notif ke pemilik alat
         $alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first();
