@@ -496,6 +496,7 @@
         $('[data-toggle="tooltip"]').tooltip();
 
         $("#terima").click(function(event) {
+            // alert("halo");
             event.preventDefault(); // Mencegah perilaku default form
 
             var formData = $("#terimaForm").serialize(); // Mengambil data dari form

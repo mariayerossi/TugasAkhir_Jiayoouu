@@ -450,6 +450,7 @@ class Transaksi extends Controller
             ->where("htrans.fk_id_tempat", "=", $role)
             ->whereNull("htrans.deleted_at")
             ->where("htrans.status_trans", "=", "Menunggu")
+            ->orderBy("htrans.id_htrans","DESC")
             ->get();
         $param["baru"] = $baru;
 
@@ -466,6 +467,7 @@ class Transaksi extends Controller
             ->where("htrans.fk_id_tempat", "=", $role)
             ->whereNull("htrans.deleted_at")
             ->where("htrans.status_trans", "=", "Berlangsung")
+            ->orderBy("htrans.id_htrans","DESC")
             ->get();
         $param["berlangsung"] = $berlangsung;
 
@@ -482,6 +484,7 @@ class Transaksi extends Controller
             ->where("htrans.fk_id_tempat", "=", $role)
             ->whereNull("htrans.deleted_at")
             ->where("htrans.status_trans", "=", "Berlangsung")
+            ->orderBy("htrans.id_htrans","DESC")
             ->get();
         $param["berlangsung"] = $berlangsung;
 
@@ -498,6 +501,7 @@ class Transaksi extends Controller
             ->where("htrans.fk_id_tempat", "=", $role)
             ->whereNull("htrans.deleted_at")
             ->where("htrans.status_trans", "=", "Diterima")
+            ->orderBy("htrans.id_htrans","DESC")
             ->get();
         $param["diterima"] = $diterima;
 
@@ -514,6 +518,7 @@ class Transaksi extends Controller
             ->where("htrans.fk_id_tempat", "=", $role)
             ->whereNull("htrans.deleted_at")
             ->where("htrans.status_trans", "=", "Ditolak")
+            ->orderBy("htrans.id_htrans","DESC")
             ->get();
         $param["ditolak"] = $ditolak;
 
@@ -530,6 +535,7 @@ class Transaksi extends Controller
             ->where("htrans.fk_id_tempat", "=", $role)
             ->whereNull("htrans.deleted_at")
             ->where("htrans.status_trans", "=", "Selesai")
+            ->orderBy("htrans.id_htrans","DESC")
             ->get();
         $param["selesai"] = $selesai;
 
@@ -546,6 +552,7 @@ class Transaksi extends Controller
             ->where("htrans.fk_id_tempat", "=", $role)
             ->whereNull("htrans.deleted_at")
             ->where("htrans.status_trans", "=", "Dibatalkan")
+            ->orderBy("htrans.id_htrans","DESC")
             ->get();
         $param["dibatalkan"] = $dibatalkan;
 
@@ -562,6 +569,7 @@ class Transaksi extends Controller
             ->where("htrans.fk_id_tempat", "=", $role)
             ->whereNull("htrans.deleted_at")
             ->where("htrans.status_trans", "=", "Dikomplain")
+            ->orderBy("htrans.id_htrans","DESC")
             ->get();
         $param["dikomplain"] = $dikomplain;
         return view("tempat.transaksi.daftarTransaksi")->with($param);

@@ -430,7 +430,7 @@
                                 showConfirmButton: false
                             });
                             setTimeout(() => {
-                            window.location.href = "/pemilik/penawaran/daftarPenawarand";
+                            window.location.href = "/pemilik/penawaran/daftarPenawaran";
                         }, 2000); // Setelah 5 detik
                         } else {
                             // swal("Error!", response.message, "error");

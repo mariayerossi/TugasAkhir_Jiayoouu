@@ -125,7 +125,7 @@
                     <div class="row mt-3">
                       <div class="col-12">
                           <h4>Beri Ulasan</h4>
-                          <form action="/customer/rating/alat/tambahRating" method="post" id="ratingForm_equipment_{{$item->fk_id_alat}}" class="ratingForm_equipment">
+                          <form action="" method="post" id="ratingForm_equipment_{{$item->fk_id_alat}}" class="ratingForm_equipment">
                               @csrf
                               <div class="rating-container">
                                   @for($i=1; $i<=5; $i++)
@@ -193,34 +193,16 @@
         statusInput.value = "Ya";
     }
   }
-  // document.getElementById('toggleSwitch').addEventListener('click', function(button) {
-  //       // Mengganti SVG menjadi toggle off
 
-  //       let id = button.getAttribute('data-id');
-  //       console.log();
-
-  //       var label = document.querySelector(`#toggleLabel[data-id="${id}"]`);
-  //       var svgElement = document.querySelector(`#toggleSwitch[data-id="${id}"]`);
-  //       if (label.textContent === "Aktif") {
-  //           label.textContent = "Non Aktif";
-  //           svgElement.setAttribute("class", "bi bi-toggle-off");
-  //           svgElement.innerHTML = "<path d='M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z'/>";
-  //           statusInput.value = "Tidak";
-  //       } else {
-  //           label.textContent = "Aktif";
-  //           svgElement.setAttribute("class", "bi bi-toggle-on");
-  //           svgElement.innerHTML = "<path d='M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8z'/>";
-  //           statusInput.value = "Ya";
-  //       }
-  //   });
   $(document).on("click",".btn_submit",function(){
+    // alert("halo");
   var form = $(this).attr("data-id");
           $.ajax({
-              url: $('#'+form).attr("action"),
+              url: "/customer/rating/alat/tambahRating",
               method: "POST",
               data: $('#'+form).serialize(),
               success: function(response) {
-                // alert("halo");
+                alert("halo");
                 if (response.success) {
                     swal({
                         title: "Success!",
@@ -264,49 +246,11 @@
     });
 });
 
-
-    // document.querySelector(`.btn_submit`).addEventListener('click', function(e) {
-    //       // e.preventDefault(); // Menghentikan aksi default form submit
-
-    //       var form = $(this).attr("data-id");
-    //       $.ajax({
-    //           url: $('#'+form).attr("action"),
-    //           method: "POST",
-    //           data: $('#'+form).serialize(),
-    //           success: function(response) {
-    //             alert("halo");
-    //             if (response.success) {
-    //                 swal({
-    //                     title: "Success!",
-    //                     text: response.message,
-    //                     type: "success",
-    //                     timer: 2000,
-    //                     showConfirmButton: false
-    //                 });
-    //                 window.location.reload();
-    //             }
-    //             else {
-    //                 swal({
-    //                     title: "Error!",
-    //                     text: response.message,
-    //                     type: "error",
-    //                     timer: 2000,
-    //                     showConfirmButton: false
-    //                 });
-    //             }
-    //           },
-    //           error: function(jqXHR, textStatus, errorThrown) {
-    //               swal("Error!", "Gagal mengirim rating!", "error");
-    //           }
-    //       });
-    //       // return false;
-    //   });
-
       document.querySelector(`#ratingForm_field`).addEventListener('submit', function(e) {
           e.preventDefault(); // Menghentikan aksi default form submit
 
           $.ajax({
-              url: this.action,
+              url: "/customer/rating/lapangan/tambahRating",
               method: "POST",
               data: $(this).serialize(),
               success: function(response) {

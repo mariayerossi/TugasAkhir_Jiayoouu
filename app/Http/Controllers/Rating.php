@@ -105,7 +105,7 @@ class Rating extends Controller
             "id_dtrans" => $request->id_dtrans
         ];
         $rate = new ratingAlat();
-        $rate->insertRating($data);
+        // $rate->insertRating($data);
 
         //kasih notif ke pemilik alat
         $alat = DB::table('alat_olahraga')->where("id_alat","=",$request->id_alat)->get()->first();

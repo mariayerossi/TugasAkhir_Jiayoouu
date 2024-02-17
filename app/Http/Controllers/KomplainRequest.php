@@ -252,8 +252,14 @@ class KomplainRequest extends Controller
     public function terimaKomplain(Request $request) {
         // Pengecekan checkbox pertama
         $komplain = DB::table('komplain_request')->where("id_komplain_req","=",$request->id_komplain)->get()->first();
-        $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$komplain->fk_id_pemilik)->get()->first();
-
+        if ($komplain->fk_id_permintaan != null) {
+            $id_pemilik = DB::table('request_permintaan')->where("id_permintaan","=",$komplain->fk_id_permintaan)->first()->fk_id_pemilik;
+        }
+        else if ($komplain->fk_id_penawaran != null) {
+            $id_pemilik = DB::table('request_penawaran')->where("id_penawaran","=",$komplain->fk_id_penawaran)->first()->fk_id_pemilik;
+        }
+        $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$id_pemilik)->get()->first();
+// dd($pemilik);
         $penanganan = "";
         if ($request->has('pengembalianCheckbox')) {
             if ($request->produk != "") {
@@ -977,7 +983,7 @@ class KomplainRequest extends Controller
                         foreach ($dataAla3 as $key => $value) {
                             //hapus dtransnya (status htrans menunggu / diterima)
                             $dtr = DB::table('dtrans')
-                                ->select("dtrans.id_dtrans", "htrans.fk_id_user","htrans.kode_trans")
+                                ->select("dtrans.id_dtrans", "htrans.fk_id_user","htrans.kode_trans", "dtrans.subtotal_alat", "dtrans.fk_id_alat")
                                 ->join("htrans", "dtrans.fk_id_htrans", "=", "htrans.id_htrans")
                                 ->where("dtrans.deleted_at", "=", null)
                                 ->where(function ($query) {
@@ -986,11 +992,13 @@ class KomplainRequest extends Controller
                                 })
                                 ->where("dtrans.fk_id_alat", "=", $value->id_alat)
                                 ->get();
+                                // dd($dtr);
                             if (!$dtr->isEmpty()) {
                                 foreach ($dtr as $key => $value2) {
                                     $dataCust2 = DB::table('user')->where("id_user","=",$value2->fk_id_user)->get()->first();
                                     //balikin dananya
                                     $saldoCust2 = (int)$this->decodePrice($dataCust2->saldo_user, "mysecretkey");
+
                                     $saldoCust2 += $value2->subtotal_alat;
                                     $enkrip3 = $this->encodePrice((string)$saldoCust2, "mysecretkey");
 
