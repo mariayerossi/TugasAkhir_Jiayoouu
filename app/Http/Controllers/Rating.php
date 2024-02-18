@@ -202,9 +202,9 @@ class Rating extends Controller
 
         $id_user = Session::get("dataRole")->first()->id_user;
 
-        $param["ratingLap"] = DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$id)->where("fk_id_user","=",$id_user)->get()->first();
+        $param["ratingLap"] = DB::table('rating_lapangan')->where("fk_id_lapangan","=",$id_lapangan)->where("fk_id_htrans","=",$id)->where("fk_id_user","=",$id_user)->get()->first();
+        // dd(DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$id)->where("fk_id_user","=",$id_user)->first());
         // dd(DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$id)->get()->first());
-        // dd($htrans->first()->id_htrans);
         
         return view("customer.ulasan")->with($param);
     }

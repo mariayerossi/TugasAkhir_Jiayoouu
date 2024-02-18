@@ -414,9 +414,12 @@ class AlatOlahraga extends Controller
 
         $param["rating"] = $rating->get_data_by_id_alat($id);
 
-        $kategori = new kategori();
-        $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
-        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        
+        if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            $kategori = new kategori();
+            $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
+            $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        }
 
         return view("pemilik.alat.detailAlat")->with($param);
     }
@@ -425,11 +428,13 @@ class AlatOlahraga extends Controller
         $alat = new ModelsAlatOlahraga();
         $param["alat"] = $alat->get_all_data_by_id($id);
         
-        if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
-            $param["kota"] = $alat->get_kota_pemilik_by_id($id);
-        }
-        else {
-            $param["kota"] = $alat->get_kota_tempat_by_id($id);
+        if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
+                $param["kota"] = $alat->get_kota_pemilik_by_id($id);
+            }
+            else {
+                $param["kota"] = $alat->get_kota_tempat_by_id($id);
+            }
         }
 
         $files = new filesAlatOlahraga();
@@ -444,11 +449,11 @@ class AlatOlahraga extends Controller
 
         $param["rating"] = $rating->get_data_by_id_alat($id);
 
-        $kategori = new kategori();
-        $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
-        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
-
         if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            $kategori = new kategori();
+            $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
+            $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+
             $pemi = "";
             if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
                 $pemilik = new pemilikAlat();
@@ -485,11 +490,13 @@ class AlatOlahraga extends Controller
         $lapa = new lapanganOlahraga();
         $param["lapangan"] = $lapa->get_all_data_status($role);
 
-        if ($alat->get_all_data_by_id($id)->first()->fk_id_tempat != null) {
-            $param["kota"] = $alat->get_kota_tempat_by_id($id);
-        }
-        else {
-            $param["kota"] = $alat->get_kota_pemilik_by_id($id);
+        if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            if ($alat->get_all_data_by_id($id)->first()->fk_id_tempat != null) {
+                $param["kota"] = $alat->get_kota_tempat_by_id($id);
+            }
+            else {
+                $param["kota"] = $alat->get_kota_pemilik_by_id($id);
+            }
         }
 
         $rating = new ratingAlat();
@@ -522,9 +529,11 @@ class AlatOlahraga extends Controller
         $param["files"] = $files->get_all_data($id);
         $param["kota"] = $alat->get_kota_tempat_by_id($id);
 
-        $kategori = new kategori();
-        $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
-        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            $kategori = new kategori();
+            $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
+            $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        }
 
         $rating = new ratingAlat();
         $avg = $rating->get_avg_data($id);
@@ -556,9 +565,11 @@ class AlatOlahraga extends Controller
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
 
-        $kategori = new kategori();
-        $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
-        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            $kategori = new kategori();
+            $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
+            $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        }
 
         $rating = new ratingAlat();
         $avg = $rating->get_avg_data($id);
@@ -592,16 +603,18 @@ class AlatOlahraga extends Controller
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
 
-        if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
-            $param["kota"] = $alat->get_kota_pemilik_by_id($id);
-        }
-        else {
-            $param["kota"] = $alat->get_kota_tempat_by_id($id);
-        }
+        if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
+                $param["kota"] = $alat->get_kota_pemilik_by_id($id);
+            }
+            else {
+                $param["kota"] = $alat->get_kota_tempat_by_id($id);
+            }
 
-        $kategori = new kategori();
-        $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
-        $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+            $kategori = new kategori();
+            $id_kategori = $alat->get_all_data_by_id($id)->first()->fk_id_kategori;
+            $param["kat"] = $kategori->get_all_data_by_id($id_kategori)->first()->nama_kategori;
+        }
 
         $rating = new ratingAlat();
         $avg = $rating->get_avg_data($id);
@@ -610,14 +623,16 @@ class AlatOlahraga extends Controller
         $param["totalReviews"] = $rating->get_data_count($id);
         $param["rating"] = $rating->get_data_by_id_alat($id);
 
-        $pemilik = "";
-        if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
-            $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$alat->get_all_data_by_id($id)->first()->fk_id_pemilik)->first()->nama_pemilik;
+        if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+            $pemilik = "";
+            if ($alat->get_all_data_by_id($id)->first()->fk_id_pemilik != null) {
+                $pemilik = DB::table('pemilik_alat')->where("id_pemilik","=",$alat->get_all_data_by_id($id)->first()->fk_id_pemilik)->first()->nama_pemilik;
+            }
+            else {
+                $pemilik = DB::table('pihak_tempat')->where("id_tempat","=",$alat->get_all_data_by_id($id)->first()->fk_id_tempat)->first()->nama_tempat;
+            }
+            $param["pemilik"] = $pemilik;
         }
-        else {
-            $pemilik = DB::table('pihak_tempat')->where("id_tempat","=",$alat->get_all_data_by_id($id)->first()->fk_id_tempat)->first()->nama_tempat;
-        }
-        $param["pemilik"] = $pemilik;
 
         $harga_sewa = 0;
         $cekPermintaan = DB::table('request_permintaan')->where("req_id_alat","=",$id)->where("status_permintaan","=","Disewakan")->get()->first();
@@ -632,7 +647,9 @@ class AlatOlahraga extends Controller
             else {
                 $cekSewa = DB::table('sewa_sendiri')->where("req_id_alat","=",$id)->get()->first();
                 if ($cekSewa != null) {
-                    $harga_sewa = $alat->get_all_data_by_id($id)->first()->komisi_alat;
+                    if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+                        $harga_sewa = $alat->get_all_data_by_id($id)->first()->komisi_alat;
+                    }
                 }
             }
         }

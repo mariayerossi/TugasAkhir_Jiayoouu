@@ -198,6 +198,6 @@
     </div>
 </div>
 @else
-    <h1>Alat Olahraga tidak tersedia</h1>
+    <h1 class="mt-5">Alat Olahraga tidak tersedia</h1>
 @endif
 @endsection

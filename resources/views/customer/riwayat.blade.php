@@ -254,7 +254,7 @@
                                                 ->where("fk_id_htrans", "=",$item->id_htrans)
                                                 ->get();
                                     @endphp
-                                    <h6 class="mt-4">Status Extend Waktu {{$cek->first()->status_extend}} Admin</h6>
+                                    <h6 class="mt-4">Status Extend Waktu {{$cek->first()->status_extend}} Pihak Tempat Olahraga</h6>
                                 </div>
                             @endif
                         </div>

@@ -25,6 +25,7 @@
                             <th>Email</th>
                             <th>No. Telepon</th>
                             <th>Lokasi</th>
+                            <th>Kota</th>
                             <th>Foto KTP</th>
                             <th>Foto NPWP</th>
                             <th>Konfirmasi</th>
@@ -39,6 +40,7 @@
                                     <td>{{$item->email_tempat_reg}}</td>
                                     <td>{{$item->telepon_tempat_reg}}</td>
                                     <td>{{$item->alamat_tempat_reg}}</td>
+                                    <td>{{$item->kota_tempat_reg}}</td>
                                     <td><img onclick="showImage('{{ asset('upload/'.$item->ktp_tempat_reg) }}')" style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $item->ktp_tempat_reg) }}" alt=""></td>
                                     <td><img onclick="showImage('{{ asset('upload/'.$item->npwp_tempat_reg) }}')" style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $item->npwp_tempat_reg) }}" alt=""></td>
                                     <td>
@@ -59,7 +61,7 @@
                             </div>
                         @else
                             <tr>
-                                <td colspan="8" class="text-center">Tidak Ada Data</td>
+                                <td colspan="9" class="text-center">Tidak Ada Data</td>
                             </tr>
                         @endif
                     </tbody>
@@ -78,7 +80,8 @@
     });
     $('.confirm-btn').on('click', function(e) {
         e.preventDefault();
-        var registerId = $(this).data('id');
+        var registerId = $(this).attr('data-id');
+        // console.log(registerId);
         
         var formData = {
             _token: '{{ csrf_token() }}', // Laravel CSRF token
@@ -112,9 +115,9 @@
                     });
                 }
             },
-            error: function(error) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 // Handle error jika diperlukan
-                console.error(error);
+                swal("Error!", "Gagal mengirim rating!", "error");
             }
         });
     });
@@ -156,14 +159,14 @@
                     });
                 }
             },
-            error: function(error) {
+            error: function(jqXHR, textStatus, errorThrown) {
                 // Handle error jika diperlukan
-                console.error(error);
+                swal("Error!", "Gagal mengirim rating!", "error");
             }
         });
     });
 </script>
-{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
 @endsection

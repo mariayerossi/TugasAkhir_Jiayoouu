@@ -80,6 +80,7 @@ class DatabaseSeeder extends Seeder
             'email_tempat_reg' => 'herry12@gmail.com',
             'telepon_tempat_reg' => "0843235434528",
             'alamat_tempat_reg' => "mayjend sungkono, Surabaya",
+            'kota_tempat_reg' => "Surabaya",
             'ktp_tempat_reg' => "ktp_tempat1.jpg",
             'npwp_tempat_reg' => "npwp_tempat1.jpg",
             'password_tempat_reg' => password_hash('1234567890', PASSWORD_BCRYPT),

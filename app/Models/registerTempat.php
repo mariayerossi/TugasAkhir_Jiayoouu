@@ -23,6 +23,7 @@ class registerTempat extends Model
         $reg->email_tempat_reg = $data["email"];
         $reg->telepon_tempat_reg = $data["telepon"];
         $reg->alamat_tempat_reg = $data["alamat"];
+        $reg->kota_tempat_reg = $data["kota"];
         $reg->ktp_tempat_reg = $data["ktp"];
         $reg->npwp_tempat_reg = $data["npwp"];
         $reg->password_tempat_reg = $data["password"];

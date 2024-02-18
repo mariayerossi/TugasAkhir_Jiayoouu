@@ -54,18 +54,16 @@ class alatOlahraga extends Model
     }
     
     public function get_kota_pemilik_by_id($id){
-        return alatOlahraga::where('alat_olahraga.deleted_at',"=",null)
+        return alatOlahraga::where("alat_olahraga.id_alat","=",$id)
         ->select("pemilik_alat.kota_pemilik")
         ->join("pemilik_alat","alat_olahraga.fk_id_pemilik","=","pemilik_alat.id_pemilik")
-        ->where("alat_olahraga.id_alat","=",$id)
         ->first()->kota_pemilik;
     }
 
     public function get_kota_tempat_by_id($id){
-        return alatOlahraga::where('alat_olahraga.deleted_at',"=",null)
+        return alatOlahraga::where("alat_olahraga.id_alat","=",$id)
         ->select("pihak_tempat.kota_tempat")
         ->join("pihak_tempat","alat_olahraga.fk_id_tempat","=","pihak_tempat.id_tempat")
-        ->where("alat_olahraga.id_alat","=",$id)
         ->first()->kota_tempat;
     }
 

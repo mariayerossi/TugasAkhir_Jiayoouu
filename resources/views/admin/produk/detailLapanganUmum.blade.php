@@ -341,6 +341,6 @@
     });
 </script>
 @else
-<h1>Lapangan Olahraga tidak tersedia</h1>
+<h1 class="mt-5">Lapangan Olahraga tidak tersedia</h1>
 @endif
 @endsection

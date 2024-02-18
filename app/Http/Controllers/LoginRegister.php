@@ -445,6 +445,7 @@ class LoginRegister extends Controller
             "email" => $reg->email_tempat_reg,
             "telepon" => $reg->telepon_tempat_reg,
             "alamat" => $reg->alamat_tempat_reg,
+            "kota" => $reg->kota_tempat_reg,
             "ktp" => $reg->ktp_tempat_reg,
             "npwp" => $reg->npwp_tempat_reg,
             "password" => $reg->password_tempat_reg,
