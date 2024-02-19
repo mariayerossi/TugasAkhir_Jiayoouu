@@ -52,6 +52,10 @@ class alatOlahraga extends Model
     public function get_all_data_by_id($id){
         return alatOlahraga::where('deleted_at',"=",null)->where("id_alat","=",$id)->get();
     }
+
+    public function get_all_data_by_id2($id){
+        return alatOlahraga::where("id_alat","=",$id)->get();
+    }
     
     public function get_kota_pemilik_by_id($id){
         return alatOlahraga::where("alat_olahraga.id_alat","=",$id)

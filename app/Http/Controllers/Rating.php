@@ -195,7 +195,7 @@ class Rating extends Controller
 
         $lapangan = new lapanganOlahraga();
         $id_lapangan = $htrans->get_all_data_by_id($id)->first()->fk_id_lapangan;
-        $param["lap"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+        $param["lap"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
 
         $file_lapangan = new filesLapanganOlahraga();
         $param["fileLap"] = $file_lapangan->get_all_data($id_lapangan)->first();

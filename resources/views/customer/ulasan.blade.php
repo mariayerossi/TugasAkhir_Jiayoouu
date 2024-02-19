@@ -56,50 +56,54 @@
           </h2>
           <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              @if ($ratingLap == null)
-                <div class="row mt-3">
-                  <div class="col-12">
-                      <h4>Beri Ulasan</h4>
-                      <form action="/customer/rating/lapangan/tambahRating" method="post" id="ratingForm_field">
-                          @csrf
-                          <div class="rating-container">
-                              @for($i=1; $i<=5; $i++)
-                                  <i class="bi bi-star star" data-rate="{{ $i }}" data-field-type="field" data-id="lap-{{$lap->id_lapangan}}"></i>
-                              @endfor
-                              <input type="hidden" name="rating" id="lap-{{$lap->id_lapangan}}" data-id="lap-{{$lap->id_lapangan}}">
-                          </div>
-                          <div class="form-group mt-3">
-                            <label for="comment">Review (opsional):</label>
-                            <textarea class="form-control" name="review" id="reviewValue" data-id="lap-{{$lap->id_lapangan}}" rows="3"></textarea>
-                          </div>
-                          <div class="form-group mt-3">
-                            <label for="hide" class="me-3">Sembunyikan Nama</label>
-                            <svg id="toggleSwitch" data-id="lap-{{$lap->id_lapangan}}" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16" style="color: #007466" onclick="hideFunction(this)">
-                              <path d="M11 4a4 4 0 0 1 0 8H8a5 5 0 0 0 2-4 5 5 0 0 0-2-4zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8M0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5"/>
-                            </svg>
-                            <span id="toggleLabel" data-id="lap-{{$lap->id_lapangan}}" class="ml-2 ms-2">Non Aktif</span>
-                            <input type="hidden" data-id="lap-{{$lap->id_lapangan}}" id="statusInput" name="status" value="Tidak">
-                          </div>
-                          <input type="hidden" name="id_lapangan" value="{{$lap->id_lapangan}}">
-                          <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
-                          <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-success mt-2">Kirim</button>
-                          </div>
-                      </form>
+              @if ($lap->deleted_at == null)
+                @if ($ratingLap == null)
+                  <div class="row mt-3">
+                    <div class="col-12">
+                        <h4>Beri Ulasan</h4>
+                        <form action="/customer/rating/lapangan/tambahRating" method="post" id="ratingForm_field">
+                            @csrf
+                            <div class="rating-container">
+                                @for($i=1; $i<=5; $i++)
+                                    <i class="bi bi-star star" data-rate="{{ $i }}" data-field-type="field" data-id="lap-{{$lap->id_lapangan}}"></i>
+                                @endfor
+                                <input type="hidden" name="rating" id="lap-{{$lap->id_lapangan}}" data-id="lap-{{$lap->id_lapangan}}">
+                            </div>
+                            <div class="form-group mt-3">
+                              <label for="comment">Review (opsional):</label>
+                              <textarea class="form-control" name="review" id="reviewValue" data-id="lap-{{$lap->id_lapangan}}" rows="3"></textarea>
+                            </div>
+                            <div class="form-group mt-3">
+                              <label for="hide" class="me-3">Sembunyikan Nama</label>
+                              <svg id="toggleSwitch" data-id="lap-{{$lap->id_lapangan}}" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16" style="color: #007466" onclick="hideFunction(this)">
+                                <path d="M11 4a4 4 0 0 1 0 8H8a5 5 0 0 0 2-4 5 5 0 0 0-2-4zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8M0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5"/>
+                              </svg>
+                              <span id="toggleLabel" data-id="lap-{{$lap->id_lapangan}}" class="ml-2 ms-2">Non Aktif</span>
+                              <input type="hidden" data-id="lap-{{$lap->id_lapangan}}" id="statusInput" name="status" value="Tidak">
+                            </div>
+                            <input type="hidden" name="id_lapangan" value="{{$lap->id_lapangan}}">
+                            <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
+                            <div class="d-flex justify-content-end">
+                              <button type="submit" class="btn btn-success mt-2">Kirim</button>
+                            </div>
+                        </form>
+                    </div>
                   </div>
-                </div>
-              @else
-                <h4 class="mt-4">Ulasan Anda:</h4>
-                @for ($i = 1; $i <= 5; $i++)
-                  @if ($i <= $ratingLap->rating)
-                      <i class="bi bi-star-fill"></i>
-                  @else
-                      <i class="bi bi-star"></i>
+                @else
+                  <h4 class="mt-4">Ulasan Anda:</h4>
+                  @for ($i = 1; $i <= 5; $i++)
+                    @if ($i <= $ratingLap->rating)
+                        <i class="bi bi-star-fill"></i>
+                    @else
+                        <i class="bi bi-star"></i>
+                    @endif
+                  @endfor
+                  @if ($ratingLap->review != null)
+                    <h6 class="mt-2 mb-4">{{$ratingLap->review}}</h6>
                   @endif
-                @endfor
-                @if ($ratingLap->review != null)
-                  <h6 class="mt-2 mb-4">{{$ratingLap->review}}</h6>
                 @endif
+              @else
+                <h3>Lapangan Olahraga Tidah Tersedia</h3>
               @endif
             </div>
           </div>
@@ -121,50 +125,54 @@
               </h2>
               <div id="{{ $collapseId }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $alat->id_alat }}" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  @if ($ratingAlat == null)
-                    <div class="row mt-3">
-                      <div class="col-12">
-                          <h4>Beri Ulasan</h4>
-                          <form action="/customer/rating/alat/tambahRating" method="post" id="ratingForm_equipment_{{$item->fk_id_alat}}" class="ratingForm_equipment">
-                              @csrf
-                              <div class="rating-container">
-                                  @for($i=1; $i<=5; $i++)
-                                      <i class="bi bi-star star" data-rate="{{ $i }}" data-field-type="equipment" data-id="al-{{$item->fk_id_alat}}"></i>
-                                  @endfor
-                                  <input type="hidden" name="rating" id="al-{{$item->fk_id_alat}}" data-id="al-{{$item->fk_id_alat}}">
-                              </div>
-                              <div class="form-group mt-3">
-                                <label for="comment">Review (opsional):</label>
-                                <textarea class="form-control" name="review" id="reviewValue" data-id="al-{{$item->fk_id_alat}}" rows="3"></textarea>
-                              </div>
-                              <div class="form-group mt-3">
-                                <label for="hide" class="me-3">Sembunyikan Nama</label>
-                                <svg id="toggleSwitch" data-id="al-{{$item->fk_id_alat}}" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16" style="color: #007466" onclick="hideFunction(this)">
-                                  <path d="M11 4a4 4 0 0 1 0 8H8a5 5 0 0 0 2-4 5 5 0 0 0-2-4zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8M0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5"/>
-                                </svg>
-                                <span id="toggleLabel" data-id="al-{{$item->fk_id_alat}}" class="ml-2 ms-2">Non Aktif</span>
-                                <input type="hidden" data-id="al-{{$item->fk_id_alat}}" id="statusInput" name="status" value="Tidak">
-                              </div>
-                              <input type="hidden" name="id_alat" value="{{$item->fk_id_alat}}">
-                              <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
-                              <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-success mt-2 btn_submit" data-id="ratingForm_equipment_{{$item->fk_id_alat}}">Kirim</button>
-                              </div>
-                          </form>
+                  @if ($alat->deleted_at == null)
+                    @if ($ratingAlat == null)
+                      <div class="row mt-3">
+                        <div class="col-12">
+                            <h4>Beri Ulasan</h4>
+                            <form action="/customer/rating/alat/tambahRating" method="post" id="ratingForm_equipment_{{$item->fk_id_alat}}" class="ratingForm_equipment">
+                                @csrf
+                                <div class="rating-container">
+                                    @for($i=1; $i<=5; $i++)
+                                        <i class="bi bi-star star" data-rate="{{ $i }}" data-field-type="equipment" data-id="al-{{$item->fk_id_alat}}"></i>
+                                    @endfor
+                                    <input type="hidden" name="rating" id="al-{{$item->fk_id_alat}}" data-id="al-{{$item->fk_id_alat}}">
+                                </div>
+                                <div class="form-group mt-3">
+                                  <label for="comment">Review (opsional):</label>
+                                  <textarea class="form-control" name="review" id="reviewValue" data-id="al-{{$item->fk_id_alat}}" rows="3"></textarea>
+                                </div>
+                                <div class="form-group mt-3">
+                                  <label for="hide" class="me-3">Sembunyikan Nama</label>
+                                  <svg id="toggleSwitch" data-id="al-{{$item->fk_id_alat}}" xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-toggle-off" viewBox="0 0 16 16" style="color: #007466" onclick="hideFunction(this)">
+                                    <path d="M11 4a4 4 0 0 1 0 8H8a5 5 0 0 0 2-4 5 5 0 0 0-2-4zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8M0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5"/>
+                                  </svg>
+                                  <span id="toggleLabel" data-id="al-{{$item->fk_id_alat}}" class="ml-2 ms-2">Non Aktif</span>
+                                  <input type="hidden" data-id="al-{{$item->fk_id_alat}}" id="statusInput" name="status" value="Tidak">
+                                </div>
+                                <input type="hidden" name="id_alat" value="{{$item->fk_id_alat}}">
+                                <input type="hidden" name="id_dtrans" value="{{$item->id_dtrans}}">
+                                <div class="d-flex justify-content-end">
+                                  <button type="button" class="btn btn-success mt-2 btn_submit" data-id="ratingForm_equipment_{{$item->fk_id_alat}}">Kirim</button>
+                                </div>
+                            </form>
+                        </div>
                       </div>
-                    </div>
-                  @else
-                    <h4 class="mt-4">Ulasan Anda:</h4>
-                    @for ($i = 1; $i <= 5; $i++)
-                      @if ($i <= $ratingAlat->rating)
-                          <i class="bi bi-star-fill"></i>
-                      @else
-                          <i class="bi bi-star"></i>
+                    @else
+                      <h4 class="mt-4">Ulasan Anda:</h4>
+                      @for ($i = 1; $i <= 5; $i++)
+                        @if ($i <= $ratingAlat->rating)
+                            <i class="bi bi-star-fill"></i>
+                        @else
+                            <i class="bi bi-star"></i>
+                        @endif
+                      @endfor
+                      @if ($ratingAlat->review != null)
+                        <h6 class="mt-2 mb-4">{{$ratingAlat->review}}</h6>
                       @endif
-                    @endfor
-                    @if ($ratingAlat->review != null)
-                      <h6 class="mt-2 mb-4">{{$ratingAlat->review}}</h6>
                     @endif
+                  @else
+                    <h3>Alat Olahraga Tidak Tersedia</h3>
                   @endif
                 </div>
               </div>

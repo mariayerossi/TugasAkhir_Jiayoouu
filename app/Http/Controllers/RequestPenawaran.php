@@ -1002,7 +1002,7 @@ class RequestPenawaran extends Controller
 
         $alat = new alatOlahraga();
         $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;
-        $param["dataAlat"] = $alat->get_all_data_by_id($id_alat)->first();
+        $param["dataAlat"] = $alat->get_all_data_by_id2($id_alat)->first();
 
         $file_alat = new filesAlatOlahraga();
         $param["dataFileAlat"] = $file_alat->get_all_data($id_alat)->first();
@@ -1013,7 +1013,7 @@ class RequestPenawaran extends Controller
 
         $lapangan = new lapanganOlahraga();
         $id_lapangan = $req->get_all_data_by_id($id)->first()->req_lapangan;
-        $param["dataLapangan"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+        $param["dataLapangan"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
 
         $files_lapangan = new filesLapanganOlahraga();
         $param["dataFileLapangan"] = $files_lapangan->get_all_data($id_lapangan)->first();
@@ -1032,7 +1032,7 @@ class RequestPenawaran extends Controller
 
         $alat = new alatOlahraga();
         $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;
-        $param["dataAlat"] = $alat->get_all_data_by_id($id_alat)->first();
+        $param["dataAlat"] = $alat->get_all_data_by_id2($id_alat)->first();
 
         $file_alat = new filesAlatOlahraga();
         $param["dataFileAlat"] = $file_alat->get_all_data($id_alat)->first();
@@ -1043,7 +1043,7 @@ class RequestPenawaran extends Controller
 
         $lapangan = new lapanganOlahraga();
         $id_lapangan = $req->get_all_data_by_id($id)->first()->req_lapangan;
-        $param["dataLapangan"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+        $param["dataLapangan"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
 
         $files_lapangan = new filesLapanganOlahraga();
         $param["dataFileLapangan"] = $files_lapangan->get_all_data($id_lapangan)->first();

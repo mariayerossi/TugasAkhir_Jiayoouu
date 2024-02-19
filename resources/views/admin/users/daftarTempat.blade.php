@@ -23,6 +23,7 @@
                         <th>Email</th>
                         <th>Telepon</th>
                         <th>Alamat</th>
+                        <th>Kota Domisili</th>
                         <th>Foto KTP</th>
                         <th>Foto NPWP</th>
                     </tr>
@@ -36,6 +37,7 @@
                                 <td>{{$item->email_tempat}}</td>
                                 <td>{{$item->telepon_tempat}}</td>
                                 <td>{{$item->alamat_tempat}}</td>
+                                <td>{{$item->kota_tempat}}</td>
                                 <td><img onclick="showImage('{{ asset('upload/'.$item->ktp_tempat) }}')" style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $item->ktp_tempat) }}" alt=""></td>
                                 <td><img onclick="showImage('{{ asset('upload/'.$item->npwp_tempat) }}')" style="cursor: zoom-in;" class="img-ratio-16-9" src="{{ asset('upload/' . $item->npwp_tempat) }}" alt=""></td>
                             </tr>

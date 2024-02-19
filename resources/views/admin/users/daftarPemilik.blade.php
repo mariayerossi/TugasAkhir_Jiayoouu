@@ -21,6 +21,7 @@
                         <th>Nama</th>
                         <th>Email</th>
                         <th>Telepon</th>
+                        <th>Kota Domisili</th>
                         <th>Foto KTP</th>
                     </tr>
                 </thead>
@@ -31,6 +32,7 @@
                                 <td>{{$item->nama_pemilik}}</td>
                                 <td>{{$item->email_pemilik}}</td>
                                 <td>{{$item->telepon_pemilik}}</td>
+                                <td>{{$item->kota_pemilik}}</td>
                                 <td><a href="{{ asset('upload/' . $item->ktp_pemilik) }}"><img class="img-ratio-16-9" src="{{ asset('upload/' . $item->ktp_pemilik) }}" alt=""></a></td>
                             </tr>
                         @endforeach

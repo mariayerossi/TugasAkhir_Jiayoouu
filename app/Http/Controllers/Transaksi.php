@@ -1424,7 +1424,7 @@ class Transaksi extends Controller
         $param["kota"] = $kot->get_kota();
 
         $htrans = DB::table('htrans')
-                ->select("htrans.id_htrans","htrans.kode_trans","lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan","files_lapangan.nama_file_lapangan","lapangan_olahraga.harga_sewa_lapangan","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa")
+                ->select("htrans.id_htrans","htrans.kode_trans","lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan","files_lapangan.nama_file_lapangan","lapangan_olahraga.harga_sewa_lapangan","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa", "lapangan_olahraga.deleted_at")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
                 ->joinSub(function($query) {
                     $query->select("fk_id_lapangan", "nama_file_lapangan")
@@ -1439,6 +1439,10 @@ class Transaksi extends Controller
                 ->where("dtrans.fk_id_htrans","=",$request->id_htrans)
                 ->where("dtrans.deleted_at","=",null)
                 ->get();
+
+        if ($htrans->deleted_at != null) {
+            return back()->with('error', 'Lapangan tidak tersedia!');
+        }
         
         $jam_sewa = $htrans->jam_sewa;
         $durasi_sewa = $htrans->durasi_sewa;
@@ -1550,7 +1554,7 @@ class Transaksi extends Controller
         //         ->get()
         //         ->first();
         $htrans = DB::table('htrans')
-                ->select("htrans.id_htrans","htrans.kode_trans","lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan","files_lapangan.nama_file_lapangan","lapangan_olahraga.harga_sewa_lapangan","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa","htrans.fk_id_tempat","htrans.fk_id_lapangan")
+                ->select("htrans.id_htrans","htrans.kode_trans","lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan","files_lapangan.nama_file_lapangan","lapangan_olahraga.harga_sewa_lapangan","htrans.tanggal_sewa","htrans.jam_sewa","htrans.durasi_sewa","htrans.fk_id_tempat","htrans.fk_id_lapangan", "lapangan_olahraga.deleted_at")
                 ->join("lapangan_olahraga","htrans.fk_id_lapangan","=","lapangan_olahraga.id_lapangan")
                 ->joinSub(function($query) {
                     $query->select("fk_id_lapangan", "nama_file_lapangan")
@@ -1567,6 +1571,10 @@ class Transaksi extends Controller
                 ->get();
         // dd($dtrans);
         // dd("halo");
+
+        if ($htrans->deleted_at != null) {
+            return response()->json(['success' => false, 'message' => 'Lapangan Tidak Tersedia']);
+        }
 
         $jam_sewa = $htrans->jam_sewa;
         $durasi_sewa = $htrans->durasi_sewa;
@@ -2268,7 +2276,7 @@ class Transaksi extends Controller
 
         $lapangan = new lapanganOlahraga();
         $id_lapangan = $htrans->get_all_data_by_id($id)->first()->fk_id_lapangan;
-        $param["dataLapangan"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+        $param["dataLapangan"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
 
         $files_lapangan = new filesLapanganOlahraga();
         $param["dataFileLapangan"] = $files_lapangan->get_all_data($id_lapangan)->first();
@@ -2288,7 +2296,7 @@ class Transaksi extends Controller
 
         $lapangan = new lapanganOlahraga();
         $id_lapangan = $htrans->get_all_data_by_id($id)->first()->fk_id_lapangan;
-        $param["dataLapangan"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+        $param["dataLapangan"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
 
         $file_lapangan = new filesLapanganOlahraga();
         $param["dataFileLapangan"] = $file_lapangan->get_all_data($id_lapangan)->first();
@@ -2314,7 +2322,7 @@ class Transaksi extends Controller
 
         $lapangan = new lapanganOlahraga();
         $id_lapangan = $htrans->get_all_data_by_id($id)->first()->fk_id_lapangan;
-        $param["dataLapangan"] = $lapangan->get_all_data_by_id($id_lapangan)->first();
+        $param["dataLapangan"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
 
         $file_lapangan = new filesLapanganOlahraga();
         $param["dataFileLapangan"] = $file_lapangan->get_all_data($id_lapangan)->first();
