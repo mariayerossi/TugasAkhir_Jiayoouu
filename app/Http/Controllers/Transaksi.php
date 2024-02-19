@@ -1451,8 +1451,10 @@ class Transaksi extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->where("htrans.tanggal_sewa", "=", $htrans->tanggal_sewa)
                 ->where("htrans.fk_id_lapangan","=",$htrans->id_lapangan)
-                ->where("htrans.status_trans","=","Diterima")
-                ->orWhere("htrans.status_trans","=","Berlangsung")
+                ->where(function($query) {
+                    $query->where("htrans.status_trans", "=", "Diterima")
+                          ->orWhere("htrans.status_trans", "=", "Berlangsung");
+                })
                 ->get();
         // dd($cek);
 
@@ -1577,9 +1579,12 @@ class Transaksi extends Controller
                 ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
                 ->where("htrans.tanggal_sewa", "=", $htrans->tanggal_sewa)
                 ->where("htrans.fk_id_lapangan","=",$htrans->id_lapangan)
-                ->where("htrans.status_trans","=","Diterima")
-                ->orWhere("htrans.status_trans","=","Berlangsung")
+                ->where(function($query) {
+                    $query->where("htrans.status_trans", "=", "Diterima")
+                          ->orWhere("htrans.status_trans", "=", "Berlangsung");
+                })
                 ->get();
+        // dd($cek);
 
         //kasi pengecekan apakah tanggal dan jamnya bertubrukan
         if (!$cek->isEmpty()) {
@@ -1826,8 +1831,10 @@ class Transaksi extends Controller
 
         $cek = DB::table('htrans')
                 ->select("jam_sewa", "durasi_sewa")
-                ->where("status_trans","=","Diterima")
-                ->orWhere("status_trans","=","Berlangsung")
+                ->where(function($query) {
+                    $query->where("status_trans", "=", "Diterima")
+                          ->orWhere("status_trans", "=", "Berlangsung");
+                })
                 ->where("tanggal_sewa", "=", $htrans->tanggal_sewa)
                 ->where("fk_id_lapangan","=",$htrans->id_lapangan)
                 ->get();
