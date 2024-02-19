@@ -366,6 +366,9 @@ class LoginRegister extends Controller
             $dataUser = $user->cek_email_user($request->email);
             // dd($dataUser);
             if (!$dataUser->isEmpty()) {
+                if ($dataUser->first()->deleted_at != null) {
+                    return redirect()->back()->withInput()->with("error", "Akun anda telah dinonaktifkan oleh admin!");
+                }
                 if (password_verify($request->password, $dataUser->first()->password_user)) {
                     if ($dataUser->first()->email_verified_at != null) {
                         Session::put("role","customer");
@@ -384,6 +387,9 @@ class LoginRegister extends Controller
             $pemilik = new pemilikAlat();
             $dataPemilik = $pemilik->cek_email_pemilik($request->email);
             if (!$dataPemilik->isEmpty()) {
+                if ($dataPemilik->first()->deleted_at != null) {
+                    return redirect()->back()->withInput()->with("error", "Akun anda telah dinonaktifkan oleh admin!");
+                }
                 if (password_verify($request->password, $dataPemilik->first()->password_pemilik)) {
                     if ($dataPemilik->first()->email_verified_at != null) {
                         //diarahkan ke halaman pemilik
@@ -406,6 +412,9 @@ class LoginRegister extends Controller
             $tempat = new pihakTempat();
             $dataTempat = $tempat->cek_email_tempat($request->email);
             if (!$dataTempat->isEmpty()) {
+                if ($dataTempat->first()->deleted_at != null) {
+                    return redirect()->back()->withInput()->with("error", "Akun anda telah dinonaktifkan oleh admin!");
+                }
                 if (password_verify($request->password, $dataTempat->first()->password_tempat)) {
                     if ($dataTempat->first()->email_verified_at != null) {
                         Session::put("role","tempat");

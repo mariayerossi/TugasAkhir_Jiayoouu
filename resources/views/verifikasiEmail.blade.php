@@ -7,50 +7,71 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            height: 100vh;
             margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            background-color: #007466;
-            color: white;
+            height: 100vh;
         }
-
-        h2 {
+        .container {
+            max-width: 650px;
+            margin: 50px auto;
             text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        a {
-            color: rgb(148, 148, 255);
+        .logo {
             text-decoration: none;
-            padding: 10px;
-            border: 1px solid blue;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 160px;
+            height: 60px;
+            margin-right: 10px;
+        }
+        h2 {
+            margin-top: 20px;
+        }
+        .action-check {
+            font-size: 36px;
+            color: #007466;
+        }
+        .login-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007466;
+            border: 2px solid #007466;
+            padding: 10px 20px;
             border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
         }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        /* Gaya khusus untuk perangkat mobile dengan lebar layar hingga 480px */
-        @media only screen and (max-width: 480px) {
-            body {
-                padding: 20px;
-            }
-
-            h2 {
-                font-size: 24px;
-            }
-
-            a {
-                font-size: 16px;
-            }
+        .login-link:hover {
+            background-color: #007466;
+            color: #fff;
         }
     </style>
 </head>
 <body>
-    <h2>🎉Yeay! Anda Berhasil Melakukan Verifikasi Email!😃</h2>
-    <a href="https://sportiva.my.id/login/">Ke Halaman Login</a>
+    <div class="container">
+        <a href="https://sportiva.my.id/" class="logo">
+            <img src="{{ asset('assets/img/logo.png')}}" alt="Logo">
+        </a>
+        <hr>
+        <div class="action-check"></div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" style="color: green">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          </svg> 
+        <h2>🎉Yeay! Anda Berhasil Melakukan Verifikasi Email!🎉</h2>
+        <h4>Silahkan login untuk mengakses berbagai fitur eksklusif dan mulai menikmati pengalaman pengguna kami yang lengkap!</h4>
+        <a href="https://sportiva.my.id/login/" class="login-link">Ke Halaman Login</a>
+    </div>
 </body>
 </html>

@@ -661,7 +661,7 @@ Sportiva
                                     @endif
                                 @endforeach
                             @endif
-                            <button type="button" id="addToCartBtn" @if($disableButton) disabled @endif class="btn btn-outline-primary">+ Favorit</button>
+                            {{-- <button type="button" id="addToCartBtn" @if($disableButton) disabled @endif class="btn btn-outline-primary">+ Favorit</button> --}}
                             {{-- <a href="/customer/transaksi/tambahCart" class="btn btn-outline-primary">+ Keranjang</a> --}}
                         </div>
                     </form>
