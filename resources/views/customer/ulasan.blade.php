@@ -35,6 +35,8 @@
         color: gold;
     }
 </style>
+@if (!$htrans->isEmpty())
+@if ($htrans->first()->fk_id_user == Session::get("dataRole")->id_user && $htrans->first()->status_trans == "Selesai")
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <div class="d-flex justify-content-start d-none d-md-block mb-4">
         <a href="javascript:history.back()"><i class="bi bi-chevron-left me-2"></i>Kembali</a>
@@ -306,4 +308,10 @@
   });
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@else
+    <h1>Transaksi tidak tersedia</h1>
+@endif
+@else
+    <h1>Transaksi tidak tersedia</h1>
+@endif
 @endsection

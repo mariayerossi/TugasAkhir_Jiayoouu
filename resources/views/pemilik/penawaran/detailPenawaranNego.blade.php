@@ -87,6 +87,8 @@ display: block;
     }
 }
 </style>
+@if (!$penawaran->isEmpty())
+@if ($penawaran->first()->fk_id_pemilik == Session::get("dataRole")->id_pemilik)
 @include("layouts.message")
 <div class="container mt-5 mb-5 bg-white p-4 rounded" style="box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <div class="d-flex justify-content-start d-none d-md-block">
@@ -940,4 +942,10 @@ display: block;
     });
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@else
+    <h1>Request Penawaran Tidak Tersedia!</h1>
+@endif
+@else
+    <h1>Request Penawaran Tidak Tersedia!</h1>
+@endif
 @endsection

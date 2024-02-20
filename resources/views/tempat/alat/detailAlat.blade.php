@@ -70,6 +70,7 @@
 </style>
 
 @if (!$alat->isEmpty())
+@if ($alat->first()->fk_id_tempat == Session::get("dataRole")->id_tempat)
 <div class="container mt-5 p-5 mb-5">
     <div class="d-flex justify-content-start mb-2 d-none d-md-block">
         <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
@@ -193,6 +194,9 @@
         </div>
     </div>
 </div>
+@else
+    <h1>Alat Olahraga tidak tersedia</h1>
+@endif
 @else
     <h1>Alat Olahraga tidak tersedia</h1>
 @endif

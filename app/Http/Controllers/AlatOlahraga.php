@@ -527,7 +527,10 @@ class AlatOlahraga extends Controller
         $param["alat"] = $alat->get_all_data_by_id($id);
         $files = new filesAlatOlahraga();
         $param["files"] = $files->get_all_data($id);
-        $param["kota"] = $alat->get_kota_tempat_by_id($id);
+        if ($alat->get_all_data_by_id($id)->first()->fk_id_tempat != null) {
+            $param["kota"] = $alat->get_kota_tempat_by_id($id);
+        }
+        
 
         if (!$alat->get_all_data_by_id($id)->isEmpty()) {
             $kategori = new kategori();

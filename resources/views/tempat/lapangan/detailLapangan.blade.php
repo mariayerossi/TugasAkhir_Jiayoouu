@@ -102,6 +102,7 @@
     }
 </style>
 @if (!$lapangan->isEmpty())
+@if ($lapangan->first()->pemilik_lapangan == Session::get("dataRole")->id_tempat)
 <div class="container mt-5 p-5 mb-5" style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);">
     <div class="d-flex justify-content-start d-none d-md-block">
         <a href="javascript:history.back()"><i class="bi bi-chevron-left me-1"></i>Kembali</a>
@@ -384,6 +385,9 @@
         $('[data-toggle="tooltip"]').tooltip();
     });
 </script>
+@else
+<h1>Lapangan Olahraga tidak tersedia</h1>
+@endif
 @else
 <h1>Lapangan Olahraga tidak tersedia</h1>
 @endif

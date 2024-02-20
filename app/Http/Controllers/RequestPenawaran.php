@@ -1007,23 +1007,25 @@ class RequestPenawaran extends Controller
         $komplain = new komplainRequest();
         $param["komplain"] = $komplain->get_all_data_by_id_penawaran($id, $role);
 
-        $alat = new alatOlahraga();
-        $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;
-        $param["dataAlat"] = $alat->get_all_data_by_id2($id_alat)->first();
+        if (!$req->get_all_data_by_id($id)->isEmpty()) {
+            $alat = new alatOlahraga();
+            $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;
+            $param["dataAlat"] = $alat->get_all_data_by_id2($id_alat)->first();
 
-        $file_alat = new filesAlatOlahraga();
-        $param["dataFileAlat"] = $file_alat->get_all_data($id_alat)->first();
+            $file_alat = new filesAlatOlahraga();
+            $param["dataFileAlat"] = $file_alat->get_all_data($id_alat)->first();
 
-        $tempat = new pihakTempat();
-        $id_tempat = $req->get_all_data_by_id($id)->first()->fk_id_tempat;
-        $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
+            $tempat = new pihakTempat();
+            $id_tempat = $req->get_all_data_by_id($id)->first()->fk_id_tempat;
+            $param["dataTempat"] = $tempat->get_all_data_by_id($id_tempat)->first();
 
-        $lapangan = new lapanganOlahraga();
-        $id_lapangan = $req->get_all_data_by_id($id)->first()->req_lapangan;
-        $param["dataLapangan"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
+            $lapangan = new lapanganOlahraga();
+            $id_lapangan = $req->get_all_data_by_id($id)->first()->req_lapangan;
+            $param["dataLapangan"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
 
-        $files_lapangan = new filesLapanganOlahraga();
-        $param["dataFileLapangan"] = $files_lapangan->get_all_data($id_lapangan)->first();
+            $files_lapangan = new filesLapanganOlahraga();
+            $param["dataFileLapangan"] = $files_lapangan->get_all_data($id_lapangan)->first();
+        }
 
         return view("pemilik.penawaran.detailPenawaranNego")->with($param);
     }
@@ -1037,23 +1039,25 @@ class RequestPenawaran extends Controller
         $komplain = new komplainRequest();
         $param["komplain"] = $komplain->get_all_data_by_id_penawaran($id, $role);
 
-        $alat = new alatOlahraga();
-        $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;
-        $param["dataAlat"] = $alat->get_all_data_by_id2($id_alat)->first();
+        if (!$req->get_all_data_by_id($id)->isEmpty()) {
+            $alat = new alatOlahraga();
+            $id_alat = $req->get_all_data_by_id($id)->first()->req_id_alat;
+            $param["dataAlat"] = $alat->get_all_data_by_id2($id_alat)->first();
 
-        $file_alat = new filesAlatOlahraga();
-        $param["dataFileAlat"] = $file_alat->get_all_data($id_alat)->first();
+            $file_alat = new filesAlatOlahraga();
+            $param["dataFileAlat"] = $file_alat->get_all_data($id_alat)->first();
 
-        $pemilik = new pemilikAlat();
-        $id_pemilik = $req->get_all_data_by_id($id)->first()->fk_id_pemilik;
-        $param["dataPemilik"] = $pemilik->get_all_data_by_id($id_pemilik)->first();
+            $pemilik = new pemilikAlat();
+            $id_pemilik = $req->get_all_data_by_id($id)->first()->fk_id_pemilik;
+            $param["dataPemilik"] = $pemilik->get_all_data_by_id($id_pemilik)->first();
 
-        $lapangan = new lapanganOlahraga();
-        $id_lapangan = $req->get_all_data_by_id($id)->first()->req_lapangan;
-        $param["dataLapangan"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
+            $lapangan = new lapanganOlahraga();
+            $id_lapangan = $req->get_all_data_by_id($id)->first()->req_lapangan;
+            $param["dataLapangan"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
 
-        $files_lapangan = new filesLapanganOlahraga();
-        $param["dataFileLapangan"] = $files_lapangan->get_all_data($id_lapangan)->first();
+            $files_lapangan = new filesLapanganOlahraga();
+            $param["dataFileLapangan"] = $files_lapangan->get_all_data($id_lapangan)->first();
+        }
 
         return view("tempat.penawaran.detailPenawaranNego")->with($param);
     }

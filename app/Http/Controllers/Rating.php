@@ -193,16 +193,18 @@ class Rating extends Controller
         $dtrans = new dtrans();
         $param["dtrans"] = $dtrans->get_all_data_by_id_htrans($id);
 
-        $lapangan = new lapanganOlahraga();
-        $id_lapangan = $htrans->get_all_data_by_id($id)->first()->fk_id_lapangan;
-        $param["lap"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
+        if (!$htrans->get_all_data_by_id($id)->isEmpty()) {
+            $lapangan = new lapanganOlahraga();
+            $id_lapangan = $htrans->get_all_data_by_id($id)->first()->fk_id_lapangan;
+            $param["lap"] = $lapangan->get_all_data_by_id2($id_lapangan)->first();
 
-        $file_lapangan = new filesLapanganOlahraga();
-        $param["fileLap"] = $file_lapangan->get_all_data($id_lapangan)->first();
+            $file_lapangan = new filesLapanganOlahraga();
+            $param["fileLap"] = $file_lapangan->get_all_data($id_lapangan)->first();
 
-        $id_user = Session::get("dataRole")->first()->id_user;
+            $id_user = Session::get("dataRole")->first()->id_user;
 
-        $param["ratingLap"] = DB::table('rating_lapangan')->where("fk_id_lapangan","=",$id_lapangan)->where("fk_id_htrans","=",$id)->where("fk_id_user","=",$id_user)->get()->first();
+            $param["ratingLap"] = DB::table('rating_lapangan')->where("fk_id_lapangan","=",$id_lapangan)->where("fk_id_htrans","=",$id)->where("fk_id_user","=",$id_user)->get()->first();
+        }
         // dd(DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$id)->where("fk_id_user","=",$id_user)->first());
         // dd(DB::table('rating_lapangan')->where("fk_id_lapangan","=",$htrans->first()->fk_id_lapangan)->where("fk_id_htrans","=",$id)->get()->first());
         
