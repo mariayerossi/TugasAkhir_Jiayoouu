@@ -321,6 +321,7 @@ display: block;
                     <p>Masukkan kode konfirmasi dari pengelola tempat untuk mengkonfirmasi penyewaan alat olahraga</p>
                     <div class="input-group">
                         <input type="hidden" name="id" value="{{$penawaran->first()->id_penawaran}}">
+                        <input type="hidden" name="tanggal" value="{{$penawaran->first()->req_tanggal_mulai}}">
                         <input type="hidden" name="kode" value="{{$penawaran->first()->kode_mulai}}">
                         <input type="text" name="isi" class="form-control" placeholder="Masukkan kode konfirmasi">
                         <div class="input-group-append">

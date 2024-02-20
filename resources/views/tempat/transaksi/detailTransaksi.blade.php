@@ -405,6 +405,8 @@
                 <div class="input-group">
                     <input type="text" name="kode" id="" class="form-control" placeholder="Masukkan kode transaksi...">
                     <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
+                    <input type="hidden" name="tanggal_sewa" value="{{$htrans->first()->tanggal_sewa}}">
+                    <input type="hidden" name="jam_sewa" value="{{$htrans->first()->jam_sewa}}">
                     <input type="hidden" name="kode_htrans" value="{{$htrans->first()->kode_trans}}">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-primary">Konfirmasi</button>
@@ -983,7 +985,7 @@
                 error: function(xhr, status, error) {
                     // Handle errors
                     // If you send back errors in a known format, you can display them here
-                    swal("Error!", "Gagal mengkonfirmasi transaksi!", "error");
+                    swal("Error!", status, "error");
                 }
             });
         });

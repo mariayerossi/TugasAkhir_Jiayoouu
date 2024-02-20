@@ -600,8 +600,17 @@ class Transaksi extends Controller
         ]);
         // dd($request->kode_trans);
 
+        date_default_timezone_set("Asia/Jakarta");
+        $skrg = date("Y-m-d H:i:s");
+
+        $sewa = $request->tanggal_sewa." ".$request->jam_sewa;
+
+        if ($skrg < $sewa) {
+            return response()->json(['success' => false, 'message' => 'Waktu sewa belum tiba!']);
+        }
+
         if ($request->kode != $request->kode_htrans) {
-            return response()->json(['error' => 'Kode transaksi salah!'], 400);
+            return response()->json(['success' => false, 'message' => 'Kode Transaksi salah!']);
         }
 
         //update status htrans
@@ -612,7 +621,7 @@ class Transaksi extends Controller
         $trans = new htrans();
         $trans->updateStatus($data);
 
-        return response()->json(['success' => 'Berhasil mengkonfirmasi transaksi!'], 200);
+        return response()->json(['success' => true, 'message' => 'Berhasil mengkonfirmasi transaksi!']);
     }
 
     public function tambahAlat(Request $request) {

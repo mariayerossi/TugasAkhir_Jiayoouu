@@ -434,6 +434,13 @@ class RequestPermintaan extends Controller
             return response()->json(['success' => false, 'message' => 'Input kode tidak boleh kosong!']);
         }
 
+        date_default_timezone_set("Asia/Jakarta");
+        $skrg = date("Y-m-d");
+
+        if ($request->tanggal != $skrg) {
+            return response()->json(['success' => false, 'message' => 'Waktu mulai sewa belum tiba!']);
+        }
+
         if ($request->isi == $request->kode) {
             $data = [
                 "id" => $request->id,

@@ -64,13 +64,13 @@ class KomplainTrans extends Controller
         $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY');
 
         //JANGAN LUPA DIBUKA !!!
-        // if ($skrg < $waktu_sewa2 || $skrg > $waktu_sewa3) {
-        //     // dd("gagal");
-        //     $formattedWaktuSewa2 = $waktu_sewa2->format("H:i");
-        //     $formattedWaktuSewa3 = $waktu_sewa3->format("H:i");
+        if ($skrg < $waktu_sewa2 || $skrg > $waktu_sewa3) {
+            // dd("gagal");
+            $formattedWaktuSewa2 = $waktu_sewa2->format("H:i");
+            $formattedWaktuSewa3 = $waktu_sewa3->format("H:i");
     
-        //     return response()->json(['success' => false, 'message' => "Pengajuan Komplain Transaksi ini dapat dilakukan pada $tanggalBaru1 $formattedWaktuSewa2 - $formattedWaktuSewa3!"]);
-        // }
+            return response()->json(['success' => false, 'message' => "Pengajuan Komplain Transaksi ini dapat dilakukan pada $tanggalBaru1 $formattedWaktuSewa2 - $formattedWaktuSewa3!"]);
+        }
 
         // dd("berhasil");
 
