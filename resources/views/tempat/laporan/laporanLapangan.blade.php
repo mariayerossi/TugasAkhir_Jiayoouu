@@ -38,7 +38,7 @@
         <a href="/tempat/laporan/lapangan/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
-    <div class="card mb-5">
+    <div class="card mb-5 p-3">
         <div class="table-responsive text-nowrap">
             <table class="table">
                 <thead>
@@ -84,9 +84,9 @@
     </div>
 </div>
 <script>
-    // $(document).ready(function() {
-    //     var table = $('.table').DataTable();
-    // });
+    $(document).ready(function() {
+        $('.table').DataTable();
+    });
     var ctx = document.getElementById('incomeChart').getContext('2d');
     var incomeChart = new Chart(ctx, {
         type: 'bar',

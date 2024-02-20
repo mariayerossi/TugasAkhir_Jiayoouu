@@ -38,7 +38,7 @@
         <a href="/tempat/laporan/stok/CetakPDF" class="btn btn-primary" target="_blank">Cetak PDF</a>
     </div>
 
-    <div class="card mb-5">
+    <div class="card mb-5 p-3">
         <div class="table-responsive text-nowrap">
             <table class="table">
                 <thead>
@@ -95,6 +95,9 @@
     // $(document).ready(function() {
     //     var table = $('.table').DataTable();
     // });
+    $(document).ready(function() {
+        $('.table').DataTable();
+    });
 </script>
 {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> --}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>

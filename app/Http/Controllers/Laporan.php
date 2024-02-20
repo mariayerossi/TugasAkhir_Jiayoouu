@@ -218,8 +218,8 @@ class Laporan extends Controller
                     ->leftJoin("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
                     ->join("kategori","alat_olahraga.fk_id_kategori","=","kategori.id_kategori")
                     ->where("alat_olahraga.fk_id_pemilik","=",$role)
-                    ->where("htrans.status_trans","!=","Dibatalkan")
-                    ->where("htrans.status_trans","!=","Ditolak")
+                    // ->where("htrans.status_trans","!=","Dibatalkan")
+                    // ->where("htrans.status_trans","!=","Ditolak")
                     ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "alat_olahraga.status_alat","kategori.nama_kategori")
                     ->get();
 
@@ -238,8 +238,8 @@ class Laporan extends Controller
             ->leftJoin("htrans","dtrans.fk_id_htrans","=","htrans.id_htrans")
             ->join("kategori","alat_olahraga.fk_id_kategori","=","kategori.id_kategori")
             ->where("alat_olahraga.fk_id_pemilik","=",$role)
-            ->where("htrans.status_trans","!=","Dibatalkan")
-            ->where("htrans.status_trans","!=","Ditolak")
+            // ->where("htrans.status_trans","!=","Dibatalkan")
+            // ->where("htrans.status_trans","!=","Ditolak")
             ->groupBy("alat_olahraga.id_alat","alat_olahraga.nama_alat", "alat_olahraga.status_alat","kategori.nama_kategori")
             ->get();
  

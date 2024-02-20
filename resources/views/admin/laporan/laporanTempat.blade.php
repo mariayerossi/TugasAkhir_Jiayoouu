@@ -47,7 +47,7 @@
     </div> --}}
 
     {{-- laporan pendapatan per alat olahraga --}}
-    <div class="card mb-5">
+    <div class="card mb-5 p-3">
         <div class="table-responsive text-nowrap">
             <table class="table">
                 <thead>
@@ -80,6 +80,11 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.table').DataTable();
+    });
+</script>
 {{-- <script>
     $(document).ready(function() {
         var table = $('.table').DataTable();
