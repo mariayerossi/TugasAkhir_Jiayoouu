@@ -1198,13 +1198,7 @@ class Transaksi extends Controller
                 ->get()->first();
 
         if ($trans->status_trans == "Diterima") {
-            $now = Carbon::now('Asia/Jakarta');
-            $sewaDateTime = Carbon::createFromFormat('Y-m-d H:i:s', $trans->tanggal_sewa . ' ' . $trans->jam_sewa, 'Asia/Jakarta');
-
-            if ($sewaDateTime->lte($now)) {
-                //sudah lewat
-                return response()->json(['success' => false, 'message' => 'Waktu sewa sudah lewat! Tidak bisa membatalkan booking.']);
-            }
+            return response()->json(['success' => false, 'message' => 'Tidak dapat membatalkan transaksi! Transaksi telah diterima!']);
         }
 
         //ndak jd dipotong 5% soal e lek trans ws diterima, ga isa dibatalno
