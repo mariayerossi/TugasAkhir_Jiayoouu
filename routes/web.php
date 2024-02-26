@@ -228,10 +228,9 @@ Route::prefix("/admin")->group(function(){
 
     //Bagian Saldo
     Route::prefix("/saldo")->group(function(){
-        Route::get("/tarikSaldo", function () {
-            return view("admin.tarikSaldo");
-        })->middleware([CekAdmin::class]);
-        Route::post("/tarikDana", [Saldo::class, "tarikSaldo"]);
+        Route::get("/detailTarik", [Saldo::class, "detailTarikAdmin"])->middleware([CekAdmin::class]);
+        Route::get("/terimaTarik/{id}", [Saldo::class, "terimaTarik"]);
+        Route::get("/tolakTarik/{id}", [Saldo::class, "tolakTarik"]);
     });
 });
 
@@ -329,12 +328,13 @@ Route::prefix("/pemilik")->group(function(){
             return view("pemilik.nomerRekening")->with($param);
         })->middleware([CekPemilik::class]);
         Route::post("/tambahDetail", [Saldo::class, "tambahDetailPemilik"]);
-        Route::get("/tarikSaldo", function () {
-            $kat = new kategori();
-            $param["kategori"] = $kat->get_all_data();
-            return view("pemilik.tarikSaldo")->with($param);
-        })->middleware([CekPemilik::class]);
-        Route::post("/tarikDana", [Saldo::class, "tarikSaldo"]);
+        // Route::get("/tarikSaldo", function () {
+        //     $kat = new kategori();
+        //     $param["kategori"] = $kat->get_all_data();
+        //     return view("pemilik.tarikSaldo")->with($param);
+        // })->middleware([CekPemilik::class]);
+        Route::get("/tarikSaldo", [Saldo::class, "detailSaldoPemilik"])->middleware([CekPemilik::class]);
+        Route::post("/tarikDana", [Saldo::class, "tarikSaldo2"]);
     });
 });
 
@@ -497,12 +497,13 @@ Route::prefix("/tempat")->group(function(){
             return view("tempat.nomerRekening")->with($param);
         })->middleware([CekTempat::class]);
         Route::post("/tambahDetail", [Saldo::class, "tambahDetailTempat"]);
-        Route::get("/tarikSaldo", function () {
-            $kat = new kategori();
-            $param["kategori"] = $kat->get_all_data();
-            return view("tempat.tarikSaldo")->with($param);
-        })->middleware([CekTempat::class]);
-        Route::post("/tarikDana", [Saldo::class, "tarikSaldo"]);
+        // Route::get("/tarikSaldo", function () {
+        //     $kat = new kategori();
+        //     $param["kategori"] = $kat->get_all_data();
+        //     return view("tempat.tarikSaldo")->with($param);
+        // })->middleware([CekTempat::class]);
+        Route::get("/tarikSaldo", [Saldo::class, "detailSaldoTempat"])->middleware([CekTempat::class]);
+        Route::post("/tarikDana", [Saldo::class, "tarikSaldo2"]);
     });
 });
 

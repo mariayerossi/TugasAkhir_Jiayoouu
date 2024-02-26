@@ -24,11 +24,8 @@
     <div class="container-fluid h-custom">
         @include("layouts.message")
         <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-md-9 col-lg-6 col-xl-5">
-                <img src="{{ asset('assets/img/tarikDana.png') }}" class="img-fluid" alt="Sample image">
-            </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <form action="/customer/saldo/topup" method="get">
+                <form id="tarikForm" action="/customer/saldo/topup" method="get">
                     @csrf
 
                     <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start mb-4">
@@ -50,9 +47,56 @@
                     </div>
 
                     <div class="text-center text-lg-start mt-4 pt-2">
-                        <button type="submit" class="btn btn-success" id="pay-button">Tarik</button>
+                        <button type="submit" class="btn btn-success" id="tarik">Tarik</button>
                     </div>
                 </form>
+            </div>
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                {{-- <img src="{{ asset('assets/img/tarikDana.png') }}" class="img-fluid" alt="Sample image"> --}}
+                <div class="card mt-3 mb-5 p-3">
+                    <div class="table-responsive text-nowrap">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal Penarikan</th>
+                                    <th>Total Penarikan</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (!$dana->isEmpty())
+                                    @foreach ($dana as $item)
+                                        <tr>
+                                            @php
+                                                $tanggalAwal2 = $item->tanggal_tarik;
+                                                $tanggalObjek2 = DateTime::createFromFormat('Y-m-d', $tanggalAwal2);
+                                                $carbonDate2 = \Carbon\Carbon::parse($tanggalObjek2)->locale('id');
+                                                $tanggalBaru2 = $carbonDate2->isoFormat('D MMMM YYYY HH:mm');
+                                            @endphp
+                                            <td>{{$tanggalBaru2}}</td>
+                                            <td>Rp {{number_format($item->total_tarik, 0, ',', '.')}}</td>
+                                            <td>{{$item->status_tarik}}</td>
+                                        </tr>
+                                    @endforeach
+                                    {{-- fitur show image --}}
+                                    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                            <img src="" id="modalImage" class="img-fluid">
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <tr>
+                                        <td colspan="3" class="text-center">Tidak Ada Data</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -73,5 +117,48 @@
             document.getElementById('jumlahActual').value = '';
         }
     }
+    $(document).ready(function () {
+        $("#tarik").click(function(event) {
+            event.preventDefault(); // Mencegah perilaku default form
+
+            var formData = $("#tarikForm").serialize(); // Mengambil data dari form
+    
+            $.ajax({
+                url: "/tempat/saldo/tarikDana",
+                type: "POST",
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            type: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        window.location.reload();
+                    }
+                    else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            type: "error",
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    }
+                    // window.location.reload();
+                    // alert('Berhasil Diterima!');
+                    // Atau Anda dapat mengupdate halaman dengan respons jika perlu
+                    // Anda dapat menyesuaikan feedback yang diberikan ke pengguna berdasarkan respons server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert('Ada masalah saat mengirim data. Silahkan coba lagi.');
+                }
+            });
+
+            return false; // Mengembalikan false untuk mencegah submission form
+        });
+    })
 </script>
 @endsection

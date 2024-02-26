@@ -230,6 +230,7 @@ Sportiva
                 </div>
             </div>
             <a href="/admin/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
+            <a href="/admin/saldo/detailTarik"><i class="bi bi-cash-coin me-3"></i>Permintaan Penarikan</a>
             <a href="/admin/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
             <div class="sidebar-dropdown">
                 <a href="#"><i class="bi bi-box-seam me-3"></i>Daftar Produk <i class="bi bi-caret-down-fill"></i></a>
@@ -345,7 +346,7 @@ Sportiva
                               </svg>: Rp {{ number_format($saldo, 0, ',', '.') }}
                         </h6>
                         <hr>
-                        <a href="/admin/saldo/tarikSaldo"><i class="bi bi-cash-coin me-2"></i>Tarik Saldo</a>
+                        {{-- <a href="/admin/saldo/tarikSaldo"><i class="bi bi-cash-coin me-2"></i>Tarik Saldo</a> --}}
                         <a href="/logout"><i class="bi bi-power me-2"></i>Logout</a>
                     </div>
                 </div>
