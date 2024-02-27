@@ -276,7 +276,7 @@ class DatabaseSeeder extends Seeder
             Grip Size: 1 - 5
             Length: 27 in.
             Width Range: 23 mm - 23 mm - 23 mm
-            Balance Point: 320 mmph',
+            Balance Point: 320 mm',
             'berat_alat' => "300",
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 20000,
@@ -832,10 +832,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('lapangan_olahraga')->insert([
-            'nama_lapangan' => "Lapangan Futsalindo Center",
-            'fk_id_kategori' => 2,
-            'tipe_lapangan' => "Outdoor",
-            'lokasi_lapangan' => "jln. bengawan no.19, Surabaya",
+            'nama_lapangan' => "Lapangan Badminton Binas",
+            'fk_id_kategori' => 5,
+            'tipe_lapangan' => "Indoor",
+            'lokasi_lapangan' => "jln. citraland no.95, Surabaya",
             'kota_lapangan' => "Surabaya",
             'deskripsi_lapangan' => "Fitur Lapangan:
 
@@ -846,14 +846,14 @@ class DatabaseSeeder extends Seeder
             - Kursi penonton bagi yang ingin mendukung timnya.
             - Fasilitas toilet dan kamar ganti bersih.",
             'luas_lapangan' => "28x15",
-            'harga_sewa_lapangan' => 200000,
+            'harga_sewa_lapangan' => 100000,
             'status_lapangan' => "Aktif",
-            'pemilik_lapangan' => 2,
+            'pemilik_lapangan' => 1,
             'created_at' => date("Y-m-d H:i:s")
         ]);
 
         DB::table('files_lapangan')->insert([
-            'nama_file_lapangan' => "lapangan_futsal3.jpg",
+            'nama_file_lapangan' => "lapangan_bultang1.jpg",
             'fk_id_lapangan' => 6,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -915,10 +915,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('lapangan_olahraga')->insert([
-            'nama_lapangan' => "Lapangan Basket Nusantara Court",
-            'fk_id_kategori' => 1,
-            'tipe_lapangan' => "Indoor",
-            'lokasi_lapangan' => "jln. kartini no.27, Surabaya",
+            'nama_lapangan' => "Lapangan Futsalindo Center",
+            'fk_id_kategori' => 2,
+            'tipe_lapangan' => "Outdoor",
+            'lokasi_lapangan' => "jln. bengawan no.19, Surabaya",
             'kota_lapangan' => "Surabaya",
             'deskripsi_lapangan' => "Fitur Lapangan:
 
@@ -936,7 +936,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_lapangan')->insert([
-            'nama_file_lapangan' => "lapangan_basket4.jpg",
+            'nama_file_lapangan' => "lapangan_futsal3.jpg",
             'fk_id_lapangan' => 7,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -998,10 +998,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('lapangan_olahraga')->insert([
-            'nama_lapangan' => "Lapangan LigaPlay Futsal",
+            'nama_lapangan' => "Lapangan Basket Nusantara Court",
             'fk_id_kategori' => 1,
             'tipe_lapangan' => "Indoor",
-            'lokasi_lapangan' => "jln. mana aja deh no.27, Surabaya",
+            'lokasi_lapangan' => "jln. kartini no.27, Surabaya",
             'kota_lapangan' => "Surabaya",
             'deskripsi_lapangan' => "Fitur Lapangan:
 
@@ -1019,7 +1019,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_lapangan')->insert([
-            'nama_file_lapangan' => "lapangan_futsal4.jpg",
+            'nama_file_lapangan' => "lapangan_basket4.jpg",
             'fk_id_lapangan' => 8,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -1078,6 +1078,89 @@ class DatabaseSeeder extends Seeder
             'jam_buka' => '08:00',
             'jam_tutup' => '20:00',
             'fk_id_lapangan' => 8
+        ]);
+
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan LigaPlay Futsal",
+            'fk_id_kategori' => 1,
+            'tipe_lapangan' => "Indoor",
+            'lokasi_lapangan' => "jln. mana aja deh no.27, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 200000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 2,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_futsal4.jpg",
+            'fk_id_lapangan' => 9,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 9
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 9
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 9
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 9
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 9
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 9
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 9
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '20:00',
+            'fk_id_lapangan' => 9
         ]);
 
         DB::table('alat_olahraga')->insert([
