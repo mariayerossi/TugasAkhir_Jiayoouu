@@ -377,11 +377,13 @@
                             </div>
                             <div class="col-md-8 col-12 mt-2 mt-md-0 mb-3">
                                 <select class="form-control" name="alat">
-                                    <option value="" disabled selected>Pilih Alat Olahraga</option>
                                     @if (!$alat->isEmpty())
+                                        <option value="" disabled selected>Pilih Alat Olahraga</option>
                                         @foreach ($alat as $item)
                                         <option value="{{$item->id_alat}}" {{ old('alat') == $item->id_alat ? 'selected' : '' }}>{{$item->nama_alat}}</option>
                                         @endforeach
+                                    @else
+                                        <option value="" disabled selected>Anda tidak memiliki alat olahraga</option>
                                     @endif
                                 </select>
                             </div>

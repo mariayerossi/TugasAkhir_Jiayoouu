@@ -415,6 +415,105 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Futsal Adidas",
+            'fk_id_kategori' => 4,
+            'deskripsi_alat' => "Bahan: PU Leather Glossy
+            Berat: 400-440 Gram
+            Keliling: 62-64 Cm
+            Size: 4
+            Blader: Latex
+            Sistem Pembuatan: Jahit Mesin",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 15000,
+            'ganti_rugi_alat' => 150000,
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_voli1.jpg",
+            'fk_id_alat' => 11,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Futsal Adidas",
+            'fk_id_kategori' => 4,
+            'deskripsi_alat' => "Bahan: PU Leather Glossy
+            Berat: 400-440 Gram
+            Keliling: 62-64 Cm
+            Size: 4
+            Blader: Latex
+            Sistem Pembuatan: Jahit Mesin",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 15000,
+            'ganti_rugi_alat' => 150000,
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_voli1.jpg",
+            'fk_id_alat' => 11,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Basket Guard",
+            'fk_id_kategori' => 1,
+            'deskripsi_alat' => "Guard tosca basketball
+
+            Spesifikasi :
+            -Bahan leather/kulit berkualitas (persis bahan mo*ten)
+            -pantulan enak
+            -awet
+            -bisa untuk indoor / oudoor
+            -ukuran 6 (bisa untuk anak2 ataupun wanita)",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 15000,
+            'ganti_rugi_alat' => 120000,
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_voli1.jpg",
+            'fk_id_alat' => 12,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Basket Adidas",
+            'fk_id_kategori' => 1,
+            'deskripsi_alat' => "Bola Basket Adidas All Court X35859
+
+            X35859",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 20000,
+            'ganti_rugi_alat' => 200000,
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_voli1.jpg",
+            'fk_id_alat' => 13,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
         //Lapangan Olahraga
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Basket Mario 1",
@@ -1190,13 +1289,13 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal1.jpg",
-            'fk_id_alat' => 11,
+            'fk_id_alat' => 14,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal2.jpg",
-            'fk_id_alat' => 11,
+            'fk_id_alat' => 14,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1446,7 +1545,7 @@ class DatabaseSeeder extends Seeder
         //Sewa sendiri
         DB::table('sewa_sendiri')->insert([
             'req_lapangan' => 1,
-            'req_id_alat' => 11,
+            'req_id_alat' => 14,
             'fk_id_tempat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
