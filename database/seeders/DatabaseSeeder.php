@@ -51,9 +51,9 @@ class DatabaseSeeder extends Seeder
             'ktp_pemilik' => "ktp_pemilik1.jpg",
             'password_pemilik' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_pemilik' => "VUlDVVNC",//800.000
-            'norek_pemilik' => null,
-            'nama_rek_pemilik' => null,
-            'nama_bank_pemilik' => null,
+            'norek_pemilik' => 454782937193,
+            'nama_rek_pemilik' => "Andika Pratama",
+            'nama_bank_pemilik' => "BCA",
             'email_verified_at' => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -66,9 +66,9 @@ class DatabaseSeeder extends Seeder
             'ktp_pemilik' => "ktp_pemilik2.jpeg",
             'password_pemilik' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_pemilik' => "VUlDVVNC",//800.000
-            'norek_pemilik' => null,
-            'nama_rek_pemilik' => null,
-            'nama_bank_pemilik' => null,
+            'norek_pemilik' => 887391238712,
+            'nama_rek_pemilik' => "Budi Santoso",
+            'nama_bank_pemilik' => "BCA",
             'email_verified_at' => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -101,9 +101,9 @@ class DatabaseSeeder extends Seeder
             'npwp_tempat' => "npwp_tempat1.jpg",
             'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_tempat' => "VUlDVVNC",//800.000
-            'norek_tempat' => null,
-            'nama_rek_tempat' => null,
-            'nama_bank_tempat' => null,
+            'norek_tempat' => 763817136363,
+            'nama_rek_tempat' => "Mario Wijaya",
+            'nama_bank_tempat' => "BCA",
             'email_verified_at' => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -119,9 +119,9 @@ class DatabaseSeeder extends Seeder
             'npwp_tempat' => "npwp_tempat2.jpg",
             'password_tempat' => password_hash('1234567890', PASSWORD_BCRYPT),
             'saldo_tempat' => "VUlDVVNC",//800.000
-            'norek_tempat' => null,
-            'nama_rek_tempat' => null,
-            'nama_bank_tempat' => null,
+            'norek_tempat' => 4677673123918,
+            'nama_rek_tempat' => "Daniel Santosa",
+            'nama_bank_tempat' => "BCA",
             'email_verified_at' => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -191,16 +191,10 @@ class DatabaseSeeder extends Seeder
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Spalding",
             'fk_id_kategori' => 1,
-            'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
-            Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
-            *Bola Original Selalu ada Logo PERBASI & IBL
-            
-            INFO PRODUK :
-            COVER MATERIAL : RUBBER (Karet)
-            CONSTRUCTION : Molded
-            SIZE : 6 ( B6G2010 )
-            BLADDER : Butyl
-            REMARK : FIBA APPROVED ( REKOMENDASI BUAT OUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            'deskripsi_alat' => "Bola futsal specs BOLT motif terbaru qualitas terbaik di kelasnya, produk sudah sesuai standart jadi di jamin produk berkualitas, Apabila produk tidak memuaskan silahkan di RETUR!!
+
+            Bola Futsal specs BOLT ukuran 4, Menggunakan bahan pilihan terbaik yang di recomendasikan untuk bola futsal supaya menghasilkan produk terbaik.
+            Bola ini cocok di gunakan indoor atau pun outdoor.",
             'berat_alat' => "20.5",
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 20000,
@@ -220,16 +214,13 @@ class DatabaseSeeder extends Seeder
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Futsal Ortuseight",
             'fk_id_kategori' => 2,
-            'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
-            Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
-            *Bola Original Selalu ada Logo PERBASI & IBL
-            
-            INFO PRODUK :
-            COVER MATERIAL : RUBBER (Karet)
-            CONSTRUCTION : Molded
-            SIZE : 6 ( B6G2010 )
-            BLADDER : Butyl
-            REMARK : FIBA APPROVED ( REKOMENDASI BUAT OUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            'deskripsi_alat' => "BRAND : ORTUSEIGHT
+            MODEL : LIGHTNING
+            MATERIAL : 60 RUBBER ,15%POLYURETHANE ,13% POLYESTER ,12% EVA
+            MODE : PRES
+            APLICATION : FUTSAL
+            ORIGIN : CHINA
+            SIZE : 4",
             'berat_alat' => "20.5",
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 10000,
@@ -249,16 +240,14 @@ class DatabaseSeeder extends Seeder
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Voli Molten",
             'fk_id_kategori' => 3,
-            'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
-            Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
-            *Bola Original Selalu ada Logo PERBASI & IBL
-            
-            INFO PRODUK :
-            COVER MATERIAL : RUBBER (Karet)
-            CONSTRUCTION : Molded
-            SIZE : 6 ( B6G2010 )
-            BLADDER : Butyl
-            REMARK : FIBA APPROVED ( REKOMENDASI BUAT OUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            'deskripsi_alat' => "Bola Voli Volly MOLTEN V5M 5000 Grade Ori Gratis Pentil dan Jaring Bola
+
+            berbahan lembut mirip seperti ori
+            kuat dan tahan lama
+            warna 100 % mirip ori
+            pantulan 90% ori
+            tidak panas, lemut dan empuk ditangan
+            barang sesuai di gambar.",
             'berat_alat' => "20.5",
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 15000,
@@ -278,16 +267,16 @@ class DatabaseSeeder extends Seeder
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Raket Tenis VCORE PRO 100",
             'fk_id_kategori' => 4,
-            'deskripsi_alat' => "Molten Adalah Bola Basket Resmi FIBA & PERBASI
-            Salah Satu Distributor RESMI Bola Original Molten Di Indonesia adalah TokoMekari
-            *Bola Original Selalu ada Logo PERBASI & IBL
+            'deskripsi_alat' => '"VCORE PRO 100
+            For intermediate to advanced players looking for a flexible racquet with precision and feel
             
-            INFO PRODUK :
-            COVER MATERIAL : RUBBER (Karet)
-            CONSTRUCTION : Molded
-            SIZE : 6 ( B6G2010 )
-            BLADDER : Butyl
-            REMARK : FIBA APPROVED ( REKOMENDASI BUAT OUTDOOR ), Bola Original Hanya mendapatkan Bola",
+            More Information:
+            Head Size: 100 sq.in.
+            Weight: 300g / 10.6oz
+            Grip Size: 1 - 5
+            Length: 27 in.
+            Width Range: 23 mm - 23 mm - 23 mm
+            Balance Point: 320 mmph',
             'berat_alat' => "300",
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 20000,
@@ -305,17 +294,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('alat_olahraga')->insert([
-            "nama_alat" => "Bola Tenis  Frasser 812",
+            "nama_alat" => "Bola Tenis Frasser 812",
             'fk_id_kategori' => 4,
-            'deskripsi_alat' => "Spesifikasi Produk :
-                ✅Bola Voli/Volly Press Pabrikan Kwalitas Import
-                ✅Bahan PU Lembut dan Empuk saat dipakai.
-                ✅Ukuran Size 5.
-                ✅Berat Bola saat digunakan berkisar 260-280gram.
-                ✅Keliling lingkaran bola 65-66cm.
-                ✅Diameter bola 20,7 - 21 cm.
-                ✅Dilengkapi jaring dan adapter pentil.
-                ✅Direkomendasikan untuk latihan usia remaja dan dewasa.",
+            'deskripsi_alat' => "bola tenis
+            bola kasti
+            harga per biji
+            kwalitas premium
+            full imports
+            Melayani dropshipper, grosir besar dan pemesanan khusus seluruh Indonesia
+            Untuk pembelian grosir dan barang yang volume kubikasi besar atau berat bisa request pengiriman yang lebih murah seperti jne trucking, dakota, indah cargo, baraka dan lain lain nya.
+            Untuk request pengiriman bisa chat kami melalui diskusi / pesan.",
             'berat_alat' => "270",
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 20000,
@@ -335,15 +323,12 @@ class DatabaseSeeder extends Seeder
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Raket Badminton Warna Warni",
             'fk_id_kategori' => 5,
-            'deskripsi_alat' => "Spesifikasi Produk :
-                ✅Bola Voli/Volly Press Pabrikan Kwalitas Import
-                ✅Bahan PU Lembut dan Empuk saat dipakai.
-                ✅Ukuran Size 5.
-                ✅Berat Bola saat digunakan berkisar 260-280gram.
-                ✅Keliling lingkaran bola 65-66cm.
-                ✅Diameter bola 20,7 - 21 cm.
-                ✅Dilengkapi jaring dan adapter pentil.
-                ✅Direkomendasikan untuk latihan usia remaja dan dewasa.",
+            'deskripsi_alat' => "KETERANGAN PRODUK :
+            ► 100% Original (Signature Product)
+            ► Untuk Raket Badminton / Raket Tennis.
+            ► Panjang Grip Sekitar 110-115 CM.
+            ► Bahan Terbuat Dari Karet Berkualitas Tinggi (Anti Slip / Tidak Licin).
+            ► Terdapat Foam Yang Membentuk Tulang Pada Karet.",
             'berat_alat' => "270",
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 20000,
