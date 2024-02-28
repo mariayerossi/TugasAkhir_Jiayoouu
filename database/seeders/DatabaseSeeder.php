@@ -33,11 +33,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('user')->insert([
-            'nama_user' => "Zhao Lusi",
+            'nama_user' => "Lusiana Putri",
             'email_user' => 'lusi@gmail.com',
             'telepon_user' => "085436876789",
             'password_user' => password_hash('1234567890', PASSWORD_BCRYPT),
-            'saldo_user' => "XElDVVNCVQ==",//1 jt
+            'saldo_user' => "XElDVVNCVUQ=",//10 jt
             'email_verified_at' => date("Y-m-d H:i:s"),
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -170,7 +170,7 @@ class DatabaseSeeder extends Seeder
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 20000,
             'ganti_rugi_alat' => 100000,
-            'status_alat' => "Aktif",
+            'status_alat' => "Non Aktif",
             'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
@@ -428,39 +428,14 @@ class DatabaseSeeder extends Seeder
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 15000,
             'ganti_rugi_alat' => 150000,
-            'status_alat' => "Aktif",
+            'status_alat' => "Non Aktif",
             'fk_id_pemilik' => 2,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_alat')->insert([
-            'nama_file_alat' => "bola_voli1.jpg",
-            'fk_id_alat' => 11,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        DB::table('alat_olahraga')->insert([
-            "nama_alat" => "Bola Futsal Adidas",
-            'fk_id_kategori' => 4,
-            'deskripsi_alat' => "Bahan: PU Leather Glossy
-            Berat: 400-440 Gram
-            Keliling: 62-64 Cm
-            Size: 4
-            Blader: Latex
-            Sistem Pembuatan: Jahit Mesin",
-            'berat_alat' => "270",
-            'ukuran_alat' => "10x10x10",
-            'komisi_alat' => 15000,
-            'ganti_rugi_alat' => 150000,
-            'status_alat' => "Aktif",
-            'fk_id_pemilik' => 2,
-            'fk_id_tempat' => null,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        DB::table('files_alat')->insert([
-            'nama_file_alat' => "bola_voli1.jpg",
+            'nama_file_alat' => "bola_futsal7.jpg",
             'fk_id_alat' => 11,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -480,14 +455,14 @@ class DatabaseSeeder extends Seeder
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 15000,
             'ganti_rugi_alat' => 120000,
-            'status_alat' => "Aktif",
+            'status_alat' => "Non Aktif",
             'fk_id_pemilik' => 2,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_alat')->insert([
-            'nama_file_alat' => "bola_voli1.jpg",
+            'nama_file_alat' => "bola_basket7.jpg",
             'fk_id_alat' => 12,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -502,14 +477,14 @@ class DatabaseSeeder extends Seeder
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 20000,
             'ganti_rugi_alat' => 200000,
-            'status_alat' => "Aktif",
+            'status_alat' => "Non Aktif",
             'fk_id_pemilik' => 2,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_alat')->insert([
-            'nama_file_alat' => "bola_voli1.jpg",
+            'nama_file_alat' => "bola_basket8.jpg",
             'fk_id_alat' => 13,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -552,49 +527,49 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 1
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 1
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 1
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Kamis",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 1
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Jumat",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 1
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Sabtu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 1
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Minggu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 1
         ]);
 
@@ -635,49 +610,49 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 2
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 2
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 2
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Kamis",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 2
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Jumat",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 2
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Sabtu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 2
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Minggu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 2
         ]);
 
@@ -718,49 +693,49 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 3
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 3
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 3
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Kamis",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 3
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Jumat",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 3
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Sabtu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 3
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Minggu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 3
         ]);
 
@@ -801,49 +776,49 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 4
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 4
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 4
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Kamis",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 4
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Jumat",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 4
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Sabtu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 4
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Minggu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 4
         ]);
 
@@ -884,49 +859,49 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 5
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 5
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 5
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Kamis",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 5
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Jumat",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 5
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Sabtu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 5
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Minggu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 5
         ]);
 
@@ -967,49 +942,49 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 6
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 6
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 6
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Kamis",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 6
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Jumat",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 6
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Sabtu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 6
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Minggu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 6
         ]);
 
@@ -1050,49 +1025,49 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 7
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 7
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 7
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Kamis",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 7
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Jumat",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 7
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Sabtu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 7
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Minggu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 7
         ]);
 
@@ -1133,49 +1108,49 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 8
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 8
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 8
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Kamis",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 8
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Jumat",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 8
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Sabtu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 8
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Minggu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 8
         ]);
 
@@ -1216,49 +1191,49 @@ class DatabaseSeeder extends Seeder
         DB::table('slot_waktu')->insert([
             'hari' => "Selasa",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 9
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Senin",
             'jam_buka' => '15:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 9
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Rabu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 9
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Kamis",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 9
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Jumat",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 9
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Sabtu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 9
         ]);
 
         DB::table('slot_waktu')->insert([
             'hari' => "Minggu",
             'jam_buka' => '08:00',
-            'jam_tutup' => '20:00',
+            'jam_tutup' => '23:00',
             'fk_id_lapangan' => 9
         ]);
 
@@ -1281,7 +1256,7 @@ class DatabaseSeeder extends Seeder
             'ukuran_alat' => "10x10x10",
             'komisi_alat' => 25000,
             'ganti_rugi_alat' => 150000,
-            'status_alat' => "Aktif",
+            'status_alat' => "Non Aktif",
             'fk_id_pemilik' => null,
             'fk_id_tempat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
@@ -1421,6 +1396,48 @@ class DatabaseSeeder extends Seeder
         DB::table('files_komplain_req')->insert([
             'nama_file_komplain' => "raket_rusak.jpg",
             'fk_id_komplain_req' => 1,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('request_permintaan')->insert([
+            'req_harga_sewa' => 50000,
+            'req_lapangan' => 2,
+            'req_tanggal_mulai' => "2024-01-15",
+            'req_tanggal_selesai' => "2024-10-15",
+            'req_id_alat' => 12,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 2,
+            'tanggal_minta' => "2024-01-10 12:30:00",
+            'status_permintaan' => "Disewakan",
+            'kode_mulai' => "REQMM".$format_tgl."6",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('request_permintaan')->insert([
+            'req_harga_sewa' => 20000,
+            'req_lapangan' => 4,
+            'req_tanggal_mulai' => "2024-01-15",
+            'req_tanggal_selesai' => "2024-10-15",
+            'req_id_alat' => 11,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 2,
+            'tanggal_minta' => "2024-01-10 12:30:00",
+            'status_permintaan' => "Disewakan",
+            'kode_mulai' => "REQMM".$format_tgl."6",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('request_permintaan')->insert([
+            'req_harga_sewa' => 30000,
+            'req_lapangan' => 3,
+            'req_tanggal_mulai' => "2024-01-15",
+            'req_tanggal_selesai' => "2024-10-15",
+            'req_id_alat' => 13,
+            'fk_id_tempat' => 1,
+            'fk_id_pemilik' => 2,
+            'tanggal_minta' => "2024-01-10 12:30:00",
+            'status_permintaan' => "Disewakan",
+            'kode_mulai' => "REQMM".$format_tgl."6",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 

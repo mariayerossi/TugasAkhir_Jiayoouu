@@ -763,7 +763,7 @@
             return false; // Mengembalikan false untuk mencegah submission form
         });
 
-        z$("#terima").click(function(event) {
+        $("#terima").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
 
             var formData = $("#terimaForm").serialize(); // Mengambil data dari form
