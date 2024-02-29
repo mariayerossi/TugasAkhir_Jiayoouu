@@ -62,6 +62,17 @@ class reminder extends Command
      */
     public function handle()
     {
+        $dataNotif = [
+            "subject" => "⚠️Ngecek Cronjob⚠️",
+            "judul" => "Ngecek Cronjob!",
+            "nama_user" => "Maria",
+            "url" => "https://sportiva.my.id/",
+            "button" => "Link Website",
+            "isi" => "hehehehehe😊"
+        ];
+        $e = new notifikasiEmail();
+        $e->sendEmail("maria.yerossi@gmail.com", $dataNotif);
+
         //permintaan
         $per = new requestPermintaan();
         $data = $per->get_all_data();

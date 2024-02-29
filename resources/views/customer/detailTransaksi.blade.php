@@ -205,6 +205,8 @@
 
             var formData = $("#bookingForm").serialize(); // Mengambil data dari form
     
+            $('#bookingBtn').attr('disabled', true);
+
             $.ajax({
                 url: "/customer/transaksi/tambahTransaksi",
                 type: "POST",
