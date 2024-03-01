@@ -62,16 +62,16 @@ class reminder extends Command
      */
     public function handle()
     {
-        $dataNotif = [
-            "subject" => "⚠️Ngecek Cronjob⚠️",
-            "judul" => "Ngecek Cronjob!",
-            "nama_user" => "Maria",
-            "url" => "https://sportiva.my.id/",
-            "button" => "Link Website",
-            "isi" => "hehehehehe😊"
-        ];
-        $e = new notifikasiEmail();
-        $e->sendEmail("maria.yerossi@gmail.com", $dataNotif);
+        // $dataNotif = [
+        //     "subject" => "⚠️Ngecek Cronjob⚠️",
+        //     "judul" => "Ngecek Cronjob!",
+        //     "nama_user" => "Maria",
+        //     "url" => "https://sportiva.my.id/",
+        //     "button" => "Link Website",
+        //     "isi" => "hehehehehe😊"
+        // ];
+        // $e = new notifikasiEmail();
+        // $e->sendEmail("maria.yerossi@gmail.com", $dataNotif);
 
         //permintaan
         $per = new requestPermintaan();
@@ -601,13 +601,13 @@ class reminder extends Command
                     ];
                     $e->sendEmail($dataTempat->email_tempat, $dataNotif2);
                 }
-                else if ($value->status_pemilik == null && $value->req_tanggal_mulai < $sekarang3) {
+                else if ($value->status_penawaran == "Menunggu" && $value->status_pemilik == null && $value->status_tempat != null && $value->req_tanggal_mulai < $sekarang3) {
                     //kalau pemilik alat sampai melebihi waktu mulai pinjam masih tdk mengkonfirmasi maka status akan otomatis dibatalkan
                     $data2 = [
                         "id" => $value->id_penawaran,
                         "status" => "Dibatalkan"
                     ];
-                    $per->updateStatus($data2);
+                    $pen->updateStatus($data2);
 
                     //kasih notif ke pemilik, req dibatalkan
                     $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->req_id_alat)->get()->first();
@@ -650,8 +650,8 @@ class reminder extends Command
                         "waktu" => $sekarang,
                         "link" => "/tempat/penawaran/detailPenawaranNego/".$value->id_penawaran,
                         "user" => null,
-                        "pemilik" => $value->fk_id_tempat,
-                        "tempat" => null,
+                        "pemilik" => null,
+                        "tempat" => $value->fk_id_tempat,
                         "admin" => null
                     ];
                     $notifWeb = new notifikasi();

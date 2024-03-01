@@ -279,7 +279,7 @@
                 <input type="hidden" name="id_tempat" value="{{Session::get("dataRole")->id_tempat}}">
                 <input type="hidden" name="kota_alat" value="{{$kota}}">
                 <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success">Request Alat</button>
+                    <button type="submit" class="btn btn-success" id="mintaBtn">Request Alat</button>
                 </div>
             </form>
         </div>
@@ -309,12 +309,15 @@
     const kotaAlatInput = document.querySelector('input[name="kota_alat"]');
     const harga = document.querySelector('input[name="harga"]');
     const lapangan = document.querySelector('select[name="lapangan"]');
+    const btn = document.querySelector('button[id="mintaBtn"]');
 
     form.addEventListener('submit', function(e) {
         let selectedOption = lapangan.options[lapangan.selectedIndex].value;
         e.preventDefault();
         if (selectedOption !== "" && harga.value !== "") {
             let formData = new FormData(form);
+
+            btn.disabled = true;
 
             $.ajax({
                 type: "POST",
