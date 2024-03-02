@@ -33,7 +33,7 @@ data-client-key={{config("midtrans.client_key")}}></script>
                 <img src="{{ asset('assets/img/topup2.png') }}" class="img-fluid" alt="Sample image">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <form action="/customer/saldo/topup" method="post" id="afterPayment">
+                <form action="/customer/saldo/topup" method="get" id="afterPayment">
                     @csrf
 
                     <div class="divider d-flex align-items-center my-4">
