@@ -127,32 +127,38 @@ class DatabaseSeeder extends Seeder
         ]);
         
         //Kategori
+        //1
         DB::table('kategori')->insert([
             "nama_kategori" => "Basket",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //2
         DB::table('kategori')->insert([
             "nama_kategori" => "Futsal",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //3
         DB::table('kategori')->insert([
             "nama_kategori" => "Voli",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //4
         DB::table('kategori')->insert([
             "nama_kategori" => "Tenis",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //5
         DB::table('kategori')->insert([
             "nama_kategori" => "Badminton",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         //Alat olahraga
+        //1
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Molten",
             'fk_id_kategori' => 1,
@@ -188,6 +194,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //2
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Spalding",
             'fk_id_kategori' => 1,
@@ -211,6 +218,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //3
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Futsal Ortuseight",
             'fk_id_kategori' => 2,
@@ -237,6 +245,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //4
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Voli Molten",
             'fk_id_kategori' => 3,
@@ -264,6 +273,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //5
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Raket Tenis VCORE PRO 100",
             'fk_id_kategori' => 4,
@@ -293,6 +303,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //6
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Tenis Frasser 812",
             'fk_id_kategori' => 4,
@@ -320,6 +331,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //7
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Raket Badminton Warna Warni",
             'fk_id_kategori' => 5,
@@ -345,6 +357,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //8
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Proteam Rubber Royale Edition",
             'fk_id_kategori' => 1,
@@ -356,7 +369,7 @@ class DatabaseSeeder extends Seeder
             'komisi_alat' => 20000,
             'ganti_rugi_alat' => 150000,
             'status_alat' => "Aktif",
-            'fk_id_pemilik' => 2,
+            'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -367,6 +380,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //9
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Raket Tenis Wilson Ultra Power 105",
             'fk_id_kategori' => 4,
@@ -376,7 +390,7 @@ class DatabaseSeeder extends Seeder
             'komisi_alat' => 10000,
             'ganti_rugi_alat' => 120000,
             'status_alat' => "Aktif",
-            'fk_id_pemilik' => 2,
+            'fk_id_pemilik' => 1,
             'fk_id_tempat' => null,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -387,6 +401,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //10
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Voli Mikasa FIV3",
             'fk_id_kategori' => 4,
@@ -415,6 +430,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //11
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Futsal Adidas",
             'fk_id_kategori' => 4,
@@ -440,6 +456,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //12
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Guard",
             'fk_id_kategori' => 1,
@@ -467,6 +484,7 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //13
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Basket Adidas",
             'fk_id_kategori' => 1,
@@ -489,7 +507,77 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //14
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Futsal Molten",
+            'fk_id_kategori' => 2,
+            'deskripsi_alat' => "• Material TPU Leather
+            • Ideal digunakan untuk kompetisi lokal
+            • Jahitan dengan mesin",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 30000,
+            'ganti_rugi_alat' => 200000,
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_futsal8.jpg",
+            'fk_id_alat' => 14,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //15
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Raket Badminton Yonex",
+            'fk_id_kategori' => 5,
+            'deskripsi_alat' => "Spesifikasi:
+            - kondisi 100% baru/new
+            - sudah terpasang senar
+            - Raket Model T
+            - Bahan Aluminium",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 20000,
+            'ganti_rugi_alat' => 250000,
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "raket_badminton2.jpg",
+            'fk_id_alat' => 15,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //16
+        DB::table('alat_olahraga')->insert([
+            "nama_alat" => "Bola Basket Tarmak",
+            'fk_id_kategori' => 1,
+            'deskripsi_alat' => "Rangka : 100.0% Rubber - Natural Rubber (NR) - Latex KanTong Air : 70.0% Rubber - Natural Rubber (NR) - Latex, KanTong Air : 30.0% Karet - Karet Isobutilena Isoprena (IIR) - Butil Kain utama : 100.0% Polivinil klorida (PVC) Kumparan : 100.0% Poliester (PES)",
+            'berat_alat' => "270",
+            'ukuran_alat' => "10x10x10",
+            'komisi_alat' => 30000,
+            'ganti_rugi_alat' => 400000,
+            'status_alat' => "Aktif",
+            'fk_id_pemilik' => 2,
+            'fk_id_tempat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('files_alat')->insert([
+            'nama_file_alat' => "bola_basket9.jpg",
+            'fk_id_alat' => 16,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
         //Lapangan Olahraga
+        //1
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Basket Mario 1",
             'fk_id_kategori' => 1,
@@ -573,6 +661,7 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 1
         ]);
 
+        //2
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Basket Mario 2",
             'fk_id_kategori' => 1,
@@ -656,6 +745,7 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 2
         ]);
 
+        //3
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Basket YukSport",
             'fk_id_kategori' => 1,
@@ -739,6 +829,7 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 3
         ]);
 
+        //4
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Futsal City Arena",
             'fk_id_kategori' => 2,
@@ -822,6 +913,7 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 4
         ]);
 
+        //5
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Goal Zone Futsal",
             'fk_id_kategori' => 2,
@@ -905,11 +997,12 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 5
         ]);
 
+        //6
         DB::table('lapangan_olahraga')->insert([
             'nama_lapangan' => "Lapangan Badminton Binas",
             'fk_id_kategori' => 5,
             'tipe_lapangan' => "Indoor",
-            'lokasi_lapangan' => "jln. citraland no.95, Surabaya",
+            'lokasi_lapangan' => "jln. darmo indah timur no.83, Surabaya",
             'kota_lapangan' => "Surabaya",
             'deskripsi_lapangan' => "Fitur Lapangan:
 
@@ -988,11 +1081,12 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 6
         ]);
 
+        //7
         DB::table('lapangan_olahraga')->insert([
-            'nama_lapangan' => "Lapangan Futsalindo Center",
-            'fk_id_kategori' => 2,
+            'nama_lapangan' => "Lapangan Tenis Indo Sport",
+            'fk_id_kategori' => 4,
             'tipe_lapangan' => "Outdoor",
-            'lokasi_lapangan' => "jln. bengawan no.19, Surabaya",
+            'lokasi_lapangan' => "jln. hr muhammad no.29, Surabaya",
             'kota_lapangan' => "Surabaya",
             'deskripsi_lapangan' => "Fitur Lapangan:
 
@@ -1003,14 +1097,14 @@ class DatabaseSeeder extends Seeder
             - Kursi penonton bagi yang ingin mendukung timnya.
             - Fasilitas toilet dan kamar ganti bersih.",
             'luas_lapangan' => "28x15",
-            'harga_sewa_lapangan' => 200000,
+            'harga_sewa_lapangan' => 100000,
             'status_lapangan' => "Aktif",
-            'pemilik_lapangan' => 2,
+            'pemilik_lapangan' => 1,
             'created_at' => date("Y-m-d H:i:s")
         ]);
 
         DB::table('files_lapangan')->insert([
-            'nama_file_lapangan' => "lapangan_futsal3.jpg",
+            'nama_file_lapangan' => "lapangan_tenis1.jpg",
             'fk_id_lapangan' => 7,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -1071,11 +1165,12 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 7
         ]);
 
+        //8
         DB::table('lapangan_olahraga')->insert([
-            'nama_lapangan' => "Lapangan Basket Nusantara Court",
-            'fk_id_kategori' => 1,
+            'nama_lapangan' => "Lapangan Voli Starzone",
+            'fk_id_kategori' => 4,
             'tipe_lapangan' => "Indoor",
-            'lokasi_lapangan' => "jln. kartini no.27, Surabaya",
+            'lokasi_lapangan' => "jln. bogowonto no.48, Surabaya",
             'kota_lapangan' => "Surabaya",
             'deskripsi_lapangan' => "Fitur Lapangan:
 
@@ -1086,14 +1181,14 @@ class DatabaseSeeder extends Seeder
             - Kursi penonton bagi yang ingin mendukung timnya.
             - Fasilitas toilet dan kamar ganti bersih.",
             'luas_lapangan' => "28x15",
-            'harga_sewa_lapangan' => 200000,
+            'harga_sewa_lapangan' => 100000,
             'status_lapangan' => "Aktif",
-            'pemilik_lapangan' => 2,
+            'pemilik_lapangan' => 1,
             'created_at' => date("Y-m-d H:i:s")
         ]);
 
         DB::table('files_lapangan')->insert([
-            'nama_file_lapangan' => "lapangan_basket4.jpg",
+            'nama_file_lapangan' => "lapangan_voli1.jpg",
             'fk_id_lapangan' => 8,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -1154,11 +1249,12 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 8
         ]);
 
+        //9
         DB::table('lapangan_olahraga')->insert([
-            'nama_lapangan' => "Lapangan LigaPlay Futsal",
-            'fk_id_kategori' => 1,
-            'tipe_lapangan' => "Indoor",
-            'lokasi_lapangan' => "jln. mana aja deh no.27, Surabaya",
+            'nama_lapangan' => "Lapangan Futsalindo Center",
+            'fk_id_kategori' => 2,
+            'tipe_lapangan' => "Outdoor",
+            'lokasi_lapangan' => "jln. bengawan no.19, Surabaya",
             'kota_lapangan' => "Surabaya",
             'deskripsi_lapangan' => "Fitur Lapangan:
 
@@ -1176,7 +1272,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('files_lapangan')->insert([
-            'nama_file_lapangan' => "lapangan_futsal4.jpg",
+            'nama_file_lapangan' => "lapangan_futsal3.jpg",
             'fk_id_lapangan' => 9,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -1237,6 +1333,259 @@ class DatabaseSeeder extends Seeder
             'fk_id_lapangan' => 9
         ]);
 
+        //10
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan Basket Nusantara Court",
+            'fk_id_kategori' => 1,
+            'tipe_lapangan' => "Indoor",
+            'lokasi_lapangan' => "jln. kartini no.27, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 200000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 2,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_basket4.jpg",
+            'fk_id_lapangan' => 10,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 10
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 10
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 10
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 10
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 10
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 10
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 10
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 10
+        ]);
+
+        //11
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan LigaPlay Futsal",
+            'fk_id_kategori' => 1,
+            'tipe_lapangan' => "Indoor",
+            'lokasi_lapangan' => "jln. simomulyo no.69, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 200000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 2,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_futsal4.jpg",
+            'fk_id_lapangan' => 11,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 11
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 11
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 11
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 11
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 11
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 11
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 11
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 11
+        ]);
+
+        //12
+        DB::table('lapangan_olahraga')->insert([
+            'nama_lapangan' => "Lapangan Badminton Arizona",
+            'fk_id_kategori' => 1,
+            'tipe_lapangan' => "Indoor",
+            'lokasi_lapangan' => "jln. benowo indah no.24, Surabaya",
+            'kota_lapangan' => "Surabaya",
+            'deskripsi_lapangan' => "Fitur Lapangan:
+
+            - Lantai bertekstur khusus untuk cengkeraman sepatu yang optimal.
+            - Ring basket yang memenuhi standar kompetisi.
+            - Penerangan LED terang untuk permainan malam hari.
+            - Area parkir yang luas dan mudah diakses.
+            - Kursi penonton bagi yang ingin mendukung timnya.
+            - Fasilitas toilet dan kamar ganti bersih.",
+            'luas_lapangan' => "28x15",
+            'harga_sewa_lapangan' => 200000,
+            'status_lapangan' => "Aktif",
+            'pemilik_lapangan' => 2,
+            'created_at' => date("Y-m-d H:i:s")
+        ]);
+
+        DB::table('files_lapangan')->insert([
+            'nama_file_lapangan' => "lapangan_bultang2.jpg",
+            'fk_id_lapangan' => 12,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '12:00',
+            'fk_id_lapangan' => 12
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Selasa",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 12
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Senin",
+            'jam_buka' => '15:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 12
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Rabu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 12
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Kamis",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 12
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Jumat",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 12
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Sabtu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 12
+        ]);
+
+        DB::table('slot_waktu')->insert([
+            'hari' => "Minggu",
+            'jam_buka' => '08:00',
+            'jam_tutup' => '23:00',
+            'fk_id_lapangan' => 12
+        ]);
+
+        //17
         DB::table('alat_olahraga')->insert([
             "nama_alat" => "Bola Futsal Specs",
             'fk_id_kategori' => 2,
@@ -1264,13 +1613,13 @@ class DatabaseSeeder extends Seeder
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal1.jpg",
-            'fk_id_alat' => 14,
+            'fk_id_alat' => 17,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
         DB::table('files_alat')->insert([
             'nama_file_alat' => "bola_futsal2.jpg",
-            'fk_id_alat' => 14,
+            'fk_id_alat' => 17,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1503,7 +1852,7 @@ class DatabaseSeeder extends Seeder
             'req_tanggal_selesai' => $tanggal2,
             'req_id_alat' => 8,
             'fk_id_tempat' => 1,
-            'fk_id_pemilik' => 2,
+            'fk_id_pemilik' => 1,
             'tanggal_tawar' => date("Y-m-d H:i:s"),
             'status_penawaran' => "Menunggu",
             'status_tempat' => "Setuju",
@@ -1519,7 +1868,7 @@ class DatabaseSeeder extends Seeder
             'req_tanggal_selesai' => $tanggal2,
             'req_id_alat' => 9,
             'fk_id_tempat' => 1,
-            'fk_id_pemilik' => 2,
+            'fk_id_pemilik' => 1,
             'tanggal_tawar' => date("Y-m-d H:i:s"),
             'status_penawaran' => "Diterima",
             'status_tempat' => "Setuju",
@@ -1568,14 +1917,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         //Transaksi
+        //1
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0001",
             'fk_id_lapangan' => 1,
             'subtotal_lapangan' => 200000,
             'subtotal_alat' => 150000,
-            'tanggal_trans' => $tanggal4,
-            'tanggal_sewa'=> $tanggal4,
-            'jam_sewa' => "06:00",
+            'tanggal_trans' => "2023-12-14 12:01:29",
+            'tanggal_sewa'=> "2023-12-15",
+            'jam_sewa' => "08:00",
             'durasi_sewa' => 2,
             'total_trans' => 350000,
             'fk_id_user' => 1,
@@ -1611,14 +1961,33 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
+        //2
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0002",
+            'fk_id_lapangan' => 2,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 0,
+            'tanggal_trans' => "2023-12-20 12:01:29",
+            'tanggal_sewa'=> "2023-12-22",
+            'jam_sewa' => "08:00",
+            'durasi_sewa' => 2,
+            'total_trans' => 400000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 20000,
+            'status_trans' => "Selesai",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //3
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0002",
             'fk_id_lapangan' => 1,
             'subtotal_lapangan' => 200000,
             'subtotal_alat' => 150000,
-            'tanggal_trans' => date("Y-m-d H:i:s"),
-            'tanggal_sewa'=> $tanggal,
-            'jam_sewa' => "06:00",
+            'tanggal_trans' => $tanggal4,
+            'tanggal_sewa'=> $tanggal4,
+            'jam_sewa' => "08:00",
             'durasi_sewa' => 2,
             'total_trans' => 350000,
             'fk_id_user' => 1,
@@ -1629,49 +1998,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('dtrans')->insert([
-            'fk_id_htrans' => 2,
-            'fk_id_alat' => 1,
-            'harga_sewa_alat' => 50000,
-            'subtotal_alat' => 100000,
-            'total_komisi_pemilik' => 40000,
-            'total_komisi_tempat' => 60000,
-            'fk_id_pemilik' => 1,
-            'fk_id_tempat' => null,
-            'pendapatan_website_alat' => 4400,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        DB::table('dtrans')->insert([
-            'fk_id_htrans' => 2,
-            'fk_id_alat' => 5,
-            'harga_sewa_alat' => 25000,
-            'subtotal_alat' => 50000,
-            'total_komisi_pemilik' => null,
-            'total_komisi_tempat' => 50000,
-            'fk_id_pemilik' => null,
-            'fk_id_tempat' => 1,
-            'pendapatan_website_alat' => null,
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        DB::table('htrans')->insert([
-            'kode_trans' => "H".date("dmy")."0003",
-            'fk_id_lapangan' => 2,
-            'subtotal_lapangan' => 200000,
-            'subtotal_alat' => 150000,
-            'tanggal_trans' => date("Y-m-d H:i:s"),
-            'tanggal_sewa'=> $tanggal,
-            'jam_sewa' => $waktu,
-            'durasi_sewa' => 2,
-            'total_trans' => 350000,
-            'fk_id_user' => 1,
-            'fk_id_tempat' => 1,
-            'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Diterima",
-            'created_at' => date("Y-m-d H:i:s"),
-        ]);
-
-        DB::table('dtrans')->insert([
             'fk_id_htrans' => 3,
             'fk_id_alat' => 1,
             'harga_sewa_alat' => 50000,
@@ -1697,38 +2023,21 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        // DB::table('komplain_trans')->insert([
-        //     'jenis_komplain' => "Alat tidak sesuai",
-        //     'keterangan_komplain' => "alat olahraga bedaa",
-        //     'fk_id_htrans' => 3,
-        //     'waktu_komplain' => date("Y-m-d H:i:s"),
-        //     'status_komplain' => "Menunggu",
-        //     'penanganan_komplain' => null,
-        //     'alasan_komplain' => null,
-        //     'fk_id_user' => 1,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
-
-        // DB::table('files_komplain_trans')->insert([
-        //     'nama_file_komplain' => "bola_jelek.jpg",
-        //     'fk_id_komplain_trans' => 1,
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
-
+        //4
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0004",
             'fk_id_lapangan' => 1,
             'subtotal_lapangan' => 200000,
-            'subtotal_alat' => 150000,
-            'tanggal_trans' => date("Y-m-d H:i:s"),
-            'tanggal_sewa'=> $tanggal,
-            'jam_sewa' => $waktu,
+            'subtotal_alat' => 100000,
+            'tanggal_trans' => "2024-02-24 15:20:20",
+            'tanggal_sewa'=> "2024-02-25",
+            'jam_sewa' => "08:00",
             'durasi_sewa' => 2,
-            'total_trans' => 350000,
+            'total_trans' => 300000,
             'fk_id_user' => 1,
             'fk_id_tempat' => 1,
             'pendapatan_website_lapangan' => 18000,
-            'status_trans' => "Berlangsung",
+            'status_trans' => "Selesai",
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
@@ -1745,36 +2054,203 @@ class DatabaseSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
         ]);
 
-        // DB::table('rating_alat')->insert([
-        //     'rating' => 4,
-        //     'review' => "bola basketnya lumayan bagus, cuman agak kempes",
-        //     'hide' => "Tidak",
+        //5
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0005",
+            'fk_id_lapangan' => 1,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 100000,
+            'tanggal_trans' => "2024-02-25 15:20:20",
+            'tanggal_sewa'=> "2024-02-26",
+            'jam_sewa' => "08:00",
+            'durasi_sewa' => 2,
+            'total_trans' => 300000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
+            'status_trans' => "Selesai",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 5,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'pendapatan_website_alat' => 4400,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //6
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0006",
+            'fk_id_lapangan' => 1,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 100000,
+            'tanggal_trans' => "2024-02-26 15:20:20",
+            'tanggal_sewa'=> "2024-02-28",
+            'jam_sewa' => "08:00",
+            'durasi_sewa' => 2,
+            'total_trans' => 300000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
+            'status_trans' => "Selesai",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 6,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'pendapatan_website_alat' => 4400,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //7
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0007",
+            'fk_id_lapangan' => 1,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 150000,
+            'tanggal_trans' => date("Y-m-d H:i:s"),
+            'tanggal_sewa'=> $tanggal,
+            'jam_sewa' => "06:00",
+            'durasi_sewa' => 2,
+            'total_trans' => 350000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
+            'status_trans' => "Selesai",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 7,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'pendapatan_website_alat' => 4400,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 7,
+            'fk_id_alat' => 5,
+            'harga_sewa_alat' => 25000,
+            'subtotal_alat' => 50000,
+            'total_komisi_pemilik' => null,
+            'total_komisi_tempat' => 50000,
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_alat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        //8
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0008",
+            'fk_id_lapangan' => 2,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 150000,
+            'tanggal_trans' => date("Y-m-d H:i:s"),
+            'tanggal_sewa'=> $tanggal,
+            'jam_sewa' => $waktu,
+            'durasi_sewa' => 2,
+            'total_trans' => 350000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
+            'status_trans' => "Diterima",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 8,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'pendapatan_website_alat' => 4400,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 8,
+            'fk_id_alat' => 5,
+            'harga_sewa_alat' => 25000,
+            'subtotal_alat' => 50000,
+            'total_komisi_pemilik' => null,
+            'total_komisi_tempat' => 50000,
+            'fk_id_pemilik' => null,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_alat' => null,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        // DB::table('komplain_trans')->insert([
+        //     'jenis_komplain' => "Alat tidak sesuai",
+        //     'keterangan_komplain' => "alat olahraga bedaa",
+        //     'fk_id_htrans' => 8,
+        //     'waktu_komplain' => date("Y-m-d H:i:s"),
+        //     'status_komplain' => "Menunggu",
+        //     'penanganan_komplain' => null,
+        //     'alasan_komplain' => null,
         //     'fk_id_user' => 1,
-        //     'fk_id_alat' => 1,
-        //     'fk_id_dtrans' => 3,
         //     'created_at' => date("Y-m-d H:i:s"),
         // ]);
 
-        // DB::table('rating_lapangan')->insert([
-        //     'rating' => 5,
-        //     'review' => "lapangannya bagus, bersih, nyaman dibuat main",
-        //     'hide' => "Tidak",
-        //     'fk_id_user' => 1,
-        //     'fk_id_lapangan' => 1,
-        //     'fk_id_htrans' => 2,
+        // DB::table('files_komplain_trans')->insert([
+        //     'nama_file_komplain' => "bola_jelek.jpg",
+        //     'fk_id_komplain_trans' => 1,
         //     'created_at' => date("Y-m-d H:i:s"),
         // ]);
 
-        // DB::table('notifikasi')->insert([
-        //     'keterangan_notifikasi' => "Permintaan alat olahraga Bola Basket Molten",
-        //     'waktu_notifikasi' => date("Y-m-d H:i:s"),
-        //     'link_notifikasi' => "/pemilik/permintaan/detailPermintaanNego/1",
-        //     'fk_id_user' => null,
-        //     'fk_id_pemilik' => 1,
-        //     'fk_id_tempat' => null,
-        //     'admin' => null,
-        //     'status_notifikasi' => "Tidak",
-        //     'created_at' => date("Y-m-d H:i:s"),
-        // ]);
+        //9
+        DB::table('htrans')->insert([
+            'kode_trans' => "H".date("dmy")."0009",
+            'fk_id_lapangan' => 1,
+            'subtotal_lapangan' => 200000,
+            'subtotal_alat' => 150000,
+            'tanggal_trans' => date("Y-m-d H:i:s"),
+            'tanggal_sewa'=> $tanggal,
+            'jam_sewa' => $waktu,
+            'durasi_sewa' => 2,
+            'total_trans' => 350000,
+            'fk_id_user' => 1,
+            'fk_id_tempat' => 1,
+            'pendapatan_website_lapangan' => 18000,
+            'status_trans' => "Berlangsung",
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
+
+        DB::table('dtrans')->insert([
+            'fk_id_htrans' => 9,
+            'fk_id_alat' => 1,
+            'harga_sewa_alat' => 50000,
+            'subtotal_alat' => 100000,
+            'total_komisi_pemilik' => 40000,
+            'total_komisi_tempat' => 60000,
+            'fk_id_pemilik' => 1,
+            'fk_id_tempat' => null,
+            'pendapatan_website_alat' => 4400,
+            'created_at' => date("Y-m-d H:i:s"),
+        ]);
     }
 }
