@@ -896,7 +896,7 @@ class reminder extends Command
                     $sewa4 = new DateTime($jam_selesai_sewa);
                     $sew4 = $sewa4->format('Y-m-d H:i:s');
 
-                    if ($sew4 == $sekarang) {
+                    if ($sew4 <= $sekarang) {
                         $data = [
                             "id" => $value->id_htrans,
                             "status" => "Selesai"

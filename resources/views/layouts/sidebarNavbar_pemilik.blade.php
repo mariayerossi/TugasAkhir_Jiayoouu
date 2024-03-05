@@ -281,7 +281,8 @@ Sportiva
                     return $decodedPrice;
                 }
 
-                $saldo = decodePrice(Session::get("dataRole")->saldo_pemilik, "mysecretkey");
+                $total_saldo = DB::table('pemilik_alat')->where("id_pemilik","=",Session::get("dataRole")->id_pemilik)->get()->first()->saldo_pemilik;
+                $saldo = decodePrice($total_saldo, "mysecretkey");
             @endphp
             <div class="coba">
                 <div class="notif-dropdown me-3">
