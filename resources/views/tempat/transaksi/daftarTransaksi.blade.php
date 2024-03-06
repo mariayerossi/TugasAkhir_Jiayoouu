@@ -26,7 +26,7 @@
 }
 </style>
 <div class="container mt-5">
-    <h3 class="text-center mb-3">Daftar Transaksi</h3>
+    <h3 class="text-center mb-3">Daftar Persewaan</h3>
     <div class="d-flex justify-content-end mb-4">
         <a href="/tempat/transaksi/lihatJadwal" class="btn btn-primary">Jadwal Sewa Hari Ini</a>
     </div>

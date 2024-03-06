@@ -225,21 +225,18 @@ Sportiva
     <div id="sidebar">
         <a href="/tempat/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
         <a href="/tempat/cariAlat"><i class="bi bi-search me-3"></i>Cari Alat Olahraga</a>
-        <div class="sidebar-dropdown">
+        {{-- <div class="sidebar-dropdown">
             <a href="/tempat/lapangan/daftarLapangan"><i class="bi bi-house-add me-3"></i>Daftar Lapangan</a>
-            {{-- <div class="sidebar-dropdown-content">
-                <a href="/tempat/lapangan/masterLapangan">Tambah Lapangan</a>
-                <a href="/tempat/lapangan/daftarLapangan">Daftar Lapangan</a>
-                <!-- Add other sports or categories here -->
-            </div> --}}
         </div>
         <div class="sidebar-dropdown">
             <a href="/tempat/alat/daftarAlat"><i class="bi bi-dribbble me-3"></i>Daftar Alat Olahraga</i></a>
-            {{-- <div class="sidebar-dropdown-content">
-                <a href="/tempat/alat/masterAlat">Tambah Alat</a>
-                <a href="/tempat/alat/daftarAlat">Daftar Alat</a>
-                <!-- Add other sports or categories here -->
-            </div> --}}
+        </div> --}}
+        <div class="sidebar-dropdown">
+            <a href="#"><i class="bi bi-dribbble me-3"></i>Daftar Produk <i class="bi bi-caret-down-fill"></i></a>
+            <div class="sidebar-dropdown-content">
+                <a href="/tempat/alat/daftarAlat">Alat Olahraga</a>
+                <a href="/tempat/lapangan/daftarLapangan">Lapangan Olahraga</a>
+            </div>
         </div>
         {{-- <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-collection me-3"></i>Daftar Request <i class="bi bi-caret-down-fill"></i></a>
@@ -249,12 +246,12 @@ Sportiva
                 <!-- Add other sports or categories here -->
             </div>
         </div> --}}
-        <a href="/tempat/permintaan/daftarPermintaan"><i class="bi bi-send-plus me-3"></i>Daftar Permintaan Alat</a>
-        <a href="/tempat/penawaran/daftarPenawaran"><i class="bi bi-envelope-paper me-3"></i>Daftar Penawaran Alat</a>
-        <a href="/tempat/transaksi/daftarTransaksi"><i class="bi bi-journal-text me-3"></i></i>Transaksi</a>
+        <a href="/tempat/permintaan/daftarPermintaan"><i class="bi bi-send-plus me-3"></i>Permintaan Alat</a>
+        <a href="/tempat/penawaran/daftarPenawaran"><i class="bi bi-envelope-paper me-3"></i>Penawaran Alat</a>
+        <a href="/tempat/transaksi/daftarTransaksi"><i class="bi bi-clipboard-check me-3"></i>Daftar Persewaan</a>
         <a href="/tempat/kerusakan/daftarKerusakan"><i class="bi bi-heartbreak me-3"></i>Daftar Alat yang Rusak</a>
         <div class="sidebar-dropdown">
-            <a href="#"><i class="bi bi-clipboard-data me-3"></i>Laporan <i class="bi bi-caret-down-fill"></i></a>
+            <a href="#"><i class="bi bi-file-earmark-bar-graph me-3"></i>Laporan <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
                 <a href="/tempat/laporan/pendapatan/laporanPendapatan">Pendapatan</a>
                 <a href="/tempat/laporan/stok/laporanStok">Stok Alat Olahraga</a>

@@ -242,8 +242,8 @@ Sportiva
                 <!-- Add other sports or categories here -->
             </div>
         </div> --}}
-        <a href="/pemilik/permintaan/daftarPermintaan"><i class="bi bi-envelope-paper me-3"></i>Daftar Permintaan Alat</a>
-        <a href="/pemilik/penawaran/daftarPenawaran"><i class="bi bi-send-plus me-3"></i>Daftar Penawaran Alat</a>
+        <a href="/pemilik/permintaan/daftarPermintaan"><i class="bi bi-envelope-paper me-3"></i>Permintaan Alat</a>
+        <a href="/pemilik/penawaran/daftarPenawaran"><i class="bi bi-send-plus me-3"></i>Penawaran Alat</a>
         <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-clipboard-data me-3"></i>Laporan <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">

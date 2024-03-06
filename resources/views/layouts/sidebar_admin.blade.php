@@ -230,7 +230,7 @@ Sportiva
                 </div>
             </div>
             <a href="/admin/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
-            <a href="/admin/saldo/detailTarik"><i class="bi bi-cash-coin me-3"></i>Permintaan Penarikan</a>
+            <a href="/admin/saldo/detailTarik"><i class="bi bi-cash-coin me-3"></i>Konfirmasi Penarikan</a>
             <a href="/admin/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
             <div class="sidebar-dropdown">
                 <a href="#"><i class="bi bi-box-seam me-3"></i>Daftar Produk <i class="bi bi-caret-down-fill"></i></a>
@@ -248,7 +248,7 @@ Sportiva
                     <a href="/admin/daftarTempat">Tempat Olahraga</a>
                 </div>
             </div>
-            <a href="/admin/transaksi/daftarTransaksi"><i class="bi bi-journal-text me-3"></i></i>Transaksi</a>
+            <a href="/admin/transaksi/daftarTransaksi"><i class="bi bi-journal-text me-3"></i></i>Daftar Persewaan</a>
             <a href="/admin/transaksi/daftarKerusakan"><i class="bi bi-heartbreak me-3"></i>Daftar Alat yang Rusak</a>
             <div class="sidebar-dropdown">
                 <a href="#"><i class="bi bi-clipboard-data me-3"></i>Laporan <i class="bi bi-caret-down-fill"></i></a>
