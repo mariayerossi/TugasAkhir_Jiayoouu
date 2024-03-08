@@ -264,7 +264,7 @@ class RequestPenawaran extends Controller
 
                             //notif web ke pemilik alat
                             $dataNotifWeb = [
-                                "keterangan" => "Penawaran Alat Olahraga ".$dataAlat->nama_alat." Telah Diterima Pihak Tempat Olahraga",
+                                "keterangan" => "Penawaran Alat Olahraga ".$dataAlat->nama_alat." Menunggu Konfirmasi Anda",
                                 "waktu" => $skrg,
                                 "link" => "/pemilik/penawaran/detailPenawaranNego/".$request->id_penawaran,
                                 "user" => null,
