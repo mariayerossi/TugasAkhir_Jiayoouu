@@ -188,6 +188,8 @@
             event.preventDefault(); // Mencegah perilaku default form
             var formData = $("#bookingForm").serialize(); // Mengambil data dari form
 
+            $('#bookingBtn').attr('disabled', true);
+
             $.ajax({
                 url: "/customer/extend/tambahWaktu",
                 type: "POST",
@@ -202,7 +204,7 @@
                         });
 
                         setTimeout(() => {
-                            window.history.back();
+                            window.location.href = "/customer/daftarRiwayat"
                         }, 2000); // Setelah 5 detik
                     }
                     else {

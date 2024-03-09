@@ -417,7 +417,7 @@
             if (selectedOption !== "") {
                 let formData = new FormData(form);
 
-                btn.disabled = true;
+                // btn.disabled = true;
 
                 $.ajax({
                     type: "POST",

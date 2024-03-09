@@ -245,6 +245,10 @@
                                     @endif
                                 </tr>
                             @endforeach
+                        @else
+                            <tr>
+                                <td colspan="3" class="text-center">Tidak Ada Data</td>
+                            </tr>
                         @endif
                     </tbody>
                 </table>

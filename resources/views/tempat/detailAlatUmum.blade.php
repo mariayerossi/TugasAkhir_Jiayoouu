@@ -317,7 +317,7 @@
         if (selectedOption !== "" && harga.value !== "") {
             let formData = new FormData(form);
 
-            btn.disabled = true;
+            // btn.disabled = true;
 
             $.ajax({
                 type: "POST",

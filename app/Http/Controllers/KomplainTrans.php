@@ -63,7 +63,6 @@ class KomplainTrans extends Controller
         $carbonDate1 = \Carbon\Carbon::parse($tanggalObjek1)->locale('id');
         $tanggalBaru1 = $carbonDate1->isoFormat('D MMMM YYYY');
 
-        //JANGAN LUPA DIBUKA !!!
         if ($skrg < $waktu_sewa2 || $skrg > $waktu_sewa3) {
             // dd("gagal");
             $formattedWaktuSewa2 = $waktu_sewa2->format("H:i");

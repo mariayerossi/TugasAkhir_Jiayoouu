@@ -602,10 +602,14 @@ class Transaksi extends Controller
 
         date_default_timezone_set("Asia/Jakarta");
         $skrg = date("Y-m-d H:i:s");
+        $waktuSkrg = new DateTime($skrg);
 
         $sewa = $request->tanggal_sewa." ".$request->jam_sewa;
+        $waktuMulai = new DateTime($sewa);
+        $waktuMulai->sub(new DateInterval('PT10M'));
+        // dd($skrg);
 
-        if ($skrg < $sewa) {
+        if ($waktuSkrg < $waktuMulai) {
             return response()->json(['success' => false, 'message' => 'Waktu sewa belum tiba!']);
         }
 
