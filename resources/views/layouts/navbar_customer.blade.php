@@ -334,7 +334,9 @@ Sportiva
                         return $decodedPrice;
                     }
 
-                    $saldo = decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+                    $total_saldo = DB::table('user')->where("id_user","=",Session::get("dataRole")->id_user)->get()->first()->saldo_user;
+
+                    $saldo = decodePrice($total_saldo, "mysecretkey");
                 @endphp
                 <div class="profile-dropdown ms-3">
                     <img src="{{ asset('assets/img/user_icon4.png')}}" alt="Profile" class="profile-image">

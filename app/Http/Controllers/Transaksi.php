@@ -1215,30 +1215,26 @@ class Transaksi extends Controller
 
         //ndak jd dipotong 5% soal e lek trans ws diterima, ga isa dibatalno
 
-        // //pengembalian dana
-        // $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+        //pengembalian dana
+        $user = new customer();
+        $saldo_user = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
+        $saldo = (int)$this->decodePrice($saldo_user->first()->saldo_user, "mysecretkey");
 
-        // //pemotongan denda 5%
-        // $denda = 0.05;
-        // $total_denda = $trans->total_trans * $denda;
-        // // dd((int)$total_denda);
+        $saldo += $trans->total_trans;
 
-        // $saldo += $trans->total_trans - (int)$total_denda;
+        //enkripsi kembali saldo
+        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
 
-        // //enkripsi kembali saldo
-        // $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+        //update db user
+        $dataSaldo = [
+            "id" => Session::get("dataRole")->id_user,
+            "saldo" => $enkrip
+        ];
+        $cust = new customer();
+        $cust->updateSaldo($dataSaldo);
 
-        // //update db user
-        // $dataSaldo = [
-        //     "id" => Session::get("dataRole")->id_user,
-        //     "saldo" => $enkrip
-        // ];
-        // $cust = new customer();
-        // $cust->updateSaldo($dataSaldo);
-
-        // //update session role
-        // $user = new customer();
-        // $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
+        // // //update session role
+        
         // Session::forget("dataRole");
         // Session::put("dataRole", $isiUser->first());
 
