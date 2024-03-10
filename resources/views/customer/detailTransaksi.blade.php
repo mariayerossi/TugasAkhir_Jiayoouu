@@ -149,7 +149,9 @@
             <h4><b>Total: Rp {{number_format(($dataLapangan->harga_sewa_lapangan * $data["durasi"]) + $data["subtotal_alat"], 0, ',', '.')}}</b></h4>
         </div>
         <hr>
-    
+        @php
+            $total = ($dataLapangan->harga_sewa_lapangan * $data["durasi"]) + $data["subtotal_alat"];
+        @endphp
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
             <a href="javascript:history.back()" class="btn btn-danger me-3" type="submit">Cancel</a>
             <form id="bookingForm" action="/customer/transaksi/tambahTransaksi" method="post">
@@ -159,9 +161,16 @@
                 <input type="hidden" name="tanggal" value="{{$data['tanggal']}}">
                 <input type="hidden" name="mulai" value="{{$data['mulai']}}">
                 <input type="hidden" name="selesai" value="{{$data['selesai']}}">
-                <button class="btn btn-success" type="submit" id="bookingBtn">Booking Sekarang</button>
+                <button class="btn btn-success" @if ($data["saldo"] < $total) disabled @endif type="submit" id="bookingBtn">Booking Sekarang</button>
             </form>
         </div>
+        @if ($data["saldo"] < $total)
+            <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+                <div class="alert alert-warning" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> Saldo Anda tidak cukup! Silahkan top up saldo Anda!
+                  </div>
+            </div>
+        @endif
         <!-- Modal -->
         <div class="modal fade" id="agreementModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">

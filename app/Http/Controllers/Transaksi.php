@@ -248,7 +248,10 @@ class Transaksi extends Controller
         // dd($pendapatan_tempat);
 
         //cek saldo e cukup gaa
-        $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+        $custt = new customer();
+        $saldo_cust = $custt->get_all_data_by_id(Session::get("dataRole")->id_user)->first()->saldo_user;
+
+        $saldo = (int)$this->decodePrice($saldo_cust, "mysecretkey");
         if ($saldo < $total) {
             return response()->json(['success' => false, 'message' => 'Saldo anda tidak cukup! Silahkan top up saldo anda.']);
         }
@@ -966,6 +969,10 @@ class Transaksi extends Controller
 
         $subtotal_alat = $subtotal_alat_perjam * $durasi_sewa;
 
+        $custt = new customer();
+        $saldo_cust = $custt->get_all_data_by_id(Session::get("dataRole")->id_user)->first()->saldo_user;
+        $saldo = (int)$this->decodePrice($saldo_cust, "mysecretkey");
+
         $param["data"] = [
             "tanggal" => $request->tanggal,
             "mulai" => $request->mulai,
@@ -973,7 +980,8 @@ class Transaksi extends Controller
             "durasi" => $durasi_sewa,
             "id_lapangan" => $request->id_lapangan,
             "id_tempat" => $request->id_tempat,
-            "subtotal_alat" => $subtotal_alat
+            "subtotal_alat" => $subtotal_alat,
+            "saldo" => $saldo
         ];
 
         return view("customer.detailTransaksi")->with($param);
@@ -1749,7 +1757,10 @@ class Transaksi extends Controller
         }
 
         //cek saldo e cukup gaa
-        $saldo = (int)$this->decodePrice(Session::get("dataRole")->saldo_user, "mysecretkey");
+        $custt = new customer();
+        $saldo_cust = $custt->get_all_data_by_id(Session::get("dataRole")->id_user)->first()->saldo_user;
+
+        $saldo = (int)$this->decodePrice($saldo_cust, "mysecretkey");
         if ($saldo < (int)$request->total) {
             return response()->json(['success' => false, 'message' => 'Saldo anda tidak cukup! Silahkan top up saldo anda.']);
         }
