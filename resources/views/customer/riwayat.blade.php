@@ -229,10 +229,10 @@
                                 @endif
 
                                 @if ($item->status_trans == "Menunggu")
-                                    <form id="batalTransaksiForm" action="/customer/transaksi/batalBooking" method="post">
+                                    <form class="batalTransaksiForm" action="/customer/transaksi/batalBooking" method="post" data-id="{{$item->id_htrans}}">
                                         @csrf
                                         <input type="hidden" name="id_htrans" value="{{$item->id_htrans}}">
-                                        <button type="submit" class="btn btn-danger ms-3">Batal Booking <i class="bi bi-x-lg"></i></button>
+                                        <button type="submit" data-id="{{$item->id_htrans}}" class="btn btn-danger ms-3">Batal Booking <i class="bi bi-x-lg"></i></button>
                                     </form>
                                 @endif
                             </div>
@@ -340,7 +340,8 @@
         
         $(".btn-danger").click(function(event) {
             event.preventDefault(); // Mencegah perilaku default form
-
+            let transaksiId = $(this).data('id');
+            console.log(transaksiId);
             swal({
                 title: "Apakah anda yakin membatalkan transaksi ini?",
                 type: "warning",
@@ -352,7 +353,7 @@
                 closeOnCancel: true
             }, function(isConfirm) {
                 if (isConfirm) {
-                    var formData = $("#batalTransaksiForm").serialize(); // Mengambil data dari form
+                    var formData = $(`.batalTransaksiForm[data-id=${transaksiId}]`).serialize(); // Mengambil data dari form
     
                     $.ajax({
                         url: "/customer/transaksi/batalBooking",
