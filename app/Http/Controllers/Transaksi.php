@@ -720,7 +720,8 @@ class Transaksi extends Controller
 
         if (Session::has("cart") && Session::get("cart") != null) {
             foreach (Session::get("cart") as $key => $value) {
-                $result = DB::table('lapangan_olahraga')
+                if ($value['user'] == Session::get("dataRole")->id_user) {
+                    $result = DB::table('lapangan_olahraga')
                     ->select("lapangan_olahraga.id_lapangan","lapangan_olahraga.nama_lapangan", "files_lapangan.nama_file_lapangan", "lapangan_olahraga.harga_sewa_lapangan","lapangan_olahraga.kota_lapangan","lapangan_olahraga.pemilik_lapangan")
                     ->joinSub(function($query) {
                         $query->select("fk_id_lapangan", "nama_file_lapangan")
@@ -757,6 +758,7 @@ class Transaksi extends Controller
                     }
 
                     $data[] = $result->first();
+                }
             }
         }
         usort($data, function ($a, $b) {
