@@ -7,6 +7,7 @@ use App\Models\customer;
 use App\Models\dtrans;
 use App\Models\htrans;
 use App\Models\kerusakanAlat as ModelsKerusakanAlat;
+use App\Models\lapanganOlahraga;
 use App\Models\notifikasi;
 use App\Models\requestPenawaran;
 use App\Models\requestPermintaan;
@@ -147,6 +148,8 @@ class KerusakanAlat extends Controller
                     }
                 }
 
+                $nama_lapangan = "";
+
                 //hapus request alat ini di tempat
                 $permintaan = DB::table('request_permintaan')
                             ->where("req_id_alat","=",$dataTrans->fk_id_alat)
@@ -155,6 +158,9 @@ class KerusakanAlat extends Controller
                             ->get();
                 if (!$permintaan->isEmpty()) {
                     $id = $permintaan->first()->id_permintaan;
+
+                    $lap = new lapanganOlahraga();
+                    $nama_lapangan = $lap->get_all_data_by_id2($permintaan->first()->req_lapangan)->first()->nama_lapangan;
                     
                     $data3 = [
                         "id" => $id,
@@ -205,6 +211,9 @@ class KerusakanAlat extends Controller
                             ->get();
                     if (!$penawaran->isEmpty()) {
                         $id = $penawaran->first()->id_penawaran;
+
+                        $lap = new lapanganOlahraga();
+                        $nama_lapangan = $lap->get_all_data_by_id2($penawaran->first()->req_lapangan)->first()->nama_lapangan;
                         
                         $data3 = [
                             "id" => $id,
@@ -355,8 +364,8 @@ class KerusakanAlat extends Controller
                                 <b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>
                                 <b>Ganti Rugi Alat Olahraga: Rp ".number_format($dataAlat->ganti_rugi_alat, 0, ',', '.')."</b><br><br>
                                 ".$sengaja."<br><br>
-                                Alat olahraga sudah bisa diambil di tempat olahraga:<br>
-                                <b>".Session::get("dataRole")->nama_tempat."</b><br>
+                                Alat olahraga sudah bisa diambil di lapangan olahraga:<br>
+                                <b>".$nama_lapangan."</b><br>
                                 Terus sewakan alat olahragamu di Sportiva!"
                     ];
                     $e = new notifikasiEmail();
