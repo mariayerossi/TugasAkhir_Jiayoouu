@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
         //Pemilik Alat
         DB::table('pemilik_alat')->insert([
             'nama_pemilik' => "Andika Pratama",
-            'email_pemilik' => 'andika@gmail.com',
+            'email_pemilik' => 'maria.yerossi@gmail.com',
             'telepon_pemilik' => "086768686774",
             'kota_pemilik' => "Surabaya",
             'ktp_pemilik' => "ktp_pemilik1.jpg",
@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
         DB::table('pihak_tempat')->insert([
             'nama_tempat' => "Mario Sport",
             'nama_pemilik_tempat' => "Mario Wijaya",
-            'email_tempat' => 'mario12@gmail.com',
+            'email_tempat' => 'maria_y20@mhs.istts.ac.id',
             'telepon_tempat' => "086547823741",
             'alamat_tempat' => "ngagel jaya, Surabaya",
             'kota_tempat' => "Surabaya",
