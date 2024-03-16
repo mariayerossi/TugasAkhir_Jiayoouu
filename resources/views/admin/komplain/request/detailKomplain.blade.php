@@ -87,7 +87,7 @@
     @endphp
 
     @if ($status == "Menunggu")
-    <h6><b>Status Request: </b><b style="color:rgb(239, 203, 0)">{{$status}}</b></h6>
+        <h6><b>Status Request: </b><b style="color:rgb(239, 203, 0)">{{$status}}</b></h6>
     @elseif($status == "Diterima")
         <h6><b>Status Request: </b><b style="color:rgb(0, 145, 0)">{{$status}}</b></h6>
     @elseif($status == "Ditolak")
@@ -97,6 +97,8 @@
     @elseif($status == "Selesai")
         <h6><b>Status Request: </b><b style="color:blue">{{$status}}</b></h6>
     @elseif($status == "Dikomplain")
+        <h6><b>Status Request: </b><b style="color:red">{{$status}}</b></h6>
+    @elseif($status == "Dibatalkan")
         <h6><b>Status Request: </b><b style="color:red">{{$status}}</b></h6>
     @endif
 
