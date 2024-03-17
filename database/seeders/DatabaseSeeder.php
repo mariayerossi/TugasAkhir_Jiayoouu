@@ -1981,7 +1981,7 @@ class DatabaseSeeder extends Seeder
 
         //3
         DB::table('htrans')->insert([
-            'kode_trans' => "H".date("dmy")."0002",
+            'kode_trans' => "H".date("dmy")."0003",
             'fk_id_lapangan' => 1,
             'subtotal_lapangan' => 200000,
             'subtotal_alat' => 150000,
