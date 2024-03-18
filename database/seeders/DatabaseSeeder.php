@@ -1911,7 +1911,7 @@ class DatabaseSeeder extends Seeder
         //Sewa sendiri
         DB::table('sewa_sendiri')->insert([
             'req_lapangan' => 1,
-            'req_id_alat' => 14,
+            'req_id_alat' => 17,
             'fk_id_tempat' => 1,
             'created_at' => date("Y-m-d H:i:s"),
         ]);
@@ -1950,7 +1950,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('dtrans')->insert([
             'fk_id_htrans' => 1,
-            'fk_id_alat' => 5,
+            'fk_id_alat' => 17,
             'harga_sewa_alat' => 25000,
             'subtotal_alat' => 50000,
             'total_komisi_pemilik' => null,
@@ -2012,7 +2012,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('dtrans')->insert([
             'fk_id_htrans' => 3,
-            'fk_id_alat' => 5,
+            'fk_id_alat' => 17,
             'harga_sewa_alat' => 25000,
             'subtotal_alat' => 50000,
             'total_komisi_pemilik' => null,
@@ -2149,7 +2149,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('dtrans')->insert([
             'fk_id_htrans' => 7,
-            'fk_id_alat' => 5,
+            'fk_id_alat' => 17,
             'harga_sewa_alat' => 25000,
             'subtotal_alat' => 50000,
             'total_komisi_pemilik' => null,
@@ -2163,7 +2163,7 @@ class DatabaseSeeder extends Seeder
         //8
         DB::table('htrans')->insert([
             'kode_trans' => "H".date("dmy")."0008",
-            'fk_id_lapangan' => 2,
+            'fk_id_lapangan' => 1,
             'subtotal_lapangan' => 200000,
             'subtotal_alat' => 150000,
             'tanggal_trans' => date("Y-m-d H:i:s"),
@@ -2193,7 +2193,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('dtrans')->insert([
             'fk_id_htrans' => 8,
-            'fk_id_alat' => 5,
+            'fk_id_alat' => 17,
             'harga_sewa_alat' => 25000,
             'subtotal_alat' => 50000,
             'total_komisi_pemilik' => null,
