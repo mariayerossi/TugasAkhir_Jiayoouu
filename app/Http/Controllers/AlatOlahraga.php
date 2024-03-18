@@ -592,7 +592,9 @@ class AlatOlahraga extends Controller
                 $harga_sewa = $cekPenawaran->req_harga_sewa;
             }
             else {
-                $harga_sewa = $alat->get_all_data_by_id($id)->first()->komisi_alat; 
+                if (!$alat->get_all_data_by_id($id)->isEmpty()) {
+                    $harga_sewa = $alat->get_all_data_by_id($id)->first()->komisi_alat;
+                }
             }
         }
         $param["harga_sewa"] = $harga_sewa;
