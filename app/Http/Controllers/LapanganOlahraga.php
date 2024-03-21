@@ -659,6 +659,8 @@ class LapanganOlahraga extends Controller
         $param["alat"] = $alat->get_all_data3(Session::get("dataRole")->id_tempat);
         $slot = new slotWaktu();
         $param["slot"] = $slot->get_all_data_by_lapangan($id);
+        $jam = new jamKhusus();
+        $param["jam"] = $jam->get_all_data_by_lapangan($id);
 
         $per = new requestPermintaan();
         $param["permintaan"] = $per->get_all_data_by_lapangan($id);
