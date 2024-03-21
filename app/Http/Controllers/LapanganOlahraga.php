@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\alatOlahraga;
 use App\Models\filesLapanganOlahraga;
+use App\Models\jamKhusus;
 use App\Models\kategori;
 use App\Models\lapanganOlahraga as ModelsLapanganOlahraga;
 use App\Models\pihakTempat;
@@ -12,6 +13,7 @@ use App\Models\requestPenawaran;
 use App\Models\requestPermintaan;
 use App\Models\sewaSendiri;
 use App\Models\slotWaktu;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -131,10 +133,7 @@ class LapanganOlahraga extends Controller
             "deskripsi" => 'required|max:500',
             "panjang" => 'required|numeric|min:0',
             "lebar" => 'required|numeric|min:0',
-            "harga" => 'required|numeric|min:0',
-            "hari1" => 'required',
-            "buka1" => 'required',
-            "tutup1" => 'required'
+            "harga" => 'required|numeric|min:0'
         ],[
             "required" => ":attribute lapangan olahraga tidak boleh kosong!",
             "lapangan.required" => "nama :attribute olahraga tidak boleh kosong!",
@@ -142,10 +141,7 @@ class LapanganOlahraga extends Controller
             "lapangan.min" => "nama lapangan olahraga tidak valid!",
             "min" => ":attribute lapangan olahraga tidak valid!",
             "numeric" => ":attribute lapangan olahraga tidak valid!",
-            "deskripsi.max" => "deskripsi lapangan olahraga maksimal 500 kata!",
-            "hari1.required" => "hari operasional lapangan tidak boleh kosong!",
-            "buka1.required" => "jam buka lapangan tidak boleh kosong!",
-            "tutup1.required" => "jam tutup lapangan tidak boleh kosong!"
+            "deskripsi.max" => "deskripsi lapangan olahraga maksimal 500 kata!"
         ]);
 
         $harga = intval(str_replace(".", "", $request->harga));
@@ -195,6 +191,19 @@ class LapanganOlahraga extends Controller
                 }
             }
         }
+        return redirect()->back()->with("success", "Berhasil Mengubah Detail Lapangan!");
+    }
+
+    public function editJam(Request $request){
+        $request->validate([
+            "hari1" => 'required',
+            "buka1" => 'required',
+            "tutup1" => 'required'
+        ],[
+            "hari1.required" => "hari operasional lapangan tidak boleh kosong!",
+            "buka1.required" => "jam buka lapangan tidak boleh kosong!",
+            "tutup1.required" => "jam tutup lapangan tidak boleh kosong!"
+        ]);
 
         $index = 1;
         $prevJamTutup = null;
@@ -204,6 +213,10 @@ class LapanganOlahraga extends Controller
             $hari = $request->input("hari$index");
             $jamBuka = $request->input("buka$index");
             $jamTutup = $request->input("tutup$index");
+
+            if ($jamBuka >= $jamTutup) {
+                return redirect()->back()->with('error', 'Tanggal dan Jam tidak valid!');
+            }
 
             if ($prevHari === $hari && $prevJamTutup !== null) {
                 // Pengecekan apakah jam buka lebih awal dari jam tutup pada entry sebelumnya
@@ -246,7 +259,102 @@ class LapanganOlahraga extends Controller
 
             $index++; // Pergi ke set input berikutnya
         }
-        return redirect()->back()->with("success", "Berhasil Mengubah Detail Lapangan!");
+        return redirect()->back()->with("success", "Berhasil Mengubah Jam Operasional Lapangan!");
+    }
+
+    public function editJamKhusus(Request $request){
+        $request->validate([
+            "tanggal1" => 'required',
+            "mulai1" => 'required',
+            "selesai1" => 'required'
+        ],[
+            "tanggal1.required" => "tanggal tutup lapangan tidak boleh kosong!",
+            "mulai1.required" => "jam mulai tutup lapangan tidak boleh kosong!",
+            "selesai1.required" => "jam selesai tutup lapangan tidak boleh kosong!"
+        ]);
+
+        date_default_timezone_set("Asia/Jakarta");
+        $skrg = date("Y-m-d H:i:s");
+        $skrgg = new DateTime($skrg);
+
+        $index = 1;
+        $prevJamTutup = null;
+        $prevHari = null;
+
+        while ($request->has("tanggal$index") && $request->has("mulai$index") && $request->has("selesai$index")) {
+            $tanggal = $request->input("tanggal$index");
+            $jamBuka = $request->input("mulai$index");
+            $jamTutup = $request->input("selesai$index");
+
+            $buka = new DateTime($tanggal. " " .$jamBuka);
+            $tutup = new DateTime($tanggal. " " .$jamTutup);
+
+            // dd($buka);
+            if ($buka >= $tutup) {
+                return redirect()->back()->with('error', 'Tanggal dan Jam tidak valid!');
+            }
+
+            if ($skrgg > $buka) {
+                return redirect()->back()->with('error', 'Tanggal dan Jam tidak valid!');
+            }
+
+            if ($prevHari === $tanggal && $prevJamTutup !== null) {
+                // Pengecekan apakah jam mulai lebih awal dari jam selesai pada entry sebelumnya
+                if (strtotime($jamBuka) <= strtotime($prevJamTutup)) {
+                    return redirect()->back()->with('error', 'Jam mulai dari field berikutnya harus lebih dari jam selesai dari field sebelumnya!');
+                }
+
+                // Pengecekan apakah jam mulai dari field saat ini sama dengan jam selesai dari field sebelumnya
+                if (strtotime($jamBuka) === strtotime($prevJamTutup)) {
+                    return redirect()->back()->with('error', 'Jam mulai dari field berikutnya tidak boleh sama dengan jam selesai dari field sebelumnya jika tanggal sama!');
+                }
+            }
+
+            if ($tanggal === $prevHari || $prevHari === null) {
+                $prevJamTutup = $jamTutup;
+                $prevHari = $tanggal;
+            }
+
+            if ($request->input("id_jam$index") != "null") {
+                $data3 = [
+                    "id" => $request->input("id_jam$index"),
+                    "tanggal" => $request->input("tanggal$index"),
+                    "mulai" => $jamBuka,
+                    "selesai" => $jamTutup
+                ];
+                $jam = new jamKhusus();
+                $jam->updateJam($data3);
+            }
+            else {
+                $data4 = [
+                    "tanggal" => $request->input("tanggal$index"),
+                    "mulai" => $jamBuka,
+                    "selesai" => $jamTutup,
+                    "lapangan" => $request->id
+                ];
+                $jam = new jamKhusus();
+                $jam->insertJam($data4);
+            }
+
+            $index++; // Pergi ke set input berikutnya
+        }
+        return redirect()->back()->with("success", "Berhasil Mengatur Jam Tutup Lapangan!");
+    }
+
+    public function hapusJam($id)
+    {
+        // dd($id);
+        date_default_timezone_set("Asia/Jakarta");
+        $skrg = date("Y-m-d H:i:s");
+
+        $data = [
+            "id" => $id,
+            "delete" => $skrg
+        ];
+        $jam = new jamKhusus();
+        $jam->deleteJam($data);
+
+        return response()->json(['success' => true, 'message' => 'Berhasil!']);
     }
 
     public function searchLapangan(Request $request)
@@ -575,9 +683,19 @@ class LapanganOlahraga extends Controller
         $param["lapangan"] = $lap->get_all_data_by_id($id);
         $files = new filesLapanganOlahraga();
         $param["files"] = $files->get_all_data($id);
+        return view("tempat.lapangan.editLapangan")->with($param);
+    }
+
+    public function jamLapangan($id) {
+        $kat = new kategori();
+        $param["kategori"] = $kat->get_all_data();
+        $lap = new ModelsLapanganOlahraga();
+        $param["lapangan"] = $lap->get_all_data_by_id($id);
         $slot = new slotWaktu();
         $param["slot"] = $slot->get_all_data_by_lapangan($id);
-        return view("tempat.lapangan.editLapangan")->with($param);
+        $jam = new jamKhusus();
+        $param["jam"] = $jam->get_all_data_by_lapangan($id);
+        return view("tempat.lapangan.jamLapangan")->with($param);
     }
 
     public function detailLapanganCustomer($id) {

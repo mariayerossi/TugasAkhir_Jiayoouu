@@ -360,6 +360,10 @@ Route::prefix("/tempat")->group(function(){
         Route::get("/lihatDetailLapangan/{id}", [LapanganOlahraga::class, "detailLapanganTempat"])->middleware([CekTempat::class]);
         Route::get("/editLapangan/{id}", [LapanganOlahraga::class, "editLapanganTempat"])->middleware([CekTempat::class]);
         Route::post("/editLapangan", [LapanganOlahraga::class, "editLapangan"]);
+        Route::get("/jamLapangan/{id}", [LapanganOlahraga::class, "jamLapangan"])->middleware([CekTempat::class]);
+        Route::post("/editJam", [LapanganOlahraga::class, "editJam"]);
+        Route::post("/editJamKhusus", [LapanganOlahraga::class, "editJamKhusus"]);
+        Route::get("/hapusJam/{id}", [LapanganOlahraga::class, "hapusJam"]);
     });
 
     //Bagian alat olahraga

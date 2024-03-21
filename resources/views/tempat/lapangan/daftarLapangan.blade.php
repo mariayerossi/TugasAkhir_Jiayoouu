@@ -55,7 +55,10 @@
                                 @else
                                     <td style="color:red">{{$item->status_lapangan}}</td>
                                 @endif
-                                <td><a class="btn btn-outline-success" href="/tempat/lapangan/editLapangan/{{$item->id_lapangan}}">Edit</a></td>
+                                <td>
+                                    <a class="btn btn-outline-success" href="/tempat/lapangan/editLapangan/{{$item->id_lapangan}}">Edit</a>
+                                    <a class="btn btn-outline-info" href="/tempat/lapangan/jamLapangan/{{$item->id_lapangan}}">Jam Buka</a>
+                                </td>
                             </tr>
                         @endforeach
                     @else
