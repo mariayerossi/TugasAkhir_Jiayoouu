@@ -29,6 +29,10 @@ class jamKhusus extends Model
         return jamKhusus::where('deleted_at',"=",null)->where("fk_id_lapangan", "=", $id)->orderBy("tanggal","asc")->get();
     }
 
+    public function get_all_data(){
+        return jamKhusus::where('deleted_at',"=",null)->get();
+    }
+
     public function updateJam($data)
     {
         $jam = jamKhusus::find($data["id"]);

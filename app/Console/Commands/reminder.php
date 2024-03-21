@@ -6,6 +6,7 @@ use App\Http\Controllers\Transaksi;
 use App\Models\customer;
 use App\Models\extendHtrans;
 use App\Models\htrans;
+use App\Models\jamKhusus;
 use App\Models\notifikasi;
 use App\Models\requestPermintaan;
 use DateInterval;
@@ -1129,6 +1130,29 @@ class reminder extends Command
                     ];
                     $e2 = new notifikasiEmail();
                     $e2->sendEmail($dataTempat->email_tempat, $dataNotif2);
+                }
+            }
+        }
+
+        //-----------------------------------------------------------------------------------------------
+
+        //Jam Tutup Lapangan
+        $jam = new jamKhusus();
+        $dataJam = $jam->get_all_data();
+
+        if (!$dataJam->isEmpty()) {
+            foreach ($dataJam as $key => $value) {
+                date_default_timezone_set('Asia/Jakarta');
+                $sekarang = date('Y-m-d H:i:s');
+
+                $tgl = $value->tanggal." ".$value->jam_selesai;
+
+                if ($tgl <= $sekarang) {
+                    $data = [
+                        "id" => $value->id_jam,
+                        "delete" => $sekarang
+                    ];
+                    $jam->deleteJam($data);
                 }
             }
         }
