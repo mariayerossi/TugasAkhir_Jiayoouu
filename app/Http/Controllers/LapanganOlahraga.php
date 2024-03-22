@@ -294,8 +294,40 @@ class LapanganOlahraga extends Controller
                 return redirect()->back()->with('error', 'Tanggal dan Jam tidak valid!');
             }
 
-            if ($skrgg > $buka) {
-                return redirect()->back()->with('error', 'Tanggal dan Jam tidak valid!');
+            //cek apakah sdh ada transaksi di jam berikut
+            $cek = DB::table('htrans')
+                ->select("htrans.jam_sewa", "htrans.durasi_sewa", "htrans.tanggal_sewa", "extend_htrans.jam_sewa as jam_ext","extend_htrans.durasi_extend")
+                ->leftJoin("extend_htrans","htrans.id_htrans","=","extend_htrans.fk_id_htrans")
+                ->whereDate("htrans.tanggal_sewa", $tanggal)
+                ->where("fk_id_lapangan","=",$request->id)
+                ->where(function($query) {
+                    $query->where("htrans.status_trans", "=", "Diterima")
+                          ->orWhere("htrans.status_trans", "=", "Berlangsung");
+                })
+                ->get();
+
+            if (!$cek->isEmpty()) {
+                $conflict = false;
+                foreach ($cek as $value) {
+                    $booking_jam_selesai = date('H:i', strtotime("+$value->durasi_sewa hour", strtotime($value->jam_sewa)));
+                    $booking_jam_selesai_ext = date('H:i', strtotime("+$value->durasi_extend hour", strtotime($value->jam_ext)));
+                    
+                    if (($jamBuka >= $value->jam_sewa && $jamBuka < $booking_jam_selesai) || 
+                        ($jamTutup > $value->jam_sewa && $jamTutup <= $booking_jam_selesai) ||
+                        ($jamBuka <= $value->jam_sewa && $jamTutup >= $booking_jam_selesai) ||
+                        ($jamBuka >= $value->jam_ext && $jamBuka < $booking_jam_selesai_ext) || 
+                        ($jamTutup > $value->jam_ext && $jamTutup <= $booking_jam_selesai_ext) ||
+                        ($jamBuka <= $value->jam_ext && $jamTutup >= $booking_jam_selesai_ext)) {
+                        
+                        $conflict = true;
+                        break;
+                    }
+                }
+    
+                if ($conflict) {
+                    // Ada konflik dengan booking yang ada
+                    return redirect()->back()->with('error', 'Maaf, Terdapat Booking pada jam tersebut!');
+                }
             }
 
             if ($prevHari === $tanggal && $prevJamTutup !== null) {
@@ -326,6 +358,10 @@ class LapanganOlahraga extends Controller
                 $jam->updateJam($data3);
             }
             else {
+                if ($skrgg > $buka) {
+                    return redirect()->back()->with('error', 'Tanggal dan Jam tidak valid!');
+                }
+
                 $data4 = [
                     "tanggal" => $request->input("tanggal$index"),
                     "mulai" => $jamBuka,

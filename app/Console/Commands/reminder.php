@@ -688,7 +688,7 @@ class reminder extends Command
                 //reminder ke cust bahwa besok waktu booking
                 $tanggal = $value->tanggal_sewa." ".$value->jam_sewa;
                 $sewa = new DateTime($tanggal);
-                $sewa->add(new DateInterval('P1D'));
+                $sewa->sub(new DateInterval('P1D'));
                 $sew = $sewa->format('Y-m-d H:i:s');
 
                 $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$value->fk_id_lapangan)->get()->first();
@@ -776,7 +776,7 @@ class reminder extends Command
                 $sewa2->sub(new DateInterval('PT2H')); // mengurangkan 2 jam
                 $sew2 = $sewa2->format('Y-m-d H:i:s');
 
-                if ($sew2 == $sekarang && $value->status_trans == "Menunggu") {
+                if ($sew2 <= $sekarang && $value->status_trans == "Menunggu") {
                     //status trans berubah menjadi "dibatalkan" dan total transaksi kembali ke saldo cust
                     $cust = new customer();
                     $saldo = (int)$this->decodePrice($cust->get_all_data_by_id($value->fk_id_user)->first()->saldo_user, "mysecretkey");
