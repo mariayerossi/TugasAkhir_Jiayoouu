@@ -216,21 +216,39 @@ Sportiva
             padding: 2px 6px;
             font-size: 10px;
         }
+        .notifikasi {
+            background-color: #ff4d4d;
+            color: #fff;
+            border-radius: 50%;
+            padding: 0.2em 0.5em;
+            font-size: 0.8em;
+            margin-left: 5px;
+            position: relative;
+            top: -8px; /* Menggeser notifikasi ke atas */
+            transform: translateY(-50%); /* Menggeser notifikasi secara vertikal ke tengah */
+        }
     </style>
     
     <div id="sidebar">
         <div class="coba mb-3">
             <a href="/admin/beranda"><i class="bi bi-house me-3"></i>Beranda</a>
+            @php
+                $req = DB::table('komplain_request')->where("status_komplain","=","Menunggu")->count();
+                $trans = DB::table('komplain_trans')->where("status_komplain","=","Menunggu")->count();
+                $total = $req + $trans;
+                $reg = DB::table('register_tempat')->count();
+                $dana = DB::table('tarik_dana')->count();
+            @endphp
             <div class="sidebar-dropdown">
-                <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain <i class="bi bi-caret-down-fill"></i></a>
+                <a href="#"><i class="bi bi-chat-left-dots me-3"></i>Komplain <i class="bi bi-caret-down-fill"></i> @if ($total > 0)<span id="permintaanNotifikasi" class="notifikasi">{{$total}}</span>@endif</a>
                 <div class="sidebar-dropdown-content">
-                    <a href="/admin/komplain/request/daftarKomplain">Request</a>
-                    <a href="/admin/komplain/trans/daftarKomplain">Transaksi</a>
+                    <a href="/admin/komplain/request/daftarKomplain">Request @if ($req > 0)<span id="permintaanNotifikasi" class="notifikasi">{{$req}}</span>@endif</a>
+                    <a href="/admin/komplain/trans/daftarKomplain">Transaksi @if ($trans > 0)<span id="permintaanNotifikasi" class="notifikasi">{{$trans}}</span>@endif</a>
                     <!-- Add other sports or categories here -->
                 </div>
             </div>
-            <a href="/admin/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Konfirmasi Registrasi</a>
-            <a href="/admin/saldo/detailTarik"><i class="bi bi-cash-coin me-3"></i>Konfirmasi Penarikan</a>
+            <a href="/admin/registrasi_tempat"><i class="bi bi-check-circle me-3"></i>Registrasi Tempat @if ($reg > 0)<span id="permintaanNotifikasi" class="notifikasi">{{$reg}}</span>@endif</a>
+            <a href="/admin/saldo/detailTarik"><i class="bi bi-cash-coin me-3"></i>Penarikan Dana @if ($dana > 0)<span id="permintaanNotifikasi" class="notifikasi">{{$dana}}</span>@endif</a>
             <a href="/admin/masterKategori"><i class="bi bi-tags me-3"></i>Tambah Kategori</a>
             <div class="sidebar-dropdown">
                 <a href="#"><i class="bi bi-box-seam me-3"></i>Daftar Produk <i class="bi bi-caret-down-fill"></i></a>
