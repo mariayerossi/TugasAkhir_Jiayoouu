@@ -220,6 +220,17 @@ Sportiva
             padding: 2px 6px;
             font-size: 10px;
         }
+        .notifikasi {
+            background-color: #ff4d4d;
+            color: #fff;
+            border-radius: 50%;
+            padding: 0.2em 0.5em;
+            font-size: 0.8em;
+            margin-left: 5px;
+            position: relative;
+            top: -8px; /* Menggeser notifikasi ke atas */
+            transform: translateY(-50%); /* Menggeser notifikasi secara vertikal ke tengah */
+        }
     </style>
 
     <div id="sidebar">
@@ -234,16 +245,13 @@ Sportiva
                 <!-- Add other sports or categories here -->
             </div>
         </div>
-        {{-- <div class="sidebar-dropdown">
-            <a href="#"><i class="bi bi-collection me-3"></i>Daftar Request <i class="bi bi-caret-down-fill"></i></a>
-            <div class="sidebar-dropdown-content">
-                <a href="/pemilik/permintaan/daftarPermintaan">Permintaan</a>
-                <a href="/pemilik/penawaran/daftarPenawaran">Penawaran</a>
-                <!-- Add other sports or categories here -->
-            </div>
-        </div> --}}
-        <a href="/pemilik/permintaan/daftarPermintaan"><i class="bi bi-envelope-paper me-3"></i>Permintaan Alat</a>
-        <a href="/pemilik/penawaran/daftarPenawaran"><i class="bi bi-send-plus me-3"></i>Penawaran Alat</a>
+        @php
+            $id = Session::get("dataRole")->first()->id_pemilik;
+            $perm = DB::table('request_permintaan')->where("fk_id_pemilik","=",$id)->where("status_permintaan","=","Menunggu")->count();
+            $pen = DB::table('request_penawaran')->where("fk_id_pemilik","=",$id)->where("status_penawaran","=","Menunggu")->count();
+        @endphp
+        <a href="/pemilik/permintaan/daftarPermintaan"><i class="bi bi-envelope-paper me-3"></i>Permintaan Alat @if ($perm > 0)<span id="permintaanNotifikasi" class="notifikasi">{{$perm}}</span>@endif</a>
+        <a href="/pemilik/penawaran/daftarPenawaran"><i class="bi bi-send-plus me-3"></i>Penawaran Alat @if ($pen > 0)<span id="permintaanNotifikasi" class="notifikasi">{{$pen}}</span>@endif</a>
         <div class="sidebar-dropdown">
             <a href="#"><i class="bi bi-clipboard-data me-3"></i>Laporan <i class="bi bi-caret-down-fill"></i></a>
             <div class="sidebar-dropdown-content">
