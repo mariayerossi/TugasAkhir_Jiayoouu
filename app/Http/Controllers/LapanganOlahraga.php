@@ -623,6 +623,8 @@ class LapanganOlahraga extends Controller
         $param["alat"] = $alat->get_all_data_status($role);
         $slot = new slotWaktu();
         $param["slot"] = $slot->get_all_data_by_lapangan($id);
+        $jam = new jamKhusus();
+        $param["jam"] = $jam->get_all_data_by_lapangan($id);
 
         $per = new requestPermintaan();
         $param["permintaan"] = $per->get_all_data_by_lapangan($id);
@@ -711,6 +713,8 @@ class LapanganOlahraga extends Controller
         $param["files"] = $files->get_all_data($id);
         $slot = new slotWaktu();
         $param["slot"] = $slot->get_all_data_by_lapangan($id);
+        $jam = new jamKhusus();
+        $param["jam"] = $jam->get_all_data_by_lapangan($id);
 
         $per = new requestPermintaan();
         $param["permintaan"] = $per->get_all_data_by_lapangan($id);
@@ -754,6 +758,8 @@ class LapanganOlahraga extends Controller
         $param["files"] = $files->get_all_data($id);
         $slot = new slotWaktu();
         $param["slot"] = $slot->get_all_data_by_lapangan($id);
+        $jam = new jamKhusus();
+        $param["jam"] = $jam->get_all_data_by_lapangan($id);
 
         $per = new requestPermintaan();
         $param["permintaan"] = $per->get_all_data_by_lapangan($id);

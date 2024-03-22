@@ -38,6 +38,7 @@ use App\Models\komplainRequest as ModelsKomplainRequest;
 use App\Models\filesKomplainReq as ModelsFilesKomplainReq;
 use App\Models\komplainTrans as ModelsKomplainTrans;
 use App\Models\filesKomplainTrans as ModelsFilesKomplainTrans;
+use App\Models\jamKhusus;
 use App\Models\pemilikAlat;
 use App\Models\pihakTempat;
 use App\Models\registerTempat;
@@ -73,6 +74,8 @@ Route::get("/detailLapangan/{id}", function ($id) {
     $param["files"] = $files->get_all_data($id);
     $slot = new ModelsSlotWaktu();
     $param["slot"] = $slot->get_all_data_by_lapangan($id);
+    $jam = new jamKhusus();
+    $param["jam"] = $jam->get_all_data_by_lapangan($id);
 
     $per = new ModelsRequestPermintaan();
     $param["permintaan"] = $per->get_all_data_by_lapangan($id);

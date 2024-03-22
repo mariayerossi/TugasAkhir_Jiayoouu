@@ -340,6 +340,34 @@ Sportiva
                     </ul>
                 </div>
             </div>
+            @if (!$jam->isEmpty())
+            <div class="row mt-5">
+                <div class="">
+                    <h4>Jam Tutup Lapangan</h4>
+                    <ul>
+                        
+                        @foreach ($jam as $item)
+                            @php
+                                $tanggalAwal5 = $item->jam_mulai;
+                                $tanggalObjek5 = DateTime::createFromFormat('H:i:s', $tanggalAwal5);
+                                $tanggalBaru5 = $tanggalObjek5->format('H:i');
+
+                                $tanggalAwal6 = $item->jam_selesai;
+                                $tanggalObjek6 = DateTime::createFromFormat('H:i:s', $tanggalAwal6);
+                                $tanggalBaru6 = $tanggalObjek6->format('H:i');
+
+                                $tanggalAwal7 = $item->tanggal;
+                                $tanggalObjek7 = DateTime::createFromFormat('Y-m-d', $tanggalAwal7);
+                                $carbonDate7 = \Carbon\Carbon::parse($tanggalObjek7)->locale('id');
+                                $tanggalBaru7 = $carbonDate7->isoFormat('D MMMM YYYY');
+                            @endphp
+                        <li>{{$tanggalBaru7}} {{$tanggalBaru5}} - {{$tanggalBaru6}}</li>
+                        @endforeach
+                        
+                    </ul>
+                </div>
+            </div>
+            @endif
             <div class="row mt-4">
                 <div>
                     <h4>Alat Olahraga <i class="bi bi-info-circle" data-toggle="tooltip" title="Alat olahraga yang disewakan di lapangan ini"></i></h4>
