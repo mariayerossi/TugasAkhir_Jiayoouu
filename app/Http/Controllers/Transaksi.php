@@ -8,6 +8,7 @@ use App\Models\extendDtrans;
 use App\Models\extendHtrans;
 use App\Models\filesLapanganOlahraga;
 use App\Models\htrans;
+use App\Models\jamKhusus;
 use App\Models\kategori;
 use App\Models\komplainTrans;
 use App\Models\lapanganOlahraga;
@@ -158,6 +159,35 @@ class Transaksi extends Controller
 
         if ($cek == 0) {
             return response()->json(['success' => false, 'message' => 'Maaf, Tidak dapat menyewa ketika lapangan tutup!']);
+        }
+
+        //kasi pengecekan apakah ada jadwal tutup lapangan
+        $cek2 = 0;
+        $jam = new jamKhusus();
+        $cekJam = $jam->get_all_data_by_lapangan($request->id_lapangan);
+        // dd($cekJam);
+        if (!$cekJam->isEmpty()) {
+            foreach ($cekJam as $key => $value) {
+                if ($value->tanggal == $request->tanggal) {
+                    $jamMulai = new DateTime($value->tanggal." ".$value->jam_mulai);
+                    $jamSelesai = new DateTime($value->tanggal." ".$value->jam_selesai);
+
+                    $mulaiDateTime2 = new DateTime($request->tanggal." ".$request->mulai);
+                    $selesaiDateTime2 = new DateTime($request->tanggal." ".$request->selesai);
+
+                    if (($mulaiDateTime2 >= $jamMulai && $mulaiDateTime2 < $jamSelesai) || 
+                        ($selesaiDateTime2 > $jamMulai && $selesaiDateTime2 <= $jamSelesai) ||
+                        ($mulaiDateTime2 <= $jamMulai && $selesaiDateTime2 >= $jamSelesai)) {
+                        $cek2 = 1;
+                        break; // Berhenti loop jika ada tabrakan
+                    }
+                }
+            }
+        }
+        // dd($cek2);
+
+        if ($cek2 == 1) {
+            return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
         }
 
         $lapangan = DB::table('lapangan_olahraga')
@@ -860,7 +890,7 @@ class Transaksi extends Controller
         $mulaiDateTime1 = new DateTime($request->mulai);
         $selesaiDateTime1 = new DateTime($request->selesai);
 
-        $cek = 0;
+        $cek1 = 0;
         $slot = DB::table('slot_waktu')->where("fk_id_lapangan","=",$request->id_lapangan)->get();
         if (!$slot->isEmpty()) {
             foreach ($slot as $key => $value) {
@@ -869,13 +899,13 @@ class Transaksi extends Controller
                     $jamOperasionalSelesai = new DateTime($value->jam_tutup);
 
                     if ($mulaiDateTime1 >= $jamOperasionalMulai && $selesaiDateTime1 <= $jamOperasionalSelesai) {
-                       $cek = 1;
+                       $cek1 = 1;
                     }
                 }
             }
         }
 
-        if ($cek == 0) {
+        if ($cek1 == 0) {
             return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
         }
 
@@ -914,6 +944,35 @@ class Transaksi extends Controller
                 // Ada konflik dengan booking yang ada
                 return back()->with('error', 'Maaf, slot ini sudah dibooking!');
             }
+        }
+
+        //kasi pengecekan apakah ada jadwal tutup lapangan
+        $cek2 = 0;
+        $jam = new jamKhusus();
+        $cekJam = $jam->get_all_data_by_lapangan($request->id_lapangan);
+        // dd($cekJam);
+        if (!$cekJam->isEmpty()) {
+            foreach ($cekJam as $key => $value) {
+                if ($value->tanggal == $request->tanggal) {
+                    $jamMulai = new DateTime($value->tanggal." ".$value->jam_mulai);
+                    $jamSelesai = new DateTime($value->tanggal." ".$value->jam_selesai);
+
+                    $mulaiDateTime2 = new DateTime($request->tanggal." ".$request->mulai);
+                    $selesaiDateTime2 = new DateTime($request->tanggal." ".$request->selesai);
+
+                    if (($mulaiDateTime2 >= $jamMulai && $mulaiDateTime2 < $jamSelesai) || 
+                        ($selesaiDateTime2 > $jamMulai && $selesaiDateTime2 <= $jamSelesai) ||
+                        ($mulaiDateTime2 <= $jamMulai && $selesaiDateTime2 >= $jamSelesai)) {
+                        $cek2 = 1;
+                        break; // Berhenti loop jika ada tabrakan
+                    }
+                }
+            }
+        }
+        // dd($cek2);
+
+        if ($cek2 == 1) {
+            return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
         }
 
         $start_time = strtotime($request->mulai);
@@ -1553,6 +1612,32 @@ class Transaksi extends Controller
             return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
         }
 
+        //kasi pengecekan apakah ada jadwal tutup lapangan
+        $cek2 = 0;
+        $jam = new jamKhusus();
+        $cekJam = $jam->get_all_data_by_lapangan($htrans->id_lapangan);
+        // dd($cekJam);
+        if (!$cekJam->isEmpty()) {
+            foreach ($cekJam as $key => $value) {
+                if ($value->tanggal == $htrans->tanggal_sewa) {
+                    $jamMulai = new DateTime($value->tanggal." ".$value->jam_mulai);
+                    $jamSelesai = new DateTime($value->tanggal." ".$value->jam_selesai);
+
+                    if (($mulaiDateTime >= $jamMulai && $mulaiDateTime < $jamSelesai) || 
+                        ($selesaiDateTime > $jamMulai && $selesaiDateTime <= $jamSelesai) ||
+                        ($mulaiDateTime <= $jamMulai && $selesaiDateTime >= $jamSelesai)) {
+                        $cek2 = 1;
+                        break; // Berhenti loop jika ada tabrakan
+                    }
+                }
+            }
+        }
+        // dd($selesaiDateTime);
+
+        if ($cek2 == 1) {
+            return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
+        }
+
         $param["durasi"] = $request->durasi;
         $param["jam_mulai"] = $booking_jam_selesai1;
         $param["jam_selesai"] = $booking_jam_selesai2;
@@ -1687,7 +1772,32 @@ class Transaksi extends Controller
             // return redirect()->back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
             return response()->json(['success' => false, 'message' => 'Maaf, Tidak dapat menyewa ketika lapangan tutup!']);
         }
-        // dd("halo");
+        
+        //kasi pengecekan apakah ada jadwal tutup lapangan
+        $cek2 = 0;
+        $jam = new jamKhusus();
+        $cekJam = $jam->get_all_data_by_lapangan($htrans->id_lapangan);
+        // dd($cekJam);
+        if (!$cekJam->isEmpty()) {
+            foreach ($cekJam as $key => $value) {
+                if ($value->tanggal == $htrans->tanggal_sewa) {
+                    $jamMulai = new DateTime($value->tanggal." ".$value->jam_mulai);
+                    $jamSelesai = new DateTime($value->tanggal." ".$value->jam_selesai);
+
+                    if (($mulaiDateTime >= $jamMulai && $mulaiDateTime < $jamSelesai) || 
+                        ($selesaiDateTime > $jamMulai && $selesaiDateTime <= $jamSelesai) ||
+                        ($mulaiDateTime <= $jamMulai && $selesaiDateTime >= $jamSelesai)) {
+                        $cek2 = 1;
+                        break; // Berhenti loop jika ada tabrakan
+                    }
+                }
+            }
+        }
+        // dd($selesaiDateTime);
+
+        if ($cek2 == 1) {
+            return back()->with('error', 'Maaf, Tidak dapat menyewa ketika lapangan tutup!');
+        }
 
         $komisi_tempat = 0;
         if (!$dtrans->isEmpty()) {
