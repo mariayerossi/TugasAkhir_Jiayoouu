@@ -1039,10 +1039,13 @@ class reminder extends Command
                 $dateTime = new DateTime($jam_sewa);
                 $format_jam = $dateTime->format("H:i");
 
-                $jam_sewa = $value->tanggal_extend. " " .$format_jam;
+                $jam_sewa2 = $value->tanggal_extend. " " .$format_jam;
+                $sewa3 = new DateTime($jam_sewa2);
+                $sewa3->add(new DateInterval('PT10M'));
+                $sew3 = $sewa3->format('Y-m-d H:i:s');
 
                 //jika pihak tempat blm menerima sampai waktu extend lewat, status extend dibatalkan :)
-                if ($value->status_extend == "Menunggu" && $jam_sewa == $sekarang) {
+                if ($value->status_extend == "Menunggu" && $sew3 == $sekarang) {
                     $data1 = [
                         "id" => $value->id_extend_htrans,
                         "status" => "Dibatalkan"
