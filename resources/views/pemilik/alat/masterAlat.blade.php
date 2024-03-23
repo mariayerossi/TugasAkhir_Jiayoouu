@@ -9,6 +9,11 @@
 <div class="container mt-5">
     <h3 class="text-center mb-5">Tambah Alat Olahraga</h3>
     @include("layouts.message")
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-exclamation-circle"></i> Sebagai website persewaan alat olahraga bekas, kami ingin mengingatkan bahwa penggunaan berulang dari alat olahraga dapat menyebabkan penurunan kualitas. Dengan menyewakan di website ini, pemilik setuju untuk menanggung konsekuensi tersebut.
+        </div>
+    </div>
     <div style="background-color: white;box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.142);" class="p-3 mb-5">
         <i class="bi bi-exclamation-circle"></i> Syarat alat olahraga yang boleh disewakan adalah sebagai berikut: <br>
         <ul>
