@@ -2225,19 +2225,24 @@ class Transaksi extends Controller
     public function cetakNota(Request $request) {
         // status htrans berubah menjadi "selesai"
         $dataHtrans = DB::table('htrans')->where("id_htrans","=",$request->id_htrans)->get()->first();
+        // dd($dataHtrans);
+        date_default_timezone_set("Asia/Jakarta");
+        $skrg = date("Y-m-d H:i:s");
+        $skrg2 = new DateTime($skrg);
+
         $jam_sewa = $dataHtrans->jam_sewa;
         $durasi_sewa = $dataHtrans->durasi_sewa;
         $booking_jam_selesai1 = date('H:i:s', strtotime("+$durasi_sewa hour", strtotime($jam_sewa)));
         $tgl = $dataHtrans->tanggal_sewa." ".$booking_jam_selesai1;
         $tgl2 = new DateTime($tgl);
-
-        date_default_timezone_set("Asia/Jakarta");
-        $skrg = date("Y-m-d H:i:s");
-        $skrg2 = new DateTime($skrg);
+        
+        // dd($tgl2);
 
         if ($skrg2 < $tgl2) {
             return redirect()->back()->with("error", "Persewaan lapangan belum selesai!");
         }
+
+        // dd("lanjut");
 
         $data = [
             "id" => $request->id_htrans,
