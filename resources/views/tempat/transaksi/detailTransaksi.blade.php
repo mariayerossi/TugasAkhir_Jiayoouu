@@ -606,8 +606,16 @@
             @endif
             </div>
         @endif
-        @if (!$extend->isEmpty() && $extend->first()->status_extend != "Menunggu" || $extend->isEmpty())
-            <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+        <div class="d-flex justify-content-end mt-5 me-3 mb-5">
+            @if ($extend->isEmpty())
+                <form id="tambahWaktu" action="/tempat/transaksi/detailTambahWaktu" method="get">
+                    @csrf
+                    <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
+                    <input type="hidden" name="durasi" id="durasi_jam">
+                    <button type="submit" class="btn btn-success me-3" onclick="showSweetAlert(this)">Extend Waktu Sewa</button>
+                </form>
+            @endif
+            @if (!$extend->isEmpty() && $extend->first()->status_extend != "Menunggu" || $extend->isEmpty())
                 @if (!$dtrans->isEmpty())
                     {{-- <a href="/tempat/kerusakan/detailKerusakan/{{$htrans->first()->id_htrans}}" class="btn btn-warning me-2">Ajukan Kerusakan Alat</a> --}}
                     {{-- <button class="btn btn-warning me-2">Ajukan Kerusakan Alat</button> --}}
@@ -617,9 +625,8 @@
                     <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                     <button type="submit" class="btn btn-primary">Konfirmasi Selesai dan Cetak Nota</button>
                 </form>
-                {{-- klo cetak nota diprint, maka status htrans berubah selesai --}}
-            </div>
-        @endif
+            @endif
+        </div>
     @elseif ($htrans->first()->status_trans == "Selesai")
         @if (!$extend->isEmpty())
             <div id="extend">
@@ -793,6 +800,35 @@
     <button id="scrollDownButton" class="btn btn-primary floating-btn">Lihat Extend <i class="bi bi-arrow-down-circle"></i></button>
 @endif
 <script>
+    function showSweetAlert(button) {
+        event.preventDefault();
+        swal({
+            title: "Extend Waktu Sewa",
+            text: "Masukkan durasi jam:",
+            type: "input",
+            showCancelButton: true,
+            closeOnConfirm: false,
+            animation: "slide-from-top",
+            inputPlaceholder: "Durasi jam"
+        }, function(inputValue){
+            if (inputValue === false) return false;
+            if (inputValue === "" || isNaN(inputValue) || parseInt(inputValue) <= 0) {
+                swal.showInputError("Anda harus memasukkan durasi jam yang valid!");
+                console.log(inputValue);
+                return false;
+            }
+            document.querySelector(`#durasi_jam`).value = inputValue;
+            document.querySelector(`#tambahWaktu`).submit();
+        });
+
+        setTimeout(function() {
+            // Mengubah tipe input menjadi number setelah SweetAlert muncul
+            var input = document.querySelector(".sweet-alert input");
+            if (input) {
+                input.type = "number";
+            }
+        }, 1);
+    }
     document.addEventListener("DOMContentLoaded", function() {
         var scrollDownButton = document.getElementById('scrollDownButton');
 

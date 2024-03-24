@@ -1643,7 +1643,15 @@ class Transaksi extends Controller
         $param["jam_selesai"] = $booking_jam_selesai2;
         $param["trans"] = $htrans;
         $param["dtrans"] = $dataDtrans;
-        return view("customer.detailTambahWaktu")->with($param);
+
+        // return view("customer.detailTambahWaktu")->with($param);
+
+        if (Session::get("role") == "customer") {
+            return view("customer.detailTambahWaktu")->with($param);
+        }
+        else {
+            return view("tempat.transaksi.detailTambahWaktu")->with($param);
+        }
     }
 
     public function tambahWaktu(Request $request) {
@@ -1819,125 +1827,195 @@ class Transaksi extends Controller
         $pendapatan_tempat = ($request->subtotal_lapangan + $total_komisi_tempat) * $persen_tempat;
         // dd($pendapatan_tempat);
 
-        $data = [
-            "id_htrans" => $request->id_htrans,
-            "tanggal" => $htrans->tanggal_sewa,
-            "jam" => $request->jam,
-            "durasi" => (int)$request->durasi,
-            "lapangan" => (int)$request->subtotal_lapangan,
-            "alat" => (int)$request->subtotal_alat,
-            "total" => (int)$request->total,
-            "pendapatan" => (int)$pendapatan_tempat
-        ];
-        // dd($data);
-        $extend = new extendHtrans();
-        $id = $extend->insertExtendHtrans($data);
-
-        $persen_pemilik = 0.11;
-
-        if (!$dtrans->isEmpty()) {
-            foreach ($dtrans as $value) {
-                if ($value->fk_id_pemilik != null) {//milik pemilik
-                    $data2 = [
-                        "id_extend_htrans" => $id,
-                        "id_dtrans" => $value->id_dtrans,
-                        "harga" => $value->harga_sewa_alat,
-                        "subtotal" => $value->harga_sewa_alat * $request->durasi,
-                        "total_pemilik" => $value->komisi_alat * $request->durasi,
-                        "total_tempat" => ($value->harga_sewa_alat - $value->komisi_alat) * $request->durasi,
-                        "pendapatan" => (int)(($value->komisi_alat * $request->durasi) * $persen_pemilik)
-                    ];
+        if (Session::get("role") == "customer") {
+            $data = [
+                "id_htrans" => $request->id_htrans,
+                "tanggal" => $htrans->tanggal_sewa,
+                "jam" => $request->jam,
+                "durasi" => (int)$request->durasi,
+                "lapangan" => (int)$request->subtotal_lapangan,
+                "alat" => (int)$request->subtotal_alat,
+                "total" => (int)$request->total,
+                "pendapatan" => (int)$pendapatan_tempat,
+                "status" => "Menunggu"
+            ];
+            // dd($data);
+            $extend = new extendHtrans();
+            $id = $extend->insertExtendHtrans($data);
+    
+            $persen_pemilik = 0.11;
+    
+            if (!$dtrans->isEmpty()) {
+                foreach ($dtrans as $value) {
+                    if ($value->fk_id_pemilik != null) {//milik pemilik
+                        $data2 = [
+                            "id_extend_htrans" => $id,
+                            "id_dtrans" => $value->id_dtrans,
+                            "harga" => $value->harga_sewa_alat,
+                            "subtotal" => $value->harga_sewa_alat * $request->durasi,
+                            "total_pemilik" => $value->komisi_alat * $request->durasi,
+                            "total_tempat" => ($value->harga_sewa_alat - $value->komisi_alat) * $request->durasi,
+                            "pendapatan" => (int)(($value->komisi_alat * $request->durasi) * $persen_pemilik)
+                        ];
+                    }
+                    else if ($value->fk_id_tempat != null) {//milik tempat
+                        $data2 = [
+                            "id_extend_htrans" => $id,
+                            "id_dtrans" => $value->id_dtrans,
+                            "harga" => $value->harga_sewa_alat,
+                            "subtotal" => $value->harga_sewa_alat * $request->durasi,
+                            "total_pemilik" => null,
+                            "total_tempat" => $value->harga_sewa_alat * $request->durasi,
+                            "pendapatan" => null
+                        ];
+                    }
+                    $extendDtrans = new extendDtrans();
+                    $extendDtrans->insertExtendDtrans($data2);
                 }
-                else if ($value->fk_id_tempat != null) {//milik tempat
-                    $data2 = [
-                        "id_extend_htrans" => $id,
-                        "id_dtrans" => $value->id_dtrans,
-                        "harga" => $value->harga_sewa_alat,
-                        "subtotal" => $value->harga_sewa_alat * $request->durasi,
-                        "total_pemilik" => null,
-                        "total_tempat" => $value->harga_sewa_alat * $request->durasi,
-                        "pendapatan" => null
-                    ];
+            }
+
+            //cek saldo e cukup gaa
+            $custt = new customer();
+            $saldo_cust = $custt->get_all_data_by_id(Session::get("dataRole")->id_user)->first()->saldo_user;
+
+            $saldo = (int)$this->decodePrice($saldo_cust, "mysecretkey");
+            if ($saldo < (int)$request->total) {
+                return response()->json(['success' => false, 'message' => 'Saldo anda tidak cukup! Silahkan top up saldo anda.']);
+            }
+            //saldo dipotong sebesar total
+            $saldo -= (int)$request->total;
+
+            //enkripsi kembali saldo
+            $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+            //update db user
+            $dataSaldo = [
+                "id" => Session::get("dataRole")->id_user,
+                "saldo" => $enkrip
+            ];
+            $cust = new customer();
+            $cust->updateSaldo($dataSaldo);
+
+            //update session role
+            $user = new customer();
+            $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
+            Session::forget("dataRole");
+            Session::put("dataRole", $isiUser->first());
+
+            //notif ke tempat
+            $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$htrans->fk_id_tempat)->get()->first();
+            $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->fk_id_lapangan)->get()->first();
+
+            $dtransStr = "";
+            if (!$dtrans->isEmpty()) {
+                foreach ($dtrans as $key => $value) {
+                    $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
+                    $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
                 }
-                $extendDtrans = new extendDtrans();
-                $extendDtrans->insertExtendDtrans($data2);
             }
+
+            date_default_timezone_set("Asia/Jakarta");
+            $skrg = date("Y-m-d H:i:s");
+
+            //notif web ke pihak tempat
+            $dataNotifWeb = [
+                "keterangan" => "Extend Waktu Baru ".$dataLapangan->nama_lapangan,
+                "waktu" => $skrg,
+                "link" => "/tempat/transaksi/detailTransaksi/".$request->id_htrans,
+                "user" => null,
+                "pemilik" => null,
+                "tempat" => $htrans->fk_id_tempat,
+                "admin" => null
+            ];
+            $notifWeb = new notifikasi();
+            $notifWeb->insertNotifikasi($dataNotifWeb);
+
+            $dataNotif = [
+                "subject" => "🔔Extend Waktu Baru Menunggu Konfirmasi Anda!🔔",
+                "judul" => "Extend Waktu Baru Menunggu Konfirmasi Anda!",
+                "nama_user" => $dataTempat->nama_tempat,
+                "url" => "https://sportiva.my.id/tempat/transaksi/detailTransaksi/".$request->id_htrans,
+                "button" => "Lihat Detail Transaksi",
+                "isi" => "Anda baru saja menerima satu permintaan extend waktu baru:<br><br>
+                        <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
+                        ".$dtransStr."<br>
+                        <b>Durasi Extend: ".$request->durasi." jam</b><br>
+                        <b>Total Transaksi: Rp ".number_format($request->total, 0, ',', '.')."</b><br><br>
+                        Harap segera terima extend ini sampai ".$booking_jam_selesai2. "! Jika melebihi waktu status akan otomatis dibatalkan!"
+            ];
+            $e = new notifikasiEmail();
+            $e->sendEmail($dataTempat->email_tempat, $dataNotif);
         }
-
-        //cek saldo e cukup gaa
-        $custt = new customer();
-        $saldo_cust = $custt->get_all_data_by_id(Session::get("dataRole")->id_user)->first()->saldo_user;
-
-        $saldo = (int)$this->decodePrice($saldo_cust, "mysecretkey");
-        if ($saldo < (int)$request->total) {
-            return response()->json(['success' => false, 'message' => 'Saldo anda tidak cukup! Silahkan top up saldo anda.']);
-        }
-        //saldo dipotong sebesar total
-        $saldo -= (int)$request->total;
-
-        //enkripsi kembali saldo
-        $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
-
-        //update db user
-        $dataSaldo = [
-            "id" => Session::get("dataRole")->id_user,
-            "saldo" => $enkrip
-        ];
-        $cust = new customer();
-        $cust->updateSaldo($dataSaldo);
-
-        //update session role
-        $user = new customer();
-        $isiUser = $user->get_all_data_by_id(Session::get("dataRole")->id_user);
-        Session::forget("dataRole");
-        Session::put("dataRole", $isiUser->first());
-
-        //notif ke tempat
-        $dataTempat = DB::table('pihak_tempat')->where("id_tempat","=",$htrans->fk_id_tempat)->get()->first();
-        $dataLapangan = DB::table('lapangan_olahraga')->where("id_lapangan","=",$htrans->fk_id_lapangan)->get()->first();
-
-        $dtransStr = "";
-        if (!$dtrans->isEmpty()) {
-            foreach ($dtrans as $key => $value) {
-                $dataAlat = DB::table('alat_olahraga')->where("id_alat","=",$value->fk_id_alat)->get()->first();
-                $dtransStr .= "<b>Nama Alat Olahraga: ".$dataAlat->nama_alat."</b><br>";
+        else {
+            $data = [
+                "id_htrans" => $request->id_htrans,
+                "tanggal" => $htrans->tanggal_sewa,
+                "jam" => $request->jam,
+                "durasi" => (int)$request->durasi,
+                "lapangan" => (int)$request->subtotal_lapangan,
+                "alat" => (int)$request->subtotal_alat,
+                "total" => (int)$request->total,
+                "pendapatan" => (int)$pendapatan_tempat,
+                "status" => "Diterima"
+            ];
+            // dd($data);
+            $extend = new extendHtrans();
+            $id = $extend->insertExtendHtrans($data);
+    
+            $persen_pemilik = 0.11;
+    
+            if (!$dtrans->isEmpty()) {
+                foreach ($dtrans as $value) {
+                    if ($value->fk_id_pemilik != null) {//milik pemilik
+                        $data2 = [
+                            "id_extend_htrans" => $id,
+                            "id_dtrans" => $value->id_dtrans,
+                            "harga" => $value->harga_sewa_alat,
+                            "subtotal" => $value->harga_sewa_alat * $request->durasi,
+                            "total_pemilik" => $value->komisi_alat * $request->durasi,
+                            "total_tempat" => ($value->harga_sewa_alat - $value->komisi_alat) * $request->durasi,
+                            "pendapatan" => (int)(($value->komisi_alat * $request->durasi) * $persen_pemilik)
+                        ];
+                    }
+                    else if ($value->fk_id_tempat != null) {//milik tempat
+                        $data2 = [
+                            "id_extend_htrans" => $id,
+                            "id_dtrans" => $value->id_dtrans,
+                            "harga" => $value->harga_sewa_alat,
+                            "subtotal" => $value->harga_sewa_alat * $request->durasi,
+                            "total_pemilik" => null,
+                            "total_tempat" => $value->harga_sewa_alat * $request->durasi,
+                            "pendapatan" => null
+                        ];
+                    }
+                    $extendDtrans = new extendDtrans();
+                    $extendDtrans->insertExtendDtrans($data2);
+                }
             }
+
+            //cek saldo e cukup gaa
+            $temp = new pihakTempat();
+            $saldo_temp = $temp->get_all_data_by_id(Session::get("dataRole")->id_tempat)->first()->saldo_tempat;
+
+            $saldo = (int)$this->decodePrice($saldo_temp, "mysecretkey");
+            if ($saldo < (int)$request->total) {
+                return response()->json(['success' => false, 'message' => 'Tidak bisa melakukan extend! Saldo anda tidak cukup.']);
+            }
+            //saldo dipotong sebesar total
+            $saldo -= (int)$request->total;
+
+            //enkripsi kembali saldo
+            $enkrip = $this->encodePrice((string)$saldo, "mysecretkey");
+
+            //update db user
+            $dataSaldo = [
+                "id" => Session::get("dataRole")->id_tempat,
+                "saldo" => $enkrip
+            ];
+            $temp->updateSaldo($dataSaldo);
         }
-
-        date_default_timezone_set("Asia/Jakarta");
-        $skrg = date("Y-m-d H:i:s");
-
-        //notif web ke pihak tempat
-        $dataNotifWeb = [
-            "keterangan" => "Extend Waktu Baru ".$dataLapangan->nama_lapangan,
-            "waktu" => $skrg,
-            "link" => "/tempat/transaksi/detailTransaksi/".$request->id_htrans,
-            "user" => null,
-            "pemilik" => null,
-            "tempat" => $htrans->fk_id_tempat,
-            "admin" => null
-        ];
-        $notifWeb = new notifikasi();
-        $notifWeb->insertNotifikasi($dataNotifWeb);
-
-        $dataNotif = [
-            "subject" => "🔔Extend Waktu Baru Menunggu Konfirmasi Anda!🔔",
-            "judul" => "Extend Waktu Baru Menunggu Konfirmasi Anda!",
-            "nama_user" => $dataTempat->nama_tempat,
-            "url" => "https://sportiva.my.id/tempat/transaksi/detailTransaksi/".$request->id_htrans,
-            "button" => "Lihat Detail Transaksi",
-            "isi" => "Anda baru saja menerima satu permintaan extend waktu baru:<br><br>
-                    <b>Nama Lapangan Olahraga: ".$dataLapangan->nama_lapangan."</b><br>
-                    ".$dtransStr."<br>
-                    <b>Durasi Extend: ".$request->durasi." jam</b><br>
-                    <b>Total Transaksi: Rp ".number_format($request->total, 0, ',', '.')."</b><br><br>
-                    Harap segera terima extend ini sampai ".$booking_jam_selesai2. "! Jika melebihi waktu status akan otomatis dibatalkan!"
-        ];
-        $e = new notifikasiEmail();
-        $e->sendEmail($dataTempat->email_tempat, $dataNotif);
-
         // return redirect()->back()->with("success", "Berhasil melakukan extend waktu! menunggu konfirmasi pemilik tempat olahraga");
-        return response()->json(['success' => true, 'message' => 'Berhasil melakukan extend waktu! menunggu konfirmasi pemilik tempat olahraga']);
+        return response()->json(['success' => true, 'message' => 'Berhasil melakukan extend waktu!']);
     }
 
     public function terimaExtend(Request $request) {

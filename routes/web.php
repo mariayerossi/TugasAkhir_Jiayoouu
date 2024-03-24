@@ -436,6 +436,9 @@ Route::prefix("/tempat")->group(function(){
         Route::post("/konfirmasiDipakai", [Transaksi::class, "konfirmasiDipakai"]);
         Route::get("/cetakNota", [Transaksi::class, "cetakNota"])->middleware([CekTempat::class]);
 
+        Route::get("/detailTambahWaktu", [Transaksi::class, "detailTambahWaktu"])->middleware([CekTempat::class]);
+        Route::post("/tambahWaktu", [Transaksi::class, "tambahWaktu"]);
+
         Route::get("/tampilanEditTransaksi/{id}", [Transaksi::class, "editTransaksiTempat"])->middleware([CekTempat::class]);
         
         Route::post("/hapusAlat", [Transaksi::class, "hapusAlat"]);

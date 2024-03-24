@@ -26,7 +26,7 @@ class extendHtrans extends Model
         $extend->subtotal_alat = $data["alat"];
         $extend->total = $data["total"];
         $extend->pendapatan_website_lapangan = $data["pendapatan"];
-        $extend->status_extend = "Menunggu";
+        $extend->status_extend = $data["status"];
         $extend->save();
 
         return $extend->id_extend_htrans;
