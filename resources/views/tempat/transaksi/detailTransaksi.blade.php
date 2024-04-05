@@ -607,14 +607,14 @@
             </div>
         @endif
         <div class="d-flex justify-content-end mt-5 me-3 mb-5">
-            @if ($extend->isEmpty())
+            {{-- @if ($extend->isEmpty())
                 <form id="tambahWaktu" action="/tempat/transaksi/detailTambahWaktu" method="get">
                     @csrf
                     <input type="hidden" name="id_htrans" value="{{$htrans->first()->id_htrans}}">
                     <input type="hidden" name="durasi" id="durasi_jam">
                     <button type="submit" class="btn btn-success me-3" onclick="showSweetAlert(this)">Extend Waktu Sewa</button>
                 </form>
-            @endif
+            @endif --}}
             @if (!$extend->isEmpty() && $extend->first()->status_extend != "Menunggu" || $extend->isEmpty())
                 @if (!$dtrans->isEmpty())
                     {{-- <a href="/tempat/kerusakan/detailKerusakan/{{$htrans->first()->id_htrans}}" class="btn btn-warning me-2">Ajukan Kerusakan Alat</a> --}}
